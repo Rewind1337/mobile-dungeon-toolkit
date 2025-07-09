@@ -10,7 +10,7 @@ function SubPageGuildBoss({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef }
     function onResize() {
         let newHeight = 0;
         if (window.matchMedia("(max-width: 900px)").matches === true) {
-            newHeight = window.innerHeight - (137 + listRef.current.offsetTop)
+            newHeight = window.innerHeight - (93 + listRef.current.offsetTop)
         } else {
             newHeight = window.innerHeight - (177 + listRef.current.offsetTop)
         }

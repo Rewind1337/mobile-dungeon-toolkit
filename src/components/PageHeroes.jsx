@@ -56,7 +56,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
             </div>
 
 
-            <div className="flex-row" style={{ justifyContent: "space-between" }}>
+            <div className="flex-row" style={{ justifyContent: "space-between", order: 1 }}>
                 <div className="pagination flex-row card w-100">
                     <Button text={"All Heroes"} color={0} onClick={() => { setPageContent(0) }} />
                     <Button text={"Your Saved Heroes"} color={1} onClick={() => { setPageContent(1) }} />

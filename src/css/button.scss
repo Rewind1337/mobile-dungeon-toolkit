@@ -9,6 +9,7 @@ button {
   border-radius: V.$border-radius;
   outline: 1px solid V.$border-color-medium;
   border: none;
+  height: 45px;
   padding: V.$padding-button;
   font-size: V.$font-size-button;
   font-weight: 500;
@@ -17,6 +18,12 @@ button {
   transform: translate(0, 0);
   transition: V.$transition-button;
   z-index: 5;
+
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    font-size: 12px;
+    border-radius: 0;
+    height: 36px;
+  }
 
   &:not(.disabled) {
     @include M.media-query(V.$bp-mobile, ()) {
@@ -177,6 +184,7 @@ button {
 
   &.slim {
     padding: 4px;
+    height: 30px;
   }
 
   &.disabled {

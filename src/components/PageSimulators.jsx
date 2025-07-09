@@ -13,7 +13,7 @@ function PageSimulators({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, ma
 
     return (
         <>
-            <div className="flex-row" style={{ justifyContent: "space-between" }}>
+            <div className="flex-row" style={{ justifyContent: "space-between", order: 1 }}>
                 <div className="pagination flex-row card">
                     <Button text={"Adventure Chapters"} color={0} onClick={() => { setPageContent(0) }} />
                     <Button text={"Towers"} color={1} onClick={() => { setPageContent(1) }} />

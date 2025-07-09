@@ -26,6 +26,8 @@ $button-six-gradient: linear-gradient(152deg, hsl(281, 100%, 30%) 0%, hsl(261, 1
 $button-six-gradient-hover: linear-gradient(152deg, hsl(281, 100%, 50%) 0%, hsl(261, 100%, 50%) 100%);
 $button-six-gradient-click: linear-gradient(152deg, hsl(281, 100%, 40%) 0%, hsl(261, 100%, 40%) 100%);
 
+$mobile-button-height: 44px;
+$mobile-button-text: 12px;
 
 // Fonts
 $font-family-base: "Roboto", sans-serif;
@@ -33,6 +35,7 @@ $font-family-header: "Bangers", system-ui;
 $font-family-stats: "Poetsen One", sans-serif;
 
 // Font Sizes
+$font-size-xsmall: 10px;
 $font-size-small: 14px;
 $font-size-nav: 18px;
 $font-size-button: 18px;

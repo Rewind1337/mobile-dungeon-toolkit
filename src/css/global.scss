@@ -44,7 +44,7 @@ svg {
 body {
   margin: 0;
   min-width: 320px;
-  min-height: 100vh;
+  min-height: 100dvh;
   background: linear-gradient(-45deg, #140500, #020014, #000f14, #0d1400);
   background-size: 400% 400%;
   animation: gradient 150s ease-in-out infinite;
@@ -166,24 +166,40 @@ body::after {
   font-size: V.$font-size-header;
   font-family: V.$font-family-header;
   text-shadow: 1px 1px 2px black;
+
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    font-size: V.$font-size-nav;
+  }
 }
 
 .header-big {
   font-size: V.$font-size-header-large;
   font-family: V.$font-family-header;
   text-shadow: 2px 2px 4px black;
+
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    font-size: V.$font-size-header;
+  }
 }
 
 .header-small {
   font-size: V.$font-size-header-small;
   font-family: V.$font-family-header;
   text-shadow: 1px 1px 2px black;
+
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    font-size: V.$font-size-xsmall;
+  }
 }
 
 .text {
   font-size: V.$font-size-small;
   font-family: V.$font-family-stats;
   text-shadow: 1px 1px 2px black;
+
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    font-size: V.$font-size-xsmall;
+  }
 }
 
 .filters {
@@ -229,30 +245,28 @@ body::after {
   }
 }
 
-.pagination {
+.pagination,
+.options {
   padding: V.$gap V.$gap;
   justify-content: left;
   min-height: 66px;
   width: max-content;
 
   @include M.media-query-max(V.$bp-mobile, ()) {
-    order: 3;
-    padding: V.$gap V.$gap-small;
+    min-height: V.$mobile-button-height;
+    padding: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    gap: 0;
+
+    button {
+      border-radius: 0;
+      word-wrap: nowrap;
+      height: V.$mobile-button-height;
+      font-size: V.$mobile-button-text;
+    }
   }
 }
-
-.options {
-  padding: V.$gap V.$gap;
-  justify-content: right;
-  min-height: 66px;
-  width: max-content;
-
-  @include M.media-query-max(V.$bp-mobile, ()) {
-    order: 3;
-    padding: V.$gap V.$gap-small;
-  }
-}
-
 
 .tower-list,
 .tower-stage-list,
@@ -616,6 +630,10 @@ a {
   button {
     width: 300px;
     margin-inline: auto;
+
+    @include M.media-query-max(V.$bp-mobile, ()) {
+      width: 100%;
+    }
   }
 
   .footer {
@@ -623,25 +641,65 @@ a {
     justify-content: space-between;
     align-items: center;
 
+    button {
+      width: 100%;
+
+      @include M.media-query-max(V.$bp-mobile, ()) {
+        margin-bottom: 4px;
+      }
+    }
+
+    .flex-row {
+      width: 100%;
+      justify-content: center;
+    }
+
+    @include M.media-query-max(V.$bp-mobile, ()) {
+      padding: V.$gap-small V.$gap-small;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+
     svg {
       filter: brightness(500%) drop-shadow(1px 1px 2px black);
       transform: translate(0, 4px);
+
+      @include M.media-query-max(V.$bp-mobile, ()) {
+        height: 20px;
+        margin-left: 4px;
+        margin-right: 4px;
+        transform: translate(0, 2px);
+      }
     }
 
     img {
       filter: drop-shadow(1px 1px 2px black);
+
+      @include M.media-query-max(V.$bp-mobile, ()) {
+        height: 20px;
+        margin-left: 4px;
+        margin-right: 4px;
+      }
     }
 
     .text {
-      font-size: 18px;
       align-items: center;
+      white-space: nowrap;
+
+      @include M.media-query-max(V.$bp-mobile, ()) {
+        gap: 0;
+      }
     }
   }
 
-  .card:not(.simulations):not(.management):not(.footer) {
+  .card:not(.simulations):not(.management):not(.footer):not(.welcome) {
     outline: 2px solid black;
     height: 300px;
     background-size: cover;
+
+    @include M.media-query-max(V.$bp-mobile, ()) {
+      height: 150px;
+    }
 
     &.heroes {
       background-image: url('../sprites/splash/heroes.png');
@@ -675,6 +733,14 @@ a {
     &.guildbosses {
       background-image: url('../sprites/splash/guildbosses.png');
       background-position: 0 10%;
+    }
+  }
+
+  .card.welcome {
+    display: none;
+
+    @include M.media-query-max(V.$bp-mobile, ()) {
+      display: block;
     }
   }
 }

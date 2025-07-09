@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import ItemList from "./ItemList.jsx"
 import ItemPreview from "./ItemPreview.jsx"
 import HeroList from "./HeroList.jsx"
@@ -14,6 +14,24 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
     const [teams, setTeams] = useState([{ id: 0, name: "Default Team", heroes: Array(5).fill({ id: -1 }) }, { id: 0, name: "Team A", heroes: Array(5).fill({ id: -1 }) }, { id: 0, name: "Team B", heroes: Array(5).fill({ id: -1 }) }])
     const [teamIndex, setTeamIndex] = useState(null)
     const [heroIndex, setHeroIndex] = useState(null)
+    const listRef = useRef(null)
+    const [listHeight, setListHeight] = useState(500)
+
+    function onResize() {
+        let newHeight = 0;
+        if (window.matchMedia("(max-width: 900px)").matches === true) {
+            newHeight = window.innerHeight - (137 + listRef.current.offsetTop)
+        } else {
+            newHeight = window.innerHeight - (177 + listRef.current.offsetTop)
+        }
+        setListHeight(newHeight)
+    }
+
+    useLayoutEffect(() => {
+        window.addEventListener('resize', onResize);
+        onResize();
+        return () => window.removeEventListener('resize', onResize);
+    }, []);
 
     const handleTeamHeroClick = (teamIndex, heroIndex) => {
         setTeamIndex(teamIndex)
@@ -55,7 +73,7 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
 
     return (
         <>
-            <div className="flex-row" style={{ justifyContent: "space-between" }}>
+            <div className="flex-row" style={{ justifyContent: "space-between", order: 1 }}>
                 <div className="pagination flex-row card w-100">
                     <Button text={"Your Teams"} color={2} onClick={() => { setPageContent(0) }} />
                 </div>
@@ -67,7 +85,7 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
             <div id='page-heroes' className='page flex-row w-100'>
                 {pageContent === 0 &&
                     <>
-                        <div className='teams-list card flex-col w-50'>
+                        <div ref={listRef} className='teams-list card flex-col w-50' style={{ maxHeight: listHeight }}>
                             {teams.map((team, teamIndex) =>
                                 <div className="team card flex-col">
                                     <div className="flex-row">

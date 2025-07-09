@@ -1,4 +1,5 @@
 import Button from './Button.jsx'
+import MDSkull from '../sprites/favicon.png'
 import "../css/navbar.scss"
 
 function NavBar({ switchTabTo }) {
@@ -10,7 +11,9 @@ function NavBar({ switchTabTo }) {
                 <Button onMouseDown={() => { switchTabTo("items") }} text={"Items"} color={1} />
                 <Button onMouseDown={() => { switchTabTo("teams") }} text={"Teams"} color={2} />
             </div>
-            <div className='header-big'>Mobile Dungeon Toolkit</div>
+            <div className='flex-row'>
+                <img height={45} width={45} src={MDSkull} /><div className='header-big nav-bar-header'>Mobile Dungeon Toolkit</div>
+            </div>
             <div className='nav-right flex-row'>
                 <Button onMouseDown={() => { switchTabTo("splash") }} text={"Splash"} color={3} />
                 <Button onMouseDown={() => { switchTabTo("simulator") }} text={"Simulators"} color={4} />

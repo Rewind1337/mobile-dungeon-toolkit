@@ -81,6 +81,10 @@
     outline: 2px solid black;
     border-radius: 4px;
     image-rendering: optimizeQuality;
+
+    @include M.media-query-max(V.$bp-mobile, ()) {
+      width: 60px;
+    }
   }
 
   .text {

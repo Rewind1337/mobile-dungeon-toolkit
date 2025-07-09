@@ -49,7 +49,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                 </div>
             </div>
 
-            <div className="flex-row" style={{ justifyContent: "space-between" }}>
+            <div className="flex-row" style={{ justifyContent: "space-between", order: 1 }}>
                 <div className="pagination flex-row card w-100">
                     <Button text={"All Items"} color={0} onClick={() => { setPageContent(0) }} />
                     <Button text={"Your Saved Items"} color={1} onClick={() => { setPageContent(1) }} />

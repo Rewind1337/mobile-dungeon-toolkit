@@ -17,7 +17,7 @@ function ItemList({ extraHeight = 0, savedItems, headerText, itemsRef, itemType 
     function onResize() {
         let newHeight = 0;
         if (window.matchMedia("(max-width: 900px)").matches === true) {
-            newHeight = window.innerHeight - ((137 + listRef.current.offsetTop) - extraHeight)
+            newHeight = window.innerHeight - ((93 + listRef.current.offsetTop) - extraHeight)
         } else {
             newHeight = window.innerHeight - ((177 + listRef.current.offsetTop) - extraHeight)
         }
