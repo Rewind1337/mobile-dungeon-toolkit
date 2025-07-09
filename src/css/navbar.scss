@@ -1,0 +1,44 @@
+@use './_variables.scss' as V;
+@use './mixins.scss' as M;
+
+.nav-bar {
+  justify-content: space-between;
+  align-items: center;
+  padding: V.$gap V.$gap;
+  min-height: 66px;
+  z-index: 10;
+
+  &>* {
+    display: flex;
+    align-items: center;
+    gap: V.$gap;
+    flex-grow: 1;
+    justify-content: space-around;
+    white-space: nowrap;
+    line-height: 0;
+  }
+
+  button {
+    font-size: V.$font-size-nav;
+    flex-grow: 1;
+  }
+
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    padding: 5px V.$gap-small;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+
+    button {
+      word-wrap: nowrap;
+      padding-inline: 0;
+    }
+  }
+}
+
+.nav-left {
+  justify-content: center;
+}
+
+.nav-right {
+  justify-content: center;
+}

@@ -1,0 +1,210 @@
+@use './_variables.scss' as V;
+@use './mixins.scss' as M;
+
+button {
+  --data-percent: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: V.$border-radius;
+  outline: 1px solid V.$border-color-medium;
+  border: none;
+  padding: V.$padding-button;
+  font-size: V.$font-size-button;
+  font-weight: 500;
+  cursor: pointer;
+  overflow: hidden;
+  transform: translate(0, 0);
+  transition: V.$transition-button;
+  z-index: 5;
+
+  &:not(.disabled) {
+    @include M.media-query(V.$bp-mobile, ()) {
+
+      &:hover {
+        transform: translate(0, -1px);
+
+        &.pressed {
+          transform: translate(0, 0);
+        }
+      }
+    }
+
+    &::before {
+      content: "░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░";
+      color: rgba(0, 0, 0, 0.2);
+      font-size: 80px;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: end;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 250%;
+      width: var(--data-percent, 0%);
+      animation: marginWobble 20s ease infinite;
+      background: rgba(255, 255, 255, 0.33);
+      transition: width 0.25s linear;
+      z-index: -1;
+    }
+
+    &.pressed {
+      &:after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+        top: 50%;
+        left: 50%;
+        transform-style: flat;
+        transform: translate3d(-50%, -50%, 0);
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 100%;
+        transition: width 3s ease-out, height 3s ease-out;
+      }
+
+      &:active:after {
+        width: 500px;
+        height: 500px;
+        aspect-ratio: 1/1 !important;
+      }
+    }
+  }
+
+  &[data-color="0"]:not(.disabled) {
+    background: V.$button-one-gradient;
+
+    &:hover {
+      background: V.$button-one-gradient-hover;
+
+      &:active {
+        background: V.$button-one-gradient-click;
+      }
+    }
+  }
+
+  &[data-color="1"]:not(.disabled) {
+    background: V.$button-two-gradient;
+
+    &:hover {
+      background: V.$button-two-gradient-hover;
+
+      &:active {
+        background: V.$button-two-gradient-click;
+      }
+    }
+  }
+
+  &[data-color="2"]:not(.disabled) {
+    background: V.$button-three-gradient;
+
+    &:hover {
+      background: V.$button-three-gradient-hover;
+
+      &:active {
+        background: V.$button-three-gradient-click;
+      }
+    }
+  }
+
+  &[data-color="3"]:not(.disabled) {
+    background: V.$button-four-gradient;
+
+    &:hover {
+      background: V.$button-four-gradient-hover;
+
+      &:active {
+        background: V.$button-four-gradient-click;
+      }
+    }
+  }
+
+  &[data-color="4"]:not(.disabled) {
+    background: V.$button-five-gradient;
+
+    &:hover {
+      background: V.$button-five-gradient-hover;
+
+      &:active {
+        background: V.$button-five-gradient-click;
+      }
+    }
+  }
+
+  &[data-color="5"]:not(.disabled) {
+    background: V.$button-six-gradient;
+
+    &:hover {
+      background: V.$button-six-gradient-hover;
+
+      &:active {
+        background: V.$button-six-gradient-click;
+      }
+    }
+  }
+
+  &.round {
+    border-radius: 50%;
+    width: 47px;
+    height: 47px;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px;
+
+    svg {
+      transform: translate(0px, 3px) scale(1.3);
+    }
+
+    &.imgOnly {
+      width: 47px;
+      height: 47px;
+
+      img {
+        height: 100%;
+        transform: scale(1.15);
+      }
+    }
+
+    &.skill {
+      width: 65px;
+      height: 65px;
+      margin: auto;
+    }
+  }
+
+  &.slim {
+    padding: 4px;
+  }
+
+  &.disabled {
+    background-color: rgb(53, 53, 53);
+    cursor: default;
+
+    &:hover,
+    &:hover:active {
+      background-color: rgb(63, 63, 63);
+    }
+  }
+
+  .icon-left,
+  .text,
+  .icon-right {
+    font-size: inherit;
+    text-shadow: 1px 1px 2px black;
+  }
+}
+
+@keyframes marginWobble {
+
+  0%,
+  100% {
+    margin-top: -45px;
+  }
+
+  50% {
+    margin-top: -25px;
+  }
+}

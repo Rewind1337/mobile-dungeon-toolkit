@@ -1,0 +1,104 @@
+undead dragon  {health: 191, attack: 66, defense: 53, agility: 54}
+monk  {health: 197, attack: 61, defense: 59, agility: 50}
+valkyre  {health: 197, attack: 63, defense: 54, agility: 54}
+sphinx  {health: 199, attack: 68, defense: 55, agility: 56}
+
+jack_the_ripper  { health: 182, attack: 66, defense: 53, agility: 50 }
+construct  {health: 192, attack: 61, defense: 53, agility: 52}
+alice  {health: 178, attack: 68, defense: 48, agility: 55}
+buzzfreak  {health: 190, attack: 60, defense: 55, agility: 51}
+ice_worm  {health: 185, attack: 62, defense: 50, agility: 48}
+doctress  {health: 190, attack: 52, defense: 55, agility: 51}
+robyn  {health: 167, attack: 64, defense: 47, agility: 54}
+badgerer  {health: 171, attack: 63, defense: 46, agility: 55}
+sylvanna  {health: 194, attack: 56, defense: 55, agility: 46}
+taurus  {health: 203, attack: 52, defense: 58, agility: 44}
+lotte  {health: 174, attack: 62, defense: 52, agility: 56}
+yulamb  {health: 179, attack: 63, defense: 48, agility: 51}
+golem  {health: 207, attack: 57, defense: 59, agility: 38}
+ragnor  {health: 174, attack: 67, defense: 46, agility: 51}
+mirage  {health: 171, attack: 66, defense: 46, agility: 53}
+margrethe  {health: 190, attack: 58, defense: 55, agility: 52}
+cornelius  {health: 186, attack: 60, defense: 53, agility: 54}
+gnarler  {health: 207, attack: 57, defense: 57, agility: 40}
+bandit_captain  {health: 188, attack: 61, defense: 51, agility: 47}
+scourge  {health: 167, attack: 65, defense: 45, agility: 55}
+gondolf  {health: 186, attack: 58, defense: 56, agility: 46}
+joanne  {health: 178, attack: 65, defense: 53, agility: 60}
+frankenstein  {health: 217, attack: 55, defense: 61, agility: 42}
+banshee  {health: 180, attack: 54, defense: 50, agility: 56}
+monika  {health: 191, attack: 57, defense: 55, agility: 46}
+werewolf  {health: 167, attack: 66, defense: 45, agility: 55}
+predator  {health: 167, attack: 64, defense: 45, agility: 56}
+alien  {health: 170, attack: 62, defense: 45, agility: 57}
+
+cursed_goat  {health: 165, attack 61, defense: 44,agility:53 }
+succubus  {health: 165, attack: 59, defense: 49, agility: 50}
+voodoodoll  {health: 170, attack: 58, defense: 45, agility: 53}
+bag_head  {health: 185, attack: 53, defense: 54, agility: 45}
+circus_boxer  {health: 173, attack: 61, defense: 46, agility: 49}
+extraterrestrial  {health: 178, attack: 55, defense: 49, agility: 43}
+lab_rat  {health: 174, attack: 49, defense: 51, agility: 48}
+killer_bunny  {health: 155, attack: 61, defense: 41, agility: 52}
+naga  {health: 169, attack: 58, defense: 46, agility: 46}
+skeleton_warrior  {health: 184, attack: 53, defense: 54, agility: 38}
+imp  {health: 155, attack: 58, defense: 41, agility: 55}
+zombie_grunt  {health: 204, attack: 52, defense: 58, agility: 37}
+soul  {health: 176, attack: 58, defense: 49, agility: 48}
+wolf  {health: 161, attack: 63, defense: 42, agility: 48}
+muncher  {health: 178, attack: 55, defense: 49, agility: 43}
+beaver  {health: 185, attack: 50, defense: 55, agility: 40}
+cursed_pirate  {health: 170, attack: 57, defense: 49, agility: 44}
+raptor  {health: 157, attack: 62, defense: 41, agility: 51}
+infected_mushroom  {health: 155, attack: 59, defense: 41, agility: 54}
+watcher  {health: 162, attack: 56, defense: 45, agility: 50}
+grilled_chicken  {health: 160, attack: 57, defense: 47, agility: 49}
+crook  {health: 169, attack: 61, defense: 44, agility: 46}
+pumpkin_man  {health: 166, attack: 53, defense: 49, agility: 49}
+brainiac  {health: 165, attack: 59, defense: 51, agility: 48}
+freezer_goat  {health: 174, attack: 53, defense: 49, agility: 47}
+frog_prince  {health: 181, attack: 49, defense: 55, agility: 42}
+mimic_toilet  {health: 157, attack: 59, defense: 41, agility: 53}
+arachne {health: 167, attack: 58, defense: 45, agility: 48}
+harpy  {health: 159, attack: 61, defense: 42, agility: 50}
+grave_digger  {health: 155, attack: 61, defense: 41, agility: 52}
+mummy  {health: 178, attack: 51, defense: 51, agility: 45}
+battle_bot  {health: 167, attack: 60, defense: 44, agility: 47}
+orkitect  {health: 161, attack: 58, defense: 42, agility: 51}
+draculas_brides  {health: 167, attack: 50, defense: 47, agility: 53}
+forest_terror  {health: 183, attack: 53, defense: 50, agility: 43}
+fire_elemental  {health: 171, attack: 56, defense: 50, agility: 43}
+
+ghoul  {health: 155, attack: 58, defense: 43, agility: 45}
+seagull  {health: 152, attack: 57, defense: 44, agility: 46}
+mean_seagull  {health: 152, attack: 57, defense: 44, agility: 46}
+rotten_kitty  {health: 152, attack: 57, defense: 40, agility: 50}
+slime  {health: 150, attack: 51, defense: 46, agility: 43}
+ghost  {health: 169, attack: 49, defense: 49, agility: 38}
+gargoyle  {health: 157, attack: 53, defense: 43, agility: 43}
+scarab  {health: 173, attack: 47, defense: 50, agility: 37}
+rat  {health: 152, attack: 54, defense: 41, agility: 45}
+sheep  {health: 165, attack: 49, defense: 49, agility: 39}
+skeleton  {health: 160, attack: 54, defense: 43, agility: 41}
+glompf  {health: 142, attack: 57, defense: 37, agility: 48}
+bat  {health: 161, attack: 51, defense: 46, agility: 40}
+chicklet  {health: 154, attack: 51, defense: 42, agility: 46}
+scorpion  {health: 145, attack: 55, defense: 37, agility: 49}
+vulture  {health: 157, attack: 51, defense: 48, agility: 40}
+snake  {health: 142, attack: 55, defense: 37, agility: 51}
+snowman  {health: 150, attack: 53, defense: 45, agility: 43}
+tentacle  {health: 142, attack: 54, defense: 43, agility: 45}
+zombie  {health: 176, attack: 49, defense: 50, agility: 35}
+cockatrice  {health: 150, attack: 52, defense: 41, agility: 47}
+gingerbread_boy  {health: 148, attack: 56, defense: 41, agility: 48}
+mosquito  {health: 146, attack: 55, defense: 41, agility: 46}
+lab_ape  {health: 161, attack: 55, defense: 43, agility: 47}
+land_diver  {health: 150, attack: 50, defense: 41, agility: 48}
+butt_w_ears  {health: 156, attack: 52, defense: 44, agility: 41}
+cannon_scavenger  {health: 152, attack: 58, defense: 44, agility: 39}
+
+
+Legendaries:
+thor, arachnotaur, prellbog, black skull overlord, cybork, goblin shredder, heimdall, hephaestus, krampus, lucifer, murdermachine, anubis, gravitator, buster, fidget, mercy, jackolantern, headless horseman, wendigo, athena, bastet, davy jane, hades, loki, muzen, shroom empress, sleipnir, shroom emperor, dracula, siren, lilith, murdering mass, medusa, aphrodite, cthulhu, isolde, odin, professor, cornelius prime, pele, shakes
+Epics:
+dr pestilence, orkdozer, orkopter, black skull warrior, jotunn, neanderthal, orca, rudolph, war bard, hermes, drone, predator, assassin, candy elemental, oil elemental, black skull mage, legba, unicorn, nerissa, djinn, witch, yaotl, catalina

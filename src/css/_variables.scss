@@ -1,0 +1,206 @@
+// Colors
+$primary-gradient: linear-gradient(152deg, hsl(205, 100%, 40%) 0%, hsl(205, 100%, 55%) 100%);
+$secondary-gradient: linear-gradient(152deg, hsl(210, 100%, 40%) 0%, hsl(210, 100%, 55%) 100%);
+
+$button-one-gradient: linear-gradient(152deg, hsl(20, 100%, 30%) 0%, hsl(40, 100%, 30%) 100%);
+$button-one-gradient-hover: linear-gradient(152deg, hsl(20, 100%, 50%) 0%, hsl(40, 100%, 50%) 100%);
+$button-one-gradient-click: linear-gradient(152deg, hsl(20, 100%, 40%) 0%, hsl(40, 100%, 40%) 100%);
+
+$button-two-gradient: linear-gradient(152deg, hsl(60, 100%, 30%) 0%, hsl(80, 100%, 30%) 100%);
+$button-two-gradient-hover: linear-gradient(152deg, hsl(60, 100%, 50%) 0%, hsl(80, 100%, 50%) 100%);
+$button-two-gradient-click: linear-gradient(152deg, hsl(60, 100%, 40%) 0%, hsl(80, 100%, 40%) 100%);
+
+$button-three-gradient: linear-gradient(152deg, hsl(140, 100%, 30%) 0%, hsl(160, 100%, 30%) 100%);
+$button-three-gradient-hover: linear-gradient(152deg, hsl(140, 100%, 50%) 0%, hsl(160, 100%, 50%) 100%);
+$button-three-gradient-click: linear-gradient(152deg, hsl(140, 100%, 40%) 0%, hsl(160, 100%, 40%) 100%);
+
+$button-four-gradient: linear-gradient(152deg, hsl(180, 100%, 30%) 0%, hsl(180, 100%, 30%) 100%);
+$button-four-gradient-hover: linear-gradient(152deg, hsl(180, 100%, 50%) 0%, hsl(180, 100%, 50%) 100%);
+$button-four-gradient-click: linear-gradient(152deg, hsl(180, 100%, 40%) 0%, hsl(180, 100%, 40%) 100%);
+
+$button-five-gradient: linear-gradient(152deg, hsl(233, 100%, 30%) 0%, hsl(253, 100%, 30%) 100%);
+$button-five-gradient-hover: linear-gradient(152deg, hsl(233, 100%, 50%) 0%, hsl(253, 100%, 50%) 100%);
+$button-five-gradient-click: linear-gradient(152deg, hsl(233, 100%, 40%) 0%, hsl(253, 100%, 40%) 100%);
+
+$button-six-gradient: linear-gradient(152deg, hsl(281, 100%, 30%) 0%, hsl(261, 100%, 30%) 100%);
+$button-six-gradient-hover: linear-gradient(152deg, hsl(281, 100%, 50%) 0%, hsl(261, 100%, 50%) 100%);
+$button-six-gradient-click: linear-gradient(152deg, hsl(281, 100%, 40%) 0%, hsl(261, 100%, 40%) 100%);
+
+
+// Fonts
+$font-family-base: "Roboto", sans-serif;
+$font-family-header: "Bangers", system-ui;
+$font-family-stats: "Poetsen One", sans-serif;
+
+// Font Sizes
+$font-size-small: 14px;
+$font-size-nav: 18px;
+$font-size-button: 18px;
+$font-size-button-large: 24px;
+$font-size-header-small: 20px;
+$font-size-header: 24px;
+$font-size-header-large: 36px;
+$font-size-wobble: 80px;
+
+// Text Styles
+$text-shadow: 1px 1px 2px black;
+
+// Interface
+$gap: 10px;
+$gap-small: 5px;
+$padding-button: 12px 4px;
+$padding-card: 5px;
+$padding-nav: 34px 10px;
+$padding-rift: 80px;
+$sprite-size: 80px;
+
+// Sizing Sprites
+$hero-sprite-width: 96px;
+$hero-sprite-height: 136px;
+$item-sprite-width: 96px;
+$item-sprite-height: 128px;
+$icon-width: 24px;
+$icon-height: 24px;
+
+// Border und Radius
+$border-radius-small: 4px;
+$border-radius: 8px;
+$border-radius-large: 10px;
+$border-radius-circle: 50%;
+$border-color-dark: rgba(26, 26, 26, 0.8);
+$border-color-medium: rgba(26, 26, 26, 0.5);
+$border-color-light: rgba(0, 0, 0, 0.25);
+$border-width-button: 1px;
+$border-width-rift: 8px;
+$border-width-blob: 20px;
+
+// Transitions
+$transition-card: width 0.2s ease, height 0.2s ease;
+$transition-button: border-color 0.25s, background-color 0.25s, transform 0.125s;
+$transition-transform: transform 0.125s;
+$transition-progress: height 0.2s linear, width 0.2s linear, background-color 0.2s linear;
+$transition-width: width 0.2s linear;
+$transition-rift: outline-offset 0.2s linear, outline-width 0.2s linear, outline-color 0.2s linear, filter 0.2s linear;
+$transition-blob: transform 0.2s linear;
+$transition-scale: scale 0.2s linear;
+$transition-height: height 0.2s;
+$transition-wobble: width 0.22s linear;
+
+// Z-Indexes
+$z-index-base: 5;
+$z-index-nav: 10;
+$z-index-background: -1;
+
+// Breakpoints
+$breakpoints: (
+    mobile: 900px,
+    desktop: 1800px,
+    ultra: 1800px
+);
+$bp-mobile: 900px;
+$bp-desktop: 1800px;
+$bp-ultra: 1800px;
+
+@keyframes rainbow-bg {
+
+    100%,
+    0% {
+        background-color: rgb(255, 0, 0);
+    }
+
+    8% {
+        background-color: rgb(255, 127, 0);
+    }
+
+    16% {
+        background-color: rgb(255, 255, 0);
+    }
+
+    25% {
+        background-color: rgb(127, 255, 0);
+    }
+
+    33% {
+        background-color: rgb(0, 255, 0);
+    }
+
+    41% {
+        background-color: rgb(0, 255, 127);
+    }
+
+    50% {
+        background-color: rgb(0, 255, 255);
+    }
+
+    58% {
+        background-color: rgb(0, 127, 255);
+    }
+
+    66% {
+        background-color: rgb(128, 128, 255);
+    }
+
+    75% {
+        background-color: rgb(127, 0, 255);
+    }
+
+    83% {
+        background-color: rgb(255, 0, 255);
+    }
+
+    91% {
+        background-color: rgb(255, 0, 127);
+    }
+}
+
+@keyframes rainbow {
+
+    100%,
+    0% {
+        color: rgb(255, 0, 0);
+    }
+
+    8% {
+        color: rgb(255, 127, 0);
+    }
+
+    16% {
+        color: rgb(255, 255, 0);
+    }
+
+    25% {
+        color: rgb(127, 255, 0);
+    }
+
+    33% {
+        color: rgb(0, 255, 0);
+    }
+
+    41% {
+        color: rgb(0, 255, 127);
+    }
+
+    50% {
+        color: rgb(0, 255, 255);
+    }
+
+    58% {
+        color: rgb(0, 127, 255);
+    }
+
+    66% {
+        color: rgb(128, 128, 255);
+    }
+
+    75% {
+        color: rgb(127, 0, 255);
+    }
+
+    83% {
+        color: rgb(255, 0, 255);
+    }
+
+    91% {
+        color: rgb(255, 0, 127);
+    }
+}

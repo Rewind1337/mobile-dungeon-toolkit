@@ -1,0 +1,749 @@
+@use './_variables.scss' as V;
+@use './mixins.scss' as M;
+
+:root {
+  font-family: V.$font-family-base;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+hr {
+  border-top: 1px solid green;
+  border-bottom: 1px solid rebeccapurple;
+  outline: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 4px black;
+}
+
+* {
+  user-select: none;
+  box-sizing: border-box;
+  scrollbar-color: transparent transparent;
+  scrollbar-width: thin;
+}
+
+.selectable {
+  user-select: text;
+}
+
+svg {
+  filter: drop-shadow(0px 1px 0px rgb(0, 0, 0)) drop-shadow(0px -1px 0px rgb(0, 0, 0)) drop-shadow(1px 0px 0px rgb(0, 0, 0)) drop-shadow(-1px 0px 0px rgb(0, 0, 0)) drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
+}
+
+.filters {
+  img {
+    filter: drop-shadow(0px 1px 0px rgb(0, 0, 0)) drop-shadow(0px -1px 0px rgb(0, 0, 0)) drop-shadow(1px 0px 0px rgb(0, 0, 0)) drop-shadow(-1px 0px 0px rgb(0, 0, 0)) drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
+  }
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: linear-gradient(-45deg, #140500, #020014, #000f14, #0d1400);
+  background-size: 400% 400%;
+  animation: gradient 150s ease-in-out infinite;
+  overflow: hidden;
+}
+
+body::after {
+  content: "";
+  background: url("/src/sprites/seagull.png");
+  opacity: 0.33;
+  mix-blend-mode: multiply;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100vw;
+  aspect-ratio: 4/3;
+  animation: endlessScroll 60s linear infinite;
+  z-index: -1;
+}
+
+@keyframes endlessScroll {
+  from {
+    width: 100vw;
+  }
+
+  to {
+    width: calc(100vw + 2320px);
+  }
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: space-between;
+  height: 100vh;
+  padding: V.$gap;
+  gap: V.$gap;
+
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    padding: 0;
+    gap: 0;
+  }
+}
+
+
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-around;
+  gap: V.$gap;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: space-between;
+  gap: V.$gap;
+  width: 100%;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.w-0 {
+  width: 0.1px;
+}
+
+.w-10 {
+  width: 10%;
+}
+
+.w-25 {
+  width: 25%;
+}
+
+.w-50 {
+  width: 50%;
+}
+
+.w-75 {
+  width: 75%;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.margin-auto {
+  margin-inline: auto;
+}
+
+.card {
+  padding: 5px;
+  border-radius: V.$border-radius;
+  background: V.$primary-gradient;
+  outline: 1px solid rgba(26, 26, 26, 0.5);
+  transform: translate(0, 0);
+  transition: V.$transition-card;
+  overflow: hidden;
+  height: min-content;
+
+  @include M.media-query(V.$bp-mobile, ()) {
+    &:hover {
+      transform: translate(0, -1px);
+    }
+  }
+
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    border-radius: 0;
+  }
+}
+
+.header {
+  font-size: V.$font-size-header;
+  font-family: V.$font-family-header;
+  text-shadow: 1px 1px 2px black;
+}
+
+.header-big {
+  font-size: V.$font-size-header-large;
+  font-family: V.$font-family-header;
+  text-shadow: 2px 2px 4px black;
+}
+
+.header-small {
+  font-size: V.$font-size-header-small;
+  font-family: V.$font-family-header;
+  text-shadow: 1px 1px 2px black;
+}
+
+.text {
+  font-size: V.$font-size-small;
+  font-family: V.$font-family-stats;
+  text-shadow: 1px 1px 2px black;
+}
+
+.filters {
+  margin-bottom: V.$gap;
+  justify-content: center;
+
+  button.round {
+    font-size: 24px;
+
+    img {
+      scale: 0.8;
+    }
+  }
+
+  button {
+    svg {
+      filter: drop-shadow(0 0 1px 4px black);
+    }
+  }
+
+  button:nth-child(2n+0) {
+    background: V.$button-one-gradient;
+
+    &:hover {
+      background: V.$button-one-gradient-hover;
+
+      &:active {
+        background: V.$button-one-gradient-click;
+      }
+    }
+  }
+
+  button:nth-child(2n+1) {
+    background: V.$button-two-gradient;
+
+    &:hover {
+      background: V.$button-two-gradient-hover;
+
+      &:active {
+        background: V.$button-two-gradient-click;
+      }
+    }
+  }
+}
+
+.pagination {
+  padding: V.$gap V.$gap;
+  justify-content: left;
+  min-height: 66px;
+  width: max-content;
+
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    order: 3;
+    padding: V.$gap V.$gap-small;
+  }
+}
+
+.options {
+  padding: V.$gap V.$gap;
+  justify-content: right;
+  min-height: 66px;
+  width: max-content;
+
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    order: 3;
+    padding: V.$gap V.$gap-small;
+  }
+}
+
+
+.tower-list,
+.tower-stage-list,
+.chapter-list,
+.titan-list,
+.guildboss-list,
+.hero-preview {
+  overflow: auto;
+  justify-content: space-between;
+  align-content: start;
+  padding: 2px;
+  gap: V.$gap-small;
+
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    gap: 0;
+    padding: 1px;
+  }
+}
+
+.chapter {
+  align-items: center;
+  background-size: cover;
+  background-position: 0 30%;
+  height: 60px;
+  border: 2px solid black;
+  cursor: pointer;
+
+  .text {
+    width: 45px;
+    background-color: rgba(0, 0, 0, 0.33);
+    line-height: 44px;
+    font-size: 18px;
+    border-radius: 4px;
+    backdrop-filter: blur(2px);
+  }
+
+  .header {
+    margin-left: auto;
+    background-color: rgba(0, 0, 0, 0.33);
+    line-height: 44px;
+    width: 300px;
+    border-radius: 4px;
+    backdrop-filter: blur(2px);
+  }
+
+  &:hover {
+    height: 140px;
+  }
+
+  &[data-id="0"] {
+    background-image: url('../sprites/simulation/maerwynn.png');
+  }
+
+  &[data-id="1"] {
+    background-image: url('../sprites/simulation/black_forest.png');
+  }
+
+  &[data-id="2"] {
+    background-image: url('../sprites/simulation/gnarogrim.png');
+  }
+
+  &[data-id="3"] {
+    background-image: url('../sprites/simulation/stumble_steppe.png');
+  }
+
+  &[data-id="4"] {
+    background-image: url('../sprites/simulation/split_canyon.png');
+  }
+
+  &[data-id="5"] {
+    background-image: url('../sprites/simulation/sunburn_desert.png');
+  }
+
+  &[data-id="6"] {
+    background-image: url('../sprites/simulation/skull_island.png');
+  }
+
+  &[data-id="7"] {
+    background-image: url('../sprites/simulation/sprawling_jungle.png');
+  }
+
+  &[data-id="8"] {
+    background-image: url('../sprites/simulation/mojo_mangroves.png');
+  }
+
+  &[data-id="9"] {
+    background-image: url('../sprites/simulation/northrunt.png');
+  }
+
+  &[data-id="10"] {
+    background-image: url('../sprites/simulation/shadowrock_mountain.png');
+  }
+
+  &[data-id="11"] {
+    background-image: url('../sprites/simulation/plains_of_ozkorr.png');
+  }
+
+  &[data-id="12"] {
+    background-image: url('../sprites/simulation/nevermoor.png');
+  }
+
+  &[data-id="13"] {
+    background-image: url('../sprites/simulation/rotten_lands.png');
+  }
+}
+
+.titan {
+  align-items: center;
+  background-size: cover;
+  height: 120px;
+  border: 2px solid black;
+  cursor: pointer;
+
+  .header {
+    width: 150px;
+    margin-right: auto;
+    background-color: rgba(0, 0, 0, 0.33);
+    line-height: 44px;
+    font-size: 18px;
+    border-radius: 4px;
+    backdrop-filter: blur(2px);
+  }
+
+  .elements {
+    line-height: 0;
+
+    img {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  &:hover {
+    height: 240px;
+  }
+
+  &[data-id="0"] {
+    background-image: url('../sprites/simulation/titan_fire.png');
+    background-position: 0 30%;
+  }
+
+  &[data-id="1"] {
+    background-image: url('../sprites/simulation/titan_water.png');
+    background-position: 0 25%;
+  }
+
+  &[data-id="2"] {
+    background-image: url('../sprites/simulation/titan_nature.png');
+    background-position: 0 30%;
+  }
+
+  &[data-id="3"] {
+    background-image: url('../sprites/simulation/titan_light.png');
+    background-position: 0 45%;
+  }
+
+  &[data-id="4"] {
+    background-image: url('../sprites/simulation/titan_shadow.png');
+    background-position: 0 40%;
+  }
+}
+
+.tower {
+  align-items: center;
+  background-size: cover;
+  height: 120px;
+  border: 2px solid black;
+  cursor: pointer;
+
+  .header {
+    width: 150px;
+    margin-right: auto;
+    background-color: rgba(0, 0, 0, 0.33);
+    line-height: 44px;
+    font-size: 18px;
+    border-radius: 4px;
+    backdrop-filter: blur(2px);
+  }
+
+  &:hover {
+    height: 240px;
+  }
+
+  &[data-id="0"] {
+    background-image: url('../sprites/simulation/tower_1.png');
+    background-position: 0 25%;
+  }
+
+  &[data-id="1"] {
+    background-image: url('../sprites/null.png');
+    background-size: contain;
+  }
+
+  &[data-id="2"] {
+    background-image: url('../sprites/simulation/tower_3.png');
+    background-position: 0 50%;
+  }
+
+  &[data-id="3"] {
+    background-image: url('../sprites/simulation/tower_4.png');
+    background-position: 0 30%;
+  }
+
+  &[data-id="4"] {
+    background-image: url('../sprites/simulation/tower_5.png');
+    background-position: 0 30%;
+  }
+
+  &[data-id="5"] {
+    background-image: url('../sprites/simulation/tower_6.png');
+    background-position: 0 30%;
+  }
+
+  &[data-id="6"] {
+    background-image: url('../sprites/null.png');
+    background-size: contain;
+  }
+}
+
+.tower-stage {
+  width: 100%;
+  align-items: center;
+  overflow: initial;
+  height: unset !important;
+  cursor: pointer;
+
+  .header {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.33);
+    line-height: 44px;
+    font-size: 30px;
+    border-radius: 4px;
+    backdrop-filter: blur(2px);
+  }
+
+  .wave {
+    background-color: transparent;
+    font-size: 24px;
+  }
+
+  .flex-row {
+    width: 100%;
+  }
+
+  .header-row {
+    width: 100%;
+  }
+
+  .hero-row {
+    width: 100%;
+    justify-content: space-between;
+
+    .flex-row {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+.guildboss {
+  align-items: center;
+  background-size: cover;
+  height: 200px;
+  border: 2px solid black;
+  cursor: pointer;
+
+  .header {
+    width: 150px;
+    margin-right: auto;
+    background-color: rgba(0, 0, 0, 0.33);
+    line-height: 44px;
+    font-size: 18px;
+    border-radius: 4px;
+    backdrop-filter: blur(2px);
+  }
+
+  .elements {
+    line-height: 0;
+
+    img {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  &:hover {
+    height: 300px;
+  }
+
+  &[data-id="0"] {
+    background-image: url('../sprites/simulation/elementor.png');
+    background-position: 0 30%;
+  }
+
+  &[data-id="1"] {
+    background-image: url('../sprites/simulation/equinox.png');
+    background-position: 0 15%;
+  }
+
+  &[data-id="2"] {
+    background-image: url('../sprites/simulation/star_breaker.png');
+    background-position: 0 30%;
+  }
+}
+
+.boss-preview {
+  .flex-row {
+    justify-content: center;
+  }
+
+  .card {
+    height: 200px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+
+    .boss-sprite {
+      height: 190px
+    }
+  }
+
+  .skill {
+    width: 60px;
+  }
+}
+
+.team {
+  .flex-row {
+    .header-big {
+      margin-right: V.$gap;
+      flex-grow: 1;
+    }
+
+    button {
+      width: max-content;
+    }
+  }
+
+  button {
+    width: 100%;
+  }
+
+  &:nth-child(2n+1) {
+    background: V.$primary-gradient;
+  }
+
+  &:nth-child(2n+0) {
+    background: V.$secondary-gradient;
+  }
+}
+
+.page {
+  flex-grow: 1;
+}
+
+a {
+  text-decoration: none;
+}
+
+#page-splash {
+  button {
+    width: 300px;
+    margin-inline: auto;
+  }
+
+  .footer {
+    padding: V.$gap-small V.$gap;
+    justify-content: space-between;
+    align-items: center;
+
+    svg {
+      filter: brightness(500%) drop-shadow(1px 1px 2px black);
+      transform: translate(0, 4px);
+    }
+
+    img {
+      filter: drop-shadow(1px 1px 2px black);
+    }
+
+    .text {
+      font-size: 18px;
+      align-items: center;
+    }
+  }
+
+  .card:not(.simulations):not(.management):not(.footer) {
+    outline: 2px solid black;
+    height: 300px;
+    background-size: cover;
+
+    &.heroes {
+      background-image: url('../sprites/splash/heroes.png');
+      background-position: 0 15%;
+    }
+
+    &.items {
+      background-image: url('../sprites/splash/items.png');
+      background-position: 0 75%;
+    }
+
+    &.teams {
+      background-image: url('../sprites/splash/teams.png');
+      background-position: 0 65%;
+    }
+
+    &.chapters {
+      background-image: url('../sprites/splash/chapters.png');
+      background-position: 0 50%;
+    }
+
+    &.titans {
+      background-image: url('../sprites/splash/titans.png');
+      background-position: 0 25%;
+    }
+
+    &.towers {
+      //background-image: url('../sprites/splash/towers.png');
+    }
+
+    &.guildbosses {
+      background-image: url('../sprites/splash/guildbosses.png');
+      background-position: 0 10%;
+    }
+  }
+}
+
+#page-splash button {}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.modal {
+  z-index: 100;
+  position: absolute;
+}
+
+.modal-left {
+  top: 86px;
+  left: -75vw;
+  height: calc(100vh - 96px);
+  width: calc(50vw - V.$gap*1.5);
+  transition: left 0.2s ease-out;
+
+  .flex-row.w-100 {
+    button {
+      width: 100%;
+    }
+  }
+
+  &.visible {
+    left: V.$gap;
+  }
+}
+
+.modal-right {
+  top: 86px;
+  right: -75vw;
+  height: calc(100vh - 96px);
+  width: calc(50vw - V.$gap*1.5);
+  transition: right 0.2s ease-out;
+
+  &.visible {
+    right: V.$gap;
+  }
+}
+
+.modal-backdrop {
+  z-index: 99;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 100vh;
+  background-color: black;
+  opacity: 0;
+  filter: drop-shadow(0 0 0px black);
+  transition: opacity 0.2s ease-out, filter 0.2s ease-out;
+
+  &.visible {
+    bottom: 0;
+    opacity: 0.5;
+    filter: drop-shadow(0 0 200px black);
+  }
+}

@@ -1,0 +1,36 @@
+@use 'sass:map';
+@use './_variables.scss' as V;
+
+@mixin media-query($breakpoint, $vars: ()) {
+    // Get breakpoint value or use custom if not in map
+    $min-width: map.get(V.$breakpoints, $breakpoint) or $breakpoint;
+
+    // Apply media query for min-width
+    @media (min-width: $min-width) {
+
+        // Override CSS variables
+        :root {
+            @each $var, $value in $vars {
+                #{$var}: #{$value};
+            }
+        }
+
+        // Allow additional styles in content block
+        @content;
+    }
+}
+
+@mixin media-query-max($breakpoint, $vars: ()) {
+    // Get breakpoint value or use custom if not in map
+    $max-width: map.get(V.$breakpoints, $breakpoint) or $breakpoint;
+
+    @media (max-width: $max-width) {
+        :root {
+            @each $var, $value in $vars {
+                #{$var}: #{$value};
+            }
+        }
+
+        @content;
+    }
+}

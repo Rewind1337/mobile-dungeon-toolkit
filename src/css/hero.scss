@@ -1,0 +1,133 @@
+@use './_variables.scss' as V;
+@use './mixins.scss' as M;
+
+.hero-list {
+  flex-wrap: wrap;
+  overflow: auto;
+  justify-content: space-between;
+  align-content: start;
+  padding: 2px;
+  gap: V.$gap-small;
+
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    gap: 0;
+    padding: 1px;
+  }
+}
+
+.hero-preview {
+  .hero.selected {}
+
+  .base-stats {
+    gap: 4px;
+
+    .card {
+      flex-grow: 1;
+    }
+  }
+
+  .details {
+    gap: 4px;
+
+    .flex-col {
+      gap: 4px;
+      justify-content: start;
+    }
+  }
+
+  .skills,
+  .talents {
+    flex-grow: 1;
+  }
+
+  .flex-row.text.card {
+    align-items: center;
+    height: 36px;
+    font-size: 20px;
+    justify-content: left;
+  }
+}
+
+.hero {
+  cursor: pointer;
+
+  .flex-col {
+    gap: 0;
+  }
+
+  .hero-element {
+    width: V.$icon-width;
+    height: V.$icon-height;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: V.$border-radius-small;
+    border-top-left-radius: V.$border-radius;
+    border-bottom-right-radius: V.$border-radius;
+    top: 0;
+    left: 0;
+    position: absolute;
+    z-index: 3;
+    line-height: 19px;
+
+    >img {
+      width: 100%;
+      height: 100%;
+      scale: 1.2;
+    }
+  }
+
+  .hero-sprite {
+    width: V.$hero-sprite-width;
+    height: 100%;
+    outline: 2px solid black;
+    border-radius: 4px;
+    image-rendering: optimizeQuality;
+  }
+
+  .text {
+    color: black;
+    font-family: V.$font-family-header;
+    font-size: V.$font-size-button;
+    border-radius: V.$border-radius;
+    background-color: #fff;
+    text-align: center;
+    margin-inline: auto;
+    width: 100%;
+    outline: 2px solid black;
+  }
+
+  &[data-element="0"] .hero-element {
+    background: hsl(0deg, 50%, 40%);
+  }
+
+  &[data-element="1"] .hero-element {
+    background: hsl(230deg, 50%, 40%);
+  }
+
+  &[data-element="2"] .hero-element {
+    background: hsl(120deg, 50%, 40%);
+  }
+
+  &[data-element="3"] .hero-element {
+    background: hsl(45deg, 50%, 40%);
+  }
+
+  &[data-element="4"] .hero-element {
+    background: hsl(255deg, 50%, 40%);
+  }
+
+  &[data-rarity="4"] .hero-sprite {
+    background: hsl(40, 50%, 50%);
+  }
+
+  &[data-rarity="3"] .hero-sprite {
+    background: hsl(265, 50%, 50%);
+  }
+
+  &[data-rarity="2"] .hero-sprite {
+    background: hsl(225, 50%, 50%);
+  }
+
+  &[data-rarity="1"] .hero-sprite {
+    background: hsl(109, 46%, 59%);
+  }
+}
