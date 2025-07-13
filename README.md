@@ -10,7 +10,7 @@ A web-based set of tools to calculate / plan your Mobile Dungeon experience.
 
 |     | *version* | features                                                                                                                        |
 | --- | --------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| ->  | *0.0.x*   | - basic ui                                                                                                                      |
+|  •  | *0.0.x*   | - basic ui                                                                                                                      |
 |     | *0.1.x*   | - basic *item management* with all set items and unique items<br> - needs: item database & item saving                          |
 |     | *0.2.x*   | - basic functional *hero management* of legendary and epic heroes<br> - needs: hero database & hero saving                      |
 |     | *0.3.x*   | - customizable *hero layouts/presets* and *team setup*<br> - needs: team saving, layouts/presets for items & heroes             |
