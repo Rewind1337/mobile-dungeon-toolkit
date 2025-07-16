@@ -7,20 +7,22 @@ import Hero from './Hero.jsx'
 import { attributeSprites, elementSprites, raritySprites, roleSprites } from '../database/db_sprites.jsx'
 import Button from './Button.jsx'
 import { ATTRIBUTE, ROLE } from '../database/enums.jsx'
+import { CONSTANTS } from '../database/constants.jsx';
 
-function HeroList({ savedHeroes = false, headerText, heroesRef, setSelectedHeroId }) {
+function HeroList({ setForceUpdate = () => { }, extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId }) {
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
     const { events } = useDraggable(listRef);
 
 
     function onResize() {
-        let newHeight = 0;
+        let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5;
         if (window.matchMedia("(max-width: 900px)").matches === true) {
-            newHeight = window.innerHeight - (93 + listRef.current.offsetTop)
+            newHeight = window.innerHeight - ((CONSTANTS.listHeightMobile + listRef.current.offsetTop) - extraHeight)
         } else {
-            newHeight = window.innerHeight - (177 + listRef.current.offsetTop)
+            newHeight = window.innerHeight - ((CONSTANTS.listHeightDefault + listRef.current.offsetTop) - extraHeight)
         }
+        setForceUpdate({})
         setListHeight(newHeight)
     }
 
@@ -53,7 +55,7 @@ function HeroList({ savedHeroes = false, headerText, heroesRef, setSelectedHeroI
         </div>
         <div className='list hero-list flex-row' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
             {heroesRef.map(heroObj =>
-                <Hero heroObj={heroObj} key={heroObj.id + "-" + heroObj.saveId} level={1} onClick={() => { setSelectedHeroId((savedHeroes ? heroObj.saveId : heroObj.id)) }} />
+                <Hero selected={(heroObj.id === selectedHeroId ? true : false)} heroObj={heroObj} key={heroObj.id + "-" + heroObj.saveId} level={1} onClick={() => { setSelectedHeroId((savedHeroes ? heroObj.saveId : heroObj.id)) }} />
             )}
         </div>
     </>

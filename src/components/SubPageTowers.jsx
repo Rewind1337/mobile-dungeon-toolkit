@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react"
 
 import Hero from "./Hero.jsx"
+import { CONSTANTS } from "../database/constants.jsx";
 
 function SubPageTowers({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef }) {
     const listRef = useRef(null)
@@ -9,9 +10,9 @@ function SubPageTowers({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef }) {
     function onResize() {
         let newHeight = 0;
         if (window.matchMedia("(max-width: 900px)").matches === true) {
-            newHeight = window.innerHeight - (93 + listRef.current.offsetTop)
+            newHeight = window.innerHeight - (CONSTANTS.listHeightSubPage + listRef.current.offsetTop)
         } else {
-            newHeight = window.innerHeight - (177 + listRef.current.offsetTop)
+            newHeight = window.innerHeight - (CONSTANTS.listHeightDefault + listRef.current.offsetTop)
         }
         setListHeight(newHeight)
     }
@@ -83,12 +84,6 @@ function SubPageTowers({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef }) {
                 <div className="list tower-stage-list flex-col" style={{ maxHeight: listHeight }}>
                     {TowerStage(0, 0)}
                     {TowerStage(1, 0)}
-                    {TowerStage(2, 0)}
-                    {TowerStage(3, 0)}
-                    {TowerStage(4, 0)}
-                    {TowerStage(5, 0)}
-                    {TowerStage(6, 0)}
-                    {TowerStage(7, 0)}
                 </div>
             </div>
         </>

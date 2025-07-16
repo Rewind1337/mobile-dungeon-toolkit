@@ -18,7 +18,6 @@ import PageTeams from './components/PageTeams.jsx'
 
 const BASE_HEROES = init_hero_db()
 const BASE_ITEMS = init_item_db()
-
 const defaultState = {
   pageContent: 'splash',
   savedHeroesRef: [],
@@ -143,11 +142,11 @@ function App() {
               <div className='flex-row'>
                 <div className='card heroes flex-col'>
                   <div className='header'>Hero Management</div>
-                  <Button text={"Take me there"} color={2} onMouseDown={() => { switchTabTo('heroes') }} />
+                  <Button text={"Take me there"} color={0} onMouseDown={() => { switchTabTo('heroes') }} />
                 </div>
                 <div className='card items flex-col'>
                   <div className='header'>Item Management</div>
-                  <Button text={"Take me there"} color={2} onMouseDown={() => { switchTabTo('items') }} />
+                  <Button text={"Take me there"} color={1} onMouseDown={() => { switchTabTo('items') }} />
                 </div>
                 <div className='card teams flex-col'>
                   <div className='header'>Team Management</div>
@@ -176,13 +175,13 @@ function App() {
                   <div className='header'>Guildbosses</div>
                 </div>
               </div>
-              <Button text={"Take me there"} color={2} onMouseDown={() => { switchTabTo('simulator') }} />
+              <Button text={"Take me there"} color={4} onMouseDown={() => { switchTabTo('simulator') }} />
             </div>
           </div>
           <div className='flex-col'>
             <div className='card footer flex-row'>
               <a className="w-100" href='https://www.github.com/rewind1337/mobile-dungeon-toolkit'>
-                <Button slim text={"Source Code"} />
+                <Button slim text={"Source Code"} color={3} />
               </a>
               <div className='text flex-row'>
                 <div className='text flex-row'>

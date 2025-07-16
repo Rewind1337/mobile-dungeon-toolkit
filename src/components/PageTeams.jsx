@@ -17,13 +17,16 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
     const listRef = useRef(null)
     const [listHeight, setListHeight] = useState(500)
 
+    const [forceUpdate, setForceUpdate] = useState({})
+
     function onResize() {
         let newHeight = 0;
         if (window.matchMedia("(max-width: 900px)").matches === true) {
-            newHeight = window.innerHeight - (137 + listRef.current.offsetTop)
+            newHeight = window.innerHeight - (93 + listRef.current.offsetTop)
         } else {
             newHeight = window.innerHeight - (177 + listRef.current.offsetTop)
         }
+        setForceUpdate({ r: Math.random() })
         setListHeight(newHeight)
     }
 
@@ -73,7 +76,7 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
 
     return (
         <>
-            <div className="flex-row" style={{ justifyContent: "space-between", order: 1 }}>
+            <div className="flex-row" style={{ justifyContent: "space-between", order: window.matchMedia("(max-width: 900px)").matches ? 1 : 0 }}>
                 <div className="pagination flex-row card w-100">
                     <Button text={"Your Teams"} color={2} onClick={() => { setPageContent(0) }} />
                 </div>
@@ -86,6 +89,7 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                 {pageContent === 0 &&
                     <>
                         <div ref={listRef} className='teams-list card flex-col w-50' style={{ maxHeight: listHeight }}>
+                            <div className='header-big'>Your Teams</div>
                             {teams.map((team, teamIndex) =>
                                 <div className="team card flex-col">
                                     <div className="flex-row">
@@ -106,7 +110,7 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                             </div>
                         </div>
                         <div className='card w-50'>
-                            <HeroList savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} setSelectedHeroId={setSelectedSavedHeroId} />
+                            <HeroList setForceUpdate={setForceUpdate} savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} setSelectedHeroId={setSelectedSavedHeroId} />
                         </div>
                     </>
                 }

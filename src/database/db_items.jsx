@@ -23,19 +23,22 @@ function get_set_id_by_name(name) {
     return undefined
 }
 
-function add_weapon(name, ATTRIBUTE, unique, rarity, attributeRequirement, baseAttribute) {
+function add_weapon(name, attribute, unique, rarity, attributeRequirement, baseAttribute) {
     let id = BASE_ITEMS.WEAPONS.length
     let normalizedName = name.toLowerCase().replace(/[^a-z']/g, '_').replace(/[']/g, '');
     unique = (unique != undefined ? unique : UNIQUE_SKILLS.NOTHING)
+    let perkAmount = Math.min(rarity - 1, 3) + (unique ? 0 : 1)
+    let perks = Array(perkAmount).fill("NOTHING")
     BASE_ITEMS.WEAPONS.push({
-        id: id, slot: EQUIPMENT_SLOT.WEAPON, name: name, ATTRIBUTE: ATTRIBUTE, unique: unique, rarity: rarity, attributeRequirement: attributeRequirement, baseAttribute: baseAttribute,
+        id: id, slot: EQUIPMENT_SLOT.WEAPON, name: name, attribute: attribute, unique: unique, rarity: rarity, attributeRequirement: attributeRequirement, baseAttribute: baseAttribute,
         itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
         iconSrc: (unique ? iconSprites["unique"] : null),
-        iconType: (unique ? "unique" : "null")
+        iconType: (unique ? "unique" : "null"),
+        perks: perks
     })
 }
 
-function add_equipment(slot, name, ATTRIBUTE, set, rarity, attributeRequirement, baseAttribute) {
+function add_equipment(slot, name, attribute, set, rarity, attributeRequirement, baseAttribute) {
     let normalizedName = name.toLowerCase().replace(/[^a-z]/g, '_');
     set = get_set_id_by_name(set);
     set = (set != undefined ? set : -1)
@@ -48,42 +51,48 @@ function add_equipment(slot, name, ATTRIBUTE, set, rarity, attributeRequirement,
             typeOfSet = "fourset"
         }
     }
+    let perkAmount = Math.min(rarity - 1, 3) + (set ? 0 : 1)
+    let perks = Array(perkAmount).fill("NOTHING")
     let id
     switch (slot) {
         case EQUIPMENT_SLOT.HELMET:
             id = BASE_ITEMS.HELMETS.length
             BASE_ITEMS.HELMETS.push({
-                id: id, slot: slot, name: name, ATTRIBUTE: ATTRIBUTE, set: set, rarity: rarity, attributeRequirement: attributeRequirement, baseAttribute: baseAttribute,
+                id: id, slot: slot, name: name, attribute: attribute, set: set, rarity: rarity, attributeRequirement: attributeRequirement, baseAttribute: baseAttribute,
                 itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
                 iconSrc: (iconSprites[typeOfSet]),
-                iconType: typeOfSet
+                iconType: typeOfSet,
+                perks: perks
             })
             break;
         case EQUIPMENT_SLOT.ARMOR:
             id = BASE_ITEMS.ARMORS.length
             BASE_ITEMS.ARMORS.push({
-                id: id, slot: slot, name: name, ATTRIBUTE: ATTRIBUTE, set: set, rarity: rarity, attributeRequirement: attributeRequirement, baseAttribute: baseAttribute,
+                id: id, slot: slot, name: name, attribute: attribute, set: set, rarity: rarity, attributeRequirement: attributeRequirement, baseAttribute: baseAttribute,
                 itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
                 iconSrc: (set >= 0 ? iconSprites[typeOfSet] : null),
-                iconType: typeOfSet
+                iconType: typeOfSet,
+                perks: perks
             })
             break;
         case EQUIPMENT_SLOT.NECKLACE:
             id = BASE_ITEMS.NECKLACES.length
             BASE_ITEMS.NECKLACES.push({
-                id: id, slot: slot, name: name, ATTRIBUTE: ATTRIBUTE, set: set, rarity: rarity, attributeRequirement: attributeRequirement, baseAttribute: baseAttribute,
+                id: id, slot: slot, name: name, attribute: attribute, set: set, rarity: rarity, attributeRequirement: attributeRequirement, baseAttribute: baseAttribute,
                 itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
                 iconSrc: (set >= 0 ? iconSprites[typeOfSet] : null),
-                iconType: typeOfSet
+                iconType: typeOfSet,
+                perks: perks
             })
             break;
         case EQUIPMENT_SLOT.RING:
             id = BASE_ITEMS.RINGS.length
             BASE_ITEMS.RINGS.push({
-                id: id, slot: slot, name: name, ATTRIBUTE: ATTRIBUTE, set: set, rarity: rarity, attributeRequirement: attributeRequirement, baseAttribute: baseAttribute,
+                id: id, slot: slot, name: name, attribute: attribute, set: set, rarity: rarity, attributeRequirement: attributeRequirement, baseAttribute: baseAttribute,
                 itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
                 iconSrc: (set >= 0 ? iconSprites[typeOfSet] : null),
-                iconType: typeOfSet
+                iconType: typeOfSet,
+                perks: perks
             })
             break;
         case EQUIPMENT_SLOT.OTHER:
@@ -124,13 +133,12 @@ export function init_item_db() {
 
     add_set("Eclipse", [PERKS.AGILITY_PERCENT, PERKS.CRIT_CHANCE, PERKS.CRIT_DAMAGE], 4, ATTRIBUTE.DEXTERITY)
 
-    // SHARED SETS (ACCESSOIRES)
+    // SHARED SETS (RINGS & NECKLACES)
     add_set("Celestial", [PERKS.AGILITY_PERCENT, PERKS.HEALING_EFFICIENCY], 2, ATTRIBUTE.NONE)
     add_set("Weaver", [PERKS.ATTACK_PERCENT, PERKS.CRIT_CHANCE], 2, ATTRIBUTE.NONE)
     add_set("Mystic", [PERKS.DEFENCE_PERCENT, PERKS.AOE_DAMAGE_REDUCTION], 2, ATTRIBUTE.NONE)
 
 
-    //      WEAPONS
     // STRENGTH WEAPONS
     add_weapon("Pumpkin Scythe", [PERKS.AGILITY_FLAT], UNIQUE_SKILLS.PUMPKIN_SCYTHE, RARITY.RARE, ATTRIBUTE.STRENGTH, PRIMARY_STAT.AGILITY)
     add_weapon("Hydras Bite", [PERKS.AGILITY_FLAT], UNIQUE_SKILLS.HYDRAS_BITE, RARITY.RARE, ATTRIBUTE.STRENGTH, PRIMARY_STAT.AGILITY)
@@ -156,7 +164,6 @@ export function init_item_db() {
     add_weapon("Problem Solver", [PERKS.DEFENCE_FLAT], UNIQUE_SKILLS.PROBLEM_SOLVER, RARITY.RARE, ATTRIBUTE.STRENGTH, PRIMARY_STAT.DEFENCE)
     add_weapon("Singularity", [PERKS.DEFENCE_FLAT], UNIQUE_SKILLS.SINGULARITY, RARITY.RARE, ATTRIBUTE.STRENGTH, PRIMARY_STAT.DEFENCE)
 
-    //      WEAPONS
     // INTELLIGENCE WEAPONS
     add_weapon("Arcane Codex", [PERKS.AGILITY_FLAT], UNIQUE_SKILLS.ARCANE_CODEX, RARITY.RARE, ATTRIBUTE.INTELLIGENCE, PRIMARY_STAT.AGILITY)
     add_weapon("Last Oath", [PERKS.AGILITY_FLAT], UNIQUE_SKILLS.LAST_OATH, RARITY.RARE, ATTRIBUTE.INTELLIGENCE, PRIMARY_STAT.AGILITY)
@@ -180,7 +187,6 @@ export function init_item_db() {
     add_weapon("Insanity Catalyst", [PERKS.DEFENCE_FLAT], UNIQUE_SKILLS.INSANITY_CATALYST, RARITY.RARE, ATTRIBUTE.INTELLIGENCE, PRIMARY_STAT.DEFENCE)
     add_weapon("Duality", [PERKS.DEFENCE_FLAT], UNIQUE_SKILLS.DUALITY, RARITY.RARE, ATTRIBUTE.INTELLIGENCE, PRIMARY_STAT.DEFENCE)
 
-    //      WEAPONS
     // AGILITY WEAPONS
     add_weapon("Blaster", [PERKS.AGILITY_FLAT], UNIQUE_SKILLS.BLASTER, RARITY.RARE, ATTRIBUTE.DEXTERITY, PRIMARY_STAT.AGILITY)
     add_weapon("Boomstick", [PERKS.AGILITY_FLAT], UNIQUE_SKILLS.BOOMSTICK, RARITY.RARE, ATTRIBUTE.DEXTERITY, PRIMARY_STAT.AGILITY)
@@ -202,8 +208,7 @@ export function init_item_db() {
     add_weapon("Starfire Ballista", [PERKS.DEFENCE_FLAT], UNIQUE_SKILLS.STARFIRE_BALLISTA, RARITY.RARE, ATTRIBUTE.DEXTERITY, PRIMARY_STAT.DEFENCE)
     add_weapon("Black Feather Bow", [PERKS.DEFENCE_FLAT], UNIQUE_SKILLS.BLACK_FEATHER_BOW, RARITY.RARE, ATTRIBUTE.DEXTERITY, PRIMARY_STAT.DEFENCE)
 
-    // ARMOR SETS
-    // STRENGTH
+    // STRENGTH SET PIECES
     add_equipment(EQUIPMENT_SLOT.HELMET, "Downhole Helmet", [PERKS.HEALTH_FLAT], "Downhole", RARITY.RARE, ATTRIBUTE.STRENGTH)
     add_equipment(EQUIPMENT_SLOT.ARMOR, "Downhole Armor", [PERKS.DEFENCE_FLAT, PERKS.ATTACK_FLAT], "Downhole", RARITY.RARE, ATTRIBUTE.STRENGTH)
 
@@ -234,7 +239,7 @@ export function init_item_db() {
     add_equipment(EQUIPMENT_SLOT.RING, "Nova Ring", [PERKS.HEALTH_FLAT], "Nova", RARITY.RARE, ATTRIBUTE.STRENGTH)
     add_equipment(EQUIPMENT_SLOT.NECKLACE, "Nova Necklace", [PERKS.DEFENCE_FLAT, PERKS.ATTACK_FLAT], "Nova", RARITY.RARE, ATTRIBUTE.STRENGTH)
 
-    // INTELLIGENCE
+    // INTELLIGENCE SET PIECES
     add_equipment(EQUIPMENT_SLOT.HELMET, "Cyber Helmet", [PERKS.HEALTH_FLAT], "Cyber", RARITY.RARE, ATTRIBUTE.INTELLIGENCE)
     add_equipment(EQUIPMENT_SLOT.ARMOR, "Cyber Armor", [PERKS.DEFENCE_FLAT, PERKS.ATTACK_FLAT], "Cyber", RARITY.RARE, ATTRIBUTE.INTELLIGENCE)
 
@@ -264,7 +269,7 @@ export function init_item_db() {
     add_equipment(EQUIPMENT_SLOT.RING, "Elementor Ring", [PERKS.HEALTH_FLAT], "Elementor", RARITY.RARE, ATTRIBUTE.INTELLIGENCE)
     add_equipment(EQUIPMENT_SLOT.NECKLACE, "Elementor Necklace", [PERKS.DEFENCE_FLAT, PERKS.ATTACK_FLAT], "Elementor", RARITY.RARE, ATTRIBUTE.INTELLIGENCE)
 
-    // DEXTERITY
+    // DEXTERITY SET PIECES
     add_equipment(EQUIPMENT_SLOT.HELMET, "Burnt Helmet", [PERKS.HEALTH_FLAT], "Burnt", RARITY.RARE, ATTRIBUTE.DEXTERITY)
     add_equipment(EQUIPMENT_SLOT.ARMOR, "Burnt Armor", [PERKS.DEFENCE_FLAT, PERKS.ATTACK_FLAT], "Burnt", RARITY.RARE, ATTRIBUTE.DEXTERITY)
 

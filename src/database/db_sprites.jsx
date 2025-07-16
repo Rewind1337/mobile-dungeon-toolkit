@@ -125,7 +125,7 @@ import BatSrc from '../sprites/heroes/bat.png';
 import VultureSrc from '../sprites/heroes/vulture.png';
 import MeanSeagullSrc from '../sprites/heroes/mean_seagull.png';
 import SnowmanSrc from '../sprites/heroes/snowman.png';
-// import TentacleSrc from '../sprites/heroes/tentacle.png';
+import TentacleSrc from '../sprites/heroes/tentacle.png';
 import MosquitoSrc from '../sprites/heroes/mosquito.png';
 import CrabSrc from '../sprites/heroes/crab.png';
 
@@ -136,6 +136,11 @@ import CyborkSrc from '../sprites/heroes/cybork.png';
 import KrampusSrc from '../sprites/heroes/krampus.png';
 import ShakesSrc from '../sprites/heroes/shakes.png';
 import FidgetSrc from '../sprites/heroes/fidget.png';
+import SphinxSrc from '../sprites/heroes/sphinx.png';
+import MurderingMassSrc from '../sprites/heroes/murdering_mass.png';
+import BastetSrc from '../sprites/heroes/bastet.png';
+import AnubisSrc from '../sprites/heroes/anubis.png';
+import ProfessorSrc from '../sprites/heroes/professor.png';
 
 import RudolphSrc from '../sprites/heroes/rudolph.png';
 
@@ -147,12 +152,9 @@ import AphroditeSrc from '../sprites/heroes/aphrodite.png';
 import CthulhuSrc from '../sprites/heroes/cthulhu.png';
 import IsoldeSrc from '../sprites/heroes/isolde.png';
 import OdinSrc from '../sprites/heroes/odin.png';
-import SphinxSrc from '../sprites/heroes/sphinx.png';
-import MurderingMassSrc from '../sprites/heroes/murdering_mass.png';
 import MedusaSrc from '../sprites/heroes/medusa.png';
 import WendigoSrc from '../sprites/heroes/wendigo.png';
 import AthenaSrc from '../sprites/heroes/athena.png';
-import BastetSrc from '../sprites/heroes/bastet.png';
 import DavyJaneSrc from '../sprites/heroes/davy_jane.png';
 import HadesSrc from '../sprites/heroes/hades.png';
 import LokiSrc from '../sprites/heroes/loki.png';
@@ -163,7 +165,6 @@ import HeimdallSrc from '../sprites/heroes/heimdall.png';
 import HephaestusSrc from '../sprites/heroes/hephaestus.png';
 import LuciferSrc from '../sprites/heroes/lucifer.png';
 import MurdermachineSrc from '../sprites/heroes/murdermachine.png';
-import AnubisSrc from '../sprites/heroes/anubis.png';
 
         EPICS
 import DjinnSrc from '../sprites/heroes/djinn.png';
@@ -201,6 +202,11 @@ export const heroSprites = {
     krampus: KrampusSrc,
     shakes: ShakesSrc,
     fidget: FidgetSrc,
+    anubis: AnubisSrc,
+    sphinx: SphinxSrc,
+    bastet: BastetSrc,
+    murdering_mass: MurderingMassSrc,
+    professor: ProfessorSrc,
 
     // EPICS
     dr_pestilence: DrPestilenceSrc,
@@ -315,7 +321,7 @@ export const heroSprites = {
     mean_seagull: MeanSeagullSrc,
     snowman: SnowmanSrc,
     crab: CrabSrc,
-    // tentacle: TentacleSrc,
+    tentacle: TentacleSrc,
     mosquito: MosquitoSrc,
     /*
         LEGENDARIES
@@ -326,22 +332,18 @@ export const heroSprites = {
     krampus: KrampusSrc,
     lucifer: LuciferSrc,
     murdermachine: MurdermachineSrc,
-    anubis: AnubisSrc,
     wendigo: WendigoSrc,
     athena: AthenaSrc,
-    bastet: BastetSrc,
     davy_jane: DavyJaneSrc,
     hades: HadesSrc,
     loki: LokiSrc,
     muzen: MuzenSrc,
     sleipnir: SleipnirSrc,
-    murdering_mass: MurderingMassSrc,
     medusa: MedusaSrc,
     aphrodite: AphroditeSrc,
     cthulhu: CthulhuSrc,
     isolde: IsoldeSrc,
     odin: OdinSrc,
-    sphinx: SphinxSrc,
 
         EPICS
     yaotl: YaotlSrc,

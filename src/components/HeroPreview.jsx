@@ -8,18 +8,19 @@ import '../css/hero.scss'
 import Button from './Button'
 import EmptyItem from './EmptyItem'
 import Skill from './Skill.jsx'
+import { CONSTANTS } from '../database/constants.jsx'
 
 function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
 
     function onResize() {
-        let newHeight = window.innerHeight - 182;
+        let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5;
         if (listRef.current !== null) {
             if (window.matchMedia("(max-width: 900px)").matches === true) {
-                newHeight = window.innerHeight - (137 + listRef.current.offsetTop)
+                newHeight = window.innerHeight - (CONSTANTS.listHeightMobile + listRef.current.offsetTop)
             } else {
-                newHeight = window.innerHeight - (177 + listRef.current.offsetTop)
+                newHeight = window.innerHeight - (CONSTANTS.listHeightDefault + listRef.current.offsetTop)
             }
         }
         setListHeight(newHeight)

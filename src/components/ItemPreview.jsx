@@ -5,18 +5,19 @@ import Item from './Item'
 import Button from './Button'
 import ItemPerk from './ItemPerk'
 import { formatNumber } from '../js/util'
+import { CONSTANTS } from '../database/constants.jsx'
 
-function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem }) {
+function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setSelectedPerkSlot }) {
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
 
     function onResize() {
-        let newHeight = window.innerHeight - 182;
+        let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5;
         if (listRef.current !== null) {
             if (window.matchMedia("(max-width: 900px)").matches === true) {
-                newHeight = window.innerHeight - (137 + listRef.current.offsetTop)
+                newHeight = window.innerHeight - (CONSTANTS.listHeightMobile + listRef.current.offsetTop)
             } else {
-                newHeight = window.innerHeight - (177 + listRef.current.offsetTop)
+                newHeight = window.innerHeight - (CONSTANTS.listHeightDefault + listRef.current.offsetTop)
             }
         }
         setListHeight(newHeight)
@@ -57,9 +58,10 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem }) {
                             <div className="text">1</div>
                         </div>
                     </div>
-                    <ItemPerk name={"ATTACK_PERCENT"} value={"7.2%"} onClick={onPerkClick} />
-                    <ItemPerk name={"ATTACK_PERCENT"} value={"7.2%"} onClick={onPerkClick} />
-                    <ItemPerk name={"ATTACK_PERCENT"} value={"7.2%"} onClick={onPerkClick} />
+                    {(itemObj && itemObj.perks)
+                        ? itemObj.perks.map((perk, index) => <ItemPerk name={perk} value={"soon"} perkSlot={index + 1} onClick={() => { setSelectedPerkSlot(index); onPerkClick() }} />)
+                        : itemObj.perks.map((perk, index) => <ItemPerk name={"NOTHING"} value={"soon"} perkSlot={index + 1} onClick={() => { setSelectedPerkSlot(index); onPerkClick() }} />)
+                    }
                     <div className='flex-row'>
                         <Button text={"Save Item"} onClick={() => { saveItem(itemObj) }} color={0} />
                     </div>

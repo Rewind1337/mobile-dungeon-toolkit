@@ -1,15 +1,16 @@
 import { useLayoutEffect, useRef, useState } from "react"
+import { CONSTANTS } from "../database/constants";
 
 function SubPageChapters({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef }) {
     const listRef = useRef(null)
     const [listHeight, setListHeight] = useState(500)
 
     function onResize() {
-        let newHeight = 0;
+        let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5;
         if (window.matchMedia("(max-width: 900px)").matches === true) {
-            newHeight = window.innerHeight - (93 + listRef.current.offsetTop)
+            newHeight = window.innerHeight - (CONSTANTS.listHeightSubPage + listRef.current.offsetTop)
         } else {
-            newHeight = window.innerHeight - (177 + listRef.current.offsetTop)
+            newHeight = window.innerHeight - (CONSTANTS.listHeightDefault + listRef.current.offsetTop)
         }
         setListHeight(newHeight)
     }
@@ -49,7 +50,7 @@ function SubPageChapters({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef })
                     {Chapter(14, "Busted Lands")}
                 </div>
             </div>
-            <div className='card w-100'>test</div>
+            <div className='card w-100'>Chapter Content</div>
         </>
     )
 }

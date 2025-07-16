@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from "react"
 
 import { elementSprites, guildBossSprites } from "../database/db_sprites.jsx"
 import Skill from "./Skill.jsx"
+import { CONSTANTS } from "../database/constants.jsx"
 
 function SubPageGuildBoss({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef }) {
     const listRef = useRef(null)
@@ -10,9 +11,9 @@ function SubPageGuildBoss({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef }
     function onResize() {
         let newHeight = 0;
         if (window.matchMedia("(max-width: 900px)").matches === true) {
-            newHeight = window.innerHeight - (93 + listRef.current.offsetTop)
+            newHeight = window.innerHeight - (CONSTANTS.listHeightSubPage + listRef.current.offsetTop)
         } else {
-            newHeight = window.innerHeight - (177 + listRef.current.offsetTop)
+            newHeight = window.innerHeight - (CONSTANTS.listHeightDefault + listRef.current.offsetTop)
         }
         setListHeight(newHeight)
     }

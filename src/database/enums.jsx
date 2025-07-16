@@ -57,6 +57,7 @@ export const ROLE = {
 }
 
 export const PERKS = {
+    NOTHING: { id: -1, name: "Nothing" },
     HEALTH_PERCENT: { id: 0, name: "Health Percent" },
     ATTACK_PERCENT: { id: 1, name: "Attack Percent" },
     DEFENCE_PERCENT: { id: 2, name: "Defence Percent" },

@@ -7,20 +7,22 @@ import Button from './Button.jsx'
 import { attributeSprites, iconSprites, raritySprites } from '../database/db_sprites.jsx'
 import { ATTRIBUTE } from '../database/enums.jsx'
 import { useDraggable } from 'react-use-draggable-scroll'
+import { CONSTANTS } from '../database/constants.jsx'
 
-function ItemList({ extraHeight = 0, savedItems, headerText, itemsRef, itemType = null, setSelectedItemId }) {
+function ItemList({ setForceUpdate = () => { }, extraHeight = 0, savedItems, headerText, itemsRef, itemType = null, setSelectedItemId }) {
     const itemTypeToNameMap = ["WEAPONS", "HELMETS", "ARMORS", "RINGS", "NECKLACES", "OTHER"]
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
     const { events } = useDraggable(listRef);
 
     function onResize() {
-        let newHeight = 0;
+        let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5;
         if (window.matchMedia("(max-width: 900px)").matches === true) {
-            newHeight = window.innerHeight - ((93 + listRef.current.offsetTop) - extraHeight)
+            newHeight = window.innerHeight - ((CONSTANTS.listHeightMobile + listRef.current.offsetTop) - extraHeight)
         } else {
-            newHeight = window.innerHeight - ((177 + listRef.current.offsetTop) - extraHeight)
+            newHeight = window.innerHeight - ((CONSTANTS.listHeightDefault + listRef.current.offsetTop) - extraHeight)
         }
+        setForceUpdate({})
         setListHeight(newHeight)
     }
 

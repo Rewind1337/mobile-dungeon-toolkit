@@ -289,7 +289,7 @@ body::after {
 .chapter {
   align-items: center;
   background-size: cover;
-  background-position: 0 30%;
+  background-position: 50% 30%;
   height: 60px;
   border: 2px solid black;
   cursor: pointer;
@@ -405,27 +405,27 @@ body::after {
 
   &[data-id="0"] {
     background-image: url('../sprites/simulation/titan_fire.png');
-    background-position: 0 30%;
+    background-position: 50% 30%;
   }
 
   &[data-id="1"] {
     background-image: url('../sprites/simulation/titan_water.png');
-    background-position: 0 25%;
+    background-position: 50% 25%;
   }
 
   &[data-id="2"] {
     background-image: url('../sprites/simulation/titan_nature.png');
-    background-position: 0 30%;
+    background-position: 50% 30%;
   }
 
   &[data-id="3"] {
     background-image: url('../sprites/simulation/titan_light.png');
-    background-position: 0 45%;
+    background-position: 50% 45%;
   }
 
   &[data-id="4"] {
     background-image: url('../sprites/simulation/titan_shadow.png');
-    background-position: 0 40%;
+    background-position: 50% 40%;
   }
 }
 
@@ -452,7 +452,7 @@ body::after {
 
   &[data-id="0"] {
     background-image: url('../sprites/simulation/tower_1.png');
-    background-position: 0 25%;
+    background-position: 50% 25%;
   }
 
   &[data-id="1"] {
@@ -462,22 +462,22 @@ body::after {
 
   &[data-id="2"] {
     background-image: url('../sprites/simulation/tower_3.png');
-    background-position: 0 50%;
+    background-position: 50% 50%;
   }
 
   &[data-id="3"] {
     background-image: url('../sprites/simulation/tower_4.png');
-    background-position: 0 30%;
+    background-position: 50% 30%;
   }
 
   &[data-id="4"] {
     background-image: url('../sprites/simulation/tower_5.png');
-    background-position: 0 30%;
+    background-position: 50% 30%;
   }
 
   &[data-id="5"] {
     background-image: url('../sprites/simulation/tower_6.png');
-    background-position: 0 30%;
+    background-position: 50% 30%;
   }
 
   &[data-id="6"] {
@@ -558,17 +558,17 @@ body::after {
 
   &[data-id="0"] {
     background-image: url('../sprites/simulation/elementor.png');
-    background-position: 0 30%;
+    background-position: 50% 30%;
   }
 
   &[data-id="1"] {
     background-image: url('../sprites/simulation/equinox.png');
-    background-position: 0 15%;
+    background-position: 50% 15%;
   }
 
   &[data-id="2"] {
     background-image: url('../sprites/simulation/star_breaker.png');
-    background-position: 0 30%;
+    background-position: 50% 30%;
   }
 }
 
@@ -619,6 +619,7 @@ body::after {
 }
 
 .page {
+  order: 0;
   flex-grow: 1;
 }
 
@@ -703,27 +704,27 @@ a {
 
     &.heroes {
       background-image: url('../sprites/splash/heroes.png');
-      background-position: 0 15%;
+      background-position: 50% 15%;
     }
 
     &.items {
       background-image: url('../sprites/splash/items.png');
-      background-position: 0 75%;
+      background-position: 50% 75%;
     }
 
     &.teams {
       background-image: url('../sprites/splash/teams.png');
-      background-position: 0 65%;
+      background-position: 50% 65%;
     }
 
     &.chapters {
       background-image: url('../sprites/splash/chapters.png');
-      background-position: 0 50%;
+      background-position: 50% 50%;
     }
 
     &.titans {
       background-image: url('../sprites/splash/titans.png');
-      background-position: 0 25%;
+      background-position: 50% 25%;
     }
 
     &.towers {
@@ -732,7 +733,7 @@ a {
 
     &.guildbosses {
       background-image: url('../sprites/splash/guildbosses.png');
-      background-position: 0 10%;
+      background-position: 50% 10%;
     }
   }
 
@@ -749,7 +750,7 @@ a {
 
 @keyframes gradient {
   0% {
-    background-position: 0% 50%;
+    background-position: 50%% 50%;
   }
 
   50% {
@@ -757,7 +758,7 @@ a {
   }
 
   100% {
-    background-position: 0% 50%;
+    background-position: 50%% 50%;
   }
 }
 
@@ -785,19 +786,20 @@ a {
 }
 
 .modal-right {
+  z-index: 99;
   top: 86px;
-  right: -75vw;
+  left: -75vw;
   height: calc(100vh - 96px);
   width: calc(50vw - V.$gap*1.5);
-  transition: right 0.2s ease-out;
+  transition: left 0.2s ease-out;
 
   &.visible {
-    right: V.$gap;
+    left: calc(50vw + V.$gap-small);
   }
 }
 
 .modal-backdrop {
-  z-index: 99;
+  z-index: 98;
   top: 0;
   left: 0;
   right: 0;

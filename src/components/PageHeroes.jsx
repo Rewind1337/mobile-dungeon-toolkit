@@ -16,6 +16,8 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
     const [itemSelectionType, setItemSelectionType] = useState(null)
     const [itemSelectionModalMode, setItemSelectionModalMode] = useState(0)
 
+    const [forceUpdate, setForceUpdate] = useState({})
+
     const handleItemClick = (slot) => {
         setItemSelectionVisible(true)
         setItemSelectionType(slot)
@@ -56,7 +58,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
             </div>
 
 
-            <div className="flex-row" style={{ justifyContent: "space-between", order: 1 }}>
+            <div className="flex-row" style={{ justifyContent: "space-between", order: window.matchMedia("(max-width: 900px)").matches ? 1 : 0 }}>
                 <div className="pagination flex-row card w-100">
                     <Button text={"All Heroes"} color={0} onClick={() => { setPageContent(0) }} />
                     <Button text={"Your Saved Heroes"} color={1} onClick={() => { setPageContent(1) }} />
@@ -70,7 +72,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                 {pageContent === 0 &&
                     <>
                         <div className='card w-50' style={{ width: (selectedHeroId === null) ? "300%" : "50%" }}>
-                            <HeroList headerText={"All Heroes"} heroesRef={heroesRef.current} setSelectedHeroId={setSelectedHeroId} />
+                            <HeroList setForceUpdate={setForceUpdate} headerText={"All Heroes"} heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} setSelectedHeroId={setSelectedHeroId} />
                         </div>
                         <div className='card w-50'>
                             <HeroPreview heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} saveHero={saveHero} onItemClick={handleItemClick} />
@@ -80,7 +82,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                 {pageContent === 1 &&
                     <>
                         <div className='card w-50' style={{ width: (selectedSavedHeroId === null) ? "300%" : "50%" }}>
-                            <HeroList savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} setSelectedHeroId={setSelectedSavedHeroId} />
+                            <HeroList setForceUpdate={setForceUpdate} savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} setSelectedHeroId={setSelectedSavedHeroId} />
                         </div>
                         <div className='card w-50'>
                             <HeroPreview heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} onItemClick={handleItemClick} />
