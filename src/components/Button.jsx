@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import '../css/button.scss'
 
-function Button({ prefix = "", text, suffix = "", imgAsText, color, round, skillButton, slim, disabled = false, fillPercent = 1, onMouseDown = () => { }, onMouseUp = () => { }, onClick = () => { } }) {
+function Button({ prefix = "", text, suffix = "", imgAsText, color, round, skillButton, slim, disabled = false, fillPercent = 1, onMouseDown = () => { }, onMouseUp = () => { }, onClick = () => { }, active }) {
     const [pressed, setPressed] = useState(0)
 
     const _onMouseDown = () => {
@@ -30,7 +30,7 @@ function Button({ prefix = "", text, suffix = "", imgAsText, color, round, skill
     }
 
     return (
-        <button className={"" + (pressed ? ' pressed' : '') + (skillButton ? ' skill' : '') + (disabled ? ' disabled' : '') + (round ? ' round' : '') + (slim ? ' slim' : '') + (imgAsText ? ' imgOnly' : '')} disabled={disabled} data-color={color} style={{ "--data-percent": (fillPercent * 100) + "%" }} onMouseDown={_onMouseDown} onMouseUp={_onMouseUp} onClick={_onClick} onMouseLeave={_onMouseUp}>
+        <button className={"" + (pressed ? ' pressed' : '') + (skillButton ? ' skill' : '') + (disabled ? ' disabled' : '') + (round ? ' round' : '') + (slim ? ' slim' : '') + (imgAsText ? ' imgOnly' : '') + (active ? ' active' : '')} disabled={disabled} data-color={color} style={{ "--data-percent": (fillPercent * 100) + "%" }} onMouseDown={_onMouseDown} onMouseUp={_onMouseUp} onClick={_onClick} onMouseLeave={_onMouseUp}>
             {prefix != "" ? <span className="icon-left">{prefix}</span> : <>&nbsp;</>}
             {imgAsText === true ? <img src={text} draggable={false}></img> : <span className="text">{text}</span>}
             {suffix != "" ? <span className="icon-right">{suffix}</span> : <>&nbsp;</>}

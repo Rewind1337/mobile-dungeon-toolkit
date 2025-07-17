@@ -23,14 +23,14 @@ function get_set_id_by_name(name) {
     return undefined
 }
 
-function add_weapon(name, attribute, unique, rarity, attributeRequirement, baseAttribute) {
+function add_weapon(name, attribute, unique, rarity, attributeRequirement, mainAttribute) {
     let id = BASE_ITEMS.WEAPONS.length
     let normalizedName = name.toLowerCase().replace(/[^a-z']/g, '_').replace(/[']/g, '');
     unique = (unique != undefined ? unique : UNIQUE_SKILLS.NOTHING)
     let perkAmount = Math.min(rarity - 1, 3) + (unique ? 0 : 1)
     let perks = Array(perkAmount).fill("NOTHING")
     BASE_ITEMS.WEAPONS.push({
-        id: id, slot: EQUIPMENT_SLOT.WEAPON, name: name, attribute: attribute, unique: unique, rarity: rarity, attributeRequirement: attributeRequirement, baseAttribute: baseAttribute,
+        id: id, slot: EQUIPMENT_SLOT.WEAPON, name: name, attribute: attribute, unique: unique, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
         itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
         iconSrc: (unique ? iconSprites["unique"] : null),
         iconType: (unique ? "unique" : "null"),
@@ -38,7 +38,7 @@ function add_weapon(name, attribute, unique, rarity, attributeRequirement, baseA
     })
 }
 
-function add_equipment(slot, name, attribute, set, rarity, attributeRequirement, baseAttribute) {
+function add_equipment(slot, name, attribute, set, rarity, attributeRequirement, mainAttribute) {
     let normalizedName = name.toLowerCase().replace(/[^a-z]/g, '_');
     set = get_set_id_by_name(set);
     set = (set != undefined ? set : -1)
@@ -58,7 +58,7 @@ function add_equipment(slot, name, attribute, set, rarity, attributeRequirement,
         case EQUIPMENT_SLOT.HELMET:
             id = BASE_ITEMS.HELMETS.length
             BASE_ITEMS.HELMETS.push({
-                id: id, slot: slot, name: name, attribute: attribute, set: set, rarity: rarity, attributeRequirement: attributeRequirement, baseAttribute: baseAttribute,
+                id: id, slot: slot, name: name, attribute: attribute, set: set, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
                 itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
                 iconSrc: (iconSprites[typeOfSet]),
                 iconType: typeOfSet,
@@ -68,7 +68,7 @@ function add_equipment(slot, name, attribute, set, rarity, attributeRequirement,
         case EQUIPMENT_SLOT.ARMOR:
             id = BASE_ITEMS.ARMORS.length
             BASE_ITEMS.ARMORS.push({
-                id: id, slot: slot, name: name, attribute: attribute, set: set, rarity: rarity, attributeRequirement: attributeRequirement, baseAttribute: baseAttribute,
+                id: id, slot: slot, name: name, attribute: attribute, set: set, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
                 itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
                 iconSrc: (set >= 0 ? iconSprites[typeOfSet] : null),
                 iconType: typeOfSet,
@@ -78,7 +78,7 @@ function add_equipment(slot, name, attribute, set, rarity, attributeRequirement,
         case EQUIPMENT_SLOT.NECKLACE:
             id = BASE_ITEMS.NECKLACES.length
             BASE_ITEMS.NECKLACES.push({
-                id: id, slot: slot, name: name, attribute: attribute, set: set, rarity: rarity, attributeRequirement: attributeRequirement, baseAttribute: baseAttribute,
+                id: id, slot: slot, name: name, attribute: attribute, set: set, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
                 itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
                 iconSrc: (set >= 0 ? iconSprites[typeOfSet] : null),
                 iconType: typeOfSet,
@@ -88,7 +88,7 @@ function add_equipment(slot, name, attribute, set, rarity, attributeRequirement,
         case EQUIPMENT_SLOT.RING:
             id = BASE_ITEMS.RINGS.length
             BASE_ITEMS.RINGS.push({
-                id: id, slot: slot, name: name, attribute: attribute, set: set, rarity: rarity, attributeRequirement: attributeRequirement, baseAttribute: baseAttribute,
+                id: id, slot: slot, name: name, attribute: attribute, set: set, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
                 itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
                 iconSrc: (set >= 0 ? iconSprites[typeOfSet] : null),
                 iconType: typeOfSet,
@@ -119,7 +119,7 @@ export function init_item_db() {
     add_set("Pumpkin", [PERKS.HEALTH_PERCENT, PERKS.RESISTANCE], 2, ATTRIBUTE.INTELLIGENCE)
     add_set("Warlock", [PERKS.ATTACK_PERCENT, PERKS.CRIT_CHANCE, PERKS.CRIT_DAMAGE], 4, ATTRIBUTE.INTELLIGENCE)
     add_set("Warden", [PERKS.HEALTH_PERCENT, PERKS.CRIT_RESISTANCE, PERKS.AP_DAMAGE_REDUCTION], 4, ATTRIBUTE.INTELLIGENCE)
-    add_set("Saint", [PERKS.AGILITY_PERCENT, PERKS.HEALING_RECOVERY, PERKS.HEALING_EFFICIENCY], 4, ATTRIBUTE.INTELLIGENCE)
+    add_set("Saint", [PERKS.AGILITY_PERCENT, PERKS.HEALING_RECEIVED, PERKS.HEALING_EFFICIENCY], 4, ATTRIBUTE.INTELLIGENCE)
 
     add_set("Lab", [PERKS.AGILITY_PERCENT, PERKS.CRIT_CHANCE], 2, ATTRIBUTE.INTELLIGENCE)
     add_set("Elementor", [PERKS.ATTACK_PERCENT, PERKS.ACCURACY, PERKS.BOSS_DAMAGE], 4, ATTRIBUTE.INTELLIGENCE)
@@ -128,7 +128,7 @@ export function init_item_db() {
     add_set("Dragonbone", [PERKS.ATTACK_PERCENT, PERKS.CRIT_DAMAGE], 2, ATTRIBUTE.DEXTERITY)
     add_set("Burnt", [PERKS.AGILITY_PERCENT, PERKS.ACCURACY], 2, ATTRIBUTE.DEXTERITY)
     add_set("Hunter", [PERKS.ATTACK_PERCENT, PERKS.BOSS_DAMAGE, PERKS.CRIT_DAMAGE], 4, ATTRIBUTE.DEXTERITY)
-    add_set("Jester", [PERKS.AGILITY_PERCENT, PERKS.HEALING_RECOVERY, PERKS.CRIT_CHANCE], 4, ATTRIBUTE.DEXTERITY)
+    add_set("Jester", [PERKS.AGILITY_PERCENT, PERKS.HEALING_RECEIVED, PERKS.CRIT_CHANCE], 4, ATTRIBUTE.DEXTERITY)
     add_set("Specter", [PERKS.HEALTH_PERCENT, PERKS.CRIT_RESISTANCE, PERKS.AP_DAMAGE_REDUCTION], 4, ATTRIBUTE.DEXTERITY)
 
     add_set("Eclipse", [PERKS.AGILITY_PERCENT, PERKS.CRIT_CHANCE, PERKS.CRIT_DAMAGE], 4, ATTRIBUTE.DEXTERITY)

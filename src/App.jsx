@@ -12,9 +12,10 @@ import { init_item_db } from './database/db_items.jsx'
 import PageItems from './components/PageItems.jsx'
 import PageHeroes from './components/PageHeroes.jsx'
 import PageSimulators from './components/PageSimulators.jsx'
-
-import { elementSprites, iconSprites, statusSprites } from './database/db_sprites.jsx'
 import PageTeams from './components/PageTeams.jsx'
+
+import { heroSprites, itemSprites, iconSprites, elementSprites, roleSprites, attributeSprites, raritySprites, statusSprites } from './database/db_sprites.jsx'
+import { usePreloadImages } from './hooks/usePreloadImages.jsx'
 
 const BASE_HEROES = init_hero_db()
 const BASE_ITEMS = init_item_db()
@@ -70,6 +71,16 @@ const loadInitialState = () => {
 };
 
 function App() {
+  usePreloadImages([
+    ...Object.values(heroSprites),
+    ...Object.values(itemSprites),
+    ...Object.values(iconSprites),
+    ...Object.values(elementSprites),
+    ...Object.values(roleSprites),
+    ...Object.values(attributeSprites),
+    ...Object.values(raritySprites),
+    ...Object.values(statusSprites),
+  ]);
   const initialState = loadInitialState()
 
   const heroesRef = useRef(BASE_HEROES)

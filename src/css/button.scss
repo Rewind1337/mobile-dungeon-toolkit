@@ -203,6 +203,10 @@ button {
     font-size: inherit;
     text-shadow: 1px 1px 2px black;
   }
+
+  &.active {
+    scale: 0.8 !important;
+  }
 }
 
 @keyframes marginWobble {

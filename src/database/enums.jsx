@@ -11,8 +11,8 @@ export const EQUIPMENT_SLOT = {
     WEAPON: 0,
     HELMET: 1,
     ARMOR: 2,
-    NECKLACE: 3,
-    RING: 4,
+    RING: 3,
+    NECKLACE: 4,
     OTHER: 5,
 }
 

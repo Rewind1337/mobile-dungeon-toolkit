@@ -6,35 +6,19 @@ import HeroPreview from "./HeroPreview.jsx"
 import Button from "./Button.jsx"
 import EmptyHero from "./EmptyHero.jsx"
 import Hero from "./Hero.jsx"
+import { useDynamicList } from "../hooks/useDynamicList.jsx"
+import { CONSTANTS } from "../database/constants.jsx"
 
 function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
+    const { listHeight, listRef, events } = useDynamicList(() => { }, 0, CONSTANTS.listHeightSubPage);
     const [pageContent, setPageContent] = useState(0)
     const [selectedSavedHeroId, setSelectedSavedHeroId] = useState(null)
     const [selectedSavedItemId, setSelectedSavedItemId] = useState({ slot: null, id: null })
-    const [teams, setTeams] = useState([{ id: 0, name: "Default Team", heroes: Array(5).fill({ id: -1 }) }, { id: 0, name: "Team A", heroes: Array(5).fill({ id: -1 }) }, { id: 0, name: "Team B", heroes: Array(5).fill({ id: -1 }) }])
+    const [teams, setTeams] = useState([{ id: 0, name: "Default Team", heroes: Array(5).fill({ id: -1 }) }, { id: 1, name: "Team A", heroes: Array(5).fill({ id: -1 }) }, { id: 2, name: "Team B", heroes: Array(5).fill({ id: -1 }) }])
     const [teamIndex, setTeamIndex] = useState(null)
     const [heroIndex, setHeroIndex] = useState(null)
-    const listRef = useRef(null)
-    const [listHeight, setListHeight] = useState(500)
 
     const [forceUpdate, setForceUpdate] = useState({})
-
-    function onResize() {
-        let newHeight = 0;
-        if (window.matchMedia("(max-width: 900px)").matches === true) {
-            newHeight = window.innerHeight - (93 + listRef.current.offsetTop)
-        } else {
-            newHeight = window.innerHeight - (177 + listRef.current.offsetTop)
-        }
-        setForceUpdate({ r: Math.random() })
-        setListHeight(newHeight)
-    }
-
-    useLayoutEffect(() => {
-        window.addEventListener('resize', onResize);
-        onResize();
-        return () => window.removeEventListener('resize', onResize);
-    }, []);
 
     const handleTeamHeroClick = (teamIndex, heroIndex) => {
         setTeamIndex(teamIndex)
@@ -42,27 +26,24 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
     }
 
     const handleSavedHeroClick = () => {
-        // Exit early if selectedSavedHeroId or teamHeroIndex is not set
         if (selectedSavedHeroId === null || heroIndex === null) return;
 
         let hero = savedHeroesRef.current[selectedSavedHeroId];
-        if (!hero) return; // Ensure hero exists
+        if (!hero) return;
 
-        // Check for duplicate hero by id
-        if (teams[0]?.heroes) {
-            const heroes = teams[0].heroes || [];
+        if (teams[teamIndex]?.heroes) {
+            const heroes = teams[teamIndex].heroes || [];
             for (let i = 0; i < heroes.length; i++) {
-                if (heroes[i]?.id === selectedSavedHeroId) return; // Exit if hero already exists
+                if (heroes[i]?.id === selectedSavedHeroId) return;
             }
         }
 
-        // Update the team with the new hero
         setTeams(prev => {
             const newTeams = [...prev];
             const team = { ...newTeams[teamIndex] };
             const heroes = team.heroes || [];
-            team.heroes = [...heroes]; // Copy array
-            team.heroes[heroIndex] = hero; // Replace at index
+            team.heroes = [...heroes];
+            team.heroes[heroIndex] = hero;
             newTeams[teamIndex] = team;
             return newTeams;
         });
