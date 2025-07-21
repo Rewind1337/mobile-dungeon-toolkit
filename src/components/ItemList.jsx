@@ -8,7 +8,7 @@ import Button from './Button.jsx'
 import { attributeSprites, iconSprites, raritySprites } from '../database/db_sprites.jsx'
 import { ATTRIBUTE } from '../database/enums.jsx'
 
-function ItemList({ setForceUpdate = () => { }, extraHeight = 0, savedItems, headerText, itemsRef, itemType = null, setSelectedItemId }) {
+function ItemList({ setForceUpdate = () => { }, extraHeight = 0, savedItems, headerText, itemsRef, itemType = null, setSelectedItemId, setsRef }) {
     const { listHeight, listRef, events } = useDynamicList(setForceUpdate, extraHeight);
     const [filters, setFilters] = useState({
         set: null,

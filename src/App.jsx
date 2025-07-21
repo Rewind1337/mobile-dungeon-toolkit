@@ -208,7 +208,6 @@ function App() {
                   </a>
                 </div>
               </div>
-
               <div className='text flex-row'>
                 <div className='text flex-row'>
                   <div className="text">This site is not affiliated with</div>

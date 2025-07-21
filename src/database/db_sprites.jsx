@@ -402,7 +402,6 @@ import BruteForceSrc from '../sprites/weapons/unique/brute_force.png';
 import BoneBowSrc from '../sprites/weapons/unique/bone_bow.png';
 import SoulStabberSrc from '../sprites/weapons/unique/soul_stabber.png';
 import WhisperBladeSrc from '../sprites/weapons/unique/whisper_blade.png';
-import ShadowSpikesSrc from '../sprites/weapons/unique/shadow_spikes.png';
 import NeedlePointSrc from '../sprites/weapons/unique/needle_point.png';
 import StarfireBallistaSrc from '../sprites/weapons/unique/starfire_ballista.png';
 import BlackFeatherBowSrc from '../sprites/weapons/unique/black_feather_bow.png';
@@ -531,7 +530,7 @@ export const itemSprites = {
     bone_bow: BoneBowSrc,
     soul_stabber: SoulStabberSrc,
     whisper_blade: WhisperBladeSrc,
-    shadow_spikes: ShadowSpikesSrc,
+    shadow_fangs: ShadowFangsSrc,
     needle_point: NeedlePointSrc,
     starfire_ballista: StarfireBallistaSrc,
     black_feather_bow: BlackFeatherBowSrc,

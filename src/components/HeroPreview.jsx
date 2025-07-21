@@ -56,7 +56,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                 <div className='flex-col'>
                     <div className='flex-row'>
                         <div className='flex-row skills'>
-                            <Skill /><Skill /><Skill />
+                            skills
                         </div>
                         <div className={"hero card selected"} data-rarity={heroObj.rarity} data-element={heroObj.element} onClick={() => { onClick() }} >
                             <div className="hero-element"><img src={heroObj.elementSrc} draggable={false} /></div>
@@ -66,7 +66,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                             </div>
                         </div>
                         <div className='flex-row talents'>
-                            <Skill /><Skill /><Skill />
+                            talents
                         </div>
                     </div>
 

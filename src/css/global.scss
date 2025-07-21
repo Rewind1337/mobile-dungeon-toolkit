@@ -204,7 +204,7 @@ body::after {
 
 .filters {
   margin-bottom: V.$gap;
-  justify-content: center;
+  justify-content: flex-start;
 
   button.round {
     font-size: 24px;
@@ -759,60 +759,6 @@ a {
 
   100% {
     background-position: 50%% 50%;
-  }
-}
-
-.modal {
-  z-index: 100;
-  position: absolute;
-}
-
-.modal-left {
-  top: 86px;
-  left: -75vw;
-  height: calc(100vh - 96px);
-  width: calc(50vw - V.$gap*1.5);
-  transition: left 0.2s ease-out;
-
-  .flex-row.w-100 {
-    button {
-      width: 100%;
-    }
-  }
-
-  &.visible {
-    left: V.$gap;
-  }
-}
-
-.modal-right {
-  z-index: 99;
-  top: 86px;
-  left: -75vw;
-  height: calc(100vh - 96px);
-  width: calc(50vw - V.$gap*1.5);
-  transition: left 0.2s ease-out;
-
-  &.visible {
-    left: calc(50vw + V.$gap-small);
-  }
-}
-
-.modal-backdrop {
-  z-index: 98;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 100vh;
-  background-color: black;
-  opacity: 0;
-  filter: drop-shadow(0 0 0px black);
-  transition: opacity 0.2s ease-out, filter 0.2s ease-out;
-
-  &.visible {
-    bottom: 0;
-    opacity: 0.5;
-    filter: drop-shadow(0 0 200px black);
   }
 }
 

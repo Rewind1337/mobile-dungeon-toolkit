@@ -4,6 +4,7 @@ import ItemPreview from "./ItemPreview.jsx"
 import HeroList from "./HeroList.jsx"
 import HeroPreview from "./HeroPreview.jsx"
 import Button from "./Button.jsx"
+import Modal from "./Modal.jsx"
 
 function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
     const [pageContent, setPageContent] = useState(0)
@@ -39,23 +40,22 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
 
     return (
         <>
-            <div className={"modal modal-backdrop" + (itemSelectionVisible ? " visible" : "")} onClick={(e) => { e.stopPropagation(); setItemSelectionVisible(false); clearItemSelection() }}></div>
-            <div className={"modal modal-left card" + (itemSelectionVisible ? " visible" : "")}>
+            <Modal position="left" isVisible={itemSelectionVisible} onClose={() => { setItemSelectionVisible(false); clearItemSelection(); }}>
                 <div className="flex-row w-100">
-                    <Button text={"All Items"} color={0} onClick={() => { setItemSelectionModalMode(0) }} />
-                    <Button text={"Your Saved Items"} color={1} onClick={() => { setItemSelectionModalMode(1) }} />
+                    <Button text={"All Items"} color={0} onClick={() => setItemSelectionModalMode(0)} />
+                    <Button text={"Your Saved Items"} color={1} onClick={() => setItemSelectionModalMode(1)} />
                 </div>
-                {itemSelectionModalMode == 0 ?
+                {itemSelectionModalMode === 0 ?
                     <ItemList extraHeight={75} headerText={"All Items"} itemsRef={itemsRef.current.BASE_ITEMS} itemType={itemSelectionType} setSelectedItemId={setSelectedItemId} /> :
                     <ItemList extraHeight={75} savedItems headerText={"Saved Items"} itemsRef={savedItemsRef.current} itemType={itemSelectionType} setSelectedItemId={setSelectedSavedItemId} />
                 }
-            </div>
-            <div className={"modal modal-right card" + (selectedItemId.slot !== null || selectedSavedItemId.slot !== null ? " visible" : "")}>
-                {itemSelectionModalMode == 0 ?
+            </Modal>
+            <Modal position="right" isVisible={selectedItemId.slot !== null || selectedSavedItemId.slot !== null} onClose={() => { setItemSelectionVisible(false); clearItemSelection(); }}>
+                {itemSelectionModalMode === 0 ?
                     <ItemPreview itemsRef={itemsRef.current.BASE_ITEMS} selectedItemId={selectedItemId} saveItem={() => { }} /> :
                     <ItemPreview itemsRef={savedItemsRef.current} selectedItemId={selectedSavedItemId} saveItem={() => { }} />
                 }
-            </div>
+            </Modal>
 
 
             <div className="flex-row" style={{ justifyContent: "space-between", order: window.matchMedia("(max-width: 900px)").matches ? 1 : 0 }}>

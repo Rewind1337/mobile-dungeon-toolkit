@@ -6,8 +6,9 @@ import Button from './Button'
 import ItemPerk from './ItemPerk'
 import { formatNumber } from '../js/util'
 import { CONSTANTS } from '../database/constants.jsx'
+import { iconSprites } from '../database/db_sprites.jsx'
 
-function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setSelectedPerkSlot }) {
+function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setSelectedPerkSlot, setsRef, itemPerks }) {
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
 
@@ -51,16 +52,57 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setSelec
             <div ref={listRef} className='item-preview' style={{ maxHeight: listHeight }}>
                 <div className='header-big'>{itemObj.name}</div>
                 <div className='flex-col'>
-                    <div className={"item card selected"} data-rarity={itemObj.rarity} data-type={itemObj.iconType} onClick={() => { onClick() }}>
-                        <div className="item-icon"><img src={itemObj.iconSrc} draggable={false} /></div>
-                        <div className="flex-col">
-                            <div className="item-sprite"><img className="item-sprite" src={itemObj.itemSrc} draggable={false} /></div>
-                            <div className="text">1</div>
+                    <div className='flex-row'>
+                        <div className={"item card selected"} data-rarity={itemObj.rarity} data-type={itemObj.iconType} onClick={() => { onClick() }}>
+                            <div className="item-icon"><img src={itemObj.iconSrc} draggable={false} /></div>
+                            <div className="flex-col">
+                                <div className="item-sprite"><img className="item-sprite" src={itemObj.itemSrc} draggable={false} /></div>
+                                <div className="text">1</div>
+                            </div>
                         </div>
                     </div>
-                    {(itemObj && itemObj.perks)
-                        ? itemObj.perks.map((perk, index) => <ItemPerk name={perk} value={"soon"} perkSlot={index + 1} onClick={() => { setSelectedPerkSlot(index); onPerkClick() }} />)
-                        : itemObj.perks.map((perk, index) => <ItemPerk name={"NOTHING"} value={"soon"} perkSlot={index + 1} onClick={() => { setSelectedPerkSlot(index); onPerkClick() }} />)
+                    <div className='text'></div>
+                    {itemObj.unique && <div className='card'>
+                        <div className='text flex-col'>
+                            <div className='flex-row'>
+                                <img src={iconSprites["unique"]} />
+                                <div className='header'>Weapon Effect</div>
+                                <img src={iconSprites["unique"]} />
+                            </div>
+                            {itemObj.unique.description.replace("$e", ((itemObj.unique.rarityEffect[itemObj.rarity] - 1) * 100).toFixed(2) + "%")}
+                        </div>
+                    </div>}
+
+                    <div className='header'>Item Attributes</div>
+                    {itemObj.set !== null && itemObj.attribute.length > 0 && itemObj.attribute.map(attr =>
+                        <ItemPerk
+                            key={"setperk_" + attr.id}
+                            name={attr.name.toUpperCase().replace(/\s/g, '_') || "NOTHING"}
+                            value={(Math.random() * 10).toFixed(2) + "%"}
+                        />
+                    )}
+
+                    <div className='header'>Set Bonus</div>
+                    {itemObj.set && setsRef[itemObj.set].setBonus.map(bonus =>
+                        <ItemPerk
+                            key={"perk_" + bonus}
+                            name={bonus.name.toUpperCase().replace(/\s/g, '_') || "NOTHING"}
+                            value={(Math.random() * 10).toFixed(2) + "%"}
+                        />
+                    )}
+
+                    <div className='header'>Perks</div>
+                    {(itemPerks && itemPerks.length > 0)
+                        ? itemPerks.map((perk, index) => (
+                            <ItemPerk
+                                key={"perk_" + index}
+                                name={perk.toUpperCase().replace(/\s/g, '_') || "NOTHING"}
+                                value={(Math.random() * 10).toFixed(2) + "%"}
+                                perkSlot={index + 1}
+                                onClick={() => { setSelectedPerkSlot(index); onPerkClick() }}
+                            />
+                        ))
+                        : <div>No perks available</div>
                     }
                     <div className='flex-row'>
                         <Button text={"Save Item"} onClick={() => { saveItem(itemObj) }} color={0} />

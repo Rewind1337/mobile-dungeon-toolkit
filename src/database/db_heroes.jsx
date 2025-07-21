@@ -1,22 +1,45 @@
-import { ATTRIBUTE, RARITY, ELEMENT, ROLE } from "./enums"
+import { ATTRIBUTE, RARITY, ELEMENT, ROLE, PRIMARY_STAT, STATUS_EFFECTS } from "./enums"
 import { heroSprites, elementSprites } from "./db_sprites"
 
 let BASE_HEROES = []
 
-function add_hero(name, mainAttribute, baseStats, rarity, element, role) {
+function add_hero(name, mainAttribute, baseStats, rarity, element, role, skills) {
     let id = BASE_HEROES.length
     let normalizedName = name.toLowerCase().replace(/[^a-z]/g, '_');
     BASE_HEROES.push({
         id: id, name: name, mainAttribute: mainAttribute, baseStats: baseStats, rarity: rarity, element: element, role: role,
         heroSrc: (heroSprites[normalizedName] !== undefined ? heroSprites[normalizedName] : heroSprites["null"]),
-        elementSrc: elementSprites[element]
+        elementSrc: elementSprites[element],
+        skills: skills,
     })
+}
+
+function skill(name, level, cooldown, description, effect) {
+    return { name: name, level: level, cooldown: cooldown, description: description, effect: effect }
+}
+
+function talent(name, effect) {
+    return { name: name, effect: effect }
 }
 
 export function init_hero_db() {
     // LEGENDARY
     // STRENGTH
-    add_hero("Thor", ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, ELEMENT.LIGHT, ROLE.OFFENSIVE)
+    add_hero("Thor", ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, ELEMENT.LIGHT, ROLE.OFFENSIVE, [
+        skill("Mjöllnir", 1, 0, "description", [{ type: "single_hit", targets: 1, damage: 1.20, scaling: PRIMARY_STAT.ATTACK, applies: [{ status: STATUS_EFFECTS.mjöllnir, duration: -1 }] }]),
+        skill("Odin's Blessing", 1, 4, "description", [{ type: "self_buff", applies: [{ status: STATUS_EFFECTS.invincibility, duration: 1 }, { status: STATUS_EFFECTS.recovery, duration: 2 }, { status: STATUS_EFFECTS.crit_damage_up, duration: 2 }] }]),
+        skill("Ragnarök", 1, 5, "description", [{ type: "multi_hit", targets: 5, hits: 3, damage: 0.6, scaling: PRIMARY_STAT.ATTACK, applies: [{ status: STATUS_EFFECTS.attack_down, duration: 2 }, { status: STATUS_EFFECTS.defense_down, duration: 2 }] }])], {
+        11: talent("Attribute Buff", [{ "attack": 1.05, "critical_chance": 1.05 }]),
+        12: talent("Attribute Buff", [{ "health": 1.05, "defense": 1.05 }]),
+        21: talent("Warrior's Spirit", [{ "buff_on_self_critical_damage": 1.10 }]),
+        22: talent("Full Power", [{ "healing_received": 1.20 }]),
+        3: talent("Overhealing", [{ "overhealing_shield": 1.20 }]),
+        41: talent("Attribute Buff", [{ "attack": 1.10, "critical_chance": 1.05, "critical_damage": 1.05 }]),
+        42: talent("Attribute Buff", [{ "health": 1.10, "defense": 1.05, "resistance": 1.05 }]),
+        51: talent("Precision", [{ "dead_enemies_crit_chance": 1.04 }]),
+        52: talent("Recharger", [{ "killing_heals_maxhp": 1.12 }]),
+        6: talent("Countdown", [{ "true_damage_every_3": 1.25 }]),
+    })
     add_hero("Arachnotaur", ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, ELEMENT.NATURE, ROLE.DEFENSIVE)
     add_hero("Prellbog", ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, ELEMENT.FIRE, ROLE.OFFENSIVE)
     add_hero("Undead Dragon", ATTRIBUTE.STRENGTH, { health: 191, attack: 66, defense: 53, agility: 54 }, RARITY.LEGENDARY, ELEMENT.WATER, ROLE.CONTROL)
