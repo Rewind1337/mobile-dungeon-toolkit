@@ -524,7 +524,6 @@ export const itemSprites = {
     boomstick: BoomstickSrc,
     wolf_claws: WolfClawsSrc,
     corkscrew_knuckle: CorkscrewKnuckleSrc,
-    shadow_fangs: ShadowFangsSrc,
     vortex_dancer: VortexDancerSrc,
     brute_force: BruteForceSrc,
     bone_bow: BoneBowSrc,
