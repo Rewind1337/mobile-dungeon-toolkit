@@ -16,6 +16,8 @@
 }
 
 .hero-preview {
+  overflow: auto;
+
   .hero.selected {}
 
   .base-stats {

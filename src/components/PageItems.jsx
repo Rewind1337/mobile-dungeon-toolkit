@@ -68,6 +68,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                         <ItemPerk
                             key={perk}
                             name={perk}
+                            noValue={true}
                             value={(Math.random() * 10).toFixed(2) + "%"}
                             onClick={() => handleSelectPerkClick(perk)}
                             buttonText={"Choose"}

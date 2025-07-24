@@ -3,6 +3,18 @@
 
 
 
+input[type="number"] {
+  border: none;
+  padding: 4px;
+  height: 30px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: V.$border-radius;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+
 .item-list {
   flex-wrap: wrap;
   overflow: auto;
@@ -19,11 +31,10 @@
 }
 
 .item-preview {
-  .item {
-    margin: 32px;
-    margin-inline: auto;
-    scale: 1.5;
-  }
+  overflow: auto;
+  padding: V.$gap-small;
+
+  .item {}
 
   img {
     width: 32px;

@@ -1,9 +1,9 @@
-import { ATTRIBUTE, RARITY, ELEMENT, ROLE, PRIMARY_STAT, STATUS_EFFECTS } from "./enums"
-import { heroSprites, elementSprites } from "./db_sprites"
+import { ATTRIBUTE, RARITY, ELEMENT, ROLE, PRIMARY_STAT, STATUS_EFFECTS } from "./enums.jsx"
+import { heroSprites, elementSprites } from "./db_sprites.jsx"
 
 let BASE_HEROES = []
 
-function add_hero(name, mainAttribute, baseStats, rarity, element, role, skills) {
+function add_hero(name, mainAttribute, baseStats, rarity, element, role, skills, talents) {
     let id = BASE_HEROES.length
     let normalizedName = name.toLowerCase().replace(/[^a-z]/g, '_');
     BASE_HEROES.push({
@@ -11,6 +11,7 @@ function add_hero(name, mainAttribute, baseStats, rarity, element, role, skills)
         heroSrc: (heroSprites[normalizedName] !== undefined ? heroSprites[normalizedName] : heroSprites["null"]),
         elementSrc: elementSprites[element],
         skills: skills,
+        talents: talents,
     })
 }
 
@@ -19,7 +20,7 @@ function skill(name, level, cooldown, description, effect) {
 }
 
 function talent(name, effect) {
-    return { name: name, effect: effect }
+    return { name: name, effect: effect, active: true }
 }
 
 export function init_hero_db() {
@@ -33,12 +34,12 @@ export function init_hero_db() {
         12: talent("Attribute Buff", [{ "health": 1.05, "defense": 1.05 }]),
         21: talent("Warrior's Spirit", [{ "buff_on_self_critical_damage": 1.10 }]),
         22: talent("Full Power", [{ "healing_received": 1.20 }]),
-        3: talent("Overhealing", [{ "overhealing_shield": 1.20 }]),
+        30: talent("Overhealing", [{ "overhealing_shield": 1.20 }]),
         41: talent("Attribute Buff", [{ "attack": 1.10, "critical_chance": 1.05, "critical_damage": 1.05 }]),
         42: talent("Attribute Buff", [{ "health": 1.10, "defense": 1.05, "resistance": 1.05 }]),
         51: talent("Precision", [{ "dead_enemies_crit_chance": 1.04 }]),
         52: talent("Recharger", [{ "killing_heals_maxhp": 1.12 }]),
-        6: talent("Countdown", [{ "true_damage_every_3": 1.25 }]),
+        60: talent("Countdown", [{ "true_damage_every_3": 1.25 }]),
     })
     add_hero("Arachnotaur", ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, ELEMENT.NATURE, ROLE.DEFENSIVE)
     add_hero("Prellbog", ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, ELEMENT.FIRE, ROLE.OFFENSIVE)

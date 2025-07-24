@@ -1,14 +1,15 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 
-
 import { ATTRIBUTE_NAME_MAP, EQUIPMENT_SLOT, ROLE_NAME_MAP } from '../database/enums.jsx'
-import { perkSprites } from '../database/db_sprites'
-import { getStatsAtLevel } from "../database/func_heroes.jsx"
-import '../css/hero.scss'
-import Button from './Button'
-import EmptyItem from './EmptyItem'
-import Skill from './Skill.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
+import { perkSprites } from '../database/db_sprites.jsx'
+import { getStatsAtLevel } from "../database/func_heroes.jsx"
+
+import Button from './Button.jsx'
+import EmptyItem from './EmptyItem.jsx'
+import Skill from './Skill.jsx'
+
+import '../css/hero.scss'
 
 function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
     const [listHeight, setListHeight] = useState(500)
@@ -34,6 +35,34 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
 
     let heroObj = heroesRef[selectedHeroId]
 
+    const renderHeroSkills = () => {
+        return heroObj.skills.map(skill => <Skill />)
+    }
+
+    const renderHeroTalents = () => {
+        let talents = []
+        for (let key in heroObj.talents) {
+            if (!heroObj.talents.active) {
+                let sum = ""
+                let temp = null
+                for (let eff in heroObj.talents[key].effect) {
+                    temp = heroObj.talents[key].effect[eff]
+                    let effname = Object.keys(temp)
+                    let effvalue = Object.values(temp)
+                    for (let i = 0; i < effname.length; i++) {
+                        sum += effvalue[i] + "x "
+                        sum += effname[i] + "";
+                        if (i !== effname.length - 1) {
+                            sum += " and "
+                        }
+                    }
+                }
+                talents.push(<>{heroObj.talents[key].name} - [{sum}]<br /></>)
+            }
+        }
+        return talents
+    }
+
     let noSelection = false
     if (selectedHeroId === null || heroesRef.length === 0) {
         noSelection = true
@@ -56,7 +85,9 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                 <div className='flex-col'>
                     <div className='flex-row'>
                         <div className='flex-row skills'>
-                            skills
+                            {heroObj.skills && <>
+                                {renderHeroSkills()}
+                            </>}
                         </div>
                         <div className={"hero card selected"} data-rarity={heroObj.rarity} data-element={heroObj.element} onClick={() => { onClick() }} >
                             <div className="hero-element"><img src={heroObj.elementSrc} draggable={false} /></div>
@@ -66,7 +97,9 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                             </div>
                         </div>
                         <div className='flex-row talents'>
-                            talents
+                            {heroObj.talents && <>
+                                {renderHeroTalents()}
+                            </>}
                         </div>
                     </div>
 
