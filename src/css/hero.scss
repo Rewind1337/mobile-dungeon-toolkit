@@ -42,11 +42,19 @@
     flex-grow: 1;
   }
 
+  .equipment {
+    flex-wrap: wrap;
+  }
+
   .flex-row.text.card {
     align-items: center;
     height: 36px;
     font-size: 20px;
     justify-content: left;
+
+    @include M.media-query-max(V.$bp-mobile, ()) {
+      font-size: 14px;
+    }
   }
 }
 

@@ -46,14 +46,14 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                     <Button text={"Your Saved Items"} color={1} onClick={() => setItemSelectionModalMode(1)} />
                 </div>
                 {itemSelectionModalMode === 0 ?
-                    <ItemList extraHeight={75} headerText={"All Items"} itemsRef={itemsRef.current.BASE_ITEMS} itemType={itemSelectionType} setSelectedItemId={setSelectedItemId} /> :
-                    <ItemList extraHeight={75} savedItems headerText={"Saved Items"} itemsRef={savedItemsRef.current} itemType={itemSelectionType} setSelectedItemId={setSelectedSavedItemId} />
+                    <ItemList setsRef={itemsRef.current.ITEM_SETS} extraHeight={75} headerText={"All Items"} itemsRef={itemsRef.current.BASE_ITEMS} itemType={itemSelectionType} setSelectedItemId={setSelectedItemId} /> :
+                    <ItemList setsRef={itemsRef.current.ITEM_SETS} extraHeight={75} savedItems headerText={"Saved Items"} itemsRef={savedItemsRef.current} itemType={itemSelectionType} setSelectedItemId={setSelectedSavedItemId} />
                 }
             </Modal>
             <Modal position="right" isVisible={selectedItemId.slot !== null || selectedSavedItemId.slot !== null} onClose={() => { setItemSelectionVisible(false); clearItemSelection(); }}>
                 {itemSelectionModalMode === 0 ?
-                    <ItemPreview itemsRef={itemsRef.current.BASE_ITEMS} selectedItemId={selectedItemId} saveItem={() => { }} /> :
-                    <ItemPreview itemsRef={savedItemsRef.current} selectedItemId={selectedSavedItemId} saveItem={() => { }} />
+                    <ItemPreview setsRef={itemsRef.current.ITEM_SETS} itemsRef={itemsRef.current.BASE_ITEMS} selectedItemId={selectedItemId} saveItem={() => { }} /> :
+                    <ItemPreview setsRef={itemsRef.current.ITEM_SETS} itemsRef={savedItemsRef.current} selectedItemId={selectedSavedItemId} saveItem={() => { }} />
                 }
             </Modal>
 

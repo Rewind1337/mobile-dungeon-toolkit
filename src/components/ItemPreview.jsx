@@ -15,6 +15,9 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setSelec
 
     function onResize() {
         let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5;
+        if (window.matchMedia("(max-width: 900px)").matches === true) {
+            newHeight = window.innerHeight - CONSTANTS.listHeightDefault + 77;
+        }
         if (listRef.current !== null) {
             if (window.matchMedia("(max-width: 900px)").matches === true) {
                 newHeight = window.innerHeight - (CONSTANTS.listHeightMobile + listRef.current.offsetTop)
@@ -51,6 +54,12 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setSelec
     } else {
         return (
             <div ref={listRef} className='item-preview flex-col' style={{ maxHeight: listHeight }}>
+
+                {saveItem &&
+                    <div className='flex-row'>
+                        <Button text={"Save Item"} onClick={() => { saveItem(itemObj) }} color={0} />
+                    </div>
+                }
                 <div className='header-big'>{itemObj.name}</div>
                 <div className='flex-col'>
                     <div className='flex-row'>

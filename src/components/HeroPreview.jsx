@@ -17,6 +17,9 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
 
     function onResize() {
         let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5;
+        if (window.matchMedia("(max-width: 900px)").matches === true) {
+            newHeight = window.innerHeight - CONSTANTS.listHeightDefault + 77;
+        }
         if (listRef.current !== null) {
             if (window.matchMedia("(max-width: 900px)").matches === true) {
                 newHeight = window.innerHeight - (CONSTANTS.listHeightMobile + listRef.current.offsetTop)
@@ -78,6 +81,9 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
         return (
             <div ref={listRef} className='hero-preview' style={{ maxHeight: listHeight }}>
                 <div className='flex-row'>
+                    <Button text={"Save Hero"} onClick={() => { saveHero(heroObj) }} />
+                </div>
+                <div className='flex-row'>
                     <div className='header-big'>{ROLE_NAME_MAP[heroObj.role]}</div>
                     <div className='header-big'>{heroObj.name}</div>
                     <div className='header-big'>{ATTRIBUTE_NAME_MAP[heroObj.mainAttribute]}</div>
@@ -104,7 +110,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                     </div>
 
                     <div className='header'>Equipped Items</div>
-                    <div className="flex-row">
+                    <div className="flex-row equipment">
                         <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT.WEAPON) }} />
                         <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT.HELMET) }} />
                         <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT.ARMOR) }} />
@@ -114,14 +120,10 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                     </div>
                     {heroObj.baseStats !== null && <div className='header'>Base Stats</div>}
                     {heroObj.baseStats !== null && <div className='flex-row base-stats'>
-                        {getStatsAtLevel(50, heroObj.baseStats).health}<br />
-                        {getStatsAtLevel(50, heroObj.baseStats).attack}<br />
-                        {getStatsAtLevel(50, heroObj.baseStats).defense}<br />
-                        {getStatsAtLevel(50, heroObj.baseStats).agility}<br />
-                        <div className='flex-row text card'>{perkSprites["HEALTH_FLAT"]}{heroObj.baseStats.health} Health</div>
-                        <div className='flex-row text card'>{perkSprites["ATTACK_FLAT"]}{heroObj.baseStats.attack} Attack</div>
-                        <div className='flex-row text card'>{perkSprites["DEFENCE_FLAT"]}{heroObj.baseStats.defense} Defense</div>
-                        <div className='flex-row text card'>{perkSprites["AGILITY_FLAT"]}{heroObj.baseStats.agility} Agility</div>
+                        <div className='flex-row text card'>{perkSprites["HEALTH_FLAT"]}{heroObj.baseStats.health}</div>
+                        <div className='flex-row text card'>{perkSprites["ATTACK_FLAT"]}{heroObj.baseStats.attack}</div>
+                        <div className='flex-row text card'>{perkSprites["DEFENCE_FLAT"]}{heroObj.baseStats.defense}</div>
+                        <div className='flex-row text card'>{perkSprites["AGILITY_FLAT"]}{heroObj.baseStats.agility}</div>
                     </div>}
                     <div className='header'>Other Stats</div>
                     <div className='flex-row details'>

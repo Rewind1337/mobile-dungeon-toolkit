@@ -22,6 +22,16 @@
     &.visible {
         left: V.$gap;
     }
+
+    @include M.media-query-max(V.$bp-mobile, ()) {
+        top: 0;
+        width: calc(50vw - V.$gap-small);
+        height: calc(100vh);
+
+        &.visible {
+            left: 0;
+        }
+    }
 }
 
 .modal-right {
@@ -34,6 +44,16 @@
 
     &.visible {
         left: calc(50vw + V.$gap-small);
+    }
+
+    @include M.media-query-max(V.$bp-mobile, ()) {
+        top: 0;
+        width: calc(50vw - V.$gap-small);
+        height: calc(100vh);
+
+        &.visible {
+            left: calc(50vw + V.$gap-small);
+        }
     }
 }
 
