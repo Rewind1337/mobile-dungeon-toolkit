@@ -10,7 +10,7 @@ import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import { CONSTANTS } from "../database/constants.jsx"
 
 function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
-    const { listHeight, listRef, events } = useDynamicList(() => { }, 0, CONSTANTS.listHeightSubPage);
+    const { listHeight, listRef, events } = useDynamicList(() => { }, 165, CONSTANTS.listHeightSubPage);
     const [pageContent, setPageContent] = useState(0)
     const [selectedSavedHeroId, setSelectedSavedHeroId] = useState(null)
     const [selectedSavedItemId, setSelectedSavedItemId] = useState({ slot: null, id: null })
@@ -66,7 +66,7 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                 </div>
             </div>
 
-            <div id='page-heroes' className='page flex-row w-100'>
+            <div id='page-teams' className='page flex-row w-100'>
                 {pageContent === 0 &&
                     <>
                         <div ref={listRef} className='teams-list card flex-col w-50' style={{ maxHeight: listHeight }}>
@@ -74,8 +74,8 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                             {teams.map((team, teamIndex) =>
                                 <div className="team card flex-col">
                                     <div className="flex-row">
-                                        <Button text={"Delete Team"} color={5} onClick={() => { }} />
-                                        <Button text={"Clear Team"} color={4} onClick={() => { }} />
+                                        <Button text={"Delete Team"} autoHeight color={5} onClick={() => { }} />
+                                        <Button text={"Clear Team"} autoHeight color={4} onClick={() => { }} />
                                         <div className="header-big">{team.name}</div>
                                     </div>
                                     <div className="flex-row">
@@ -87,7 +87,7 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                                     </div>
                                 </div>)}
                             <div className="team team-new card flex-row">
-                                <Button text={"Create new Team"} color={2} onClick={() => { }} />
+                                <Button text={"Create new Team"} autoHeight color={2} onClick={() => { }} />
                             </div>
                         </div>
                         <div className='card w-50'>

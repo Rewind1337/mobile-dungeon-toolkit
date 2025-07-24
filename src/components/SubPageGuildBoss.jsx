@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react"
 
 import { elementSprites, guildBossSprites } from "../database/db_sprites.jsx"
-import Skill from "./Skill.jsx"
+import TextCard from "./TextCard.jsx"
 import { CONSTANTS } from "../database/constants.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx";
 

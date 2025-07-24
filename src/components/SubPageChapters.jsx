@@ -13,11 +13,11 @@ const CHAPTERS = [
     { id: 7, name: "Sprawling Jungle" },
     { id: 8, name: "Mojo Mangroves" },
     { id: 9, name: "Northrunt" },
-    { id: 0, name: "Shadowrock Mountain" },
-    { id: 1, name: "Plains of Oz'Korr" },
-    { id: 2, name: "Nevermoor" },
-    { id: 3, name: "Rotten Lands" },
-    { id: 4, name: "Busted Lands" },
+    { id: 10, name: "Shadowrock Mountain" },
+    { id: 11, name: "Plains of Oz'Korr" },
+    { id: 12, name: "Nevermoor" },
+    { id: 13, name: "Rotten Lands" },
+    { id: 14, name: "Busted Lands" },
 ]
 
 function Chapter({ id, name, setSelectedChapter }) {

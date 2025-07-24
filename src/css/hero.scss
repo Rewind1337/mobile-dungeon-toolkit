@@ -40,13 +40,28 @@
   .skills,
   .talents {
     flex-grow: 1;
+
+    .text-card {
+      justify-content: space-between;
+      padding: 5px;
+      border-radius: V.$border-radius;
+      background: V.$secondary-gradient;
+      outline: 1px solid rgba(26, 26, 26, 0.5);
+      transform: translate(0, 0);
+      transition: V.$transition-card;
+    }
   }
 
   .equipment {
     flex-wrap: wrap;
   }
 
+  .flex-col.hero {
+    width: max-content;
+  }
+
   .flex-row.text.card {
+    background: V.$secondary-gradient;
     align-items: center;
     height: 36px;
     font-size: 20px;

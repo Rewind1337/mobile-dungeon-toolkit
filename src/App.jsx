@@ -192,7 +192,7 @@ function App() {
           <div className='flex-col'>
             <div className='card footer flex-row'>
               <a className="w-100" href='https://www.github.com/rewind1337/mobile-dungeon-toolkit'>
-                <Button slim text={"Source Code"} color={3} />
+                <Button autoHeight text={"Source Code"} color={3} />
               </a>
               <div className='text flex-row'>
                 <div className='text flex-row'>

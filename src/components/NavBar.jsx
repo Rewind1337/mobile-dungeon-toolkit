@@ -12,7 +12,9 @@ function NavBar({ switchTabTo }) {
                 <Button onMouseDown={() => { switchTabTo("teams") }} text={"Teams"} color={2} />
             </div>
             <div className='flex-row'>
-                <img height={45} width={45} src={MDSkull} /><div className='header-big nav-bar-header'>Mobile Dungeon Toolkit</div>
+                <img height={45} width={45} src={MDSkull} />
+                <div className='header-big nav-bar-header'>Mobile Dungeon Toolkit</div>
+                <div>&nbsp;</div>
             </div>
             <div className='nav-right flex-row'>
                 <Button onMouseDown={() => { switchTabTo("splash") }} text={"Splash"} color={3} />

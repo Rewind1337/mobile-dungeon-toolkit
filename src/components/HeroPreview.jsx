@@ -7,7 +7,7 @@ import { getStatsAtLevel } from "../database/func_heroes.jsx"
 
 import Button from './Button.jsx'
 import EmptyItem from './EmptyItem.jsx'
-import Skill from './Skill.jsx'
+import TextCard from './TextCard.jsx'
 
 import '../css/hero.scss'
 
@@ -39,17 +39,18 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
     let heroObj = heroesRef[selectedHeroId]
 
     const renderHeroSkills = () => {
-        return heroObj.skills.map(skill => <Skill />)
+        return heroObj.skills.map((skill, index) => <TextCard text={skill.name} prefix={index + 1 + "."} suffix={"Level 1"} title={skill.description} />)
     }
 
     const renderHeroTalents = () => {
         let talents = []
         for (let key in heroObj.talents) {
+            let talent = heroObj.talents[key]
             if (!heroObj.talents.active) {
                 let sum = ""
                 let temp = null
-                for (let eff in heroObj.talents[key].effect) {
-                    temp = heroObj.talents[key].effect[eff]
+                for (let eff in talent.effect) {
+                    temp = talent.effect[eff]
                     let effname = Object.keys(temp)
                     let effvalue = Object.values(temp)
                     for (let i = 0; i < effname.length; i++) {
@@ -60,7 +61,10 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                         }
                     }
                 }
-                talents.push(<>{heroObj.talents[key].name} - [{sum}]<br /></>)
+                let row = ~~(key / 10)
+                let prefix = (key % 10 == 0 ? "M-" : (key % 2 == 0 ? "R-" : "L-"))
+                prefix += row
+                talents.push(<TextCard text={talent.name} prefix={prefix} title={sum}></TextCard>)
             }
         }
         return talents
@@ -90,23 +94,25 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                 </div>
                 <div className='flex-col'>
                     <div className='flex-row'>
-                        <div className='flex-row skills'>
-                            {heroObj.skills && <>
+                        {heroObj.skills &&
+                            <div className='flex-col skills'>
                                 {renderHeroSkills()}
-                            </>}
-                        </div>
-                        <div className={"hero card selected"} data-rarity={heroObj.rarity} data-element={heroObj.element} onClick={() => { onClick() }} >
-                            <div className="hero-element"><img src={heroObj.elementSrc} draggable={false} /></div>
-                            <div className="flex-col">
-                                <div className="hero-sprite"><img className="hero-sprite" src={heroObj.heroSrc} draggable={false} /></div>
-                                <div className="text">1</div>
+                            </div>
+                        }
+                        <div className='flex-col hero'>
+                            <div className={"hero card selected"} data-rarity={heroObj.rarity} data-element={heroObj.element} onClick={() => { onClick() }} >
+                                <div className="hero-element"><img src={heroObj.elementSrc} draggable={false} /></div>
+                                <div className="flex-col">
+                                    <div className="hero-sprite"><img className="hero-sprite" src={heroObj.heroSrc} draggable={false} /></div>
+                                    <div className="text">1</div>
+                                </div>
                             </div>
                         </div>
-                        <div className='flex-row talents'>
-                            {heroObj.talents && <>
+                        {heroObj.talents &&
+                            <div className='flex-col talents'>
                                 {renderHeroTalents()}
-                            </>}
-                        </div>
+                            </div>
+                        }
                     </div>
 
                     <div className='header'>Equipped Items</div>
