@@ -39,6 +39,16 @@ import JackbotSrc from '../sprites/heroes/jackbot.png';
 import EmperorFedgetSrc from '../sprites/heroes/emperor_fedget.png';
 import GoblinShredderSrc from '../sprites/heroes/goblin_shredder.png';
 import IsoldeSrc from '../sprites/heroes/isolde.png';
+import LokiSrc from '../sprites/heroes/loki.png';
+import AphroditeSrc from '../sprites/heroes/aphrodite.png';
+import OdinSrc from '../sprites/heroes/odin.png';
+import MuzenSrc from '../sprites/heroes/muzen.png';
+import SleipnirSrc from '../sprites/heroes/sleipnir.png';
+import MurdermachineSrc from '../sprites/heroes/murdermachine.png';
+import DrillbertSrc from '../sprites/heroes/drillbert.png';
+import ArmadraxSrc from '../sprites/heroes/armadrax.png';
+import BeholderSrc from '../sprites/heroes/beholder.png';
+import CorneliusPrimeSrc from '../sprites/heroes/cornelius_prime.png';
 
 // EPICS
 import AliceSrc from '../sprites/heroes/alice.png';
@@ -100,7 +110,12 @@ import WoolinatorSrc from '../sprites/heroes/woolinator.png';
 import AtomicSeagullSrc from '../sprites/heroes/atomic_seagull.png';
 import WarBardSrc from '../sprites/heroes/war_bard.png';
 import RamgorSrc from '../sprites/heroes/ramgor.png';
+import DjinnSrc from '../sprites/heroes/djinn.png';
+import KingCrabSrc from '../sprites/heroes/king_crab.png';
+import NeanderthalSrc from '../sprites/heroes/neanderthal.png';
+import JotunnSrc from '../sprites/heroes/jotunn.png';
 
+// RARES
 import BagHeadSrc from '../sprites/heroes/bag_head.png';
 import CircusBoxerSrc from '../sprites/heroes/circus_boxer.png';
 import SkeletonWarriorSrc from '../sprites/heroes/skeleton_warrior.png';
@@ -148,7 +163,10 @@ import MoleTamerSrc from '../sprites/heroes/mole_tamer.png';
 import TurboHareSrc from '../sprites/heroes/turbo_hare.png';
 import ManBatSrc from '../sprites/heroes/man_bat.png';
 import ParticleReaverSrc from '../sprites/heroes/particle_reaver.png';
+import CentaurSrc from '../sprites/heroes/centaur.png';
+import ShieldMaidenSrc from '../sprites/heroes/shield_maiden.png';
 
+// UNCOMMONS
 import GhoulSrc from '../sprites/heroes/ghoul.png';
 import ButtWithEarsSrc from '../sprites/heroes/butt_with_ears.png';
 import ScarabSrc from '../sprites/heroes/scarab.png';
@@ -185,34 +203,13 @@ import BlockWorkerSrc from '../sprites/heroes/block_worker.png';
 import NullSrc from '../sprites/null.png';
 
 /*
-        LEGENDARIES
-
+    LEGENDARIES
 import BlackSkullOverlordSrc from '../sprites/heroes/black_skull_overlord.png';
-import AphroditeSrc from '../sprites/heroes/aphrodite.png';
-import OdinSrc from '../sprites/heroes/odin.png';
 import DavyJaneSrc from '../sprites/heroes/davy_jane.png';
 import HadesSrc from '../sprites/heroes/hades.png';
-import LokiSrc from '../sprites/heroes/loki.png';
-import MuzenSrc from '../sprites/heroes/muzen.png';
-import SleipnirSrc from '../sprites/heroes/sleipnir.png';
 import LuciferSrc from '../sprites/heroes/lucifer.png';
-import MurdermachineSrc from '../sprites/heroes/murdermachine.png';
-import DrillbertSrc from '../sprites/heroes/drillbert.png';
 
-        EPICS
-import DjinnSrc from '../sprites/heroes/djinn.png';
-import KingCrabSrc from '../sprites/heroes/king_crab.png';
-import JotunnSrc from '../sprites/heroes/jotunn.png';
-import NeanderthalSrc from '../sprites/heroes/neanderthal.png';
-
-vvv             vvv             vvv             vvv
-import ArmadraxSrc from '../sprites/heroes/armadrax.png';
-import BeholderSrc from '../sprites/heroes/beholder.png';
-
-
-
-
-
+    EPICS
 */
 
 export const heroSprites = {
@@ -258,6 +255,16 @@ export const heroSprites = {
     emperor_fedget: EmperorFedgetSrc,
     goblin_shredder: GoblinShredderSrc,
     isolde: IsoldeSrc,
+    murdermachine: MurdermachineSrc,
+    drillbert: DrillbertSrc,
+    loki: LokiSrc,
+    muzen: MuzenSrc,
+    sleipnir: SleipnirSrc,
+    aphrodite: AphroditeSrc,
+    odin: OdinSrc,
+    cornelius_prime: CorneliusPrimeSrc,
+    armadrax: ArmadraxSrc,
+    beholder: BeholderSrc,
 
     // EPICS
     dr__pestilence: DrPestilenceSrc,
@@ -318,6 +325,10 @@ export const heroSprites = {
     atomic_seagull: AtomicSeagullSrc,
     cyntrix: CyntrixSrc,
     ramgor: RamgorSrc,
+    king_crab: KingCrabSrc,
+    neanderthal: NeanderthalSrc,
+    djinn: DjinnSrc,
+    jotunn: JotunnSrc,
 
     // RARES
     bag_head: BagHeadSrc,
@@ -367,6 +378,8 @@ export const heroSprites = {
     turbo_hare: TurboHareSrc,
     man_bat: ManBatSrc,
     particle_reaver: ParticleReaverSrc,
+    centaur: CentaurSrc,
+    shield_maiden: ShieldMaidenSrc,
 
     // UNCOMMON
     ghoul: GhoulSrc,
@@ -406,26 +419,9 @@ export const heroSprites = {
         LEGENDARIES
     black_skull_overlord: BlackSkullOverlordSrc,
     lucifer: LuciferSrc,
-    murdermachine: MurdermachineSrc,
-    drillbert: DrillbertSrc,
     davy_jane: DavyJaneSrc,
     hades: HadesSrc,
-    loki: LokiSrc,
-    muzen: MuzenSrc,
-    sleipnir: SleipnirSrc,
-    aphrodite: AphroditeSrc,
-    odin: OdinSrc,
-    cornelius_prime: CorneliusPrimeSrc,
-
         EPICS
-    jotunn: JotunnSrc,
-    king_crab: KingCrabSrc,
-    neanderthal: NeanderthalSrc,
-    djinn: DjinnSrc,
-    
-    vvv         vvv         vvv         vvv         vvv
-    armadrax: ArmadraxSrc,
-    beholder: BeholderSrc,
     */
 };
 
@@ -485,6 +481,14 @@ import DualitySrc from '../sprites/weapons/unique/duality.png';
 import StarfallSrc from '../sprites/weapons/unique/starfall.png';
 import ClawtastropheSrc from '../sprites/weapons/unique/clawtastrophe.png';
 import TwilightSrc from '../sprites/weapons/unique/twilight.png';
+import GravelBusterSrc from '../sprites/weapons/unique/gravel_buster.png';
+import BiasedWheelSrc from '../sprites/weapons/unique/biased_wheel.png';
+import DiceOfDoomSrc from '../sprites/weapons/unique/dice_of_doom.png';
+import SingularityTomeSrc from '../sprites/weapons/unique/singularity_tome.png';
+import DoomRodSrc from '../sprites/weapons/unique/doom_rod.png';
+import LavaCatalystSrc from '../sprites/weapons/unique/lava_catalyst.png';
+import TuskFangSrc from '../sprites/weapons/unique/tusk_fang.png';
+import RiftPiercerSrc from '../sprites/weapons/unique/rift_piercer.png';
 
 
 import DownholeHelmetSrc from '../sprites/helmets/sets/downhole.png';
@@ -613,6 +617,15 @@ export const itemSprites = {
     research_log: ResearchLogSrc,
     singularity: SingularitySrc,
     chopocalypse: ChopocalypseSrc,
+    gravel_buster: GravelBusterSrc,
+    biased_wheel: BiasedWheelSrc,
+    singularity_tome: SingularityTomeSrc,
+    doom_rod: DoomRodSrc,
+    lava_catalyst: LavaCatalystSrc,
+    tusk_fang: TuskFangSrc,
+    dice_of_doom: DiceOfDoomSrc,
+    rift_piercer: RiftPiercerSrc,
+
 
     downhole_helmet: DownholeHelmetSrc,
     downhole_armor: DownholeArmorSrc,
@@ -690,6 +703,7 @@ import RingsSrc from '../sprites/buttons/rings.png'
 import NecklacesSrc from '../sprites/buttons/necklaces.png'
 import UniqueSrc from '../sprites/buttons/unique.png'
 import WeaponsSrc from '../sprites/buttons/weapons.png'
+import RareHeroSrc from '../sprites/buttons/rare_hero.png'
 
 export const iconSprites = {
     twoset: TwoSetSrc,
@@ -699,7 +713,8 @@ export const iconSprites = {
     helmets: HelmetsSrc,
     armors: ArmorsSrc,
     rings: RingsSrc,
-    necklaces: NecklacesSrc
+    necklaces: NecklacesSrc,
+    rare_hero: RareHeroSrc,
 }
 
 import { LuShieldHalf } from "react-icons/lu"

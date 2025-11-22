@@ -1,3 +1,8 @@
+export const DROP_SOURCE = {
+    EVERYWHERE: 0,
+    GUILD_HUNT: 1,
+}
+
 export const EQUIPMENT_SLOT_NAME_MAP = {
     0: "WEAPON",
     1: "HELMET",
@@ -178,6 +183,8 @@ export const UNIQUE_SKILLS = {
     HARMONY: { id: 118, description: "All inflicted debuffs that cause damage over time have a $e chance to last 1 extra turn.", rarityEffect: [1.40, 1.50, 1.60, 1.70] },
     CHOPOCALYPSE: { id: 119, description: "Primary Skill has a $e chance to inflinct ATK Down on target for 1 turn.", rarityEffect: [1.24, 1.30, 1.36, 1.42] },
     SINGULARITY: { id: 120, description: "Ultimate Skill has a $e chance to inflict Echo on target for 2 turns.", rarityEffect: [1.40, 1.50, 1.60, 1.70] },
+    GRAVEL_BUSTER: { id: 121, description: "If own HP are above 75%, Shield Strength increased by $e.", rarityEffect: [1.15, 1.20, 1.25, 1.30] },
+    BIASED_WHEEL: { id: 122, description: "Primary Skill has a $e chance to inflict Burn on target for 1 turn.", rarityEffect: [1.30, 1.36, 1.43, 1.50] },
 
     // INTELLIGENCE
     EMBRYONIC_CATALYST: { id: 200, description: "Cast Buffs (except Invincibility & Preservation) have a $e chance to last 1 extra turn.", rarityEffect: [1.30, 1.36, 1.43, 1.50] },
@@ -199,6 +206,8 @@ export const UNIQUE_SKILLS = {
     EQUILIBRIUM: { id: 215, description: "+$e Critical Chance on targets with Marked.", rarityEffect: [1.25, 1.30, 1.36, 1.42] },
     INSANITY_CATALYST: { id: 216, description: "Increases Critical Damage by $e in turn 1 and every 2 turns.", rarityEffect: [1.15, 1.20, 1.25, 1.30] },
     DUALITY: { id: 217, description: "Ultimate Skill heals the ally with the lowest HP by $e of total damage dealt.", rarityEffect: [1.08, 1.10, 1.12, 1.14] },
+    DOOM_ROD: { id: 218, description: "Ultimate Skill has a $e chance to inflict Bound on target for 1 turn.", rarityEffect: [1.12, 1.15, 1.18, 1.21] },
+    SINGULARITY_TOME: { id: 219, description: "Increases Splash Damage by $e.", rarityEffect: [1.05, 1.06, 1.08, 1.10] },
 
     // AGILITY
     BLASTER: { id: 300, description: "Critical hits heal self by $e of damage dealt.", rarityEffect: [1.07, 1.10, 1.13, 1.16] },
@@ -218,6 +227,8 @@ export const UNIQUE_SKILLS = {
     CLAWTASTROPHE: { id: 314, description: "Ultimate Skill has a $e chance to grant self Crit Chance Up for 2 turns", rarityEffect: [1.30, 1.36, 1.43, 1.50] },
     STARFALL: { id: 315, description: "At the start of every 3rd turn, heals all allies for $e of own max HP.", rarityEffect: [1.04, 1.06, 1.08, 1.10] },
     TWILIGHT: { id: 316, description: "Critical hits have a $e chance to dispel 1 Buff from the target.", rarityEffect: [1.40, 1.50, 1.60, 1.70] },
+    DICE_OF_DOOM: { id: 317, description: "Buffs (except Invincibility & Preservation) have a $e chance to extend their Duration by 1 round.", rarityEffect: [1.30, 1.36, 1.43, 1.50] },
+    TUSK_FANG: { id: 318, description: "Ultimate Skill has a $e chance to grant the Caster ATK Up for 2 turns.", rarityEffect: [1.40, 1.50, 1.60, 1.70] },
 }
 
 export const STATUS_EFFECTS = {

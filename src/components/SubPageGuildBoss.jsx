@@ -6,7 +6,7 @@ import { CONSTANTS } from "../database/constants.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx";
 
 const GUILD_BOSSES = [
-    { id: 0, name: "Elementor", elementSrcArray: [elementSprites[0], elementSprites[1], elementSprites[2]] },
+    { id: 0, name: "Elemental Weaver", elementSrcArray: [elementSprites[0], elementSprites[1], elementSprites[2]] },
     { id: 1, name: "Equinox", elementSrcArray: [elementSprites[3], elementSprites[4]] },
     { id: 2, name: "Star Breaker", elementSrcArray: [elementSprites[5]] },
 ]

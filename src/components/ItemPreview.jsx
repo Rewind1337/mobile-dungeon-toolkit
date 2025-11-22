@@ -51,6 +51,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
     useEffect(() => {
         if (selectedItemId.slot !== null && slotIndexToNameMap[selectedItemId.slot]) {
             let _itemObj = itemsRef[slotIndexToNameMap[selectedItemId.slot]]?.[selectedItemId.id]
+            console.log(_itemObj)
             let _rarity = _itemObj.rarity
             let _minRarity = _itemObj.rarity
             setItemObj(_itemObj)

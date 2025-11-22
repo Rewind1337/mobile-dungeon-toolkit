@@ -144,19 +144,19 @@
     background: hsl(255deg, 50%, 40%);
   }
 
-  &[data-rarity="4"] .hero-sprite {
-    background: hsl(40, 50%, 50%);
+  &[data-rarity="4"] {
+    background: linear-gradient(160deg, hsl(40, 50%, 50%) 0%, hsl(40, 50%, 30%) 100%);
   }
 
-  &[data-rarity="3"] .hero-sprite {
-    background: hsl(265, 50%, 50%);
+  &[data-rarity="3"] {
+    background: linear-gradient(160deg, hsl(265, 50%, 50%) 0%, hsl(265, 50%, 30%) 100%);
   }
 
-  &[data-rarity="2"] .hero-sprite {
-    background: hsl(225, 50%, 50%);
+  &[data-rarity="2"] {
+    background: linear-gradient(160deg, hsl(225, 50%, 50%) 0%, hsl(225, 50%, 30%) 100%);
   }
 
-  &[data-rarity="1"] .hero-sprite {
-    background: hsl(109, 46%, 59%);
+  &[data-rarity="1"] {
+    background: linear-gradient(160deg, hsl(109, 46%, 50%) 0%, hsl(109, 46%, 30%) 100%);
   }
 }
