@@ -88,7 +88,7 @@ function ItemList({ setForceUpdate = () => { }, extraHeight = 0, savedItems, hea
                     <Item
                         itemObj={itemObj}
                         key={itemObj.key}
-                        level={1}
+                        level={null}
                         onClick={() => setSelectedItemId({ slot: itemObj.slot, id: savedItems ? itemObj.saveId : itemObj.id })}
                     />
                 ))

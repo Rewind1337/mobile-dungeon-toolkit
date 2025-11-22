@@ -8,7 +8,7 @@ function Hero({ heroObj, selected, level, onClick }) {
             <div className="hero-element"><img src={heroObj.elementSrc} draggable={false} /></div>
             <div className="flex-col">
                 <div className="hero-sprite"><img className="hero-sprite" draggable={false} src={heroObj.heroSrc} /></div>
-                <div className="text">{level}</div>
+                {level !== null && <div className="text">{level}</div>}
             </div>
         </div>
     )

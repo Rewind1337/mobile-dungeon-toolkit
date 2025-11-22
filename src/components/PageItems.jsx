@@ -11,12 +11,14 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
     const [selectedItemId, setSelectedItemId] = useState({ slot: null, id: null })
     const [selectedSavedItemId, setSelectedSavedItemId] = useState({ slot: null, id: null })
 
-    const [itemPerks, setItemPerks] = useState([]);
-    const [selectedPerkSlot, setSelectedPerkSlot] = useState(null);
     const [perkSelectionVisible, setPerkSelectionVisible] = useState(false)
     const [possiblePerks, setPossiblePerks] = useState([])
 
     const [forceUpdate, setForceUpdate] = useState({})
+
+    const handleSelectPerkClick = (perk) => {
+        setPerkSelectionVisible(false);
+    };
 
     const handlePerkClick = () => {
         let itemObj = itemsRef.current.BASE_ITEMS[slotIndexToNameMap[selectedItemId.slot]]?.[selectedItemId.id]
@@ -30,31 +32,11 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
         return POSSIBLE_PERKS[slot]
     }
 
-    const handleSelectPerkClick = (perk) => {
-        setItemPerks((prevPerks) => {
-            const newPerks = [...prevPerks];
-            newPerks[selectedPerkSlot] = perk;
-            return newPerks;
-        });
-        setPerkSelectionVisible(false);
-    };
-
-    useEffect(() => {
-        if (selectedItemId.slot !== null && selectedItemId.id !== null) {
-            const slot = slotIndexToNameMap[selectedItemId.slot];
-            const itemObj = itemsRef.current.BASE_ITEMS[slot]?.[selectedItemId.id];
-            setItemPerks(itemObj?.perks || []); // Initialize with existing perks or empty array
-        } else {
-            setItemPerks([]); // Reset when no item is selected
-        }
-    }, [selectedItemId, itemsRef]);
-
     const slotIndexToNameMap = { 0: "WEAPONS", 1: "HELMETS", 2: "ARMORS", 3: "NECKLACES", 4: "RINGS" }
     const saveItem = (itemObj) => {
         console.log("Saving " + itemObj.name + " to " + itemObj.slot);
         let slotArray = slotIndexToNameMap[itemObj.slot];
         itemObj.saveId = savedItemsRef.current[slotArray].length;
-        itemObj.perks = itemPerks;
         savedItemsRef.current[slotArray].push(itemObj);
         setSavedItemsUpdated((prev) => prev + 1); // Trigger re-render
     };
@@ -77,9 +59,9 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                 </div>
             </Modal>
 
-            <div className="flex-row" style={{ justifyContent: "space-between", order: window.matchMedia("(max-width: 900px)").matches ? 1 : 0 }}>
+            <div className="flex-row" style={{ justifyContent: "space-between", order: window.matchMedia("(max-width: 900px)").matches ? 0 : 0 }}>
                 <div className="pagination flex-row card w-100">
-                    <Button text={"All Items"} color={0} onClick={() => { setPageContent(0) }} />
+                    <Button text={"All Items"} color={1} onClick={() => { setPageContent(0) }} />
                     <Button text={"Your Saved Items"} color={1} onClick={() => { setPageContent(1) }} />
                 </div>
                 <div className="options flex-row card">
@@ -94,7 +76,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                             <ItemList setForceUpdate={setForceUpdate} headerText={"All Items"} itemsRef={itemsRef.current.BASE_ITEMS} setSelectedItemId={setSelectedItemId} setsRef={itemsRef.current.BASE_SETS} />
                         </div>
                         <div className='card w-50'>
-                            <ItemPreview setForceUpdate={setForceUpdate} itemPerks={itemPerks} setSelectedPerkSlot={setSelectedPerkSlot} itemsRef={itemsRef.current.BASE_ITEMS} setsRef={itemsRef.current.ITEM_SETS} selectedItemId={selectedItemId} onPerkClick={handlePerkClick} saveItem={saveItem} />
+                            <ItemPreview setForceUpdate={setForceUpdate} itemsRef={itemsRef.current.BASE_ITEMS} setsRef={itemsRef.current.ITEM_SETS} selectedItemId={selectedItemId} onPerkClick={handlePerkClick} saveItem={saveItem} />
                         </div>
                     </>
                 }
@@ -104,7 +86,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                             <ItemList setForceUpdate={setForceUpdate} savedItems headerText={"Saved Items"} itemsRef={savedItemsRef.current} setSelectedItemId={setSelectedSavedItemId} setsRef={itemsRef.current.BASE_SETS} />
                         </div>
                         <div className='card w-50'>
-                            <ItemPreview setForceUpdate={setForceUpdate} itemPerks={itemPerks} setSelectedPerkSlot={setSelectedPerkSlot} itemsRef={savedItemsRef.current} setsRef={itemsRef.current.ITEM_SETS} selectedItemId={selectedSavedItemId} onPerkClick={handlePerkClick} />
+                            <ItemPreview setForceUpdate={setForceUpdate} itemsRef={savedItemsRef.current} setsRef={itemsRef.current.ITEM_SETS} selectedItemId={selectedSavedItemId} setPerkSelectionVisible={setPerkSelectionVisible} onPerkClick={handlePerkClick} />
                         </div>
                     </>
                 }

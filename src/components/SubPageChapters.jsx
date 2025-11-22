@@ -18,6 +18,8 @@ const CHAPTERS = [
     { id: 12, name: "Nevermoor" },
     { id: 13, name: "Rotten Lands" },
     { id: 14, name: "Busted Lands" },
+    { id: 15, name: "Tusk Mountain" },
+    { id: 16, name: "Magmaron" },
 ]
 
 function Chapter({ id, name, setSelectedChapter }) {

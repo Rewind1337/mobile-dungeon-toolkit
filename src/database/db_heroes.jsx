@@ -58,8 +58,11 @@ export function init_hero_db() {
     add_hero("Gravitator", ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, ELEMENT.NATURE, ROLE.CONTROL)
     add_hero("Buster", ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, ELEMENT.FIRE, ROLE.OFFENSIVE)
     add_hero("Shakes", ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, ELEMENT.LIGHT, ROLE.OFFENSIVE)
+    add_hero("Drillbert", ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, ELEMENT.FIRE, ROLE.CONTROL)
+    add_hero("Armadrax", ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, ELEMENT.NATURE, ROLE.DEFENSIVE)
+    add_hero("Phoenix", ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, ELEMENT.FIRE, ROLE.SUPPORT)
 
-    // AGILITY
+    // DEXTERITY
     add_hero("Mercy", ATTRIBUTE.DEXTERITY, null, RARITY.LEGENDARY, ELEMENT.LIGHT, ROLE.OFFENSIVE)
     add_hero("Jack-o'-Lantern", ATTRIBUTE.DEXTERITY, null, RARITY.LEGENDARY, ELEMENT.NATURE, ROLE.OFFENSIVE)
     add_hero("Headless Horseman", ATTRIBUTE.DEXTERITY, null, RARITY.LEGENDARY, ELEMENT.FIRE, ROLE.SUPPORT)
@@ -72,6 +75,9 @@ export function init_hero_db() {
     add_hero("Muzen", ATTRIBUTE.DEXTERITY, null, RARITY.LEGENDARY, ELEMENT.NATURE, ROLE.SUPPORT)
     add_hero("Shroom Empress", ATTRIBUTE.DEXTERITY, null, RARITY.LEGENDARY, ELEMENT.NATURE, ROLE.CONTROL)
     add_hero("Sleipnir", ATTRIBUTE.DEXTERITY, null, RARITY.LEGENDARY, ELEMENT.NATURE, ROLE.DEFENSIVE)
+
+    add_hero("Void Assassin", ATTRIBUTE.DEXTERITY, null, RARITY.LEGENDARY, ELEMENT.SHADOW, ROLE.CONTROL)
+    add_hero("Thorne", ATTRIBUTE.DEXTERITY, null, RARITY.LEGENDARY, ELEMENT.NATURE, ROLE.OFFENSIVE)
 
     // INTELLIGENCE
     add_hero("Shroom Emperor", ATTRIBUTE.INTELLIGENCE, null, RARITY.LEGENDARY, ELEMENT.NATURE, ROLE.DEFENSIVE)
@@ -91,6 +97,9 @@ export function init_hero_db() {
     add_hero("Cornelius Prime", ATTRIBUTE.INTELLIGENCE, null, RARITY.LEGENDARY, ELEMENT.LIGHT, ROLE.SUPPORT)
     add_hero("Pele", ATTRIBUTE.INTELLIGENCE, null, RARITY.LEGENDARY, ELEMENT.FIRE, ROLE.OFFENSIVE)
     add_hero("Fidget", ATTRIBUTE.INTELLIGENCE, null, RARITY.LEGENDARY, ELEMENT.LIGHT, ROLE.SUPPORT)
+    add_hero("Beholder", ATTRIBUTE.INTELLIGENCE, null, RARITY.LEGENDARY, ELEMENT.WATER, ROLE.CONTROL)
+    add_hero("Jackbot", ATTRIBUTE.INTELLIGENCE, null, RARITY.LEGENDARY, ELEMENT.LIGHT, ROLE.OFFENSIVE)
+    add_hero("Emperor Fedget", ATTRIBUTE.INTELLIGENCE, null, RARITY.LEGENDARY, ELEMENT.SHADOW, ROLE.CONTROL)
 
     // EPIC
     // STRENGTH
@@ -116,8 +125,13 @@ export function init_hero_db() {
     add_hero("War Bard", ATTRIBUTE.STRENGTH, null, RARITY.EPIC, ELEMENT.FIRE, ROLE.SUPPORT)
 
     add_hero("Buzzfreak", ATTRIBUTE.STRENGTH, { health: 190, attack: 60, defense: 55, agility: 51 }, RARITY.EPIC, ELEMENT.LIGHT, ROLE.DEFENSIVE)
+    add_hero("Woolinator", ATTRIBUTE.STRENGTH, null, RARITY.EPIC, ELEMENT.FIRE, ROLE.SUPPORT)
+    add_hero("Drorc", ATTRIBUTE.STRENGTH, null, RARITY.EPIC, ELEMENT.WATER, ROLE.CONTROL)
+    add_hero("Rift Protector", ATTRIBUTE.STRENGTH, null, RARITY.EPIC, ELEMENT.NATURE, ROLE.DEFENSIVE)
+    add_hero("Woolinator", ATTRIBUTE.STRENGTH, null, RARITY.EPIC, ELEMENT.FIRE, ROLE.SUPPORT)
+    add_hero("Ramgor", ATTRIBUTE.STRENGTH, null, RARITY.EPIC, ELEMENT.FIRE, ROLE.DEFENSIVE) // role unsure
 
-    // AGILITY
+    // DEXTERITY
     add_hero("Hermes", ATTRIBUTE.DEXTERITY, null, RARITY.EPIC, ELEMENT.LIGHT, ROLE.CONTROL)
     add_hero("Drone", ATTRIBUTE.DEXTERITY, null, RARITY.EPIC, ELEMENT.LIGHT, ROLE.OFFENSIVE)
     add_hero("Predator", ATTRIBUTE.DEXTERITY, { health: 167, attack: 64, defense: 45, agility: 56 }, RARITY.EPIC, ELEMENT.NATURE, ROLE.CONTROL)
@@ -126,9 +140,11 @@ export function init_hero_db() {
     add_hero("Robyn", ATTRIBUTE.DEXTERITY, { health: 167, attack: 64, defense: 47, agility: 54 }, RARITY.EPIC, ELEMENT.NATURE, ROLE.OFFENSIVE)
     add_hero("Badgerer", ATTRIBUTE.DEXTERITY, { health: 171, attack: 63, defense: 46, agility: 55 }, RARITY.EPIC, ELEMENT.NATURE, ROLE.CONTROL)
 
+    add_hero("Cyntrix", ATTRIBUTE.DEXTERITY, null, RARITY.EPIC, ELEMENT.SHADOW, ROLE.CONTROL)
     add_hero("Desert Ranger", ATTRIBUTE.DEXTERITY, { health: 174, attack: 64, defense: 51, agility: 56 }, RARITY.EPIC, ELEMENT.SHADOW, ROLE.OFFENSIVE)
     add_hero("Gnarler", ATTRIBUTE.DEXTERITY, { health: 207, attack: 57, defense: 57, agility: 40 }, RARITY.EPIC, ELEMENT.NATURE, ROLE.DEFENSIVE)
     add_hero("Mirage", ATTRIBUTE.DEXTERITY, { health: 171, attack: 66, defense: 46, agility: 53 }, RARITY.EPIC, ELEMENT.FIRE, ROLE.OFFENSIVE)
+    add_hero("Axolotty", ATTRIBUTE.DEXTERITY, null, RARITY.EPIC, ELEMENT.WATER, ROLE.OFFENSIVE)
 
     // INTELLIGENCE
     add_hero("Candy Elemental", ATTRIBUTE.INTELLIGENCE, null, RARITY.EPIC, ELEMENT.SHADOW, ROLE.CONTROL)
@@ -154,7 +170,9 @@ export function init_hero_db() {
     add_hero("Catalina", ATTRIBUTE.INTELLIGENCE, null, RARITY.EPIC, ELEMENT.WATER, ROLE.CONTROL)
     add_hero("Aqualon", ATTRIBUTE.INTELLIGENCE, null, RARITY.EPIC, ELEMENT.WATER, ROLE.SUPPORT)
 
+    add_hero("Atomic Seagull", ATTRIBUTE.INTELLIGENCE, null, RARITY.EPIC, ELEMENT.LIGHT, ROLE.OFFENSIVE)
     add_hero("Doctress", ATTRIBUTE.INTELLIGENCE, { health: 190, attack: 52, defense: 55, agility: 51 }, RARITY.EPIC, ELEMENT.WATER, ROLE.SUPPORT)
+    add_hero("Bonnie Bullet", ATTRIBUTE.INTELLIGENCE, null, RARITY.EPIC, ELEMENT.SHADOW, ROLE.OFFENSIVE)
 
     // RARE
     // STRENGTH
@@ -169,6 +187,10 @@ export function init_hero_db() {
     add_hero("Grave Digger", ATTRIBUTE.STRENGTH, { health: 155, attack: 61, defense: 41, agility: 52 }, RARITY.RARE, ELEMENT.NATURE, ROLE.CONTROL)
     add_hero("Mummy", ATTRIBUTE.STRENGTH, { health: 178, attack: 51, defense: 51, agility: 45 }, RARITY.RARE, ELEMENT.FIRE, ROLE.DEFENSIVE)
     add_hero("Orkitect", ATTRIBUTE.STRENGTH, { health: 161, attack: 58, defense: 42, agility: 51 }, RARITY.RARE, ELEMENT.FIRE, ROLE.CONTROL)
+
+    add_hero("Mole Tamer", ATTRIBUTE.STRENGTH, null, RARITY.RARE, ELEMENT.NATURE, ROLE.SUPPORT)
+    add_hero("Earthworm", ATTRIBUTE.STRENGTH, null, RARITY.RARE, ELEMENT.WATER, ROLE.OFFENSIVE)
+    add_hero("Claw Machine", ATTRIBUTE.STRENGTH, null, RARITY.RARE, ELEMENT.NATURE, ROLE.CONTROL)
 
     // INTELLIGENCE
     add_hero("Cursed Goat", ATTRIBUTE.INTELLIGENCE, { health: 165, attack: 61, defense: 44, agility: 53 }, RARITY.RARE, ELEMENT.SHADOW, ROLE.CONTROL)
@@ -187,6 +209,9 @@ export function init_hero_db() {
     add_hero("Fire Elemental", ATTRIBUTE.INTELLIGENCE, { health: 171, attack: 56, defense: 50, agility: 43 }, RARITY.RARE, ELEMENT.FIRE, ROLE.OFFENSIVE)
     add_hero("Jolly", ATTRIBUTE.INTELLIGENCE, null, RARITY.RARE, ELEMENT.LIGHT, ROLE.SUPPORT)
 
+    add_hero("Particle Reaver", ATTRIBUTE.INTELLIGENCE, null, RARITY.RARE, ELEMENT.LIGHT, ROLE.OFFENSIVE)
+    add_hero("Cooklin", ATTRIBUTE.INTELLIGENCE, null, RARITY.RARE, ELEMENT.FIRE, ROLE.OFFENSIVE)
+
     // DEXTERITY
     add_hero("Killer Bunny", ATTRIBUTE.DEXTERITY, { health: 155, attack: 61, defense: 41, agility: 52 }, RARITY.RARE, ELEMENT.NATURE, ROLE.OFFENSIVE)
     add_hero("Naga", ATTRIBUTE.DEXTERITY, { health: 169, attack: 58, defense: 46, agility: 46 }, RARITY.RARE, ELEMENT.NATURE, ROLE.SUPPORT)
@@ -200,7 +225,11 @@ export function init_hero_db() {
     add_hero("Harpy", ATTRIBUTE.DEXTERITY, { health: 159, attack: 61, defense: 42, agility: 50 }, RARITY.RARE, ELEMENT.NATURE, ROLE.OFFENSIVE)
     add_hero("Battle Bot", ATTRIBUTE.DEXTERITY, { health: 167, attack: 60, defense: 44, agility: 47 }, RARITY.RARE, ELEMENT.FIRE, ROLE.OFFENSIVE)
     add_hero("Nutcracker", ATTRIBUTE.DEXTERITY, null, RARITY.RARE, ELEMENT.NATURE, ROLE.DEFENSIVE)
+    add_hero("Torture Dummy", ATTRIBUTE.DEXTERITY, null, RARITY.RARE, ELEMENT.SHADOW, ROLE.CONTROL)
+    add_hero("Man Bat", ATTRIBUTE.DEXTERITY, null, RARITY.RARE, ELEMENT.SHADOW, ROLE.OFFENSIVE)
+    add_hero("Turbo Hare", ATTRIBUTE.DEXTERITY, null, RARITY.RARE, ELEMENT.NATURE, ROLE.SUPPORT)
 
+    add_hero("Light Fly", ATTRIBUTE.DEXTERITY, null, RARITY.RARE, ELEMENT.LIGHT, ROLE.SUPPORT)
 
     // UNCOMMON
     // STRENGTH
@@ -214,6 +243,10 @@ export function init_hero_db() {
     add_hero("Gingerbread Boy", ATTRIBUTE.STRENGTH, { health: 148, attack: 56, defense: 41, agility: 48 }, RARITY.UNCOMMON, ELEMENT.NATURE, ROLE.SUPPORT)
     add_hero("Crab", ATTRIBUTE.STRENGTH, null, RARITY.UNCOMMON, ELEMENT.WATER, ROLE.DEFENSIVE)
 
+    add_hero("Block Worker", ATTRIBUTE.STRENGTH, null, RARITY.UNCOMMON, ELEMENT.NATURE, ROLE.SUPPORT)
+    add_hero("Mallorc", ATTRIBUTE.STRENGTH, null, RARITY.UNCOMMON, ELEMENT.WATER, ROLE.OFFENSIVE)
+    add_hero("Magma Blobby", ATTRIBUTE.STRENGTH, null, RARITY.UNCOMMON, ELEMENT.FIRE, ROLE.OFFENSIVE)
+
     // INTELLIGENCE
     add_hero("Lab Ape", ATTRIBUTE.INTELLIGENCE, { health: 161, attack: 55, defense: 43, agility: 47 }, RARITY.UNCOMMON, ELEMENT.LIGHT, ROLE.CONTROL)
     add_hero("Slime", ATTRIBUTE.INTELLIGENCE, { health: 150, attack: 51, defense: 46, agility: 43 }, RARITY.UNCOMMON, ELEMENT.WATER, ROLE.SUPPORT)
@@ -221,6 +254,8 @@ export function init_hero_db() {
     add_hero("Sheep", ATTRIBUTE.INTELLIGENCE, { health: 165, attack: 49, defense: 49, agility: 39 }, RARITY.UNCOMMON, ELEMENT.NATURE, ROLE.DEFENSIVE)
     add_hero("Snake", ATTRIBUTE.INTELLIGENCE, { health: 142, attack: 55, defense: 37, agility: 51 }, RARITY.UNCOMMON, ELEMENT.FIRE, ROLE.CONTROL)
     add_hero("Cockatrice", ATTRIBUTE.INTELLIGENCE, { health: 150, attack: 52, defense: 41, agility: 47 }, RARITY.UNCOMMON, ELEMENT.NATURE, ROLE.CONTROL)
+
+    add_hero("Irradieel", ATTRIBUTE.INTELLIGENCE, null, RARITY.UNCOMMON, ELEMENT.WATER, ROLE.CONTROL)
 
     // DEXTERITY
     add_hero("Seagull", ATTRIBUTE.DEXTERITY, { health: 152, attack: 57, defense: 44, agility: 46 }, RARITY.UNCOMMON, ELEMENT.LIGHT, ROLE.OFFENSIVE)

@@ -57,7 +57,7 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
 
     return (
         <>
-            <div className="flex-row" style={{ justifyContent: "space-between", order: window.matchMedia("(max-width: 900px)").matches ? 1 : 0 }}>
+            <div className="flex-row" style={{ justifyContent: "space-between", order: window.matchMedia("(max-width: 900px)").matches ? 0 : 0 }}>
                 <div className="pagination flex-row card w-100">
                     <Button text={"Your Teams"} color={2} onClick={() => { setPageContent(0) }} />
                 </div>

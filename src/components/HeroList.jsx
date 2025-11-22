@@ -65,15 +65,19 @@ function HeroList({ setForceUpdate = () => { }, extraHeight = 0, savedHeroes = f
             <Button round onClick={() => toggleFilter('rarity', 4)} text={raritySprites[4]} active={filters.rarity === 4} />
         </div>
         <div className='list hero-list flex-row' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
-            {filteredHeroes.map((heroObj) => (
-                <Hero
-                    selected={heroObj.id === selectedHeroId}
-                    heroObj={heroObj}
-                    key={heroObj.id + '-' + heroObj.saveId}
-                    level={1}
-                    onClick={() => setSelectedHeroId(savedHeroes ? heroObj.saveId : heroObj.id)}
-                />
-            ))}
+            {filteredHeroes.length === 0 ? (
+                <div className="text">No heroes match the selected filters</div>
+            ) : (
+                filteredHeroes.map((heroObj) => (
+                    <Hero
+                        selected={heroObj.id === selectedHeroId}
+                        heroObj={heroObj}
+                        key={heroObj.id + '-' + heroObj.saveId}
+                        level={null}
+                        onClick={() => setSelectedHeroId(savedHeroes ? heroObj.saveId : heroObj.id)}
+                    />
+                ))
+            )}
         </div>
     </>
     )

@@ -364,8 +364,15 @@ body::after {
   }
 
   &[data-id="14"] {
-    background-image: url('../sprites/null.png'); // NEED : BUSTED LANDS TOURIST IMAGE
-    background-size: contain;
+    background-image: url('../sprites/simulation/busted_lands.png');
+  }
+
+  &[data-id="15"] {
+    background-image: url('../sprites/simulation/tusk_mountain.png');
+  }
+
+  &[data-id="16"] {
+    background-image: url('../sprites/simulation/magmaron.png');
   }
 }
 

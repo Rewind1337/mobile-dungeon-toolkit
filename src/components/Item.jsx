@@ -8,7 +8,7 @@ function Item({ itemObj, selected, level, onClick }) {
             <div className="item-icon"><img src={itemObj.iconSrc} draggable={false} /></div>
             <div className="flex-col">
                 <div className="item-sprite"><img className="item-sprite" draggable={false} src={itemObj.itemSrc} /></div>
-                <div className="text">{level}</div>
+                {level !== null && <div className="text">{level}</div>}
             </div>
         </div>
     )

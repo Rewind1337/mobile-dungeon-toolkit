@@ -1,7 +1,8 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { formatNumber } from '../js/util.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
+import { RARITY, RARITY_NAME_MAP } from '../database/enums.jsx'
 import { iconSprites } from '../database/db_sprites.jsx'
 
 import Button from './Button.jsx'
@@ -9,9 +10,22 @@ import ItemPerk from './ItemPerk.jsx'
 
 import '../css/item.scss'
 
-function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setSelectedPerkSlot, setsRef, itemPerks }) {
+function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef }) {
+    const slotIndexToNameMap = { 0: "WEAPONS", 1: "HELMETS", 2: "ARMORS", 3: "NECKLACES", 4: "RINGS" }
+    const [itemObj, setItemObj] = useState(null)
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
+    const [selectedRarity, setSelectedRarity] = useState(null)
+    const [selectedLevel, setSelectedLevel] = useState(null)
+    const [minRarity, setMinRarity] = useState(null) // unused at the moment
+    const selectedPerks = useRef()
+    const [selectedPerkValues, setSelectedPerkValues] = useState([0])
+
+    const handlePerkSelect = (perk, index) => {
+        console.log(perk, index)
+        selectedPerks.current[index] = perk;
+        onPerkClick();
+    }
 
     function onResize() {
         let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5;
@@ -34,18 +48,40 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setSelec
         return () => window.removeEventListener('resize', onResize);
     }, []);
 
-    const slotIndexToNameMap = { 0: "WEAPONS", 1: "HELMETS", 2: "ARMORS", 3: "NECKLACES", 4: "RINGS" }
-    let itemObj = null
-    if (selectedItemId.slot !== null && slotIndexToNameMap[selectedItemId.slot]) {
-        itemObj = itemsRef[slotIndexToNameMap[selectedItemId.slot]]?.[selectedItemId.id]
-    }
+    useEffect(() => {
+        if (selectedItemId.slot !== null && slotIndexToNameMap[selectedItemId.slot]) {
+            let _itemObj = itemsRef[slotIndexToNameMap[selectedItemId.slot]]?.[selectedItemId.id]
+            let _rarity = _itemObj.rarity
+            let _minRarity = _itemObj.rarity
+            setItemObj(_itemObj)
+            setSelectedRarity(_rarity)
+            setMinRarity(_minRarity) // unused for now
+            setSelectedLevel(Number(_itemObj.level) || 1)
+        }
+    }, [selectedItemId])
+
+    useEffect(() => {
+        if (itemObj) {
+            let numPerks = Math.min(Math.max(0, selectedRarity - 1), 3)
+            if (selectedRarity >= 1) {
+                numPerks += ((itemObj.unique === 0 || itemObj.set === -1) ? 1 : 0)
+            }
+            let perks = Array(numPerks).fill("NOTHING")
+            for (let i = 0; i < selectedPerks.length; i++) {
+                if (selectedPerks[i] !== "NOTHING")
+                    perks[i] = selectedPerks[i]
+            }
+            selectedPerks.current = perks;
+            setSelectedPerkValues(Array(perks.length).fill(0))
+        }
+    }, [selectedRarity])
 
     let noSelection = false
     if (selectedItemId.slot === null || selectedItemId.id === null) {
         noSelection = true
     }
 
-    if (noSelection) {
+    if (noSelection || itemObj === null) {
         return (
             <div className='item-preview'>
                 <div className='header-big'>Select an Item</div>
@@ -63,13 +99,21 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setSelec
                 <div className='header-big'>{itemObj.name}</div>
                 <div className='flex-col'>
                     <div className='flex-row'>
-                        <div className={"item card selected"} data-rarity={itemObj.rarity} data-type={itemObj.iconType} onClick={() => { onClick() }}>
+                        <div className={"item card selected"} data-rarity={selectedRarity} data-type={itemObj.iconType} onClick={() => { onClick() }}>
                             <div className="item-icon"><img src={itemObj.iconSrc} draggable={false} /></div>
                             <div className="flex-col">
                                 <div className="item-sprite"><img className="item-sprite" src={itemObj.itemSrc} draggable={false} /></div>
-                                <div className="text">1</div>
+                                <div className="text">
+                                    <input type='number' className='text' value={selectedLevel} onChange={e => setSelectedLevel(e.target.value)} />
+                                </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div className='card flex-row'>
+                        <Button text={"Rarity Down"} onClick={() => { setSelectedRarity(r => Math.max(0, r -= 1)) }} color={0} />
+                        <div className='header'>{RARITY_NAME_MAP[selectedRarity]}</div>
+                        <Button text={"Rarity Up"} onClick={() => { setSelectedRarity(r => Math.min(5, r += 1)) }} color={0} />
                     </div>
 
                     {itemObj.unique && <div className='card'>
@@ -90,6 +134,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setSelec
                                 key={"setperk_" + attr.id}
                                 name={attr.name.toUpperCase().replace(/\s/g, '_') || "NOTHING"}
                                 value={(Math.random() * 10).toFixed(2)}
+                                editable={true}
                             />
                         )}
                     </>}
@@ -101,23 +146,24 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setSelec
                                 key={"perk_" + bonus}
                                 name={bonus.name.toUpperCase().replace(/\s/g, '_') || "NOTHING"}
                                 value={(Math.random() * 10).toFixed(2)}
+                                editable={true}
                             />
                         )}
                     </>}
-                    {itemPerks && <>
+                    {selectedPerks.current && <>
                         <div className='header'>Perks</div>
-                        {itemPerks.length === 0 && <>
+                        {selectedPerks.current.length === 0 && <>
                             <div>No perks available</div>
                         </>}
-                        {itemPerks.length >= 0 && <>
-                            {itemPerks.map((perk, index) => (
+                        {selectedPerks.current.length >= 0 && <>
+                            {selectedPerks.current.map((perk, index) => (
                                 <ItemPerk
                                     key={"perk_" + index}
                                     name={perk.toUpperCase().replace(/\s/g, '_') || "NOTHING"}
-                                    value={(Math.random() * 10).toFixed(2)}
+                                    value={selectedPerkValues[index]}
                                     perkSlot={index + 1}
                                     editable={true}
-                                    onClick={() => { setSelectedPerkSlot(index); onPerkClick() }}
+                                    onClick={() => { handlePerkSelect(perk, index) }}
                                 />
                             ))}
                         </>}

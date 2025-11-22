@@ -21,7 +21,9 @@
   overflow: auto;
   padding: V.$gap-small;
 
-  .item {}
+  .item {
+    width: min-content;
+  }
 
   img {
     width: 32px;

@@ -42,7 +42,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
         <>
             <Modal position="left" isVisible={itemSelectionVisible} onClose={() => { setItemSelectionVisible(false); clearItemSelection(); }}>
                 <div className="flex-row w-100">
-                    <Button text={"All Items"} color={0} onClick={() => setItemSelectionModalMode(0)} />
+                    <Button text={"All Items"} color={1} onClick={() => setItemSelectionModalMode(0)} />
                     <Button text={"Your Saved Items"} color={1} onClick={() => setItemSelectionModalMode(1)} />
                 </div>
                 {itemSelectionModalMode === 0 ?
@@ -58,10 +58,10 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
             </Modal>
 
 
-            <div className="flex-row" style={{ justifyContent: "space-between", order: window.matchMedia("(max-width: 900px)").matches ? 1 : 0 }}>
+            <div className="flex-row" style={{ justifyContent: "space-between", order: window.matchMedia("(max-width: 900px)").matches ? 0 : 0 }}>
                 <div className="pagination flex-row card w-100">
                     <Button text={"All Heroes"} color={0} onClick={() => { setPageContent(0) }} />
-                    <Button text={"Your Saved Heroes"} color={1} onClick={() => { setPageContent(1) }} />
+                    <Button text={"Your Saved Heroes"} color={0} onClick={() => { setPageContent(1) }} />
                 </div>
                 <div className="options flex-row card">
                     <Button text={"Manual Save"} color={5} onClick={() => { manualSaveFunction() }} />

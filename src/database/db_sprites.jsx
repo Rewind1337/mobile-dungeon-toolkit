@@ -14,12 +14,37 @@ import MonkSrc from '../sprites/heroes/monk.png';
 import SirenSrc from '../sprites/heroes/siren.png';
 import LilithSrc from '../sprites/heroes/lilith.png';
 import MercySrc from '../sprites/heroes/mercy.png';
+import ShroomEmpressSrc from '../sprites/heroes/shroom_empress.png';
+import CyborkSrc from '../sprites/heroes/cybork.png';
+import KrampusSrc from '../sprites/heroes/krampus.png';
+import ShakesSrc from '../sprites/heroes/shakes.png';
+import FidgetSrc from '../sprites/heroes/fidget.png';
+import SphinxSrc from '../sprites/heroes/sphinx.png';
+import MurderingMassSrc from '../sprites/heroes/murdering_mass.png';
+import BastetSrc from '../sprites/heroes/bastet.png';
+import AnubisSrc from '../sprites/heroes/anubis.png';
+import ProfessorSrc from '../sprites/heroes/professor.png';
+import CthulhuSrc from '../sprites/heroes/cthulhu.png';
+import MedusaSrc from '../sprites/heroes/medusa.png';
+import WendigoSrc from '../sprites/heroes/wendigo.png';
+import AthenaSrc from '../sprites/heroes/athena.png';
+import HeimdallSrc from '../sprites/heroes/heimdall.png';
+import HephaestusSrc from '../sprites/heroes/hephaestus.png';
+import GravitatorSrc from '../sprites/heroes/gravitator.png';
+import PhoenixSrc from '../sprites/heroes/phoenix.png';
+import VoidAssassinSrc from '../sprites/heroes/void_assassin.png';
+import ThorneSrc from '../sprites/heroes/thorne.png';
+import PeleSrc from '../sprites/heroes/pele.png';
+import JackbotSrc from '../sprites/heroes/jackbot.png';
+import EmperorFedgetSrc from '../sprites/heroes/emperor_fedget.png';
+import GoblinShredderSrc from '../sprites/heroes/goblin_shredder.png';
+import IsoldeSrc from '../sprites/heroes/isolde.png';
 
 // EPICS
 import AliceSrc from '../sprites/heroes/alice.png';
 import SylvannaSrc from '../sprites/heroes/sylvanna.png';
 import CatalinaSrc from '../sprites/heroes/catalina.png';
-import DrPestilenceSrc from '../sprites/heroes/dr_pestilence.png';
+import DrPestilenceSrc from '../sprites/heroes/dr__pestilence.png';
 import YulambSrc from '../sprites/heroes/yulamb.png';
 import CorneliusSrc from '../sprites/heroes/cornelius.png';
 import OrkdozerSrc from '../sprites/heroes/orkdozer.png';
@@ -60,6 +85,21 @@ import MirageSrc from '../sprites/heroes/mirage.png';
 import DesertRangerSrc from '../sprites/heroes/desert_ranger.png';
 import DoctressSrc from '../sprites/heroes/doctress.png';
 import AqualonSrc from '../sprites/heroes/aqualon.png'
+import RudolphSrc from '../sprites/heroes/rudolph.png';
+import OrcaSrc from '../sprites/heroes/orca.png';
+import OrkopterSrc from '../sprites/heroes/orkopter.png';
+import WitchSrc from '../sprites/heroes/witch.png';
+import DrorcSrc from '../sprites/heroes/drorc.png';
+import RiftProtectorSrc from '../sprites/heroes/rift_protector.png';
+import AxolottySrc from '../sprites/heroes/axolotty.png';
+import BonnieBulletSrc from '../sprites/heroes/bonnie_bullet.png';
+import YaotlSrc from '../sprites/heroes/yaotl.png';
+import BlackSkullWarriorSrc from '../sprites/heroes/black_skull_warrior.png';
+import CyntrixSrc from '../sprites/heroes/cyntrix.png';
+import WoolinatorSrc from '../sprites/heroes/woolinator.png';
+import AtomicSeagullSrc from '../sprites/heroes/atomic_seagull.png';
+import WarBardSrc from '../sprites/heroes/war_bard.png';
+import RamgorSrc from '../sprites/heroes/ramgor.png';
 
 import BagHeadSrc from '../sprites/heroes/bag_head.png';
 import CircusBoxerSrc from '../sprites/heroes/circus_boxer.png';
@@ -99,6 +139,15 @@ import HarpySrc from '../sprites/heroes/harpy.png';
 import BattleBotSrc from '../sprites/heroes/battle_bot.png';
 import JollySrc from '../sprites/heroes/jolly.png';
 import NutcrackerSrc from '../sprites/heroes/nutcracker.png';
+import ClawMachineSrc from '../sprites/heroes/claw_machine.png';
+import CooklinSrc from '../sprites/heroes/cooklin.png';
+import LightFlySrc from '../sprites/heroes/light_fly.png';
+import EarthwormSrc from '../sprites/heroes/earthworm.png';
+import TortureDummySrc from '../sprites/heroes/torture_dummy.png';
+import MoleTamerSrc from '../sprites/heroes/mole_tamer.png';
+import TurboHareSrc from '../sprites/heroes/turbo_hare.png';
+import ManBatSrc from '../sprites/heroes/man_bat.png';
+import ParticleReaverSrc from '../sprites/heroes/particle_reaver.png';
 
 import GhoulSrc from '../sprites/heroes/ghoul.png';
 import ButtWithEarsSrc from '../sprites/heroes/butt_with_ears.png';
@@ -128,55 +177,42 @@ import SnowmanSrc from '../sprites/heroes/snowman.png';
 import TentacleSrc from '../sprites/heroes/tentacle.png';
 import MosquitoSrc from '../sprites/heroes/mosquito.png';
 import CrabSrc from '../sprites/heroes/crab.png';
+import MallorcSrc from '../sprites/heroes/mallorc.png';
+import MagmaBlobbySrc from '../sprites/heroes/magma_blobby.png';
+import IrradieelSrc from '../sprites/heroes/irradieel.png';
+import BlockWorkerSrc from '../sprites/heroes/block_worker.png';
 
 import NullSrc from '../sprites/null.png';
-
-import ShroomEmpressSrc from '../sprites/heroes/shroom_empress.png';
-import CyborkSrc from '../sprites/heroes/cybork.png';
-import KrampusSrc from '../sprites/heroes/krampus.png';
-import ShakesSrc from '../sprites/heroes/shakes.png';
-import FidgetSrc from '../sprites/heroes/fidget.png';
-import SphinxSrc from '../sprites/heroes/sphinx.png';
-import MurderingMassSrc from '../sprites/heroes/murdering_mass.png';
-import BastetSrc from '../sprites/heroes/bastet.png';
-import AnubisSrc from '../sprites/heroes/anubis.png';
-import ProfessorSrc from '../sprites/heroes/professor.png';
-
-import RudolphSrc from '../sprites/heroes/rudolph.png';
 
 /*
         LEGENDARIES
 
 import BlackSkullOverlordSrc from '../sprites/heroes/black_skull_overlord.png';
 import AphroditeSrc from '../sprites/heroes/aphrodite.png';
-import CthulhuSrc from '../sprites/heroes/cthulhu.png';
-import IsoldeSrc from '../sprites/heroes/isolde.png';
 import OdinSrc from '../sprites/heroes/odin.png';
-import MedusaSrc from '../sprites/heroes/medusa.png';
-import WendigoSrc from '../sprites/heroes/wendigo.png';
-import AthenaSrc from '../sprites/heroes/athena.png';
 import DavyJaneSrc from '../sprites/heroes/davy_jane.png';
 import HadesSrc from '../sprites/heroes/hades.png';
 import LokiSrc from '../sprites/heroes/loki.png';
 import MuzenSrc from '../sprites/heroes/muzen.png';
 import SleipnirSrc from '../sprites/heroes/sleipnir.png';
-import GoblinShredderSrc from '../sprites/heroes/goblin_shredder.png';
-import HeimdallSrc from '../sprites/heroes/heimdall.png';
-import HephaestusSrc from '../sprites/heroes/hephaestus.png';
 import LuciferSrc from '../sprites/heroes/lucifer.png';
 import MurdermachineSrc from '../sprites/heroes/murdermachine.png';
+import DrillbertSrc from '../sprites/heroes/drillbert.png';
 
         EPICS
 import DjinnSrc from '../sprites/heroes/djinn.png';
-import WitchSrc from '../sprites/heroes/witch.png';
-import YaotlSrc from '../sprites/heroes/yaotl.png';
-import OrkopterSrc from '../sprites/heroes/orkopter.png';
-import BlackSkullWarriorSrc from '../sprites/heroes/black_skull_warrior.png';
 import KingCrabSrc from '../sprites/heroes/king_crab.png';
 import JotunnSrc from '../sprites/heroes/jotunn.png';
 import NeanderthalSrc from '../sprites/heroes/neanderthal.png';
-import OrcaSrc from '../sprites/heroes/orca.png';
-import WarBardSrc from '../sprites/heroes/war_bard.png';
+
+vvv             vvv             vvv             vvv
+import ArmadraxSrc from '../sprites/heroes/armadrax.png';
+import BeholderSrc from '../sprites/heroes/beholder.png';
+
+
+
+
+
 */
 
 export const heroSprites = {
@@ -199,7 +235,6 @@ export const heroSprites = {
     mercy: MercySrc,
     shroom_empress: ShroomEmpressSrc,
     cybork: CyborkSrc,
-    krampus: KrampusSrc,
     shakes: ShakesSrc,
     fidget: FidgetSrc,
     anubis: AnubisSrc,
@@ -207,9 +242,25 @@ export const heroSprites = {
     bastet: BastetSrc,
     murdering_mass: MurderingMassSrc,
     professor: ProfessorSrc,
+    heimdall: HeimdallSrc,
+    hephaestus: HephaestusSrc,
+    krampus: KrampusSrc,
+    wendigo: WendigoSrc,
+    athena: AthenaSrc,
+    medusa: MedusaSrc,
+    cthulhu: CthulhuSrc,
+    gravitator: GravitatorSrc,
+    phoenix: PhoenixSrc,
+    void_assassin: VoidAssassinSrc,
+    thorne: ThorneSrc,
+    pele: PeleSrc,
+    jackbot: JackbotSrc,
+    emperor_fedget: EmperorFedgetSrc,
+    goblin_shredder: GoblinShredderSrc,
+    isolde: IsoldeSrc,
 
     // EPICS
-    dr_pestilence: DrPestilenceSrc,
+    dr__pestilence: DrPestilenceSrc,
     yulamb: YulambSrc,
     cornelius: CorneliusSrc,
     orkdozer: OrkdozerSrc,
@@ -253,6 +304,20 @@ export const heroSprites = {
     buzzfreak: BuzzfreakSrc,
     aqualon: AqualonSrc,
     rudolph: RudolphSrc,
+    orca: OrcaSrc,
+    orkopter: OrkopterSrc,
+    witch: WitchSrc,
+    drorc: DrorcSrc,
+    rift_protector: RiftProtectorSrc,
+    bonnie_bullet: BonnieBulletSrc,
+    axolotty: AxolottySrc,
+    war_bard: WarBardSrc,
+    woolinator: WoolinatorSrc,
+    yaotl: YaotlSrc,
+    black_skull_warrior: BlackSkullWarriorSrc,
+    atomic_seagull: AtomicSeagullSrc,
+    cyntrix: CyntrixSrc,
+    ramgor: RamgorSrc,
 
     // RARES
     bag_head: BagHeadSrc,
@@ -293,6 +358,15 @@ export const heroSprites = {
     battle_bot: BattleBotSrc,
     jolly: JollySrc,
     nutcracker: NutcrackerSrc,
+    claw_machine: ClawMachineSrc,
+    cooklin: CooklinSrc,
+    light_fly: LightFlySrc,
+    earthworm: EarthwormSrc,
+    torture_dummy: TortureDummySrc,
+    mole_tamer: MoleTamerSrc,
+    turbo_hare: TurboHareSrc,
+    man_bat: ManBatSrc,
+    particle_reaver: ParticleReaverSrc,
 
     // UNCOMMON
     ghoul: GhoulSrc,
@@ -323,39 +397,35 @@ export const heroSprites = {
     crab: CrabSrc,
     tentacle: TentacleSrc,
     mosquito: MosquitoSrc,
+    mallorc: MallorcSrc,
+    magma_blobby: MagmaBlobbySrc,
+    block_worker: BlockWorkerSrc,
+    irradieel: IrradieelSrc,
+
     /*
         LEGENDARIES
     black_skull_overlord: BlackSkullOverlordSrc,
-    goblin_shredder: GoblinShredderSrc,
-    heimdall: HeimdallSrc,
-    hephaestus: HephaestusSrc,
-    krampus: KrampusSrc,
     lucifer: LuciferSrc,
     murdermachine: MurdermachineSrc,
-    wendigo: WendigoSrc,
-    athena: AthenaSrc,
+    drillbert: DrillbertSrc,
     davy_jane: DavyJaneSrc,
     hades: HadesSrc,
     loki: LokiSrc,
     muzen: MuzenSrc,
     sleipnir: SleipnirSrc,
-    medusa: MedusaSrc,
     aphrodite: AphroditeSrc,
-    cthulhu: CthulhuSrc,
-    isolde: IsoldeSrc,
     odin: OdinSrc,
+    cornelius_prime: CorneliusPrimeSrc,
 
         EPICS
-    yaotl: YaotlSrc,
-    djinn: DjinnSrc,
-    witch: WitchSrc,
-    black_skull_warrior: BlackSkullWarriorSrc,
     jotunn: JotunnSrc,
     king_crab: KingCrabSrc,
     neanderthal: NeanderthalSrc,
-    orca: OrcaSrc,
-    war_bard: WarBardSrc,
-    orkopter: OrkopterSrc,
+    djinn: DjinnSrc,
+    
+    vvv         vvv         vvv         vvv         vvv
+    armadrax: ArmadraxSrc,
+    beholder: BeholderSrc,
     */
 };
 

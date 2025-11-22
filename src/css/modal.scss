@@ -24,7 +24,7 @@
     }
 
     @include M.media-query-max(V.$bp-mobile, ()) {
-        top: 0;
+        top: 45.5px;
         width: calc(50vw - V.$gap-small);
         height: calc(100vh);
 
@@ -47,7 +47,7 @@
     }
 
     @include M.media-query-max(V.$bp-mobile, ()) {
-        top: 0;
+        top: 45.5px;
         width: calc(50vw - V.$gap-small);
         height: calc(100vh);
 
