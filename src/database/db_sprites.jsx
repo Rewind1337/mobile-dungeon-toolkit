@@ -190,7 +190,7 @@ import RatSrc from '../sprites/heroes/rat.png';
 import GlompfSrc from '../sprites/heroes/glompf.png';
 import BatSrc from '../sprites/heroes/bat.png';
 import VultureSrc from '../sprites/heroes/vulture.png';
-import MeanSeagullSrc from '../sprites/heroes/mean_seagull.png';
+import SeagullMeanSrc from '../sprites/heroes/seagull_mean.png';
 import SnowmanSrc from '../sprites/heroes/snowman.png';
 import TentacleSrc from '../sprites/heroes/tentacle.png';
 import MosquitoSrc from '../sprites/heroes/mosquito.png';
@@ -385,6 +385,8 @@ export const heroSprites = {
     ghoul: GhoulSrc,
     butt_with_ears: ButtWithEarsSrc,
     scarab: ScarabSrc,
+    scarab_green: NullSrc, //
+    scarab_red: NullSrc, //
     skeleton: SkeletonSrc,
     chicklet: ChickletSrc,
     scorpion: ScorpionSrc,
@@ -405,7 +407,7 @@ export const heroSprites = {
     glompf: GlompfSrc,
     bat: BatSrc,
     vulture: VultureSrc,
-    mean_seagull: MeanSeagullSrc,
+    seagull_mean: SeagullMeanSrc,
     snowman: SnowmanSrc,
     crab: CrabSrc,
     tentacle: TentacleSrc,
@@ -714,7 +716,7 @@ export const iconSprites = {
     armors: ArmorsSrc,
     rings: RingsSrc,
     necklaces: NecklacesSrc,
-    rare_hero: RareHeroSrc,
+    is_starred: RareHeroSrc,
 }
 
 import { LuShieldHalf } from "react-icons/lu"
@@ -821,7 +823,7 @@ export const guildBossSprites = {
     star_herald: StarHeraldSrc,
 }
 
-import Absorption from '../sprites/status/absorption.png'
+import Absorb from '../sprites/status/absorb.png'
 import AccuracyDown from '../sprites/status/accuracy_down.png'
 import AccuracyUp from '../sprites/status/accuracy_up.png'
 import AgilityDown from '../sprites/status/agility_down.png'
@@ -829,9 +831,11 @@ import AgilityUp from '../sprites/status/agility_up.png'
 import AnubisSeal from '../sprites/status/anubis_seal.png'
 import APResistance from '../sprites/status/ap_resistance.png'
 import Arachnid from '../sprites/status/arachnid.png'
+import Ash from '../sprites/status/ash.png'
 import AttackDown from '../sprites/status/attack_down.png'
 import AttackUp from '../sprites/status/attack_up.png'
 import Biomass from '../sprites/status/biomass.png'
+import Blacklist from '../sprites/status/blacklist.png'
 import Bleeding from '../sprites/status/bleeding.png'
 import Blessed from '../sprites/status/blessed.png'
 import Blind from '../sprites/status/blind.png'
@@ -843,6 +847,7 @@ import Burn from '../sprites/status/burn.png'
 import Burrow from '../sprites/status/burrow.png'
 import BuzzMeter from '../sprites/status/buzz_meter.png'
 import Confused from '../sprites/status/confused.png'
+import Courage from '../sprites/status/courage.png'
 import CritChanceDown from '../sprites/status/crit_chance_down.png'
 import CritChanceUp from '../sprites/status/crit_chance_up.png'
 import CritDamageUp from '../sprites/status/crit_damage_up.png'
@@ -855,9 +860,11 @@ import DefenseUp from '../sprites/status/defense_up.png'
 import Detonator from '../sprites/status/detonator.png'
 import DivineShield from '../sprites/status/divine_shield.png'
 import Drumbeat from '../sprites/status/drumbeat.png'
+import Echo from '../sprites/status/echo.png'
 import Feral from '../sprites/status/feral.png'
 import Ferryman from '../sprites/status/ferryman.png'
 import Foresight from '../sprites/status/foresight.png'
+import Fracture from '../sprites/status/fracture.png'
 import Freeze from '../sprites/status/freeze.png'
 import FrozenHeart from '../sprites/status/frozen_heart.png'
 import Fury from '../sprites/status/fury.png'
@@ -868,31 +875,41 @@ import Hellfire from '../sprites/status/hellfire.png'
 import Hivemind from '../sprites/status/hivemind.png'
 import HotSaw from '../sprites/status/hot_saw.png'
 import IgnitedEgo from '../sprites/status/ignited_ego.png'
+import Ionize from '../sprites/status/ionize.png'
+import Irradiate from '../sprites/status/irradiate.png'
 import Immunity from '../sprites/status/immunity.png'
 import Invincibility from '../sprites/status/invincibility.png'
 import LifeAfterDeath from '../sprites/status/life_after_death.png'
 import Loa from '../sprites/status/loa.png'
+import Luck from '../sprites/status/luck.png'
+import ManaShield from '../sprites/status/mana_shield.png'
 import Marked from '../sprites/status/marked.png'
 import Mjoellnir from '../sprites/status/mjoellnir.png'
 import Mute from '../sprites/status/mute.png'
 import PainFueled from '../sprites/status/pain_fueled.png'
 import Petrified from '../sprites/status/petrified.png'
+import PhoenixFeather from '../sprites/status/phoenix_feather.png'
 import Poison from '../sprites/status/poison.png'
 import Preservation from '../sprites/status/preservation.png'
 import Recovery from '../sprites/status/recovery.png'
 import ResistanceDown from '../sprites/status/resistance_down.png'
 import ResistanceUp from '../sprites/status/resistance_up.png'
+import RiftStep from '../sprites/status/rift_step.png'
+import Rooted from '../sprites/status/rooted.png'
 import Shield from '../sprites/status/shield.png'
 import Shroud from '../sprites/status/shroud.png'
 import Sick from '../sprites/status/sick.png'
 import Sleep from '../sprites/status/sleep.png'
 import Sludge from '../sprites/status/sludge.png'
+import Smoke from '../sprites/status/smoke.png'
 import SoulHarvest from '../sprites/status/soul_harvest.png'
+import SoulCore from '../sprites/status/soul_core.png'
 import Soulmate from '../sprites/status/soulmate.png'
 import SphinxCurse from '../sprites/status/sphinx_curse.png'
 import Stunned from '../sprites/status/stunned.png'
 import Styx from '../sprites/status/styx.png'
 import Taunt from '../sprites/status/taunt.png'
+import Tempered from '../sprites/status/tempered.png'
 import TheMoon from '../sprites/status/the_moon.png'
 import TheStar from '../sprites/status/the_star.png'
 import TheSun from '../sprites/status/the_sun.png'
@@ -901,17 +918,19 @@ import Wildfire from '../sprites/status/wildfire.png'
 import WindUp from '../sprites/status/wind_up.png'
 
 export const statusSprites = {
-    absorption: Absorption,
+    absorb: Absorb,
     accuracy_down: AccuracyDown,
     accuracy_up: AccuracyUp,
     agility_down: AgilityDown,
     agility_up: AgilityUp,
+    ash: Ash,
     anubis_seal: AnubisSeal,
     ap_resistance: APResistance,
     arachnid: Arachnid,
     attack_down: AttackDown,
     attack_up: AttackUp,
     biomass: Biomass,
+    blacklist: Blacklist,
     bleeding: Bleeding,
     blessed: Blessed,
     blind: Blind,
@@ -923,10 +942,11 @@ export const statusSprites = {
     burrow: Burrow,
     buzz_meter: BuzzMeter,
     confused: Confused,
-    crit_chance_down: CritChanceDown,
-    crit_chance_up: CritChanceUp,
-    crit_damage_up: CritDamageUp,
-    crit_resist: CritResist,
+    critical_chance_down: CritChanceDown,
+    critical_chance_up: CritChanceUp,
+    critical_damage_up: CritDamageUp,
+    critical_resist: CritResist,
+    courage: Courage,
     cursed_flame: CursedFlame,
     cursed: Cursed,
     defense_down: DefenseDown,
@@ -935,9 +955,11 @@ export const statusSprites = {
     detonator: Detonator,
     divine_shield: DivineShield,
     drumbeat: Drumbeat,
+    echo: Echo,
     feral: Feral,
     ferryman: Ferryman,
     foresight: Foresight,
+    fracture: Fracture,
     freeze: Freeze,
     frozen_heart: FrozenHeart,
     fury: Fury,
@@ -948,31 +970,41 @@ export const statusSprites = {
     hivemind: Hivemind,
     hot_saw: HotSaw,
     ignited_ego: IgnitedEgo,
+    ionize: Ionize,
+    irradiate: Irradiate,
     immunity: Immunity,
     invincibility: Invincibility,
     life_after_death: LifeAfterDeath,
     loa: Loa,
+    luck: Luck,
+    mana_shield: ManaShield,
     marked: Marked,
     mjoellnir: Mjoellnir,
     mute: Mute,
     pain_fueled: PainFueled,
     petrified: Petrified,
+    phoenix_feather: PhoenixFeather,
     poison: Poison,
     preservation: Preservation,
     recovery: Recovery,
     resistance_down: ResistanceDown,
     resistance_up: ResistanceUp,
+    rift_step: RiftStep,
+    rooted: Rooted,
     shield: Shield,
     shroud: Shroud,
     sick: Sick,
+    smoke: Smoke,
     sleep: Sleep,
     sludge: Sludge,
     soul_harvest: SoulHarvest,
+    soul_core: SoulCore,
     soulmate: Soulmate,
     sphinx_curse: SphinxCurse,
     stunned: Stunned,
     styx: Styx,
     taunt: Taunt,
+    tempered: Tempered,
     the_moon: TheMoon,
     the_star: TheStar,
     the_sun: TheSun,

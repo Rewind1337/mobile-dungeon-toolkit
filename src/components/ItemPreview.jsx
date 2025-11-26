@@ -91,12 +91,6 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
     } else {
         return (
             <div ref={listRef} className='item-preview flex-col' style={{ maxHeight: listHeight }}>
-
-                {saveItem &&
-                    <div className='flex-row'>
-                        <Button text={"Save Item"} onClick={() => { saveItem(itemObj) }} color={0} />
-                    </div>
-                }
                 <div className='header-big'>{itemObj.name}</div>
                 <div className='flex-col'>
                     <div className='flex-row'>

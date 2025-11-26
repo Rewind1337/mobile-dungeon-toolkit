@@ -18,6 +18,25 @@
 .hero-preview {
   overflow: auto;
 
+  .top-row {
+
+    * {
+      align-self: center;
+    }
+
+    .header {
+      width: 50%;
+    }
+
+    .header-big {
+      width: 100%;
+    }
+  }
+
+  .status-row {
+    margin-bottom: 8px;
+  }
+
   .hero.selected {}
 
   .base-stats {
@@ -39,7 +58,7 @@
 
   .skills,
   .talents {
-    flex-grow: 1;
+    width: 50%;
 
     .text-card {
       justify-content: space-between;
@@ -97,6 +116,27 @@
       width: 100%;
       height: 100%;
       scale: 1.2;
+    }
+  }
+
+  .hero-starred {
+    width: V.$icon-width;
+    height: V.$icon-height;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: V.$border-radius-small;
+    border-top-right-radius: V.$border-radius;
+    border-bottom-left-radius: V.$border-radius;
+    top: 0;
+    right: 0;
+    position: absolute;
+    z-index: 3;
+    line-height: 19px;
+    background: hsl(0, 0%, 35%);
+
+    >img {
+      width: 100%;
+      height: 100%;
+      scale: 1.1;
     }
   }
 

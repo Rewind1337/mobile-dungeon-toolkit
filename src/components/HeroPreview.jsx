@@ -1,8 +1,8 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 
-import { ATTRIBUTE_NAME_MAP, EQUIPMENT_SLOT, ROLE_NAME_MAP } from '../database/enums.jsx'
+import { ATTRIBUTE_NAME_MAP, EQUIPMENT_SLOT, ROLE_NAME_MAP, STATUS_EFFECT_NAME_MAP } from '../database/enums.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
-import { perkSprites } from '../database/db_sprites.jsx'
+import { iconSprites, perkSprites, statusSprites } from '../database/db_sprites.jsx'
 import { getStatsAtLevel } from "../database/func_heroes.jsx"
 
 import Button from './Button.jsx'
@@ -84,14 +84,16 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
     } else {
         return (
             <div ref={listRef} className='hero-preview' style={{ maxHeight: listHeight }}>
-                <div className='flex-row'>
-                    <Button text={"Save Hero"} onClick={() => { saveHero(heroObj) }} />
-                </div>
-                <div className='flex-row'>
-                    <div className='header-big'>{ROLE_NAME_MAP[heroObj.role]}</div>
+                <div className='flex-row top-row'>
+                    <div className='header'>{ROLE_NAME_MAP[heroObj.role]}</div>
                     <div className='header-big'>{heroObj.name}</div>
-                    <div className='header-big'>{ATTRIBUTE_NAME_MAP[heroObj.mainAttribute]}</div>
+                    <div className='header'>{ATTRIBUTE_NAME_MAP[heroObj.mainAttribute]}</div>
                 </div>
+
+                {heroObj.statusEffects !== undefined && <div className='flex-row status-row'>
+                    {heroObj.statusEffects.map(status => <img width={32} src={statusSprites[STATUS_EFFECT_NAME_MAP[status.id]]} />)}
+                </div>}
+
                 <div className='flex-col'>
                     <div className='flex-row'>
                         {heroObj.skills &&
@@ -102,6 +104,9 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                         <div className='flex-col hero'>
                             <div className={"hero card selected"} data-rarity={heroObj.rarity} data-element={heroObj.element} onClick={() => { onClick() }} >
                                 <div className="hero-element"><img src={heroObj.elementSrc} draggable={false} /></div>
+                                {heroObj.isStarred === true && <div className="hero-starred">
+                                    <img src={iconSprites["is_starred"]} draggable={false} />
+                                </div>}
                                 <div className="flex-col">
                                     <div className="hero-sprite"><img className="hero-sprite" src={heroObj.heroSrc} draggable={false} /></div>
                                     <div className="text">1</div>
@@ -124,13 +129,13 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                         <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT.NECKLACE) }} />
                         <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT.OTHER) }} />
                     </div>
-                    {heroObj.baseStats !== null && <div className='header'>Base Stats</div>}
-                    {heroObj.baseStats !== null && <div className='flex-row base-stats'>
-                        <div className='flex-row text card'>{perkSprites["HEALTH_FLAT"]}{heroObj.baseStats.health}</div>
-                        <div className='flex-row text card'>{perkSprites["ATTACK_FLAT"]}{heroObj.baseStats.attack}</div>
-                        <div className='flex-row text card'>{perkSprites["DEFENCE_FLAT"]}{heroObj.baseStats.defense}</div>
-                        <div className='flex-row text card'>{perkSprites["AGILITY_FLAT"]}{heroObj.baseStats.agility}</div>
-                    </div>}
+                    <div className='header'>Base Stats</div>
+                    <div className='flex-row base-stats'>
+                        <div className='flex-row text card'>{perkSprites["HEALTH_FLAT"]}???</div>
+                        <div className='flex-row text card'>{perkSprites["ATTACK_FLAT"]}???</div>
+                        <div className='flex-row text card'>{perkSprites["DEFENCE_FLAT"]}???</div>
+                        <div className='flex-row text card'>{perkSprites["AGILITY_FLAT"]}???</div>
+                    </div>
                     <div className='header'>Other Stats</div>
                     <div className='flex-row details'>
                         <div className='flex-col'>
