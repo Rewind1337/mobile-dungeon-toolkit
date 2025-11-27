@@ -202,6 +202,7 @@ export function init_hero_db() {
     add_hero("Claw Machine", null, ATTRIBUTE.STRENGTH, null, RARITY.RARE, false, ELEMENT.NATURE, ROLE.CONTROL)
     add_hero("Hermit Crab", null, ATTRIBUTE.STRENGTH, null, RARITY.RARE, false, ELEMENT.WATER, ROLE.DEFENSIVE)
     add_hero("Hermit Crab", "green", ATTRIBUTE.STRENGTH, null, RARITY.RARE, false, ELEMENT.NATURE, ROLE.DEFENSIVE)
+    add_hero("Hermit Crab", "red", ATTRIBUTE.STRENGTH, null, RARITY.RARE, false, ELEMENT.FIRE, ROLE.DEFENSIVE)
 
     // INTELLIGENCE
     add_hero("Cursed Goat", null, ATTRIBUTE.INTELLIGENCE, { health: 165, attack: 61, defense: 44, agility: 53 }, RARITY.RARE, false, ELEMENT.SHADOW, ROLE.CONTROL)
@@ -279,7 +280,6 @@ export function init_hero_db() {
     add_hero("Cockatrice", null, ATTRIBUTE.INTELLIGENCE, { health: 150, attack: 52, defense: 41, agility: 47 }, RARITY.UNCOMMON, false, ELEMENT.NATURE, ROLE.CONTROL)
     add_hero("Cockatrice", "blue", ATTRIBUTE.INTELLIGENCE, { health: 150, attack: 52, defense: 41, agility: 47 }, RARITY.UNCOMMON, false, ELEMENT.WATER, ROLE.CONTROL)
     add_hero("Irradieel", null, ATTRIBUTE.INTELLIGENCE, null, RARITY.UNCOMMON, false, ELEMENT.WATER, ROLE.CONTROL)
-
     add_hero("Dummy", null, ATTRIBUTE.STRENGTH, null, RARITY.UNCOMMON, false, ELEMENT.NATURE, ROLE.CONTROL)
 
     // DEXTERITY

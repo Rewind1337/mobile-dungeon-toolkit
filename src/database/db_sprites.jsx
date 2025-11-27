@@ -49,6 +49,10 @@ import DrillbertSrc from '../sprites/heroes/drillbert.png';
 import ArmadraxSrc from '../sprites/heroes/armadrax.png';
 import BeholderSrc from '../sprites/heroes/beholder.png';
 import CorneliusPrimeSrc from '../sprites/heroes/cornelius_prime.png';
+import BlackSkullOverlordSrc from '../sprites/heroes/black_skull_overlord.png';
+import DavyJaneSrc from '../sprites/heroes/davy_jane.png';
+import HadesSrc from '../sprites/heroes/hades.png';
+import LuciferSrc from '../sprites/heroes/lucifer.png';
 
 // EPICS
 import AliceSrc from '../sprites/heroes/alice.png';
@@ -163,8 +167,6 @@ import MoleTamerSrc from '../sprites/heroes/mole_tamer.png';
 import TurboHareSrc from '../sprites/heroes/turbo_hare.png';
 import ManBatSrc from '../sprites/heroes/man_bat.png';
 import ParticleReaverSrc from '../sprites/heroes/particle_reaver.png';
-import CentaurSrc from '../sprites/heroes/centaur.png';
-import ShieldMaidenSrc from '../sprites/heroes/shield_maiden.png';
 
 // UNCOMMONS
 import GhoulSrc from '../sprites/heroes/ghoul.png';
@@ -194,23 +196,45 @@ import SeagullMeanSrc from '../sprites/heroes/seagull_mean.png';
 import SnowmanSrc from '../sprites/heroes/snowman.png';
 import TentacleSrc from '../sprites/heroes/tentacle.png';
 import MosquitoSrc from '../sprites/heroes/mosquito.png';
-import CrabSrc from '../sprites/heroes/crab.png';
 import MallorcSrc from '../sprites/heroes/mallorc.png';
 import MagmaBlobbySrc from '../sprites/heroes/magma_blobby.png';
 import IrradieelSrc from '../sprites/heroes/irradieel.png';
 import BlockWorkerSrc from '../sprites/heroes/block_worker.png';
 
+// VARIANTS & UNOBTAINABLE
+import ShieldMaidenSrc from '../sprites/heroes/shield_maiden.png';
+import CentaurSrc from '../sprites/heroes/centaur.png';
+import DummySrc from '../sprites/heroes/dummy.png';
+
+import HermitCrabSrc from '../sprites/heroes/hermit_crab.png';
+import HermitCrabGreenSrc from '../sprites/heroes/hermit_crab_green.png';
+import HermitCrabRedSrc from '../sprites/heroes/hermit_crab_red.png';
+import GargoyleGreenSrc from '../sprites/heroes/gargoyle_green.png';
+import GargoyleRedSrc from '../sprites/heroes/gargoyle_red.png';
+import GlompfRedSrc from '../sprites/heroes/glompf_red.png';
+import GlompfBlueSrc from '../sprites/heroes/glompf_blue.png';
+import SnakeStripedSrc from '../sprites/heroes/snake_striped.png';
+import SnakeGreenSrc from '../sprites/heroes/snake_green.png';
+import CrabSrc from '../sprites/heroes/crab.png';
+import CrabGreenSrc from '../sprites/heroes/crab_green.png';
+import ScorpionBlueSrc from '../sprites/heroes/scorpion_blue.png';
+import CockatriceBlueSrc from '../sprites/heroes/cockatrice_blue.png';
+import SkeletonBlueSrc from '../sprites/heroes/skeleton_blue.png';
+import SkeletonRedSrc from '../sprites/heroes/skeleton_red.png';
+import VultureBrownSrc from '../sprites/heroes/vulture_brown.png';
+import VultureBlueSrc from '../sprites/heroes/vulture_blue.png';
+import RatBlackSrc from '../sprites/heroes/rat_black.png';
+import RatRedSrc from '../sprites/heroes/rat_red.png';
+import GhostRedSrc from '../sprites/heroes/ghost_red.png';
+import GhostGreenSrc from '../sprites/heroes/ghost_green.png';
+import SlimeRedSrc from '../sprites/heroes/slime_red.png';
+import SlimeGreenSrc from '../sprites/heroes/slime_green.png';
+import SheepBlackSrc from '../sprites/heroes/sheep_black.png';
+import SheepBrownSrc from '../sprites/heroes/sheep_brown.png';
+import ScarabRedSrc from '../sprites/heroes/scarab_red.png';
+import ScarabGreenSrc from '../sprites/heroes/scarab_green.png';
+
 import NullSrc from '../sprites/null.png';
-
-/*
-    LEGENDARIES
-import BlackSkullOverlordSrc from '../sprites/heroes/black_skull_overlord.png';
-import DavyJaneSrc from '../sprites/heroes/davy_jane.png';
-import HadesSrc from '../sprites/heroes/hades.png';
-import LuciferSrc from '../sprites/heroes/lucifer.png';
-
-    EPICS
-*/
 
 export const heroSprites = {
     null: NullSrc,
@@ -265,6 +289,10 @@ export const heroSprites = {
     cornelius_prime: CorneliusPrimeSrc,
     armadrax: ArmadraxSrc,
     beholder: BeholderSrc,
+    black_skull_overlord: BlackSkullOverlordSrc,
+    lucifer: LuciferSrc,
+    davy_jane: DavyJaneSrc,
+    hades: HadesSrc,
 
     // EPICS
     dr__pestilence: DrPestilenceSrc,
@@ -378,15 +406,11 @@ export const heroSprites = {
     turbo_hare: TurboHareSrc,
     man_bat: ManBatSrc,
     particle_reaver: ParticleReaverSrc,
-    centaur: CentaurSrc,
-    shield_maiden: ShieldMaidenSrc,
 
     // UNCOMMON
     ghoul: GhoulSrc,
     butt_with_ears: ButtWithEarsSrc,
     scarab: ScarabSrc,
-    scarab_green: NullSrc, //
-    scarab_red: NullSrc, //
     skeleton: SkeletonSrc,
     chicklet: ChickletSrc,
     scorpion: ScorpionSrc,
@@ -409,7 +433,6 @@ export const heroSprites = {
     vulture: VultureSrc,
     seagull_mean: SeagullMeanSrc,
     snowman: SnowmanSrc,
-    crab: CrabSrc,
     tentacle: TentacleSrc,
     mosquito: MosquitoSrc,
     mallorc: MallorcSrc,
@@ -417,14 +440,38 @@ export const heroSprites = {
     block_worker: BlockWorkerSrc,
     irradieel: IrradieelSrc,
 
-    /*
-        LEGENDARIES
-    black_skull_overlord: BlackSkullOverlordSrc,
-    lucifer: LuciferSrc,
-    davy_jane: DavyJaneSrc,
-    hades: HadesSrc,
-        EPICS
-    */
+    // VARIANTS & UNOBTAINABLE
+    centaur: CentaurSrc,
+    shield_maiden: ShieldMaidenSrc,
+    dummy: DummySrc,
+
+    hermit_crab: HermitCrabSrc,
+    hermit_crab_green: HermitCrabGreenSrc,
+    hermit_crab_red: HermitCrabRedSrc,
+    gargoyle_green: GargoyleGreenSrc,
+    gargoyle_red: GargoyleRedSrc,
+    glompf_blue: GlompfBlueSrc,
+    glompf_red: GlompfRedSrc,
+    snake_striped: SnakeStripedSrc,
+    snake_green: SnakeGreenSrc,
+    crab: CrabSrc,
+    crab_green: CrabGreenSrc,
+    scorpion_blue: ScorpionBlueSrc,
+    cockatrice_blue: CockatriceBlueSrc,
+    skeleton_blue: SkeletonBlueSrc,
+    skeleton_red: SkeletonRedSrc,
+    vulture_blue: VultureBlueSrc,
+    vulture_brown: VultureBrownSrc,
+    rat_black: RatBlackSrc,
+    rat_red: RatRedSrc,
+    ghost_red: GhostRedSrc,
+    ghost_green: GhostGreenSrc,
+    slime_red: SlimeRedSrc,
+    slime_green: SlimeGreenSrc,
+    sheep_black: SheepBlackSrc,
+    sheep_brown: SheepBrownSrc,
+    scarab_red: ScarabRedSrc,
+    scarab_green: ScarabGreenSrc,
 };
 
 import PumpkinScytheSrc from '../sprites/weapons/unique/pumpkin_scythe.png';
