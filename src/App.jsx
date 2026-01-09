@@ -143,10 +143,6 @@ function App() {
 
       {pageContent === 'splash' &&
         <div id='page-splash' className='page flex-col w-100'>
-          <div className='card welcome flex-col'>
-            <div className='header-big'>Mobile Dungeon Toolkit</div>
-
-          </div>
           <div className='flex-row top'>
             <div className='card management flex-col'>
               <div className='header-big'>Management</div>

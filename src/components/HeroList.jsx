@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from 'react'
+import { memo, useMemo, useRef, useState } from 'react'
 import { useDynamicList } from '../hooks/useDynamicList.jsx';
 
 import '../css/hero.scss'
@@ -7,6 +7,7 @@ import Hero from './Hero.jsx'
 import { attributeSprites, elementSprites, raritySprites, roleSprites } from '../database/db_sprites.jsx'
 import Button from './Button.jsx'
 import { ATTRIBUTE, ROLE } from '../database/enums.jsx'
+import { useDraggable } from 'react-use-draggable-scroll';
 
 function HeroList({ setForceUpdate = () => { }, extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId }) {
     const { listHeight, listRef, events } = useDynamicList(setForceUpdate, extraHeight);

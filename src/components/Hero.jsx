@@ -4,7 +4,6 @@ import Button from './Button.jsx'
 
 function Hero({ heroObj, selected, level, onClick }) {
     const [hover, setHover] = useState(false);
-    console.log(heroObj)
     return (
         <div className={"hero card" + (hover ? " hover" : "") + (selected ? " selected" : "")} data-rarity={heroObj.rarity} data-element={heroObj.element} onMouseEnter={() => { setHover(1) }} onMouseLeave={() => { setHover(0) }} onClick={() => { onClick() }}>
             <div className="hero-element"><img src={heroObj.elementSrc} draggable={false} /></div>

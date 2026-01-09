@@ -83,11 +83,11 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
         )
     } else {
         return (
-            <div ref={listRef} className='hero-preview' style={{ maxHeight: listHeight }}>
+            <div ref={listRef} className='hero-preview flex-col' style={{ maxHeight: listHeight }}>
                 <div className='flex-row top-row'>
-                    <div className='header'>{ROLE_NAME_MAP[heroObj.role]}</div>
-                    <div className='header-big'>{heroObj.name}</div>
-                    <div className='header'>{ATTRIBUTE_NAME_MAP[heroObj.mainAttribute]}</div>
+                    <div className='header pill'>{ROLE_NAME_MAP[heroObj.role]}</div>
+                    <div className='header-big pill'>{heroObj.name}</div>
+                    <div className='header pill'>{ATTRIBUTE_NAME_MAP[heroObj.mainAttribute]}</div>
                 </div>
 
                 {heroObj.statusEffects !== undefined && <div className='flex-row status-row'>
