@@ -215,10 +215,12 @@ body::after {
 }
 
 .filters {
-  margin-bottom: V.$gap;
-  justify-content: flex-start;
+  justify-content: space-between;
   gap: 0;
-  width: max-content;
+  position: absolute;
+  top: 0px;
+  left: 58px;
+  width: calc(100% - 58px);
 
   @include M.media-query-max(V.$bp-mobile, ()) {}
 
@@ -231,6 +233,30 @@ body::after {
 
     img {
       scale: 0.8;
+    }
+
+    &:nth-child(18) {
+      color: rgb(255, 255, 255);
+    }
+
+    &:nth-child(19) {
+      color: rgb(0, 255, 0);
+    }
+
+    &:nth-child(20) {
+      color: rgb(77, 166, 255);
+    }
+
+    &:nth-child(21) {
+      color: rgb(166, 0, 255);
+    }
+
+    &:nth-child(22) {
+      color: rgb(255, 162, 0);
+    }
+
+    &:nth-child(23) {
+      color: rgb(255, 0, 0);
     }
   }
 
@@ -251,7 +277,70 @@ body::after {
   >*:last-child {
     margin-right: 0;
   }
+}
 
+#page-heroes {
+  .filters {
+    button.round {
+      font-size: 24px;
+
+      img {
+        scale: 0.8;
+      }
+
+      &:nth-child(18) {
+        color: rgb(0, 255, 0);
+      }
+
+      &:nth-child(19) {
+        color: rgb(77, 166, 255);
+      }
+
+      &:nth-child(20) {
+        color: rgb(166, 0, 255);
+      }
+
+      &:nth-child(21) {
+        color: rgb(255, 162, 0);
+      }
+    }
+  }
+}
+
+#page-items {
+  .filters {
+    button.round {
+      font-size: 24px;
+
+      img {
+        scale: 0.8;
+      }
+
+      &:nth-child(18) {
+        color: rgb(255, 255, 255);
+      }
+
+      &:nth-child(19) {
+        color: rgb(0, 255, 0);
+      }
+
+      &:nth-child(20) {
+        color: rgb(77, 166, 255);
+      }
+
+      &:nth-child(21) {
+        color: rgb(166, 0, 255);
+      }
+
+      &:nth-child(22) {
+        color: rgb(255, 162, 0);
+      }
+
+      &:nth-child(23) {
+        color: rgb(255, 0, 0);
+      }
+    }
+  }
 }
 
 .pagination,
