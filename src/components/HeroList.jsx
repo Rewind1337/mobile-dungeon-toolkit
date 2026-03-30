@@ -4,10 +4,11 @@ import { useDynamicList } from '../hooks/useDynamicList.jsx';
 import '../css/hero.scss'
 
 import Hero from './Hero.jsx'
-import { attributeSprites, elementSprites, raritySprites, roleSprites } from '../database/db_sprites.jsx'
+import { attributeSprites, elementSprites, raritySprites, roleSprites, filterSprites } from '../database/db_sprites.jsx'
 import Button from './Button.jsx'
 import { ATTRIBUTE, ROLE } from '../database/enums.jsx'
 import { useDraggable } from 'react-use-draggable-scroll';
+import HeroFilters from './HeroFilters.jsx';
 
 function HeroList({ setForceUpdate = () => { }, extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId }) {
     const { listHeight, listRef, events } = useDynamicList(setForceUpdate, extraHeight);
@@ -16,7 +17,9 @@ function HeroList({ setForceUpdate = () => { }, extraHeight = 0, savedHeroes = f
         role: null,
         mainAttribute: null,
         rarity: null,
+        isStarred: null
     });
+    const [filtersAdvanced, setFiltersAdvanced] = useState(false)
 
     const toggleFilter = (type, value) => {
         setFilters((prev) => ({
@@ -26,7 +29,7 @@ function HeroList({ setForceUpdate = () => { }, extraHeight = 0, savedHeroes = f
     };
 
     const clearFilters = () => {
-        setFilters({ element: null, role: null, mainAttribute: null, rarity: null });
+        setFilters({ element: null, role: null, mainAttribute: null, rarity: null, isStarred: null });
     };
 
     const filteredHeroes = useMemo(() => {
@@ -35,7 +38,8 @@ function HeroList({ setForceUpdate = () => { }, extraHeight = 0, savedHeroes = f
                 (filters.element === null || heroObj.element === filters.element) &&
                 (filters.role === null || heroObj.role === filters.role) &&
                 (filters.mainAttribute === null || heroObj.mainAttribute === filters.mainAttribute) &&
-                (filters.rarity === null || heroObj.rarity === filters.rarity)
+                (filters.rarity === null || heroObj.rarity === filters.rarity) &&
+                (filters.isStarred === null || heroObj.isStarred === filters.isStarred)
             );
         });
     }, [heroesRef, filters]);
@@ -43,30 +47,8 @@ function HeroList({ setForceUpdate = () => { }, extraHeight = 0, savedHeroes = f
     return (<>
         <div className='header-big'>
             <div>
-                <Button round onClick={() => { }} text={"Filters"} />
-                <div className='filters flex-row card'>
-                    <Button round onClick={clearFilters} text={attributeSprites[ATTRIBUTE.NONE]} active={Object.values(filters).every((v) => v === null)} />
-                    <div className='orb-spacer' />
-                    <Button round onClick={() => toggleFilter('element', 0)} imgAsText text={elementSprites[0]} active={filters.element === 0} />
-                    <Button round onClick={() => toggleFilter('element', 1)} imgAsText text={elementSprites[1]} active={filters.element === 1} />
-                    <Button round onClick={() => toggleFilter('element', 2)} imgAsText text={elementSprites[2]} active={filters.element === 2} />
-                    <Button round onClick={() => toggleFilter('element', 3)} imgAsText text={elementSprites[3]} active={filters.element === 3} />
-                    <Button round onClick={() => toggleFilter('element', 4)} imgAsText text={elementSprites[4]} active={filters.element === 4} />
-                    <div className='orb-spacer' />
-                    <Button round onClick={() => toggleFilter('role', 0)} text={roleSprites[ROLE.OFFENSIVE]} active={filters.role === 0} />
-                    <Button round onClick={() => toggleFilter('role', 1)} text={roleSprites[ROLE.DEFENSIVE]} active={filters.role === 1} />
-                    <Button round onClick={() => toggleFilter('role', 2)} text={roleSprites[ROLE.CONTROL]} active={filters.role === 2} />
-                    <Button round onClick={() => toggleFilter('role', 3)} text={roleSprites[ROLE.SUPPORT]} active={filters.role === 3} />
-                    <div className='orb-spacer' />
-                    <Button round onClick={() => toggleFilter('mainAttribute', 1)} text={attributeSprites[ATTRIBUTE.STRENGTH]} active={filters.mainAttribute === 1} />
-                    <Button round onClick={() => toggleFilter('mainAttribute', 2)} text={attributeSprites[ATTRIBUTE.DEXTERITY]} active={filters.mainAttribute === 2} />
-                    <Button round onClick={() => toggleFilter('mainAttribute', 3)} text={attributeSprites[ATTRIBUTE.INTELLIGENCE]} active={filters.mainAttribute === 3} />
-                    <div className='orb-spacer' />
-                    <Button round onClick={() => toggleFilter('rarity', 1)} text={raritySprites[1]} active={filters.rarity === 1} />
-                    <Button round onClick={() => toggleFilter('rarity', 2)} text={raritySprites[2]} active={filters.rarity === 2} />
-                    <Button round onClick={() => toggleFilter('rarity', 3)} text={raritySprites[3]} active={filters.rarity === 3} />
-                    <Button round onClick={() => toggleFilter('rarity', 4)} text={raritySprites[4]} active={filters.rarity === 4} />
-                </div>
+                <Button className='filters-button' round onClick={() => { setFiltersAdvanced(!filtersAdvanced) }} text={"Filters"} />
+                <HeroFilters advanced={filtersAdvanced} toggleFilter={toggleFilter} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} />
             </div>{headerText}</div>
         <div className='list hero-list flex-row' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
             {filteredHeroes.length === 0 ? (

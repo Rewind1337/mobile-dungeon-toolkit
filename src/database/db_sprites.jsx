@@ -830,12 +830,13 @@ export const roleSprites = {
 import { TbCircleDottedLetterC, TbCircleDottedLetterR, TbCircleDottedLetterU, TbCircleDottedLetterE, TbCircleDottedLetterL, TbCircleDottedLetterM } from "react-icons/tb";
 
 export const raritySprites = {
-    0: <TbCircleDottedLetterC />,
-    1: <TbCircleDottedLetterU />,
-    2: <TbCircleDottedLetterR />,
-    3: <TbCircleDottedLetterE />,
-    4: <TbCircleDottedLetterL />,
-    5: <TbCircleDottedLetterM />,
+    0: <ImCross />,
+    1: <TbCircleDottedLetterC />,
+    2: <TbCircleDottedLetterU />,
+    3: <TbCircleDottedLetterR />,
+    4: <TbCircleDottedLetterE />,
+    5: <TbCircleDottedLetterL />,
+    6: <TbCircleDottedLetterM />,
 }
 
 import LightElementSrc from '../sprites/elements/light.png';
@@ -868,6 +869,37 @@ export const guildBossSprites = {
     lunar_seeker: LunarSeekerSrc,
     sun_seeker: SunSeekerSrc,
     star_herald: StarHeraldSrc,
+}
+
+export const filterSprites = {
+    0: <ImCross />,
+    1: FireElementSrc,
+    2: WaterElementSrc,
+    3: NatureElementSrc,
+    4: LightElementSrc,
+    5: ShadowElementSrc,
+    10: <GiBattleAxe />,
+    11: <GiZebraShield />,
+    12: <GiMagicPalm />,
+    13: <HiOutlineSupport />,
+    20: <BiDumbbell />,
+    21: <GiPocketBow />,
+    22: <GiSpellBook />,
+    30: <TbCircleDottedLetterC />,
+    31: <TbCircleDottedLetterU />,
+    32: <TbCircleDottedLetterR />,
+    33: <TbCircleDottedLetterE />,
+    34: <TbCircleDottedLetterL />,
+    35: <TbCircleDottedLetterM />,
+    40: TwoSetSrc,
+    41: FourSetSrc,
+    42: UniqueSrc,
+    43: WeaponsSrc,
+    44: HelmetsSrc,
+    45: ArmorsSrc,
+    46: RingsSrc,
+    47: NecklacesSrc,
+    50: RareHeroSrc,
 }
 
 import Absorb from '../sprites/status/absorb.png'

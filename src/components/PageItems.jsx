@@ -73,7 +73,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                 {pageContent === 0 &&
                     <>
                         <div className='card w-50' style={{ width: (selectedItemId.slot === null) ? "300%" : "50%" }}>
-                            <ItemList setForceUpdate={setForceUpdate} headerText={"All Items"} itemsRef={itemsRef.current.BASE_ITEMS} setSelectedItemId={setSelectedItemId} setsRef={itemsRef.current.BASE_SETS} />
+                            <ItemList setForceUpdate={setForceUpdate} headerText={"All Items"} filtersOffset={"5px"} itemsRef={itemsRef.current.BASE_ITEMS} setSelectedItemId={setSelectedItemId} setsRef={itemsRef.current.BASE_SETS} />
                         </div>
                         <div className='card w-50'>
                             <ItemPreview setForceUpdate={setForceUpdate} itemsRef={itemsRef.current.BASE_ITEMS} setsRef={itemsRef.current.ITEM_SETS} selectedItemId={selectedItemId} onPerkClick={handlePerkClick} saveItem={saveItem} />
@@ -83,7 +83,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                 {pageContent === 1 &&
                     <>
                         <div className='card w-50' style={{ width: (selectedSavedItemId.slot === null) ? "300%" : "50%" }}>
-                            <ItemList setForceUpdate={setForceUpdate} savedItems headerText={"Saved Items"} itemsRef={savedItemsRef.current} setSelectedItemId={setSelectedSavedItemId} setsRef={itemsRef.current.BASE_SETS} />
+                            <ItemList setForceUpdate={setForceUpdate} savedItems headerText={"Saved Items"} filtersOffset={"5px"} itemsRef={savedItemsRef.current} setSelectedItemId={setSelectedSavedItemId} setsRef={itemsRef.current.BASE_SETS} />
                         </div>
                         <div className='card w-50'>
                             <ItemPreview setForceUpdate={setForceUpdate} itemsRef={savedItemsRef.current} setsRef={itemsRef.current.ITEM_SETS} selectedItemId={selectedSavedItemId} setPerkSelectionVisible={setPerkSelectionVisible} onPerkClick={handlePerkClick} />
