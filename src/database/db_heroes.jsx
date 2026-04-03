@@ -113,6 +113,30 @@ export function init_hero_db() {
     add_hero("Jackbot", null, ATTRIBUTE.INTELLIGENCE, null, RARITY.LEGENDARY, false, ELEMENT.LIGHT, ROLE.OFFENSIVE)
     add_hero("Emperor Fedget", null, ATTRIBUTE.INTELLIGENCE, null, RARITY.LEGENDARY, true, ELEMENT.SHADOW, ROLE.CONTROL)
 
+    // 03.04. added
+    add_hero("High Priest Aureus", null, ATTRIBUTE.INTELLIGENCE, null, RARITY.LEGENDARY, true, ELEMENT.WATER, ROLE.CONTROL)
+    add_hero("Rat King", null, ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, false, ELEMENT.NATURE, ROLE.CONTROL)
+    add_hero("Tech Rex", null, ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, false, ELEMENT.FIRE, ROLE.OFFENSIVE)
+    add_hero("Theron Dawnbreaker", null, ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, true, ELEMENT.LIGHT, ROLE.DEFENSIVE)
+    add_hero("Ra", null, ATTRIBUTE.INTELLIGENCE, null, RARITY.LEGENDARY, false, ELEMENT.FIRE, ROLE.DEFENSIVE)
+    add_hero("Mary", null, ATTRIBUTE.INTELLIGENCE, null, RARITY.LEGENDARY, true, ELEMENT.LIGHT, ROLE.SUPPORT)
+    add_hero("Capn. H. Ollow", null, ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, false, ELEMENT.FIRE, ROLE.CONTROL)
+    add_hero("Itzala", null, ATTRIBUTE.INTELLIGENCE, null, RARITY.LEGENDARY, true, ELEMENT.WATER, ROLE.OFFENSIVE)
+    add_hero("Countess Mortana", null, ATTRIBUTE.STRENGTH, null, RARITY.LEGENDARY, false, ELEMENT.NATURE, ROLE.CONTROL)
+    add_hero("Vyper", null, ATTRIBUTE.INTELLIGENCE, null, RARITY.LEGENDARY, true, ELEMENT.LIGHT, ROLE.OFFENSIVE)
+
+    // epics
+    add_hero("Wine Slime", null, ATTRIBUTE.STRENGTH, null, RARITY.EPIC, false, ELEMENT.WATER, ROLE.CONTROL)
+    add_hero("Rapunzel", null, ATTRIBUTE.DEXTERITY, null, RARITY.EPIC, false, ELEMENT.LIGHT, ROLE.CONTROL)
+    add_hero("Kinetra", null, ATTRIBUTE.DEXTERITY, null, RARITY.EPIC, false, ELEMENT.WATER, ROLE.SUPPORT)
+    add_hero("Crumbly", null, ATTRIBUTE.INTELLIGENCE, null, RARITY.EPIC, false, ELEMENT.NATURE, ROLE.SUPPORT)
+    add_hero("Butcher", null, ATTRIBUTE.STRENGTH, null, RARITY.EPIC, false, ELEMENT.SHADOW, ROLE.OFFENSIVE)
+    add_hero("Vena", null, ATTRIBUTE.DEXTERITY, null, RARITY.EPIC, false, ELEMENT.NATURE, ROLE.CONTROL)
+    add_hero("Jellica", null, ATTRIBUTE.INTELLIGENCE, null, RARITY.EPIC, true, ELEMENT.NATURE, ROLE.CONTROL)
+    add_hero("Coatl", null, ATTRIBUTE.DEXTERITY, null, RARITY.EPIC, false, ELEMENT.FIRE, ROLE.SUPPORT)
+    add_hero("Cheery", null, ATTRIBUTE.DEXTERITY, null, RARITY.EPIC, false, ELEMENT.WATER, ROLE.SUPPORT)
+    add_hero("Hektor", null, ATTRIBUTE.DEXTERITY, null, RARITY.EPIC, false, ELEMENT.NATURE, ROLE.CONTROL)
+
     // EPIC
     // STRENGTH
     add_hero("Dr. Pestilence", null, ATTRIBUTE.STRENGTH, null, RARITY.EPIC, false, ELEMENT.NATURE, ROLE.CONTROL)
@@ -139,8 +163,8 @@ export function init_hero_db() {
     add_hero("Woolinator", null, ATTRIBUTE.STRENGTH, null, RARITY.EPIC, false, ELEMENT.FIRE, ROLE.SUPPORT)
     add_hero("Drorc", null, ATTRIBUTE.STRENGTH, null, RARITY.EPIC, false, ELEMENT.WATER, ROLE.CONTROL)
     add_hero("Rift Protector", null, ATTRIBUTE.STRENGTH, null, RARITY.EPIC, false, ELEMENT.NATURE, ROLE.DEFENSIVE)
-    add_hero("Woolinator", null, ATTRIBUTE.STRENGTH, null, RARITY.EPIC, false, ELEMENT.FIRE, ROLE.SUPPORT)
     add_hero("Ramgor", null, ATTRIBUTE.STRENGTH, null, RARITY.EPIC, false, ELEMENT.FIRE, ROLE.DEFENSIVE) // role unsure
+    add_hero("Flame Bruiser", null, ATTRIBUTE.STRENGTH, null, RARITY.EPIC, false, ELEMENT.FIRE, ROLE.OFFENSIVE)
 
     // DEXTERITY
     add_hero("Hermes", null, ATTRIBUTE.DEXTERITY, null, RARITY.EPIC, false, ELEMENT.LIGHT, ROLE.CONTROL)

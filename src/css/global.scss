@@ -222,7 +222,21 @@ body::after {
   left: 58px;
   width: calc(100% - 63px);
 
-  @include M.media-query-max(V.$bp-mobile, ()) {}
+  @include M.media-query-max(700px, ()) {
+    .orb-spacer {
+      display: none;
+    }
+
+    .flex-wrapper {
+      display: none;
+      width: 0;
+    }
+
+    .flex-wrapper:nth-child(1) {
+      display: flex;
+      width: 100%;
+    }
+  }
 
   img {
     filter: drop-shadow(0px 1px 0px rgb(0, 0, 0)) drop-shadow(0px -1px 0px rgb(0, 0, 0)) drop-shadow(1px 0px 0px rgb(0, 0, 0)) drop-shadow(-1px 0px 0px rgb(0, 0, 0)) drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));

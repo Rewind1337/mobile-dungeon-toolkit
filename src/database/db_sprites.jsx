@@ -54,6 +54,18 @@ import DavyJaneSrc from '../sprites/heroes/davy_jane.png';
 import HadesSrc from '../sprites/heroes/hades.png';
 import LuciferSrc from '../sprites/heroes/lucifer.png';
 
+// 03.04. added
+import HighPriestAureusSrc from '../sprites/heroes/high_priest_aureus.png'
+import RatKingSrc from '../sprites/heroes/rat_king.png'
+import TechRexSrc from '../sprites/heroes/tech_rex.png'
+import TheronDawnbreakerSrc from '../sprites/heroes/theron_dawnbreaker.png'
+import RaSrc from '../sprites/heroes/ra.png'
+import MarySrc from '../sprites/heroes/mary.png'
+import CapnHOllowSrc from '../sprites/heroes/capn_h_ollow.png'
+import ItzalaSrc from '../sprites/heroes/itzala.png'
+import CountessMortanaSrc from '../sprites/heroes/countess_mortana.png'
+import VyperSrc from '../sprites/heroes/vyper.png'
+
 // EPICS
 import AliceSrc from '../sprites/heroes/alice.png';
 import SylvannaSrc from '../sprites/heroes/sylvanna.png';
@@ -103,6 +115,7 @@ import RudolphSrc from '../sprites/heroes/rudolph.png';
 import OrcaSrc from '../sprites/heroes/orca.png';
 import OrkopterSrc from '../sprites/heroes/orkopter.png';
 import WitchSrc from '../sprites/heroes/witch.png';
+import FlameBruiserSrc from '../sprites/heroes/flame_bruiser.png';
 import DrorcSrc from '../sprites/heroes/drorc.png';
 import RiftProtectorSrc from '../sprites/heroes/rift_protector.png';
 import AxolottySrc from '../sprites/heroes/axolotty.png';
@@ -118,6 +131,18 @@ import DjinnSrc from '../sprites/heroes/djinn.png';
 import KingCrabSrc from '../sprites/heroes/king_crab.png';
 import NeanderthalSrc from '../sprites/heroes/neanderthal.png';
 import JotunnSrc from '../sprites/heroes/jotunn.png';
+
+// 03.04. added
+import WineSlimeSrc from '../sprites/heroes/wine_slime.png'
+import RapunzelSrc from '../sprites/heroes/rapunzel.png'
+import KinetraSrc from '../sprites/heroes/kinetra.png'
+import CrumblySrc from '../sprites/heroes/crumbly.png'
+import ButcherSrc from '../sprites/heroes/butcher.png'
+import VenaSrc from '../sprites/heroes/vena.png'
+import JellicaSrc from '../sprites/heroes/jellica.png'
+import CoatlSrc from '../sprites/heroes/coatl.png'
+import CheerySrc from '../sprites/heroes/cheery.png'
+import HektorSrc from '../sprites/heroes/hektor.png'
 
 // RARES
 import BagHeadSrc from '../sprites/heroes/bag_head.png';
@@ -294,6 +319,18 @@ export const heroSprites = {
     davy_jane: DavyJaneSrc,
     hades: HadesSrc,
 
+    // 03.04. added
+    high_priest_aureus: HighPriestAureusSrc,
+    rat_king: RatKingSrc,
+    tech_rex: TechRexSrc,
+    theron_dawnbreaker: TheronDawnbreakerSrc,
+    ra: RaSrc,
+    mary: MarySrc,
+    capn__h__ollow: CapnHOllowSrc,
+    itzala: ItzalaSrc,
+    countess_mortana: CountessMortanaSrc,
+    vyper: VyperSrc,
+
     // EPICS
     dr__pestilence: DrPestilenceSrc,
     yulamb: YulambSrc,
@@ -357,6 +394,19 @@ export const heroSprites = {
     neanderthal: NeanderthalSrc,
     djinn: DjinnSrc,
     jotunn: JotunnSrc,
+    flame_bruiser: FlameBruiserSrc,
+
+    // 03.04. added
+    wine_slime: WineSlimeSrc,
+    rapunzel: RapunzelSrc,
+    kinetra: KinetraSrc,
+    crumbly: CrumblySrc,
+    butcher: ButcherSrc,
+    vena: VenaSrc,
+    jellica: JellicaSrc,
+    coatl: CoatlSrc,
+    cheery: CheerySrc,
+    hektor: HektorSrc,
 
     // RARES
     bag_head: BagHeadSrc,
@@ -828,6 +878,7 @@ export const roleSprites = {
 }
 
 import { TbCircleDottedLetterC, TbCircleDottedLetterR, TbCircleDottedLetterU, TbCircleDottedLetterE, TbCircleDottedLetterL, TbCircleDottedLetterM } from "react-icons/tb";
+import { FaCircle } from "react-icons/fa";
 
 export const raritySprites = {
     0: <ImCross />,
@@ -885,12 +936,12 @@ export const filterSprites = {
     20: <BiDumbbell />,
     21: <GiPocketBow />,
     22: <GiSpellBook />,
-    30: <TbCircleDottedLetterC />,
-    31: <TbCircleDottedLetterU />,
-    32: <TbCircleDottedLetterR />,
-    33: <TbCircleDottedLetterE />,
-    34: <TbCircleDottedLetterL />,
-    35: <TbCircleDottedLetterM />,
+    30: <FaCircle />,
+    31: <FaCircle />,
+    32: <FaCircle />,
+    33: <FaCircle />,
+    34: <FaCircle />,
+    35: <FaCircle />,
     40: TwoSetSrc,
     41: FourSetSrc,
     42: UniqueSrc,
