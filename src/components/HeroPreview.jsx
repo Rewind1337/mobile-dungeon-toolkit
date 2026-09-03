@@ -3,7 +3,6 @@ import { useLayoutEffect, useRef, useState } from 'react'
 import { ATTRIBUTE_NAME_MAP, EQUIPMENT_SLOT, ROLE_NAME_MAP, STATUS_EFFECT_NAME_MAP } from '../database/enums.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
 import { iconSprites, perkSprites, statusSprites } from '../database/db_sprites.jsx'
-import { getStatsAtLevel } from "../database/func_heroes.jsx"
 
 import Button from './Button.jsx'
 import EmptyItem from './EmptyItem.jsx'
@@ -77,7 +76,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
 
     if (noSelection) {
         return (
-            <div className='hero-preview'>
+            <div className='hero-preview no-selection'>
                 <div className='header-big'>Select a Hero</div>
             </div>
         )
@@ -129,7 +128,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                         <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT.NECKLACE) }} />
                         <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT.OTHER) }} />
                     </div>
-                    <div className='header'>Base Stats</div>
+                    <div className='header'>Main Stats</div>
                     <div className='flex-row base-stats'>
                         <div className='flex-row text card'>{perkSprites["HEALTH_FLAT"]}???</div>
                         <div className='flex-row text card'>{perkSprites["ATTACK_FLAT"]}???</div>

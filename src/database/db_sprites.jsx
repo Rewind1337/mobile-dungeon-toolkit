@@ -66,6 +66,16 @@ import ItzalaSrc from '../sprites/heroes/itzala.png'
 import CountessMortanaSrc from '../sprites/heroes/countess_mortana.png'
 import VyperSrc from '../sprites/heroes/vyper.png'
 
+// 31.08. added
+import ElkfreddySrc from '../sprites/heroes/elkfreddy.png'
+import ApolloSrc from '../sprites/heroes/apollo.png'
+import OozkarSrc from '../sprites/heroes/oozkar.png'
+import CrueltySrc from '../sprites/heroes/cruelty.png'
+import SaphiraSrc from '../sprites/heroes/saphira.png'
+import CatrinaSrc from '../sprites/heroes/catrina.png'
+import LorettaSrc from '../sprites/heroes/loretta.png'
+import PrinceBelzarSrc from '../sprites/heroes/prince_belzar.png'
+
 // EPICS
 import AliceSrc from '../sprites/heroes/alice.png';
 import SylvannaSrc from '../sprites/heroes/sylvanna.png';
@@ -144,6 +154,16 @@ import CoatlSrc from '../sprites/heroes/coatl.png'
 import CheerySrc from '../sprites/heroes/cheery.png'
 import HektorSrc from '../sprites/heroes/hektor.png'
 
+// 31.08. added
+import KitsuneSrc from '../sprites/heroes/kitsune.png'
+import DraugrSrc from '../sprites/heroes/draugr.png'
+import VanHelsingSrc from '../sprites/heroes/van_helsing.png'
+import SnatchkinSrc from '../sprites/heroes/snatchkin.png'
+import DominiqueSrc from '../sprites/heroes/dominique.png'
+import SulfurokSrc from '../sprites/heroes/sulfurok.png'
+import PrincessTrixieSrc from '../sprites/heroes/princess_trixie.png'
+import ChroniaSrc from '../sprites/heroes/chronia.png'
+
 // RARES
 import BagHeadSrc from '../sprites/heroes/bag_head.png';
 import CircusBoxerSrc from '../sprites/heroes/circus_boxer.png';
@@ -192,6 +212,10 @@ import MoleTamerSrc from '../sprites/heroes/mole_tamer.png';
 import TurboHareSrc from '../sprites/heroes/turbo_hare.png';
 import ManBatSrc from '../sprites/heroes/man_bat.png';
 import ParticleReaverSrc from '../sprites/heroes/particle_reaver.png';
+
+// 02.09. added (missed)
+import AsudemSrc from '../sprites/heroes/asudem.png'
+import PiperSrc from '../sprites/heroes/piper.png'
 
 // UNCOMMONS
 import GhoulSrc from '../sprites/heroes/ghoul.png';
@@ -331,6 +355,16 @@ export const heroSprites = {
     countess_mortana: CountessMortanaSrc,
     vyper: VyperSrc,
 
+    // 31.08. added
+    elkfreddy: ElkfreddySrc,
+    apollo: ApolloSrc,
+    oozkar: OozkarSrc,
+    cruelty: CrueltySrc,
+    saphira: SaphiraSrc,
+    catrina: CatrinaSrc,
+    loretta: LorettaSrc,
+    prince_belzar: PrinceBelzarSrc,
+
     // EPICS
     dr__pestilence: DrPestilenceSrc,
     yulamb: YulambSrc,
@@ -408,6 +442,16 @@ export const heroSprites = {
     cheery: CheerySrc,
     hektor: HektorSrc,
 
+    // 31.08. added
+    kitsune: KitsuneSrc,
+    draugr: DraugrSrc,
+    van_helsing: VanHelsingSrc,
+    snatchkin: SnatchkinSrc,
+    dominique: DominiqueSrc,
+    sulfurok: SulfurokSrc,
+    princess_trixie: PrincessTrixieSrc,
+    chronia: ChroniaSrc,
+
     // RARES
     bag_head: BagHeadSrc,
     circus_boxer: CircusBoxerSrc,
@@ -456,6 +500,10 @@ export const heroSprites = {
     turbo_hare: TurboHareSrc,
     man_bat: ManBatSrc,
     particle_reaver: ParticleReaverSrc,
+
+    // 02.09. added (missed)
+    asudem: AsudemSrc,
+    piper: PiperSrc,
 
     // UNCOMMON
     ghoul: GhoulSrc,
@@ -562,7 +610,7 @@ import BoomstickSrc from '../sprites/weapons/unique/boomstick.png';
 import WolfClawsSrc from '../sprites/weapons/unique/wolf_claws.png';
 import CorkscrewKnuckleSrc from '../sprites/weapons/unique/corkscrew_knuckle.png';
 import ShadowFangsSrc from '../sprites/weapons/unique/shadow_fangs.png';
-import VortexDancerSrc from '../sprites/Weapons/unique/vortex_dancer.png';
+import VortexDancerSrc from '../sprites/weapons/unique/vortex_dancer.png';
 import BruteForceSrc from '../sprites/weapons/unique/brute_force.png';
 import BoneBowSrc from '../sprites/weapons/unique/bone_bow.png';
 import SoulStabberSrc from '../sprites/weapons/unique/soul_stabber.png';

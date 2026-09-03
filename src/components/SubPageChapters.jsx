@@ -23,9 +23,20 @@ const CHAPTERS = [
 ]
 
 function Chapter({ id, name, setSelectedChapter }) {
-    return <div className="chapter card flex-row" data-id={id} onClick={() => { setSelectedChapter(id) }}>
-        <div className="text">{id + 1}</div>
-        <div className="header">{name}</div>
+    return <div className="chapter-wrapper flex-row">
+        <div className="chapter card flex-row" data-id={id} data-threshhold="0" onClick={() => { setSelectedChapter(id) }}>
+            <div className="text">{id + 1}</div>
+            <div className="header">{name}</div>
+        </div>
+        <div className="chapter-shadow card" data-id={id} data-threshhold="1">
+            <div className="header">SW 1</div>
+        </div>
+        <div className="chapter-shadow card" data-id={id} data-threshhold="2">
+            <div className="header">SW 2</div>
+        </div>
+        <div className="chapter-shadow card" data-id={id} data-threshhold="3">
+            <div className="header">SW 3</div>
+        </div>
     </div>
 }
 
@@ -35,7 +46,7 @@ function SubPageChapters({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef })
 
     return (
         <>
-            <div className='card w-25'>
+            <div className='card w-66'>
                 <div className='header-big'>Select Chapter</div>
                 <div ref={listRef} className="list chapter-list flex-col" style={{ maxHeight: listHeight }}>
                     {CHAPTERS.map(chapter => <Chapter {...chapter} setSelectedChapter={setSelectedChapter} />)}

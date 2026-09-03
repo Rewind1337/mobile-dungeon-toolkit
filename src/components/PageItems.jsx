@@ -59,7 +59,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                 </div>
             </Modal>
 
-            <div className="flex-row" style={{ justifyContent: "space-between", order: window.matchMedia("(max-width: 900px)").matches ? 0 : 0 }}>
+            <div className="sub-nav-bar flex-row">
                 <div className="pagination flex-row card w-100">
                     <Button text={"All Items"} color={1} onClick={() => { setPageContent(0) }} />
                     <Button text={"Your Saved Items"} color={1} onClick={() => { setPageContent(1) }} />
@@ -75,7 +75,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                         <div className='card w-50' style={{ width: (selectedItemId.slot === null) ? "300%" : "50%" }}>
                             <ItemList setForceUpdate={setForceUpdate} headerText={"All Items"} filtersOffset={"5px"} itemsRef={itemsRef.current.BASE_ITEMS} setSelectedItemId={setSelectedItemId} setsRef={itemsRef.current.BASE_SETS} />
                         </div>
-                        <div className='card w-50'>
+                        <div className='card w-50' style={{ display: (selectedItemId.slot === null) ? "none" : "block" }}>
                             <ItemPreview setForceUpdate={setForceUpdate} itemsRef={itemsRef.current.BASE_ITEMS} setsRef={itemsRef.current.ITEM_SETS} selectedItemId={selectedItemId} onPerkClick={handlePerkClick} saveItem={saveItem} />
                         </div>
                     </>
@@ -85,7 +85,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                         <div className='card w-50' style={{ width: (selectedSavedItemId.slot === null) ? "300%" : "50%" }}>
                             <ItemList setForceUpdate={setForceUpdate} savedItems headerText={"Saved Items"} filtersOffset={"5px"} itemsRef={savedItemsRef.current} setSelectedItemId={setSelectedSavedItemId} setsRef={itemsRef.current.BASE_SETS} />
                         </div>
-                        <div className='card w-50'>
+                        <div className='card w-50' style={{ display: (selectedSavedItemId.slot === null) ? "none" : "block" }}>
                             <ItemPreview setForceUpdate={setForceUpdate} itemsRef={savedItemsRef.current} setsRef={itemsRef.current.ITEM_SETS} selectedItemId={selectedSavedItemId} setPerkSelectionVisible={setPerkSelectionVisible} onPerkClick={handlePerkClick} />
                         </div>
                     </>

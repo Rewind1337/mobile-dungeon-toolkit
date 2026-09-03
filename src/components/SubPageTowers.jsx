@@ -12,6 +12,7 @@ const TOWERS = [
     { id: 4, name: "Peppermint Pillar", stages: Array(30) },
     { id: 5, name: "Yggdrasil", stages: Array(30) },
     { id: 6, name: "Decayed Cocoon", stages: Array(30) },
+    { id: 7, name: "Crystal Bore", stages: Array(30) }
 ]
 
 function Tower({ id, name, setSelectedTower }) {
@@ -63,7 +64,7 @@ function SubPageTowers({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef }) {
 
     return (
         <>
-            <div className='card w-25'>
+            <div className='card w-66'>
                 <div className='header-big'>Select Tower</div>
                 <div ref={listRef} className="list tower-list flex-col"  {...events} style={{ maxHeight: listHeight }}>
                     {TOWERS.map(tower => <Tower {...tower} setSelectedTower={setSelectedTower} />)}
