@@ -12,7 +12,7 @@ function ItemPerk({ name, value, onClick, buttonText = "Change", buttonColor = 5
     return (
         <div className={"item-perk card flex-row"}>
 
-            <div className='text flex-row'>{perkSprites[name]}{_perk.name}</div>
+            <div className='text flex-row'><img width={32} src={perkSprites[name]}/>{_perk.name}</div>
 
             {!noValue && <>
                 {editable

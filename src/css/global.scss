@@ -107,6 +107,18 @@ body::after {
   flex-wrap: wrap;
 }
 
+.flex-grow {
+  flex-grow: 1;
+}
+
+.justify-between {
+  justify-items: space-between;
+}
+
+.justify-around {
+  justify-items: space-around;
+}
+
 .w-0 {
   width: 0.1px;
 }
@@ -215,7 +227,7 @@ body::after {
 .text {
   font-size: V.$font-size-small;
   font-family: V.$font-family-stats;
-  
+
   text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black;
 
   @include M.media-query-max(V.$bp-mobile, ()) {
@@ -226,10 +238,13 @@ body::after {
 .filters {
   justify-content: space-between;
   gap: 0;
-  position: absolute;
-  top: 5px;
-  left: 58px;
-  width: calc(100% - 63px);
+  width: 100%;
+  justify-content: flex-end;
+
+  .filter-group {
+    width: fit-content;
+    margin-inline: auto;
+  }
 
   @include M.media-query-max(700px, ()) {
     .orb-spacer {
@@ -251,41 +266,20 @@ body::after {
     filter: drop-shadow(0px 1px 0px rgb(0, 0, 0)) drop-shadow(0px -1px 0px rgb(0, 0, 0)) drop-shadow(1px 0px 0px rgb(0, 0, 0)) drop-shadow(-1px 0px 0px rgb(0, 0, 0)) drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
   }
 
-  button.round {
-    font-size: 24px;
-
-    img {
-      scale: 0.8;
-    }
-
-    &:nth-child(18) {
-      color: rgb(255, 255, 255);
-    }
-
-    &:nth-child(19) {
-      color: rgb(0, 255, 0);
-    }
-
-    &:nth-child(20) {
-      color: rgb(77, 166, 255);
-    }
-
-    &:nth-child(21) {
-      color: rgb(166, 0, 255);
-    }
-
-    &:nth-child(22) {
-      color: rgb(255, 162, 0);
-    }
-
-    &:nth-child(23) {
-      color: rgb(255, 0, 0);
-    }
-  }
-
   button {
-    svg {
-      filter: drop-shadow(0 0 1px 4px black);
+    &:nth-child(1) { // COLLAPSE / EXPAND button
+      margin-right: auto;
+    }
+    &:nth-child(2) { // RESET button / NO filters
+      margin-right: auto;
+    }
+
+    &:nth-child(4) { // STARRED (or ORDER on items) filter
+      margin-left: auto;
+    }
+
+    &:nth-child(5) { // ORDER filter
+      margin-left: auto;
     }
   }
 
@@ -295,10 +289,6 @@ body::after {
 
   >*:first-child {
     margin-left: 0;
-  }
-
-  >*:last-child {
-    margin-right: 0;
   }
 }
 
@@ -313,26 +303,26 @@ body::after {
         scale: 0.8;
       }
 
-      &:nth-child(18) {
-        color: rgb(0, 255, 0);
+      &[data-color="uncommon"] { // uncommon filter
+        color: #9de260;
       }
 
-      &:nth-child(19) {
-        color: rgb(77, 166, 255);
+      &[data-color="rare"] { // rare filter
+        color: #0099ff;
       }
 
-      &:nth-child(20) {
-        color: rgb(166, 0, 255);
+      &[data-color="epic"] { // epic filter
+        color: #9f5fff;
       }
 
-      &:nth-child(21) {
-        color: rgb(255, 162, 0);
+      &[data-color="legendary"] { // legendary filter
+        color: #ffa100;
       }
     }
   }
 }
 
-#page-items {
+#page-items, .modal {
   .filters {
     z-index: 1000;
 
@@ -343,28 +333,40 @@ body::after {
         scale: 0.8;
       }
 
-      &:nth-child(18) {
-        color: rgb(255, 255, 255);
+      &[data-color="common"]  { // common filter
+        color: #ddd0b2;
       }
 
-      &:nth-child(19) {
-        color: rgb(0, 255, 0);
+      &[data-color="uncommon"] { // uncommon filter
+        color: #9de260;
       }
 
-      &:nth-child(20) {
-        color: rgb(77, 166, 255);
+      &[data-color="rare"] { // rare filter
+        color: #0099ff;
       }
 
-      &:nth-child(21) {
-        color: rgb(166, 0, 255);
+      &[data-color="epic"] { // epic filter
+        color: #9f5fff;
       }
 
-      &:nth-child(22) {
-        color: rgb(255, 162, 0);
+      &[data-color="legendary"] { // legendary filter
+        color: #ffe900;
       }
 
-      &:nth-child(23) {
-        color: rgb(255, 0, 0);
+      &[data-color="mythic"] { // legendary filter
+        color: #ffa100;
+      }
+
+      &[data-color="heroic"] { // heroic filter
+        color: #fd5d47;
+      }
+
+      &[data-color="divine"] { // divine filter
+        color: #7efffe;
+      }
+
+      &[data-color="ancient"] { // ancient filter
+        color: #970da4;
       }
     }
   }
@@ -927,10 +929,16 @@ a {
 
 
 input[type="number"] {
-  border: none;
   padding: 4px;
   height: 30px;
   background: rgba(0, 0, 0, 0.25);
+  outline: 2px solid black;
+  width: 100%;
+  font-family: V.$font-family-header;
+  font-size: V.$font-size-button;
+  text-align: center;
+  text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black;
+  border: none;
   border-radius: V.$border-radius;
 
   appearance: none;

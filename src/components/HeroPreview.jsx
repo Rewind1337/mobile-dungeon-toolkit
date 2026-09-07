@@ -13,6 +13,7 @@ import '../css/hero.scss'
 function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
+    const [selectedLevel, setSelectedLevel] = useState(1)
 
     function onResize() {
         let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5;
@@ -39,6 +40,23 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
 
     const renderHeroSkills = () => {
         return heroObj.skills.map((skill, index) => <TextCard text={skill.name} prefix={index + 1 + "."} suffix={"Level 1"} title={skill.description} />)
+    }
+
+    const renderHeroStatusEffects = () => {
+        let statusEffectSprites = []
+        for (let i = 0; i < heroObj.skills.length; i++) { // each skill
+            let sEffect = heroObj.skills[i].effect;
+            for (let j = 0; j < sEffect.length; j++) { // each effect
+                let batch = sEffect[j].applies;
+                console.log(batch)
+                for (let k = 0; k < batch.length; k++) { // each effect
+                    statusEffectSprites.push(statusSprites[STATUS_EFFECT_NAME_MAP[batch[k].status.id]])
+                }
+            }
+        }
+        return <div className='flex-row'>
+            {statusEffectSprites.map(src => <img width={48} src={src}/>)}
+        </div>
     }
 
     const renderHeroTalents = () => {
@@ -97,6 +115,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                     <div className='flex-row'>
                         {heroObj.skills &&
                             <div className='flex-col skills'>
+                                {renderHeroStatusEffects()}
                                 {renderHeroSkills()}
                             </div>
                         }
@@ -107,8 +126,10 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                                     <img src={iconSprites["is_starred"]} draggable={false} />
                                 </div>}
                                 <div className="flex-col">
-                                    <div className="hero-sprite"><img className="hero-sprite" src={heroObj.heroSrc} draggable={false} /></div>
-                                    <div className="text">1</div>
+                                    <div className="hero-sprite"><img className="hero-sprite-img" src={heroObj.heroSrc} draggable={false} /></div>
+                                    <div className="input-wrapper">
+                                        <input type='number' className='' value={selectedLevel} onChange={e => setSelectedLevel(e.target.value)} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -130,39 +151,51 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                     </div>
                     <div className='header'>Main Stats</div>
                     <div className='flex-row base-stats'>
-                        <div className='flex-row text card'>{perkSprites["HEALTH_FLAT"]}???</div>
-                        <div className='flex-row text card'>{perkSprites["ATTACK_FLAT"]}???</div>
-                        <div className='flex-row text card'>{perkSprites["DEFENCE_FLAT"]}???</div>
-                        <div className='flex-row text card'>{perkSprites["AGILITY_FLAT"]}???</div>
+                        <div className='flex-row text card'>
+                            <img width={32} src={perkSprites["HEALTH_FLAT"]}/>
+                            <input type='number' defaultValue={1234}/>
+                        </div>
+                        <div className='flex-row text card'>
+                            <img width={32} src={perkSprites["ATTACK_FLAT"]}/>
+                            <input type='number' defaultValue={1234}/>
+                        </div>
+                        <div className='flex-row text card'>
+                            <img width={32} src={perkSprites["DEFENCE_FLAT"]}/>
+                            <input type='number' defaultValue={1234}/>
+                        </div>
+                        <div className='flex-row text card'>
+                            <img width={32} src={perkSprites["AGILITY_FLAT"]}/>
+                            <input type='number' defaultValue={1234}/>
+                        </div>
                     </div>
                     <div className='header'>Other Stats</div>
                     <div className='flex-row details'>
                         <div className='flex-col'>
-                            <div className='flex-row text card'>{perkSprites["CRIT_CHANCE"]}10.0% Crit Chance</div>
-                            <div className='flex-row text card'>{perkSprites["CRIT_RESISTANCE"]}0.0% Crit Resistance</div>
-                            <div className='flex-row text card'>{perkSprites["CRIT_DAMAGE"]}150.0% Crit Damage</div>
-                            <div className='flex-row text card'>{perkSprites["CRIT_DAMAGE_REDUCTION"]}0.0% Crit Damage Reduction</div>
-                            <div className='flex-row text card'>{perkSprites["ACCURACY"]}0.0% Accuracy</div>
-                            <div className='flex-row text card'>{perkSprites["RESISTANCE"]}0.0% Resistance</div>
-                            <div className='flex-row text card'>{perkSprites["BOSS_DAMAGE"]}0.0% Boss Damage</div>
-                            <div className='flex-row text card'>{perkSprites["BOSS_DAMAGE_REDUCTION"]}0.0% Boss Damage Reduction</div>
-                            <div className='flex-row text card'>{perkSprites["AOE_DAMAGE_REDUCTION"]}0.0% AoE Damage Reduction</div>
-                            <div className='flex-row text card'>{perkSprites["AP_DAMAGE_REDUCTION"]}0.0% Ap Damage Reduction</div>
-                            <div className='flex-row text card'>{perkSprites["LIFE_STEAL"]}0.0% Life Steal</div>
-                            <div className='flex-row text card'>{perkSprites["HEALING_EFFICIENCY"]}0.0% Healing Efficiency</div>
-                            <div className='flex-row text card'>{perkSprites["HEALING_RECEIVED"]}0.0% Healing Received</div>
+                            <div className='flex-row text card'>10.0% Crit Chance</div>
+                            <div className='flex-row text card'>0.0% Crit Resistance</div>
+                            <div className='flex-row text card'>150.0% Crit Damage</div>
+                            <div className='flex-row text card'>0.0% Crit Damage Reduction</div>
+                            <div className='flex-row text card'>0.0% Accuracy</div>
+                            <div className='flex-row text card'>0.0% Resistance</div>
+                            <div className='flex-row text card'>0.0% Boss Damage</div>
+                            <div className='flex-row text card'>0.0% Boss Damage Reduction</div>
+                            <div className='flex-row text card'>0.0% AoE Damage Reduction</div>
+                            <div className='flex-row text card'>0.0% Ap Damage Reduction</div>
+                            <div className='flex-row text card'>0.0% Life Steal</div>
+                            <div className='flex-row text card'>0.0% Healing Efficiency</div>
+                            <div className='flex-row text card'>0.0% Healing Received</div>
                         </div>
                         <div className='flex-col'>
-                            <div className='flex-row text card'>{perkSprites["FIRE_DAMAGE"]}0.0% Fire Damage</div>
-                            <div className='flex-row text card'>{perkSprites["NATURE_DAMAGE"]}0.0% Nature Damage</div>
-                            <div className='flex-row text card'>{perkSprites["WATER_DAMAGE"]}0.0% Water Damage</div>
-                            <div className='flex-row text card'>{perkSprites["LIGHT_DAMAGE"]}0.0% Light Damage</div>
-                            <div className='flex-row text card'>{perkSprites["SHADOW_DAMAGE"]}0.0% Shadow Damage</div>
-                            <div className='flex-row text card'>{perkSprites["FIRE_DAMAGE_REDUCTION"]}0.0% Fire Damage Reduction</div>
-                            <div className='flex-row text card'>{perkSprites["NATURE_DAMAGE_REDUCTION"]}0.0% Nature Damage Reduction</div>
-                            <div className='flex-row text card'>{perkSprites["WATER_DAMAGE_REDUCTION"]}0.0% Water Damage Reduction</div>
-                            <div className='flex-row text card'>{perkSprites["LIGHT_DAMAGE_REDUCTION"]}0.0% Light Damage Reduction</div>
-                            <div className='flex-row text card'>{perkSprites["SHADOW_DAMAGE_REDUCTION"]}0.0% Shadow Damage Reduction</div>
+                            <div className='flex-row text card'>0.0% Fire Damage</div>
+                            <div className='flex-row text card'>0.0% Nature Damage</div>
+                            <div className='flex-row text card'>0.0% Water Damage</div>
+                            <div className='flex-row text card'>0.0% Light Damage</div>
+                            <div className='flex-row text card'>0.0% Shadow Damage</div>
+                            <div className='flex-row text card'>0.0% Fire Damage Reduction</div>
+                            <div className='flex-row text card'>0.0% Nature Damage Reduction</div>
+                            <div className='flex-row text card'>0.0% Water Damage Reduction</div>
+                            <div className='flex-row text card'>0.0% Light Damage Reduction</div>
+                            <div className='flex-row text card'>0.0% Shadow Damage Reduction</div>
                         </div>
                     </div>
                     <div className='flex-row'>

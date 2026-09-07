@@ -4,10 +4,8 @@ import { useDynamicList } from '../hooks/useDynamicList.jsx';
 import '../css/hero.scss'
 
 import Hero from './Hero.jsx'
-import { attributeSprites, elementSprites, raritySprites, roleSprites, filterSprites } from '../database/db_sprites.jsx'
+import { filterSprites } from '../database/db_sprites.jsx'
 import Button from './Button.jsx'
-import { ATTRIBUTE, ROLE } from '../database/enums.jsx'
-import { useDraggable } from 'react-use-draggable-scroll';
 import HeroFilters from './HeroFilters.jsx';
 
 function HeroList({ setForceUpdate = () => { }, extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId }) {
@@ -46,11 +44,10 @@ function HeroList({ setForceUpdate = () => { }, extraHeight = 0, savedHeroes = f
 
     return (<>
         <div className='header-big'>
-            <div>
-                <Button className='filters-button' round onClick={() => { setFiltersAdvanced(!filtersAdvanced) }} text={"Filters"} />
-                <HeroFilters advanced={filtersAdvanced} toggleFilter={toggleFilter} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} />
+            <div className='flex-row'>
+                <HeroFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} />
             </div>{headerText}</div>
-        <div className='list hero-list flex-row' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
+        <div className='list hero-list flex-row' ref={listRef} {...events} style={(filtersAdvanced ? { maxHeight: (listHeight - 189)} : { maxHeight: listHeight })}>
             {filteredHeroes.length === 0 ? (
                 <div className="text">No heroes match the selected filters</div>
             ) : (

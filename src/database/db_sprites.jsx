@@ -864,86 +864,13 @@ export const iconSprites = {
     is_starred: RareHeroSrc,
 }
 
-import { LuShieldHalf } from "react-icons/lu"
-import { GiHearts, GiBroadsword, GiHeartPlus, GiHeartBeats, GiDrippingSword, GiBouncingSword, GiDiceShield, GiEyeShield, GiRiotShield, GiVibratingShield, GiEdgedShield, GiZeusSword, GiShardSword, GiShiningSword, GiSwordWound, GiWalkingBoot } from "react-icons/gi";
-import { FaFireFlameCurved, FaLeaf, FaSun, FaMoon, FaWater } from "react-icons/fa6";
-
-export const perkSprites = {
-    HEALTH_PERCENT: <GiHearts />,
-    ATTACK_PERCENT: <GiBroadsword />,
-    DEFENCE_PERCENT: <LuShieldHalf />,
-    AGILITY_PERCENT: <GiWalkingBoot />,
-    HEALTH_FLAT: <GiHearts />,
-    ATTACK_FLAT: <GiBroadsword />,
-    DEFENCE_FLAT: <LuShieldHalf />,
-    AGILITY_FLAT: <GiWalkingBoot />,
-    CRIT_CHANCE: <GiBouncingSword />,
-    CRIT_RESISTANCE: <GiDiceShield />,
-    CRIT_DAMAGE: <GiSwordWound />,
-    CRIT_DAMAGE_REDUCTION: <GiZeusSword />,
-    ACCURACY: <GiShiningSword />,
-    RESISTANCE: <GiEdgedShield />,
-    BOSS_DAMAGE: <GiShardSword />,
-    BOSS_DAMAGE_REDUCTION: <GiRiotShield />,
-    AOE_DAMAGE_REDUCTION: <GiVibratingShield />,
-    AP_DAMAGE_REDUCTION: <GiEyeShield />,
-    LIFE_STEAL: <GiDrippingSword />,
-    HEALING_EFFICIENCY: <GiHeartPlus />,
-    HEALING_RECEIVED: <GiHeartBeats />,
-    FIRE_DAMAGE: <FaFireFlameCurved />,
-    NATURE_DAMAGE: <FaWater />,
-    WATER_DAMAGE: <FaLeaf />,
-    LIGHT_DAMAGE: <FaSun />,
-    SHADOW_DAMAGE: <FaMoon />,
-    FIRE_DAMAGE_REDUCTION: <FaFireFlameCurved />,
-    NATURE_DAMAGE_REDUCTION: <FaWater />,
-    WATER_DAMAGE_REDUCTION: <FaLeaf />,
-    LIGHT_DAMAGE_REDUCTION: <FaSun />,
-    SHADOW_DAMAGE_REDUCTION: <FaMoon />
-}
-
-import { ImCross } from "react-icons/im";
-import { BiDumbbell } from "react-icons/bi";
-import { GiSpellBook, GiPocketBow } from "react-icons/gi";
-
-export const attributeSprites = {
-    0: <ImCross />,
-    1: <BiDumbbell />,
-    2: <GiPocketBow />,
-    3: <GiSpellBook />,
-}
-
-import { HiOutlineSupport } from "react-icons/hi";
-import { GiMagicPalm } from "react-icons/gi";
-import { GiBattleAxe } from "react-icons/gi";
-import { GiZebraShield } from "react-icons/gi";
-
-export const roleSprites = {
-    0: <GiBattleAxe />,
-    1: <GiZebraShield />,
-    2: <GiMagicPalm />,
-    3: <HiOutlineSupport />,
-}
-
-import { TbCircleDottedLetterC, TbCircleDottedLetterR, TbCircleDottedLetterU, TbCircleDottedLetterE, TbCircleDottedLetterL, TbCircleDottedLetterM } from "react-icons/tb";
-import { FaCircle } from "react-icons/fa";
-
-export const raritySprites = {
-    0: <ImCross />,
-    1: <TbCircleDottedLetterC />,
-    2: <TbCircleDottedLetterU />,
-    3: <TbCircleDottedLetterR />,
-    4: <TbCircleDottedLetterE />,
-    5: <TbCircleDottedLetterL />,
-    6: <TbCircleDottedLetterM />,
-}
-
 import LightElementSrc from '../sprites/elements/light.png';
 import ShadowElementSrc from '../sprites/elements/shadow.png';
 import FireElementSrc from '../sprites/elements/fire.png';
 import WaterElementSrc from '../sprites/elements/water.png';
 import NatureElementSrc from '../sprites/elements/nature.png';
 import VoidElementSrc from '../sprites/elements/void.png';
+import SkyElementSrc from '../sprites/elements/sky.png';
 
 export const elementSprites = {
     0: FireElementSrc,
@@ -952,7 +879,89 @@ export const elementSprites = {
     3: LightElementSrc,
     4: ShadowElementSrc,
     5: VoidElementSrc,
+    6: SkyElementSrc,
 }
+
+import AgilityColorSrc from '../sprites/stats/agility.png'
+import StrengthColorSrc from '../sprites/stats/strength.png'
+import HealthColorSrc from '../sprites/stats/health.png'
+import DefenseColorSrc from '../sprites/stats/defense.png'
+
+import AccuracySrc from '../sprites/perks/accuracy.png'
+import APDamageReductionSrc from '../sprites/perks/ap_damage_reduction.png'
+import AOEDamageReductionSrc from '../sprites/perks/aoe_damage_reduction.png'
+import BossDamageSrc from '../sprites/perks/boss_damage.png'
+import BossDamageReductionSrc from '../sprites/perks/boss_damage_reduction.png'
+import CritChanceSrc from '../sprites/perks/crit_chance.png'
+import CritDamageSrc from '../sprites/perks/crit_damage.png'
+import CritDamageReductionSrc from '../sprites/perks/crit_damage_reduction.png'
+import CritResistanceSrc from '../sprites/perks/crit_resistance.png'
+import HealingEfficiencySrc from '../sprites/perks/healing_efficiency.png'
+import HealingReceivedSrc from '../sprites/perks/healing_received.png'
+import LifeStealSrc from '../sprites/perks/life_steal.png'
+import ResistanceSrc from '../sprites/perks/resistance.png'
+import QuestionmarkSrc from '../sprites/questionmark.png'
+
+export const perkSprites = {
+    NOTHING: QuestionmarkSrc,
+    HEALTH_PERCENT: HealthColorSrc,
+    ATTACK_PERCENT: StrengthColorSrc,
+    DEFENCE_PERCENT: DefenseColorSrc,
+    AGILITY_PERCENT: AgilityColorSrc,
+    HEALTH_FLAT: HealthColorSrc,
+    ATTACK_FLAT: StrengthColorSrc,
+    DEFENCE_FLAT: DefenseColorSrc,
+    AGILITY_FLAT: AgilityColorSrc,
+    CRIT_CHANCE: CritChanceSrc,
+    CRIT_RESISTANCE: CritResistanceSrc,
+    CRIT_DAMAGE: CritDamageSrc,
+    CRIT_DAMAGE_REDUCTION: CritDamageReductionSrc,
+    ACCURACY: AccuracySrc,
+    RESISTANCE: ResistanceSrc,
+    BOSS_DAMAGE: BossDamageSrc,
+    BOSS_DAMAGE_REDUCTION: BossDamageReductionSrc,
+    AOE_DAMAGE_REDUCTION: AOEDamageReductionSrc,
+    AP_DAMAGE_REDUCTION: APDamageReductionSrc,
+    LIFE_STEAL: LifeStealSrc,
+    HEALING_EFFICIENCY: HealingEfficiencySrc,
+    HEALING_RECEIVED: HealingReceivedSrc,
+    FIRE_DAMAGE: FireElementSrc,
+    NATURE_DAMAGE: WaterElementSrc,
+    WATER_DAMAGE: NatureElementSrc,
+    LIGHT_DAMAGE: LightElementSrc,
+    SHADOW_DAMAGE: ShadowElementSrc,
+    FIRE_DAMAGE_REDUCTION: FireElementSrc,
+    NATURE_DAMAGE_REDUCTION: WaterElementSrc,
+    WATER_DAMAGE_REDUCTION: NatureElementSrc,
+    LIGHT_DAMAGE_REDUCTION: LightElementSrc,
+    SHADOW_DAMAGE_REDUCTION: ShadowElementSrc
+}
+
+import { ImCross } from "react-icons/im";
+import StrengthSrc from '../sprites/attributes/strength.png'
+import AgilitySrc from '../sprites/attributes/agility.png'
+import IntelligenceSrc from '../sprites/attributes/intelligence.png'
+
+export const attributeSprites = {
+    0: <ImCross />,
+    1: StrengthSrc,
+    2: AgilitySrc,
+    3: IntelligenceSrc,
+}
+
+import OffensiveSrc from '../sprites/roles/offensive.png'
+import DefensiveSrc from '../sprites/roles/defensive.png'
+import ControlSrc from '../sprites/roles/control.png'
+import SupportSrc from '../sprites/roles/support.png'
+
+export const roleSprites = {
+    0: OffensiveSrc,
+    1: DefensiveSrc,
+    2: ControlSrc,
+    3: SupportSrc,
+}
+
+import { FaCircle } from "react-icons/fa";
 
 import ElementorSrc from '../sprites/simulation/elementor.png'
 import EquinoxSrc from '../sprites/simulation/equinox.png'
@@ -970,6 +979,12 @@ export const guildBossSprites = {
     star_herald: StarHeraldSrc,
 }
 
+import { FaSortNumericDown } from "react-icons/fa";
+import { FaSortNumericDownAlt } from "react-icons/fa";
+
+import ExpandSrc from '../sprites/expand.png'
+import CollapseSrc from '../sprites/collapse.png'
+
 export const filterSprites = {
     0: <ImCross />,
     1: FireElementSrc,
@@ -977,19 +992,22 @@ export const filterSprites = {
     3: NatureElementSrc,
     4: LightElementSrc,
     5: ShadowElementSrc,
-    10: <GiBattleAxe />,
-    11: <GiZebraShield />,
-    12: <GiMagicPalm />,
-    13: <HiOutlineSupport />,
-    20: <BiDumbbell />,
-    21: <GiPocketBow />,
-    22: <GiSpellBook />,
+    10: OffensiveSrc,
+    11: DefensiveSrc,
+    12: ControlSrc,
+    13: SupportSrc,
+    20: StrengthSrc,
+    21: AgilitySrc,
+    22: IntelligenceSrc,
     30: <FaCircle />,
     31: <FaCircle />,
     32: <FaCircle />,
     33: <FaCircle />,
     34: <FaCircle />,
     35: <FaCircle />,
+    36: <FaCircle />,
+    37: <FaCircle />,
+    38: <FaCircle />,
     40: TwoSetSrc,
     41: FourSetSrc,
     42: UniqueSrc,
@@ -999,6 +1017,10 @@ export const filterSprites = {
     46: RingsSrc,
     47: NecklacesSrc,
     50: RareHeroSrc,
+    51: <FaSortNumericDown />,
+    52: <FaSortNumericDownAlt />,
+    53: ExpandSrc,
+    54: CollapseSrc,
 }
 
 import Absorb from '../sprites/status/absorb.png'
@@ -1038,7 +1060,6 @@ import DefenseUp from '../sprites/status/defense_up.png'
 import Detonator from '../sprites/status/detonator.png'
 import DivineShield from '../sprites/status/divine_shield.png'
 import Drumbeat from '../sprites/status/drumbeat.png'
-import Echo from '../sprites/status/echo.png'
 import Feral from '../sprites/status/feral.png'
 import Ferryman from '../sprites/status/ferryman.png'
 import Foresight from '../sprites/status/foresight.png'
@@ -1092,8 +1113,48 @@ import TheMoon from '../sprites/status/the_moon.png'
 import TheStar from '../sprites/status/the_star.png'
 import TheSun from '../sprites/status/the_sun.png'
 import WarForge from '../sprites/status/war_forge.png'
-import Wildfire from '../sprites/status/wildfire.png'
 import WindUp from '../sprites/status/wind_up.png'
+
+import Soaked from '../sprites/status/soaked.png'
+import SpectralShield from '../sprites/status/spectral_shield.png'
+import Wither from '../sprites/status/wither.png'
+import BackupDrone from '../sprites/status/backup_drone.png'
+import Reflect from '../sprites/status/reflect.png'
+import Momentum from '../sprites/status/momentum.png'
+import Dawn from '../sprites/status/dawn.png'
+import Zenith from '../sprites/status/zenith.png'
+import Dusk from '../sprites/status/dusk.png'
+import Tender from '../sprites/status/tender.png'
+import Sealed from '../sprites/status/sealed.png'
+import Lifeblood from '../sprites/status/lifeblood.png'
+import GhostCrew from '../sprites/status/ghost_crew.png'
+import Terror from '../sprites/status/terror.png'
+import Feast from '../sprites/status/feast.png'
+import Pin from '../sprites/status/pin.png'
+import Puppet from '../sprites/status/puppet.png'
+import Buzzkill from '../sprites/status/buzzkill.png'
+import Plagued from '../sprites/status/plagued.png'
+import Encore from '../sprites/status/encore.png'
+import Contaminated from '../sprites/status/contaminated.png'
+import Cruelty from '../sprites/status/cruelty.png'
+import Portal from '../sprites/status/portal.png'
+import CriticalCondition from '../sprites/status/critical_condition.png'
+import Hellforge from '../sprites/status/hellforge.png'
+import Spotlight from '../sprites/status/spotlight.png'
+
+// Titans
+import Wildfire from '../sprites/status/wildfire.png'
+
+// Equinox
+import Emission from '../sprites/status/emission.png'
+import Flare from '../sprites/status/flare.png'
+
+// Star Breaker & Weapon
+import Echo from '../sprites/status/echo.png'
+
+// Shadow World
+import Hollowing from '../sprites/status/hollowing.png'
+import Miasma from '../sprites/status/miasma.png'
 
 export const statusSprites = {
     absorb: Absorb,
@@ -1133,7 +1194,6 @@ export const statusSprites = {
     detonator: Detonator,
     divine_shield: DivineShield,
     drumbeat: Drumbeat,
-    echo: Echo,
     feral: Feral,
     ferryman: Ferryman,
     foresight: Foresight,
@@ -1187,6 +1247,37 @@ export const statusSprites = {
     the_star: TheStar,
     the_sun: TheSun,
     war_forge: WarForge,
+    wind_up: WindUp,
+    soaked: Soaked,
+    spectral_shield: SpectralShield,
+    wither: Wither,
+    backup_drone: BackupDrone,
+    reflect: Reflect,
+    momentum: Momentum,
+    dawn: Dawn,
+    zenith: Zenith,
+    dusk: Dusk,
+    tender: Tender,
+    sealed: Sealed,
+    lifeblood: Lifeblood,
+    ghost_crew: GhostCrew,
+    terror: Terror,
+    feast: Feast,
+    pin: Pin,
+    puppet: Puppet,
+    buzzkill: Buzzkill,
+    plagued: Plagued,
+    encore: Encore,
+    contaminated: Contaminated,
+    cruelty: Cruelty,
+    portal: Portal,
+    critical_condition: CriticalCondition,
+    hellforge: Hellforge,
+    spotlight: Spotlight,
     wildfire: Wildfire,
-    wind_up: WindUp
+    emission: Emission,
+    flare: Flare,
+    echo: Echo,
+    hollowing: Hollowing,
+    miasma: Miasma,
 }

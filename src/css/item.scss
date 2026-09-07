@@ -33,8 +33,10 @@
 }
 
 .item-perk {
+  flex-grow: 1;
   justify-content: space-between;
   align-items: center;
+  flex-basis: 49%;
 
   .text {
     text-align: center;
@@ -55,6 +57,16 @@
     height: 100%;
     outline: 2px solid black;
     border-radius: 4px;
+
+    @include M.media-query-max(V.$bp-mobile, ()) {
+      width: 60px;
+    }
+  }
+  
+  .item-sprite-img {
+    width: 92px;
+    height: 100%;
+    filter: drop-shadow(0 0 2px black);
     image-rendering: optimizeQuality;
 
     @include M.media-query-max(V.$bp-mobile, ()) {
@@ -88,6 +100,11 @@
     transform: translate(3px, 1px);
   }
 
+  input:first-of-type {
+    width: 100%;
+    margin-top: 6px;
+  }
+
   .text {
     color: black;
     font-family: V.$font-family-header;
@@ -117,27 +134,48 @@
     display: none;
   }
 
+  &[data-rarity="8"] .item-sprite {
+    background: linear-gradient(140deg,#360b39 0%, #9511a1 33%, #320536 100%);
+  }
+
+  &[data-rarity="7"] .item-sprite {
+    background: #7efffe;
+    background: linear-gradient(140deg,#d5ffff 0%, #7efffe 50%, #105555 100%);
+  }
+
+  &[data-rarity="6"] .item-sprite {
+    background: #fd5d47;
+    background: linear-gradient(140deg,#fd5d47 0%, #922314 100%);
+  }
+
   &[data-rarity="5"] .item-sprite {
-    background: hsl(0, 50%, 50%);
+    background: #ffa100;
+    background: linear-gradient(140deg,#ffa100 0%, #965f00 100%);
   }
 
   &[data-rarity="4"] .item-sprite {
-    background: hsl(40, 50%, 50%);
+    background: #ffe900;
+    background: linear-gradient(140deg,#ffe900 0%, #928600 100%);
   }
 
   &[data-rarity="3"] .item-sprite {
-    background: hsl(265, 50%, 50%);
+    background: #9f5fff;
+    background: linear-gradient(140deg,#9f5fff 0%, #4b1798 100%);
   }
 
   &[data-rarity="2"] .item-sprite {
-    background: hsl(225, 50%, 50%);
+    background: #0099ff;
+    background: linear-gradient(140deg,#0099ff 0%, #00568f 100%);
   }
 
   &[data-rarity="1"] .item-sprite {
-    background: hsl(109, 46%, 59%);
+    background: #9de260;
+    background: linear-gradient(140deg,#9de260 0%, #4a910b 100%);
   }
 
   &[data-rarity="0"] .item-sprite {
-    background: hsl(0, 0%, 62%);
+    background: #ddd0b2;
+    background: linear-gradient(140deg,#ddd0b2 0%, #8f7f58 100%);
   }
+
 }

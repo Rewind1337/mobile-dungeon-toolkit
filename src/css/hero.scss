@@ -41,7 +41,7 @@
     margin-bottom: 8px;
   }
 
-  .hero.selected {}
+  .hero.selected {  width: min-content;}
 
   .base-stats {
     gap: 4px;
@@ -103,6 +103,11 @@
     gap: 0;
   }
 
+  input:first-of-type {
+    width: 100%;
+    margin-top: 6px;
+  }
+
   .hero-element {
     width: V.$icon-width;
     height: V.$icon-height;
@@ -149,6 +154,16 @@
     height: 100%;
     outline: 2px solid black;
     border-radius: 4px;
+    image-rendering: optimizeQuality;
+
+    @include M.media-query-max(V.$bp-mobile, ()) {
+      width: 60px;
+    }
+  }
+  
+  .hero-sprite-img {
+    width: 100%;
+    height: 100%;
     image-rendering: optimizeQuality;
 
     @include M.media-query-max(V.$bp-mobile, ()) {

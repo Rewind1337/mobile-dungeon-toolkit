@@ -5,8 +5,7 @@ import '../css/item.scss'
 
 import Item from './Item.jsx'
 import Button from './Button.jsx'
-import { attributeSprites, iconSprites, raritySprites, filterSprites } from '../database/db_sprites.jsx'
-import { ATTRIBUTE } from '../database/enums.jsx'
+import { filterSprites } from '../database/db_sprites.jsx'
 import ItemFilters from './ItemFilters.jsx'
 
 function ItemList({ setForceUpdate = () => { }, extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, itemType = null, setSelectedItemId, setsRef }) {
@@ -57,13 +56,12 @@ function ItemList({ setForceUpdate = () => { }, extraHeight = 0, filtersOffset =
 
     return (<>
         <div className='header-big'>
-            <div>
-                <Button className='filters-button' round onClick={() => { setFiltersAdvanced(!filtersAdvanced) }} text={"Filters"} />
-                <ItemFilters advanced={filtersAdvanced} toggleFilter={toggleFilter} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} topOffset={filtersOffset} />
+            <div className='flex-row'>
+                <ItemFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} topOffset={filtersOffset} />
             </div>
             {headerText}</div>
 
-        <div className='list item-list flex-row' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
+        <div className='list item-list flex-row' ref={listRef} {...events} style={(filtersAdvanced ? { maxHeight: (listHeight - 189)} : { maxHeight: listHeight })}>
             {filteredItems.length === 0 ? (
                 <div className="text">No items match the selected filters</div>
             ) : (

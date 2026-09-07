@@ -11,7 +11,7 @@ function Hero({ heroObj, selected, level, onClick }) {
                 <img src={iconSprites["is_starred"]} draggable={false} />
             </div>}
             <div className="flex-col">
-                <div className="hero-sprite"><img className="hero-sprite" draggable={false} src={heroObj.heroSrc} /></div>
+                <div className="hero-sprite"><img className="hero-sprite-img" draggable={false} src={heroObj.heroSrc} /></div>
                 {level !== null && <div className="text">{level}</div>}
             </div>
         </div>

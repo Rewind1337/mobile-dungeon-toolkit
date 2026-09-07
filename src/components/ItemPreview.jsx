@@ -97,9 +97,9 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
                         <div className={"item card selected"} data-rarity={selectedRarity} data-type={itemObj.iconType} onClick={() => { onClick() }}>
                             <div className="item-icon"><img src={itemObj.iconSrc} draggable={false} /></div>
                             <div className="flex-col">
-                                <div className="item-sprite"><img className="item-sprite" src={itemObj.itemSrc} draggable={false} /></div>
-                                <div className="text">
-                                    <input type='number' className='text' value={selectedLevel} onChange={e => setSelectedLevel(e.target.value)} />
+                                <div className="item-sprite"><img className="item-sprite-img" src={itemObj.itemSrc} draggable={false} /></div>
+                                <div className="input-wrapper">
+                                    <input type='number' className='' value={selectedLevel} onChange={e => setSelectedLevel(e.target.value)} />
                                 </div>
                             </div>
                         </div>
@@ -108,7 +108,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
                     <div className='card flex-row'>
                         <Button text={"Rarity Down"} onClick={() => { setSelectedRarity(r => Math.max(0, r -= 1)) }} color={0} />
                         <div className='header'>{RARITY_NAME_MAP[selectedRarity]}</div>
-                        <Button text={"Rarity Up"} onClick={() => { setSelectedRarity(r => Math.min(5, r += 1)) }} color={0} />
+                        <Button text={"Rarity Up"} onClick={() => { setSelectedRarity(r => Math.min(8, r += 1)) }} color={0} />
                     </div>
 
                     {itemObj.unique && <div className='card'>

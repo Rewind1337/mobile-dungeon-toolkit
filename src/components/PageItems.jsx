@@ -45,7 +45,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
         <>
             <Modal position="left" isVisible={perkSelectionVisible} onClose={() => setPerkSelectionVisible(false)}>
                 <div className='header-big'>Select Perk</div>
-                <div className="list perk-list flex-col">
+                <div className="list perk-list flex-row flex-wrap">
                     {possiblePerks.map((perk) => (
                         <ItemPerk
                             key={perk}

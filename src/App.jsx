@@ -14,7 +14,7 @@ import PageHeroes from './components/PageHeroes.jsx'
 import PageSimulators from './components/PageSimulators.jsx'
 import PageTeams from './components/PageTeams.jsx'
 
-import { heroSprites, itemSprites, iconSprites, elementSprites, roleSprites, attributeSprites, raritySprites, statusSprites } from './database/db_sprites.jsx'
+import { heroSprites, itemSprites, iconSprites, elementSprites, roleSprites, attributeSprites, statusSprites } from './database/db_sprites.jsx'
 import { usePreloadImages } from './hooks/usePreloadImages.jsx'
 
 const BASE_HEROES = init_hero_db()
@@ -78,7 +78,6 @@ function App() {
     ...Object.values(elementSprites),
     ...Object.values(roleSprites),
     ...Object.values(attributeSprites),
-    ...Object.values(raritySprites),
     ...Object.values(statusSprites),
   ]);
   const initialState = loadInitialState()
