@@ -41,13 +41,39 @@
     margin-bottom: 8px;
   }
 
-  .hero.selected {  width: min-content;}
+  .status-effect-turns {
+    align-self: center;
+  }
+
+  .flex-col.hero {
+    height: fit-content;
+  }
+
+  .hero.selected {
+    width: min-content;
+    margin: auto;
+  }
 
   .base-stats {
     gap: 4px;
 
     .card {
       flex-grow: 1;
+    }
+  }
+
+  .hero-stat {
+    flex-grow: 1;
+    justify-content: space-between;
+    align-items: center;
+
+    img {
+      scale: 1.5;
+    }
+
+    .text {
+      text-align: center;
+      align-items: center;
     }
   }
 
@@ -60,11 +86,31 @@
     }
   }
 
-  .skills,
+  .skills {
+    width: 50%;
+
+    .text-card {
+      flex-grow: 1;
+      justify-content: space-between;
+      padding: 5px;
+      border-radius: V.$border-radius;
+      background: V.$secondary-gradient;
+      outline: 1px solid rgba(26, 26, 26, 0.5);
+      transform: translate(0, 0);
+      transition: V.$transition-card;
+      .flex-row {
+        .text:first-child, .text:last-child {
+          flex-basis: 60px;
+        }
+      }
+    }
+  }
+
   .talents {
     width: 50%;
 
     .text-card {
+      flex-grow: 1;
       justify-content: space-between;
       padding: 5px;
       border-radius: V.$border-radius;

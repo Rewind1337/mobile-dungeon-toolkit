@@ -122,9 +122,9 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
                         </div>
                     </div>}
 
-                    {itemObj.set !== null && itemObj.attribute.length > 0 && <>
-                        <div className='header'>Item Attributes</div>
-                        {itemObj.attribute.map(attr =>
+                    {itemObj.set !== null && itemObj.fixedPerks.length > 0 && <>
+                        <div className='header'>Fixed Item Perks</div>
+                        {itemObj.fixedPerks.map(attr =>
                             <ItemPerk
                                 key={"setperk_" + attr.id}
                                 name={attr.name.toUpperCase().replace(/\s/g, '_') || "NOTHING"}

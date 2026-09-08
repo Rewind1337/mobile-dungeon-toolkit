@@ -21,8 +21,9 @@
   overflow: auto;
   padding: V.$gap-small;
 
-  .item {
+  .item.selected {
     width: min-content;
+    margin: auto;
   }
 
   img {

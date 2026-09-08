@@ -2,17 +2,19 @@ import { useLayoutEffect, useRef, useState } from 'react'
 
 import { ATTRIBUTE_NAME_MAP, EQUIPMENT_SLOT, ROLE_NAME_MAP, STATUS_EFFECT_NAME_MAP } from '../database/enums.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
-import { iconSprites, perkSprites, statusSprites } from '../database/db_sprites.jsx'
+import { iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites } from '../database/db_sprites.jsx'
 
 import Button from './Button.jsx'
 import EmptyItem from './EmptyItem.jsx'
 import TextCard from './TextCard.jsx'
 
 import '../css/hero.scss'
+import HeroStat from './HeroStat.jsx'
 
 function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
+    const [showSkillsAndTalents, setShowSkillsAndTalents] = useState(false)
     const [selectedLevel, setSelectedLevel] = useState(1)
 
     function onResize() {
@@ -39,17 +41,43 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
     let heroObj = heroesRef[selectedHeroId]
 
     const renderHeroSkills = () => {
-        return heroObj.skills.map((skill, index) => <TextCard text={skill.name} prefix={index + 1 + "."} suffix={"Level 1"} title={skill.description} />)
+        return heroObj.skills.map((skill, index) => (
+            <TextCard text={skill.name} prefix={index + 1 + "."} suffix={"Level 1"}>
+                <div className='flex-row' title={skill.description}>
+                    {skill.effect.map(eff => <div className='text'>{eff.type}</div>)}
+                </div>
+                {renderSkillStatusEffects(skill)}
+            </TextCard>
+        ))
     }
 
-    const renderHeroStatusEffects = () => {
+    const renderSkillStatusEffects = (skill) => {
+        let skillStatusEffects = []
+        for (let i = 0; i < skill.effect.length; i++) { // each effect
+            let batch = skill.effect[i].applies;
+            for (let j = 0; j < batch.length; j++) { // each statuseffect
+                skillStatusEffects.push(
+                    {sprite: statusSprites[STATUS_EFFECT_NAME_MAP[batch[j].status.id]], name: batch[j].status.name, duration: batch[j].duration}
+                )
+            }
+        }
+        return <div className='flex-row'>
+            {skillStatusEffects.map(eff => <div className='flex-row card status-effect' title={eff.name}>
+                <img className='status-effect-img' width={32} src={eff.sprite}/>
+                <div className='status-effect-turns text'>{(eff.duration < 1 ? "Special" : (eff.duration > 1 ? eff.duration + " Turns" : eff.duration + " Turn"))}</div>
+            </div>)}
+        </div>
+    }
+
+    // unused atm, using renderSkillStatusEffects instead
+    const renderAllHeroStatusEffects = () => {
         let statusEffectSprites = []
         for (let i = 0; i < heroObj.skills.length; i++) { // each skill
             let sEffect = heroObj.skills[i].effect;
             for (let j = 0; j < sEffect.length; j++) { // each effect
                 let batch = sEffect[j].applies;
                 console.log(batch)
-                for (let k = 0; k < batch.length; k++) { // each effect
+                for (let k = 0; k < batch.length; k++) { // each statuseffect
                     statusEffectSprites.push(statusSprites[STATUS_EFFECT_NAME_MAP[batch[k].status.id]])
                 }
             }
@@ -81,7 +109,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                 let row = ~~(key / 10)
                 let prefix = (key % 10 == 0 ? "M-" : (key % 2 == 0 ? "R-" : "L-"))
                 prefix += row
-                talents.push(<TextCard text={talent.name} prefix={prefix} title={sum}></TextCard>)
+                talents.unshift(<TextCard text={talent.name} prefix={prefix} suffix={(talent.active ? "Y" : "N")} className={(!prefix.includes("M") ? "w-33" : "w-100")}><div className='text'>{sum}</div></TextCard>)
             }
         }
         return talents
@@ -102,9 +130,15 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
         return (
             <div ref={listRef} className='hero-preview flex-col' style={{ maxHeight: listHeight }}>
                 <div className='flex-row top-row'>
-                    <div className='header pill'>{ROLE_NAME_MAP[heroObj.role]}</div>
-                    <div className='header-big pill'>{heroObj.name}</div>
-                    <div className='header pill'>{ATTRIBUTE_NAME_MAP[heroObj.mainAttribute]}</div>
+                    <div className='header pill flex-row'>
+                        <img width={48} src={attributeSprites[heroObj.mainAttribute]}/>
+                        {ATTRIBUTE_NAME_MAP[heroObj.mainAttribute]}
+                    </div>
+                    <div className='header-big pill'>{heroObj.variant ? heroObj.variant + " - " : ""}{heroObj.name}</div>
+                    <div className='header pill flex-row'>
+                        <img width={48} src={roleSprites[heroObj.role]}/>
+                        {ROLE_NAME_MAP[heroObj.role]}
+                    </div>
                 </div>
 
                 {heroObj.statusEffects !== undefined && <div className='flex-row status-row'>
@@ -112,10 +146,10 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                 </div>}
 
                 <div className='flex-col'>
+                    {(heroObj.skills && heroObj.talents) && <Button color={0} text={"Skills & Talents"} onClick={() => { setShowSkillsAndTalents(!showSkillsAndTalents) }} />}
                     <div className='flex-row'>
-                        {heroObj.skills &&
+                        {(showSkillsAndTalents && heroObj.skills) &&
                             <div className='flex-col skills'>
-                                {renderHeroStatusEffects()}
                                 {renderHeroSkills()}
                             </div>
                         }
@@ -133,8 +167,8 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                                 </div>
                             </div>
                         </div>
-                        {heroObj.talents &&
-                            <div className='flex-col talents'>
+                        {(showSkillsAndTalents && heroObj.talents) &&
+                            <div className='flex-row flex-wrap talents'>
                                 {renderHeroTalents()}
                             </div>
                         }
@@ -171,31 +205,31 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                     <div className='header'>Other Stats</div>
                     <div className='flex-row details'>
                         <div className='flex-col'>
-                            <div className='flex-row text card'>10.0% Crit Chance</div>
-                            <div className='flex-row text card'>0.0% Crit Resistance</div>
-                            <div className='flex-row text card'>150.0% Crit Damage</div>
-                            <div className='flex-row text card'>0.0% Crit Damage Reduction</div>
-                            <div className='flex-row text card'>0.0% Accuracy</div>
-                            <div className='flex-row text card'>0.0% Resistance</div>
-                            <div className='flex-row text card'>0.0% Boss Damage</div>
-                            <div className='flex-row text card'>0.0% Boss Damage Reduction</div>
-                            <div className='flex-row text card'>0.0% AoE Damage Reduction</div>
-                            <div className='flex-row text card'>0.0% Ap Damage Reduction</div>
-                            <div className='flex-row text card'>0.0% Life Steal</div>
-                            <div className='flex-row text card'>0.0% Healing Efficiency</div>
-                            <div className='flex-row text card'>0.0% Healing Received</div>
+                            <HeroStat name={"CRIT_CHANCE"} value={10}/>
+                            <HeroStat name={"CRIT_RESISTANCE"} value={0}/>
+                            <HeroStat name={"CRIT_DAMAGE"} value={150}/>
+                            <HeroStat name={"CRIT_DAMAGE_REDUCTION"} value={0}/>
+                            <HeroStat name={"ACCURACY"} value={10}/>
+                            <HeroStat name={"RESISTANCE"} value={20}/>
+                            <HeroStat name={"BOSS_DAMAGE"} value={0}/>
+                            <HeroStat name={"BOSS_DAMAGE_REDUCTION"} value={0}/>
+                            <HeroStat name={"AOE_DAMAGE_REDUCTION"} value={0}/>
+                            <HeroStat name={"AP_DAMAGE_REDUCTION"} value={0}/>
+                            <HeroStat name={"LIFE_STEAL"} value={0}/>
+                            <HeroStat name={"HEALING_EFFICIENCY"} value={0}/>
+                            <HeroStat name={"HEALING_RECEIVED"} value={0}/>
                         </div>
                         <div className='flex-col'>
-                            <div className='flex-row text card'>0.0% Fire Damage</div>
-                            <div className='flex-row text card'>0.0% Nature Damage</div>
-                            <div className='flex-row text card'>0.0% Water Damage</div>
-                            <div className='flex-row text card'>0.0% Light Damage</div>
-                            <div className='flex-row text card'>0.0% Shadow Damage</div>
-                            <div className='flex-row text card'>0.0% Fire Damage Reduction</div>
-                            <div className='flex-row text card'>0.0% Nature Damage Reduction</div>
-                            <div className='flex-row text card'>0.0% Water Damage Reduction</div>
-                            <div className='flex-row text card'>0.0% Light Damage Reduction</div>
-                            <div className='flex-row text card'>0.0% Shadow Damage Reduction</div>
+                            <HeroStat name={"FIRE_DAMAGE"} value={0}/>
+                            <HeroStat name={"NATURE_DAMAGE"} value={0}/>
+                            <HeroStat name={"WATER_DAMAGE"} value={0}/>
+                            <HeroStat name={"LIGHT_DAMAGE"} value={0}/>
+                            <HeroStat name={"SHADOW_DAMAGE"} value={0}/>
+                            <HeroStat name={"FIRE_DAMAGE_REDUCTION"} value={0}/>
+                            <HeroStat name={"NATURE_DAMAGE_REDUCTION"} value={0}/>
+                            <HeroStat name={"WATER_DAMAGE_REDUCTION"} value={0}/>
+                            <HeroStat name={"LIGHT_DAMAGE_REDUCTION"} value={0}/>
+                            <HeroStat name={"SHADOW_DAMAGE_REDUCTION"} value={0}/>
                         </div>
                     </div>
                     <div className='flex-row'>

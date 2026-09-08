@@ -23,14 +23,14 @@ function get_set_id_by_name(name) {
     return undefined
 }
 
-function add_weapon(name, attribute, unique, rarity, attributeRequirement, mainAttribute, dropSource, dropLocation) {
+function add_weapon(name, fixedPerks, unique, rarity, attributeRequirement, mainAttribute, dropSource, dropLocation) {
     let id = BASE_ITEMS.WEAPONS.length
     let normalizedName = name.toLowerCase().replace(/[^a-z']/g, '_').replace(/[']/g, '');
     unique = (unique != undefined ? unique : UNIQUE_SKILLS.NOTHING)
     let perkAmount = Math.min(rarity - 1, 3) + (unique ? 0 : 1)
     let perks = Array(perkAmount).fill("NOTHING")
     BASE_ITEMS.WEAPONS.push({
-        id: id, slot: EQUIPMENT_SLOT.WEAPON, name: name, attribute: attribute, unique: unique, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
+        id: id, slot: EQUIPMENT_SLOT.WEAPON, name: name, fixedPerks: fixedPerks, unique: unique, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
         itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
         iconSrc: (unique ? iconSprites["unique"] : null),
         iconType: (unique ? "unique" : "null"),
@@ -40,7 +40,7 @@ function add_weapon(name, attribute, unique, rarity, attributeRequirement, mainA
     })
 }
 
-function add_equipment(slot, name, attribute, set, rarity, attributeRequirement, mainAttribute, dropSource, dropLocation) {
+function add_equipment(slot, name, fixedPerks, set, rarity, attributeRequirement, mainAttribute, dropSource, dropLocation) {
     let normalizedName = name.toLowerCase().replace(/[^a-z]/g, '_');
     set = get_set_id_by_name(set);
     set = (set != undefined ? set : -1)
@@ -62,7 +62,7 @@ function add_equipment(slot, name, attribute, set, rarity, attributeRequirement,
         case EQUIPMENT_SLOT.HELMET:
             id = BASE_ITEMS.HELMETS.length
             BASE_ITEMS.HELMETS.push({
-                id: id, slot: slot, name: name, attribute: attribute, set: set, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
+                id: id, slot: slot, name: name, fixedPerks: fixedPerks, set: set, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
                 itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
                 iconSrc: (iconSprites[typeOfSet]),
                 iconType: typeOfSet,
@@ -73,7 +73,7 @@ function add_equipment(slot, name, attribute, set, rarity, attributeRequirement,
         case EQUIPMENT_SLOT.ARMOR:
             id = BASE_ITEMS.ARMORS.length
             BASE_ITEMS.ARMORS.push({
-                id: id, slot: slot, name: name, attribute: attribute, set: set, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
+                id: id, slot: slot, name: name, fixedPerks: fixedPerks, set: set, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
                 itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
                 iconSrc: (set >= 0 ? iconSprites[typeOfSet] : null),
                 iconType: typeOfSet,
@@ -84,7 +84,7 @@ function add_equipment(slot, name, attribute, set, rarity, attributeRequirement,
         case EQUIPMENT_SLOT.NECKLACE:
             id = BASE_ITEMS.NECKLACES.length
             BASE_ITEMS.NECKLACES.push({
-                id: id, slot: slot, name: name, attribute: attribute, set: set, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
+                id: id, slot: slot, name: name, fixedPerks: fixedPerks, set: set, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
                 itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
                 iconSrc: (set >= 0 ? iconSprites[typeOfSet] : null),
                 iconType: typeOfSet,
@@ -95,7 +95,7 @@ function add_equipment(slot, name, attribute, set, rarity, attributeRequirement,
         case EQUIPMENT_SLOT.RING:
             id = BASE_ITEMS.RINGS.length
             BASE_ITEMS.RINGS.push({
-                id: id, slot: slot, name: name, attribute: attribute, set: set, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
+                id: id, slot: slot, name: name, fixedPerks: fixedPerks, set: set, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
                 itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
                 iconSrc: (set >= 0 ? iconSprites[typeOfSet] : null),
                 iconType: typeOfSet,

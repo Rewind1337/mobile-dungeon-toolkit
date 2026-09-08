@@ -16,8 +16,8 @@ function ItemPerk({ name, value, onClick, buttonText = "Change", buttonColor = 5
 
             {!noValue && <>
                 {editable
-                    ? <div className='text'><input type='number' className='text' value={_value} onChange={e => _setValue(e.target.value)} />{isFlatPerk ? " Flat" : " %"}</div>
-                    : <div className='text'>{value}{isFlatPerk ? " Flat" : " %"}</div>
+                    ? <div className='text flex-row'><input type='number' className='text' value={_value} onChange={e => _setValue(e.target.value)} />{isFlatPerk ? " Flat" : " %"}</div>
+                    : <div className='text flex-row'>{value}{isFlatPerk ? " Flat" : " %"}</div>
                 }
             </>}
 

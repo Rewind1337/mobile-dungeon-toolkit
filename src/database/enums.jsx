@@ -247,240 +247,1359 @@ export const STATUS_EFFECT_NAME_MAP = {
     6: "agility_up",
     7: "critical_resistance",
     8: "invincibility",
-    9: "recovery",
-    10: "preservation",
-    11: "shroud",
-    12: "guard",
-    13: "shield",
-    14: "absorbing",
-    15: "blessed",
-    16: "attack_down",
-    17: "defense_down",
-    18: "critical_chance_down",
-    19: "accuracy_down",
-    20: "resistance_down",
-    21: "agility_down",
-    22: "blind",
-    23: "marked",
-    24: "sick",
-    25: "cursed",
-    26: "stunned",
-    27: "sleep",
-    28: "freeze",
-    29: "petrified",
-    30: "burn",
-    31: "poison",
-    32: "bleeding",
-    33: "mute",
-    34: "bound",
-    35: "taunt",
-    36: "confused",
-    37: "cursed_flame",
-    38: "hellfire",
-    39: "hellfire_mode",
-    40: "frozen_heart",
-    41: "heating_up",
-    42: "mjoellnir",
-    43: "anubis_seal",
-    44: "soulmate",
-    45: "styx",
-    46: "burrow",
-    47: "defense_drone",
-    48: "divine_shield",
-    49: "ferryman",
-    50: "feral",
-    51: "wildfire",
-    52: "fury",
-    53: "hivemind",
-    54: "hot_saw",
-    55: "loa",
-    56: "the_moon",
-    57: "the_star",
-    58: "the_sun",
-    59: "wind_up",
-    60: "war_forge",
-    61: "drumbeat",
-    62: "foresight",
-    63: "ap_resistance",
-    64: "arachnid",
-    65: "bloodrage",
-    66: "bunny",
-    67: "pain_fueled",
-    68: "blood_transfusion",
-    69: "soul_harvest",
-    70: "buzz_meter",
-    71: "biomass",
-    72: "ignited_ego",
-    73: "life_after_death",
-    74: "sludge",
-    75: "detonator",
-    76: "courage",
-    77: "smoke",
-    78: "mana_shield",
-    79: "echo",
-    80: "ionize",
-    81: "fracture",
-    82: "irradiate",
-    83: "rift_step",
-    84: "blacklist",
-    85: "rooted",
-    86: "ash",
-    87: "phoenix_feather",
-    88: "luck",
-    89: "soul_core",
-    90: "tempered",
-    91: "soaked",
-    92: "spectral_shield",
-    93: "wither",
-    94: "backup_drone",
-    95: "reflect",
-    96: "momentum",
-    97: "dawn",
-    98: "zenith",
-    99: "dusk",
-    100: "tender",
-    101: "sealed",
-    102: "lifeblood",
-    103: "ghost_crew",
-    104: "terror",
-    105: "feast",
-    106: "pin",
-    107: "puppet",
-    108: "buzzkill",
-    109: "plagued",
-    110: "encore",
-    111: "contaminated",
-    112: "cruelty",
-    113: "portal",
-    114: "critical_condition",
-    115: "hellforge",
-    116: "spotlight",
-    117: "emission",
-    118: "flare",
-    119: "hollowing",
-    120: "miasma",
+    9: "immunity",
+    10: "recovery",
+    11: "preservation",
+    12: "shroud",
+    13: "guard",
+    14: "shield",
+    15: "absorbing",
+    16: "blessed",
+
+    17: "attack_down",
+    18: "defense_down",
+    19: "critical_chance_down",
+    20: "accuracy_down",
+    21: "resistance_down",
+    22: "agility_down",
+    23: "blind",
+    24: "marked",
+    25: "sick",
+    26: "cursed",
+    27: "stunned",
+    28: "sleep",
+    29: "freeze",
+    30: "petrified",
+    31: "burn",
+    32: "poison",
+    33: "bleeding",
+    34: "mute",
+    35: "bound",
+    36: "taunt",
+    37: "confused",
+    38: "cursed_flame",
+
+    39: "hellfire",
+    40: "hellfire_mode",
+    41: "frozen_heart",
+    42: "heating_up",
+    43: "mjoellnir",
+    44: "anubis_seal",
+    45: "soulmate",
+    46: "sphinx_curse",
+    47: "styx",
+    48: "burrow",
+    49: "defense_drone",
+    50: "divine_shield",
+    51: "ferryman",
+    52: "feral",
+    53: "wildfire",
+    54: "fury",
+    55: "hivemind",
+    56: "hot_saw",
+    57: "loa",
+    58: "the_moon",
+    59: "the_star",
+    60: "the_sun",
+    61: "wind_up",
+    62: "war_forge",
+    63: "drumbeat",
+    64: "foresight",
+    65: "ap_resistance",
+    66: "arachnid",
+    67: "bloodrage",
+    68: "bunny",
+    69: "pain_fueled",
+    70: "blood_transfusion",
+    71: "soul_harvest",
+    72: "buzz_meter",
+    73: "biomass",
+    74: "ignited_ego",
+    75: "life_after_death",
+    76: "sludge",
+    77: "detonator",
+    78: "courage",
+    79: "smoke",
+    80: "mana_shield",
+    81: "echo",
+    82: "ionize",
+    83: "fracture",
+    84: "irradiate",
+    85: "rift_step",
+    86: "blacklist",
+    87: "rooted",
+    88: "ash",
+    89: "phoenix_feather",
+    90: "luck",
+    91: "soul_core",
+    92: "tempered",
+    93: "soaked",
+    94: "spectral_shield",
+    95: "wither",
+    96: "backup_drone",
+    97: "reflect",
+    98: "momentum",
+    99: "dawn",
+    100: "zenith",
+    101: "dusk",
+    102: "tender",
+    103: "sealed",
+    104: "lifeblood",
+    105: "ghost_crew",
+    106: "terror",
+    107: "feast",
+    108: "pin",
+    109: "puppet",
+    110: "buzzkill",
+    111: "plagued",
+    112: "encore",
+    113: "contaminated",
+    114: "cruelty",
+    115: "portal",
+    116: "critical_condition",
+    117: "hellforge",
+    118: "spotlight",
+    119: "emission",
+    120: "flare",
+    121: "hollowing",
+    122: "miasma",
 };
 
 export const STATUS_EFFECTS = {
-    attack_up: { id: 0, modifier: 1.25 },
-    defense_up: { id: 1, modifier: 1.45 },
-    critical_chance_up: { id: 2, modifier: 1.20 },
-    critical_damage_up: { id: 3, modifier: 1.50 },
-    accuracy_up: { id: 4, modifier: 1.30 },
-    resistance_up: { id: 5, modifier: 1.35 },
-    agility_up: { id: 6, modifier: 1.30 },
-    critical_resistance: { id: 7, modifier: 1.25 },
-    invincibility: { id: 8 },
-    recovery: { id: 9, modifier: 1.15 },
-    preservation: { id: 10 },
-    shroud: { id: 11 },
-    guard: { id: 12, modifier: 1.25 },
-    shield: { id: 13 },
-    absorbing: { id: 14, modifier: 1.15 },
-    blessed: { id: 15, modifier: 1.20 },
-    attack_down: { id: 16, modifier: 1.25 },
-    defense_down: { id: 17, modifier: 1.45 },
-    critical_chance_down: { id: 18, modifier: 1.20 },
-    accuracy_down: { id: 19, modifier: 1.40 },
-    resistance_down: { id: 20, modifier: 1.15 },
-    agility_down: { id: 21, modifier: 1.30 },
-    blind: { id: 22, modifier: 1.30 },
-    marked: { id: 23, modifier: 1.25 },
-    sick: { id: 24 },
-    cursed: { id: 25 },
-    stunned: { id: 26 },
-    sleep: { id: 27, modifier: 1.50 },
-    freeze: { id: 28 },
-    petrified: { id: 29 },
-    burn: { id: 30, modifier: 1.03 },
-    poison: { id: 31, modifier: 1.10 },
-    bleeding: { id: 32, modifier: 1.25 },
-    mute: { id: 33 },
-    bound: { id: 34 },
-    taunt: { id: 35 },
-    confused: { id: 36 },
-    cursed_flame: { id: 37, modifier: 1.50 },
-    hellfire: { id: 38 },
-    hellfire_mode: { id: 39 },
-    frozen_heart: { id: 40 },
-    heating_up: { id: 41 },
-    mjoellnir: { id: 42 },
-    anubis_seal: { id: 43 },
-    soulmate: { id: 44 },
-    styx: { id: 45 },
-    burrow: { id: 46 },
-    defense_drone: { id: 47 },
-    divine_shield: { id: 48 },
-    ferryman: { id: 49 },
-    feral: { id: 50 },
-    wildfire: { id: 51 },
-    fury: { id: 52 },
-    hivemind: { id: 53 },
-    hot_saw: { id: 54 },
-    loa: { id: 55 },
-    the_moon: { id: 56 },
-    the_star: { id: 57 },
-    the_sun: { id: 58 },
-    wind_up: { id: 59 },
-    war_forge: { id: 60 },
-    drumbeat: { id: 61 },
-    foresight: { id: 62 },
-    ap_resistance: { id: 63 },
-    arachnid: { id: 64 },
-    bloodrage: { id: 65 },
-    bunny: { id: 66 },
-    pain_fueled: { id: 67 },
-    blood_transfusion: { id: 68 },
-    soul_harvest: { id: 69 },
-    buzz_meter: { id: 70 },
-    biomass: { id: 71 },
-    ignited_ego: { id: 72 },
-    life_after_death: { id: 73 },
-    sludge: { id: 74 },
-    detonator: { id: 75 },
-    courage: { id: 76 },
-    smoke: { id: 77 },
-    mana_shield: { id: 78 },
-    echo: { id: 79 },
-    ionize: { id: 80 },
-    fracture: { id: 81 },
-    irradiate: { id: 82 },
-    rift_step: { id: 83 },
-    blacklist: { id: 84 },
-    rooted: { id: 85 },
-    ash: { id: 86 },
-    phoenix_feather: { id: 87 },
-    luck: { id: 88 },
-    soul_core: { id: 89 },
-    tempered: { id: 90 },
-    soaked: {id: 91},
-    spectral_shield: {id: 92},
-    wither: {id: 93},
-    backup_drone: {id: 94},
-    reflect: {id: 95},
-    momentum: {id: 96},
-    dawn: {id: 97},
-    zenith: {id: 98},
-    dusk: {id: 99},
-    tender: {id: 100},
-    sealed: {id: 101},
-    lifeblood: {id: 102},
-    ghost_crew: {id: 103},
-    terror: {id: 104},
-    feast: {id: 105},
-    pin: {id: 106},
-    puppet: {id: 107},
-    buzzkill: {id: 108},
-    plagued: {id: 109},
-    encore: {id: 110},
-    contaminated: {id: 111},
-    cruelty: {id: 112},
-    portal: {id: 113},
-    critical_condition: {id: 114},
-    hellforge: {id: 115},
-    spotlight: {id: 116},
-    emission: {id: 117},
-    flare: {id: 118},
-    hollowing: {id: 119},
-    miasma: {id: 120}
-}
+    //============================================================
+    // POSITIVE STATUS EFFECTS
+    //============================================================
+
+    attack_up: {
+        id: 0,
+        name: "attack_up",
+        effectType: "stat_multiplier",
+        stat: "attack",
+        value: 1.25
+    },
+
+    defense_up: {
+        id: 1,
+        name: "defense_up",
+        effectType: "stat_multiplier",
+        stat: "defense",
+        value: 1.45
+    },
+
+    critical_chance_up: {
+        id: 2,
+        name: "critical_chance_up",
+        effectType: "stat_multiplier",
+        stat: "critical_chance",
+        value: 1.20
+    },
+
+    critical_damage_up: {
+        id: 3,
+        name: "critical_damage_up",
+        effectType: "stat_multiplier",
+        stat: "critical_damage",
+        value: 1.50
+    },
+
+    accuracy_up: {
+        id: 4,
+        name: "accuracy_up",
+        effectType: "stat_multiplier",
+        stat: "accuracy",
+        value: 1.30
+    },
+
+    resistance_up: {
+        id: 5,
+        name: "resistance_up",
+        effectType: "stat_multiplier",
+        stat: "resistance",
+        value: 1.35
+    },
+
+    agility_up: {
+        id: 6,
+        name: "agility_up",
+        effectType: "stat_multiplier",
+        stat: "agility",
+        value: 1.30
+    },
+
+    critical_resistance: {
+        id: 7,
+        name: "critical_resistance",
+        effectType: "stat_multiplier",
+        stat: "critical_hit_chance_received",
+        value: 0.75
+    },
+
+    invincibility: {
+        id: 8,
+        name: "invincibility",
+        effectType: "damage_immunity"
+    },
+
+    immunity: {
+        id: 9,
+        name: "immunity",
+        effectType: "debuff_immunity"
+    },
+
+    recovery: {
+        id: 10,
+        name: "recovery",
+        effectType: "heal_over_time",
+        value: 0.15,
+        interval: "turn"
+    },
+
+    preservation: {
+        id: 11,
+        name: "preservation",
+        effectType: "minimum_hp",
+        value: 1
+    },
+
+    shroud: {
+        id: 12,
+        name: "shroud",
+        effectType: "target_restriction",
+        primary_targetable: false,
+        affected_by_aoe: true
+    },
+
+    guard: {
+        id: 13,
+        name: "guard",
+        effectType: "damage_share",
+        value: 0.25
+    },
+
+    shield: {
+        id: 14,
+        name: "shield",
+        effectType: "damage_absorption",
+        stacks: true,
+        removable: false
+    },
+
+    absorbing: {
+        id: 15,
+        name: "absorbing",
+        effectType: "lifesteal",
+        value: 0.15
+    },
+
+    blessed: {
+        id: 16,
+        name: "blessed",
+        effectType: "healing_received_multiplier",
+        value: 1.20
+    },
+
+
+    //============================================================
+    // NEGATIVE STATUS EFFECTS
+    //============================================================
+
+    attack_down: {
+        id: 17,
+        name: "attack_down",
+        effectType: "stat_multiplier",
+        stat: "attack",
+        value: 0.75
+    },
+
+    defense_down: {
+        id: 18,
+        name: "defense_down",
+        effectType: "stat_multiplier",
+        stat: "defense",
+        value: 0.55
+    },
+
+    critical_chance_down: {
+        id: 19,
+        name: "critical_chance_down",
+        effectType: "stat_multiplier",
+        stat: "critical_chance",
+        value: 0.80
+    },
+
+    accuracy_down: {
+        id: 20,
+        name: "accuracy_down",
+        effectType: "stat_multiplier",
+        stat: "accuracy",
+        value: 0.60
+    },
+
+    resistance_down: {
+        id: 21,
+        name: "resistance_down",
+        effectType: "stat_multiplier",
+        stat: "resistance",
+        value: 0.85
+    },
+
+    agility_down: {
+        id: 22,
+        name: "agility_down",
+        effectType: "stat_multiplier",
+        stat: "agility",
+        value: 0.70
+    },
+
+    blind: {
+        id: 23,
+        name: "blind",
+        effectType: "miss_chance",
+        value: 0.30
+    },
+
+    marked: {
+        id: 24,
+        name: "marked",
+        effectType: "damage_taken_multiplier",
+        value: 1.25
+    },
+
+    sick: {
+        id: 25,
+        name: "sick",
+        effectType: "healing_disabled"
+    },
+
+    cursed: {
+        id: 26,
+        name: "cursed",
+        effectType: "buff_disabled"
+    },
+
+    stunned: {
+        id: 27,
+        name: "stunned",
+        effectType: "action_disabled",
+        duration: 1
+    },
+
+    sleep: {
+        id: 28,
+        name: "sleep",
+        effectType: "ap_regeneration_multiplier",
+        value: 0.50
+    },
+
+    freeze: {
+        id: 29,
+        name: "freeze",
+        effectType: "cooldown_reduction_disabled"
+    },
+
+    petrified: {
+        id: 30,
+        name: "petrified",
+        effectType: "guaranteed_critical",
+        trigger: "next_hit_received",
+        consume_on_trigger: true
+    },
+
+    burn: {
+        id: 31,
+        name: "burn",
+        effectType: "damage_on_attack_received",
+        stat: "target_max_hp",
+        value: 0.03
+    },
+
+    poison: {
+        id: 32,
+        name: "poison",
+        effectType: "damage_over_time",
+        stat: "target_max_hp",
+        value: 0.10,
+        interval: "turn_start"
+    },
+
+    bleeding: {
+        id: 33,
+        name: "bleeding",
+        effectType: "damage_over_time",
+        stat: "caster_attack",
+        value: 0.10,
+        interval: "turn_start"
+    },
+
+    mute: {
+        id: 34,
+        name: "mute",
+        effectType: "skill_restriction",
+        allowed_skill: "basic_attack"
+    },
+
+    bound: {
+        id: 35,
+        name: "bound",
+        effectType: "passive_disabled"
+    },
+
+    taunt: {
+        id: 36,
+        name: "taunt",
+        effectType: "target_restriction",
+        allowed_target: "caster",
+        allowed_skill: "basic_attack"
+    },
+
+    confused: {
+        id: 37,
+        name: "confused",
+        effectType: "primary_target_ignored"
+    },
+
+    cursed_flame: {
+        id: 38,
+        name: "cursed_flame",
+        effectType: "healing_to_damage",
+        value: 0.50
+    },
+
+
+    //============================================================
+    // SPECIAL HERO STATUS EFFECTS
+    //============================================================
+
+    hellfire: {
+        id: 39,
+        name: "hellfire",
+        effectType: "special",
+        grants: "hellfire_mode",
+        duration: 2,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    hellfire_mode: {
+        id: 40,
+        name: "hellfire_mode",
+        effectType: "stat_multiplier",
+        stats: {
+            attack: 1.20,
+            agility: 1.40
+        },
+        mitigatable: false,
+        removable: false
+    },
+
+    frozen_heart: {
+        id: 41,
+        name: "frozen_heart",
+        effectType: "revive_hp_bonus",
+        value: 0.15,
+        max_stacks: 5,
+        mitigatable: false,
+        removable: false
+    },
+
+    heating_up: {
+        id: 42,
+        name: "heating_up",
+        effectType: "skill_scaling",
+        base_damage: 0.60,
+        per_stack: 0.20,
+        burn_above_stacks: 3,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    mjoellnir: {
+        id: 43,
+        name: "mjoellnir",
+        effectType: "delayed_damage",
+        initial_damage: 1.20,
+        return_damage: 0.80,
+        stat: "attack",
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    anubis_seal: {
+        id: 44,
+        name: "anubis_seal",
+        effectType: "death_trigger_damage",
+        value: 0.50,
+        stat: "anubis_attack",
+        target: "enemy_team",
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    soulmate: {
+        id: 45,
+        name: "soulmate",
+        effectType: "damage_to_heal",
+        value: 0.05,
+        stat: "damage_dealt",
+        mitigatable: false,
+        removable: false
+    },
+
+    sphinx_curse: {
+        id: 46,
+        name: "sphinx_curse",
+        effectType: "target_marker",
+        max_stacks: 1,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    styx: {
+        id: 47,
+        name: "styx",
+        effectType: "max_hp_reduction",
+        value: 0.08,
+        max_stacks: 3,
+        removed_when: "hades_dies",
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    burrow: {
+        id: 48,
+        name: "burrow",
+        effectType: "skill_enhancement",
+        max_stacks: 1,
+        mitigatable: false,
+        removable: false
+    },
+
+    defense_drone: {
+        id: 49,
+        name: "defense_drone",
+        effectType: "stat_multiplier",
+        stat: "defense",
+        per_stack: 0.03,
+        max_stacks: 10,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    divine_shield: {
+        id: 50,
+        name: "divine_shield",
+        effectType: "damage_resistance",
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    ferryman: {
+        id: 51,
+        name: "ferryman",
+        effectType: "skill_enhancement",
+        target_skill: "cerberus",
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    feral: {
+        id: 52,
+        name: "feral",
+        effectType: "stat_multiplier",
+        stats_per_stack: {
+            damage: 0.05,
+            agility: 0.05
+        },
+        max_stacks: 6,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    wildfire: {
+        id: 53,
+        name: "wildfire",
+        effectType: "stat_multiplier",
+        stats_per_stack: {
+            damage: 0.05,
+            critical_damage: 0.05
+        },
+        max_stacks: 20,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    fury: {
+        id: 54,
+        name: "fury",
+        effectType: "stat_multiplier",
+        stat: "critical_chance",
+        per_stack: 0.05,
+        max_stacks: 5,
+        stacks: true,
+        counterattack: true,
+        consume_on_counterattack: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    hivemind: {
+        id: 55,
+        name: "hivemind",
+        effectType: "stat_multiplier",
+        stat: "agility",
+        per_stack: 0.05,
+        max_stacks: 6,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    hot_saw: {
+        id: 56,
+        name: "hot_saw",
+        effectType: "inflict_chance",
+        target_effect: "burn",
+        chance: 0.80,
+        trigger: "primary_attack",
+        mitigatable: false
+    },
+
+    loa: {
+        id: 57,
+        name: "loa",
+        effectType: "stat_multiplier",
+        stat: "resistance",
+        per_stack: 0.10,
+        max_stacks: 5,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    the_moon: {
+        id: 58,
+        name: "the_moon",
+        effectType: "multi_effect",
+        attack_effect: "blind",
+        attack_duration: 1,
+        shield_value: 0.60,
+        shield_stat: "max_hp",
+        shield_target: "lowest_hp_ally",
+        mitigatable: false,
+        removable: false
+    },
+
+    the_star: {
+        id: 59,
+        name: "the_star",
+        effectType: "multi_effect",
+        attack_effect: "mute",
+        attack_duration: 1,
+        discarded_effect: "ap_boost",
+        discarded_value: 1.00,
+        discarded_target: "random_ally",
+        mitigatable: false,
+        removable: false
+    },
+
+    the_sun: {
+        id: 60,
+        name: "the_sun",
+        effectType: "multi_effect",
+        attack_effect: "marked",
+        attack_duration: 1,
+        discarded_effect: "heal",
+        discarded_value: 0.50,
+        discarded_target: "weakest_ally",
+        mitigatable: false,
+        removable: false
+    },
+
+    wind_up: {
+        id: 61,
+        name: "wind_up",
+        effectType: "stat_multiplier",
+        stats_per_stack: {
+            damage: 0.05,
+            critical_damage: 0.05
+        },
+        max_stacks: 6,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    war_forge: {
+        id: 62,
+        name: "war_forge",
+        effectType: "stat_multiplier",
+        stats: {
+            attack: 1.10,
+            defense: 1.30
+        },
+        stacks_with: [
+            "attack_up",
+            "defense_up"
+        ],
+        mitigatable: false
+    },
+
+    drumbeat: {
+        id: 63,
+        name: "drumbeat",
+        effectType: "stat_multiplier",
+        stat: "agility",
+        per_stack: 0.04,
+        max_stacks: 4,
+        stacks: true,
+        mitigatable: false
+    },
+
+    foresight: {
+        id: 64,
+        name: "foresight",
+        effectType: "damage_resistance",
+        per_stack: 0.15,
+        max_stacks: 4,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    ap_resistance: {
+        id: 65,
+        name: "ap_resistance",
+        effectType: "ap_reduction_immunity"
+    },
+
+    arachnid: {
+        id: 66,
+        name: "arachnid",
+        effectType: "skill_enhancement",
+        max_stacks: 5,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    bloodrage: {
+        id: 67,
+        name: "bloodrage",
+        effectType: "skill_enhancement",
+        mitigatable: false,
+        removable: false
+    },
+
+    bunny: {
+        id: 68,
+        name: "bunny",
+        effectType: "stat_multiplier",
+        stat: "agility",
+        value: 1.08,
+        affects_skills: true
+    },
+
+    pain_fueled: {
+        id: 69,
+        name: "pain_fueled",
+        effectType: "skill_enhancement",
+        max_stacks: 5,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    blood_transfusion: {
+        id: 70,
+        name: "blood_transfusion",
+        effectType: "max_hp_multiplier",
+        per_stack: 0.05,
+        max_stacks: 4,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    soul_harvest: {
+        id: 71,
+        name: "soul_harvest",
+        effectType: "stat_multiplier",
+        stats_per_stack: {
+            critical_chance: 0.05,
+            agility: 0.03
+        },
+        max_stacks: 6,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    buzz_meter: {
+        id: 72,
+        name: "buzz_meter",
+        effectType: "stat_multiplier",
+        stat: "attack",
+        per_stack: 0.04,
+        max_stacks: 4,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    biomass: {
+        id: 73,
+        name: "biomass",
+        effectType: "max_hp_multiplier",
+        per_stack: 0.04,
+        max_stacks: 5,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    ignited_ego: {
+        id: 74,
+        name: "ignited_ego",
+        effectType: "skill_enhancement",
+        stat: "max_hp",
+        value: 1.25,
+        mitigatable: false,
+        removable: false
+    },
+
+    life_after_death: {
+        id: 75,
+        name: "life_after_death",
+        effectType: "death_trigger",
+        survive_hp: 0.05,
+        shield: 0.30,
+        shield_stat: "max_hp",
+        dies_when_shield_breaks: true,
+        dies_after_active_turn: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    sludge: {
+        id: 76,
+        name: "sludge",
+        effectType: "conditional_damage",
+        condition: "burn_present",
+        damage: 0.60,
+        stat: "attack",
+        dispels_self: true
+    },
+
+    detonator: {
+        id: 77,
+        name: "detonator",
+        effectType: "skill_enhancement",
+        target: "secondary_skills",
+        exploding_stack_true_damage: true,
+        max_stacks: 4,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    courage: {
+        id: 78,
+        name: "courage",
+        effectType: "extra_turn_on_kill",
+        mitigatable: false,
+        removable: false
+    },
+
+    smoke: {
+        id: 79,
+        name: "smoke",
+        effectType: "stat_multiplier",
+        stat: "lifesteal",
+        per_stack: 0.10,
+        max_stacks: 3,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    mana_shield: {
+        id: 80,
+        name: "mana_shield",
+        effectType: "damage_taken_multiplier",
+        value: 0.70,
+        mitigatable: false,
+        removable: false
+    },
+
+    echo: {
+        id: 81,
+        name: "echo",
+        effectType: "delayed_damage",
+        value: 0.80,
+        stat: "attack",
+        trigger: "duration_end"
+    },
+
+    ionize: {
+        id: 82,
+        name: "ionize",
+        effectType: "guaranteed_critical",
+        duration: 1
+    },
+
+    fracture: {
+        id: 83,
+        name: "fracture",
+        effectType: "skill_enhancement",
+        target_skill: "ultimate",
+        critical_chance_per_stack: 0.04,
+        max_stacks: 4,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    irradiate: {
+        id: 84,
+        name: "irradiate",
+        effectType: "damage_reflection",
+        value: 0.20,
+        damage_type: "true",
+        ignores_shield: true
+    },
+
+    rift_step: {
+        id: 85,
+        name: "rift_step",
+        effectType: "stat_multiplier",
+        stat: "critical_chance",
+        value: 1.20,
+        mitigatable: false,
+        removable: false
+    },
+
+    blacklist: {
+        id: 86,
+        name: "blacklist",
+        effectType: "conditional_debuff",
+        trigger: [
+            "primary_attack",
+            "ultimate"
+        ],
+        mitigatable: false,
+        removable: false
+    },
+
+    rooted: {
+        id: 87,
+        name: "rooted",
+        effectType: "ap_and_turn_restriction",
+        extra_ap: false,
+        extra_turn: false
+    },
+
+    ash: {
+        id: 88,
+        name: "ash",
+        effectType: "death_skill_scaling",
+        max_stacks: 9,
+        stacks: true,
+        removable: false
+    },
+
+    phoenix_feather: {
+        id: 89,
+        name: "phoenix_feather",
+        effectType: "max_hp_multiplier",
+        per_stack: 0.05,
+        max_stacks: 9,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    luck: {
+        id: 90,
+        name: "luck",
+        effectType: "stat_multiplier",
+        stat: "critical_chance",
+        per_stack: 0.10,
+        max_stacks: 3,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    soul_core: {
+        id: 91,
+        name: "soul_core",
+        effectType: "damage_resistance",
+        value: 0.50,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    tempered: {
+        id: 92,
+        name: "tempered",
+        effectType: "aoe_damage_reduction",
+        value: 0.30
+    },
+
+    soaked: {
+        id: 93,
+        name: "soaked",
+        effectType: "inflict_chance",
+        target_effect: "poison",
+        chance: 1.00,
+        trigger: "primary_attack"
+    },
+
+    spectral_shield: {
+        id: 94,
+        name: "spectral_shield",
+        effectType: "damage_taken_multiplier",
+        reduction_per_remaining_turn: 0.20,
+        mitigatable: false,
+        removable: false
+    },
+
+    wither: {
+        id: 95,
+        name: "wither",
+        effectType: "stat_multiplier",
+        stats_per_stack: {
+            attack: 0.97,
+            defense: 0.97,
+            agility: 0.97
+        },
+        stacks: true,
+        removed_when: "high_cleric_aureus_dies"
+    },
+
+    backup_drone: {
+        id: 96,
+        name: "backup_drone",
+        effectType: "conditional_heal",
+        trigger: "hp_below_50_percent",
+        heal_per_stack: 0.10,
+        max_stacks: 3,
+        stacks: true
+    },
+
+    reflect: {
+        id: 97,
+        name: "reflect",
+        effectType: "damage_reflection",
+        value: 0.50
+    },
+
+    momentum: {
+        id: 98,
+        name: "momentum",
+        effectType: "stat_multiplier",
+        stat: "defense",
+        per_stack: 0.05,
+        max_stacks: 5,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    dawn: {
+        id: 99,
+        name: "dawn",
+        effectType: "max_hp_multiplier",
+        per_stack: 0.10,
+        max_stacks: 1,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    zenith: {
+        id: 100,
+        name: "zenith",
+        effectType: "stat_multiplier",
+        stat: "agility",
+        per_stack: 0.10,
+        max_stacks: 1,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    dusk: {
+        id: 101,
+        name: "dusk",
+        effectType: "stat_multiplier",
+        stat: "attack",
+        per_stack: 0.10,
+        max_stacks: 1,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    tender: {
+        id: 102,
+        name: "tender",
+        effectType: "stat_multiplier",
+        stat: "defense",
+        per_stack: 0.96,
+        max_stacks: 3,
+        stacks: true,
+        mitigatable: false
+    },
+
+    sealed: {
+        id: 103,
+        name: "sealed",
+        effectType: "buff_trigger_damage",
+        value: 0.40,
+        stat: "mary_defense",
+        trigger: "buff_received",
+        remove_after_trigger: true,
+        mitigatable: false
+    },
+
+    lifeblood: {
+        id: 104,
+        name: "lifeblood",
+        effectType: "stat_multiplier",
+        stat: "agility",
+        per_stack: 0.96,
+        max_stacks: 3,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    ghost_crew: {
+        id: 105,
+        name: "ghost_crew",
+        effectType: "aoe_damage_reduction",
+        reduction_per_stack: 0.08,
+        max_stacks: 4,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    terror: {
+        id: 106,
+        name: "terror",
+        effectType: "buff_duration_reduction",
+        value: 1,
+        interval: "turn_start",
+        excludes: [
+            "invincibility",
+            "preservation"
+        ],
+        mitigatable: false,
+        removable: false
+    },
+
+    feast: {
+        id: 107,
+        name: "feast",
+        effectType: "damage_taken_increase",
+        target: "countess_mortana_enemies",
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    pin: {
+        id: 108,
+        name: "pin",
+        effectType: "stat_multiplier",
+        stat: "defense",
+        per_stack: 0.96,
+        max_stacks: 4,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    puppet: {
+        id: 109,
+        name: "puppet",
+        effectType: "stat_multiplier",
+        stat: "resistance",
+        value: 0.80,
+        mitigatable: false,
+        removable: false
+    },
+
+    buzzkill: {
+        id: 110,
+        name: "buzzkill",
+        effectType: "skill_enhancement",
+        agility: 0.10,
+        ap_damage: true,
+        skills: [
+            "primary",
+            "secondary"
+        ],
+        removable: false
+    },
+
+    plagued: {
+        id: 111,
+        name: "plagued",
+        effectType: "stat_multiplier",
+        stat: "accuracy",
+        per_stack: 0.95,
+        max_stacks: 3,
+        stacks: true,
+        trigger_at_max_stacks: {
+            at_end_of_turn: true,
+            heal_caster_team: 0.05,
+            heal_stat: "max_hp",
+            remove_all_stacks: true
+        },
+        mitigatable: false,
+        removable: false
+    },
+
+    encore: {
+        id: 112,
+        name: "encore",
+        effectType: "damage_multiplier",
+        value: 1.25,
+        mitigatable: false,
+        removable: false
+    },
+
+    contaminated: {
+        id: 113,
+        name: "contaminated",
+        effectType: "damage_trigger",
+        trigger: "damage_received",
+        stacks_removed_per_trigger: 1,
+        damage: 0.05,
+        damage_type: "ap",
+        stat: "current_ap",
+        max_stacks: 3,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    cruelty: {
+        id: 114,
+        name: "cruelty",
+        effectType: "damage_taken_multiplier",
+        per_stack: 1.05,
+        max_stacks: 3,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    portal: {
+        id: 115,
+        name: "portal",
+        effectType: "stat_multiplier",
+        stat: "attack",
+        per_stack: 0.05,
+        max_stacks: 5,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    critical_condition: {
+        id: 116,
+        name: "critical_condition",
+        effectType: "dot_damage_taken_multiplier",
+        value: 1.25,
+        mitigatable: false,
+        removable: false
+    },
+
+    hellforge: {
+        id: 117,
+        name: "hellforge",
+        effectType: "stat_multiplier",
+        stat: "defense",
+        per_stack: 0.05,
+        max_stacks: 5,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    spotlight: {
+        id: 118,
+        name: "spotlight",
+        effectType: "stat_multiplier",
+        stat: "agility",
+        per_stack: 0.95,
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    emission: {
+        id: 119,
+        name: "emission",
+        effectType: "stack_trigger",
+        summon_at: 5,
+        summon: "lunar_seeker",
+        united_ultimate_at: 10,
+        united_ultimate: "eclipse",
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    flare: {
+        id: 120,
+        name: "flare",
+        effectType: "stack_trigger",
+        summon_at: 5,
+        summon: "sun_seeker",
+        united_ultimate_at: 10,
+        united_ultimate: "eclipse",
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    },
+
+    hollowing: {
+        id: 121,
+        name: "hollowing",
+        effectType: "buff_trigger_damage",
+        value: 0.15,
+        stat: "own_defense",
+        trigger: "buff_received"
+    },
+
+    miasma: {
+        id: 122,
+        name: "miasma",
+        effectType: "stack_trigger_damage",
+        trigger_stacks: 5,
+        damage: 0.20,
+        stat: "own_max_hp",
+        trigger: "round_end",
+        stacks: true,
+        mitigatable: false,
+        removable: false
+    }
+
+};

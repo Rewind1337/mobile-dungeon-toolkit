@@ -6,12 +6,11 @@ function ItemSetUniqueFilters({ toggleFilter, filters, filterSprites }) {
     return (<div className='filter-group flex-row'>
         <Button round onClick={() => toggleFilter('set', 'twoset')} imgAsText text={filterSprites[40]} active={filters.set === 'twoset'} />
         <Button round onClick={() => toggleFilter('set', 'fourset')} imgAsText text={filterSprites[41]} active={filters.set === 'fourset'} />
-        <Button round onClick={() => toggleFilter('unique', 'unique')} imgAsText text={filterSprites[42]} active={filters.unique === 'unique'} />
     </div>)
 }
 
 function ItemSlotFilters({ toggleFilter, filters, filterSprites }) {
-    return (<div className='filter-group flex-row'>
+    return (<div className='filter-group flex-row' style={{marginLeft: 0}}>
         <Button round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT.WEAPON)} imgAsText text={filterSprites[43]} active={filters.slot === EQUIPMENT_SLOT.WEAPON} />
         <Button round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT.HELMET)} imgAsText text={filterSprites[44]} active={filters.slot === EQUIPMENT_SLOT.HELMET} />
         <Button round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT.ARMOR)} imgAsText text={filterSprites[45]} active={filters.slot === EQUIPMENT_SLOT.ARMOR} />
@@ -51,6 +50,7 @@ function ItemFilters({ setFiltersAdvanced, advanced, toggleFilter, clearFilters,
                 <Button round onClick={() => {setFiltersAdvanced(advanced => !advanced)}} imgAsText text={(advanced ? filterSprites[54] : filterSprites[53])} active={advanced} />
                 <Button round onClick={clearFilters} text={"ALL"} active={Object.values(filters).every((v) => v === null)} />
                 <ItemSlotFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
+                <Button round onClick={() => toggleFilter('unique', 'unique')} imgAsText text={filterSprites[42]} active={filters.unique === 'unique'} />
                 <Button round onClick={() => setSortOrder(sortOrder => !sortOrder)} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
             </div>
         )
@@ -60,6 +60,7 @@ function ItemFilters({ setFiltersAdvanced, advanced, toggleFilter, clearFilters,
                 <Button round onClick={() => {setFiltersAdvanced(advanced => !advanced)}} imgAsText text={(advanced ? filterSprites[54] : filterSprites[53])} active={advanced} />
                 <Button round onClick={clearFilters} text={"ALL"} active={Object.values(filters).every((v) => v === null)} />
                 <ItemSlotFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
+                <Button round onClick={() => toggleFilter('unique', 'unique')} imgAsText text={filterSprites[42]} active={filters.unique === 'unique'} />
                 <Button round onClick={() => setSortOrder(sortOrder => !sortOrder)} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
                 <div className='flex-wrapper' />
                 <ItemSetUniqueFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
