@@ -29,17 +29,39 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
     const clearHeroSelection = () => { setSelectedHeroId(null) }
 
     const saveHero = (heroObj) => {
+        const nextSaveId = Math.max(
+            -1,
+            ...savedHeroesRef.current
+                .map(hero => Number(hero.saveId))
+                .filter(Number.isFinite)
+        ) + 1
         const savedHero = {
             ...heroObj,
-            saveId: savedHeroesRef.current.length,
+            saveId: nextSaveId,
             items: [...(heroObj.items ?? [])]
         }
         savedHeroesRef.current.push(savedHero)
+        setForceUpdate({})
         clearHeroSelection()
     }
 
     const deleteSavedHero = (heroObj) => {
-        // TODO
+        const saveId = heroObj?.saveId ?? selectedSavedHeroId
+        if (saveId === null || saveId === undefined) return
+
+        const currentSavedHeroes = savedHeroesRef.current
+        const nextSavedHeroes = currentSavedHeroes.filter(hero => hero.saveId !== saveId)
+        if (nextSavedHeroes.length === currentSavedHeroes.length) return
+
+        savedHeroesRef.current = nextSavedHeroes
+
+        if (selectedSavedHeroId === saveId) {
+            setSelectedSavedHeroId(null)
+            setEquippedItems([])
+        }
+
+        setForceUpdate({})
+        if (manualSaveFunction) manualSaveFunction()
     }
 
     // Item Stuff
