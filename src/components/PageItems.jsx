@@ -4,6 +4,7 @@ import Button from "./Button.jsx"
 import ItemPreview from "./ItemPreview.jsx"
 import ItemPerk from "./ItemPerk.jsx"
 import { POSSIBLE_PERKS } from "../database/enums.jsx"
+import { createSavedItemRecord } from "../database/ids.jsx"
 import Modal from "./Modal.jsx"
 
 function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
@@ -38,13 +39,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
         if (!slotArray) return
 
         const existingItems = savedItemsRef.current[slotArray] ?? []
-        const savedItem = {
-            ...itemObj,
-            saveId: existingItems.length,
-            fixedPerks: (itemObj.fixedPerks ?? []).map(perk => ({ ...perk })),
-            perks: [...(itemObj.perks ?? [])],
-            perkValues: [...(itemObj.perkValues ?? [])]
-        }
+        const savedItem = createSavedItemRecord(itemObj)
 
         // Replace the root object as well as the slot array so memoized lists see the update.
         savedItemsRef.current = {
