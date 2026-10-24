@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 
-import { ATTRIBUTE_NAME_MAP, EQUIPMENT_SLOT, ROLE_NAME_MAP, STATUS_EFFECT_NAME_MAP } from '../database/enums.jsx'
+import { ATTRIBUTE, EQUIPMENT_SLOT, ROLE, STATUS_EFFECTS, getEnumNameById } from '../database/enums.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
 import { iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites } from '../database/db_sprites.jsx'
 
@@ -57,7 +57,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
             let batch = skill.effect[i].applies;
             for (let j = 0; j < batch.length; j++) { // each statuseffect
                 skillStatusEffects.push(
-                    {sprite: statusSprites[STATUS_EFFECT_NAME_MAP[batch[j].status.id]], name: batch[j].status.name, duration: batch[j].duration}
+                    {sprite: statusSprites[getEnumNameById(STATUS_EFFECTS, batch[j].status.id)], name: batch[j].status.name, duration: batch[j].duration}
                 )
             }
         }
@@ -78,7 +78,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                 let batch = sEffect[j].applies;
                 console.log(batch)
                 for (let k = 0; k < batch.length; k++) { // each statuseffect
-                    statusEffectSprites.push(statusSprites[STATUS_EFFECT_NAME_MAP[batch[k].status.id]])
+                    statusEffectSprites.push(statusSprites[getEnumNameById(STATUS_EFFECTS, batch[k].status.id)])
                 }
             }
         }
@@ -132,17 +132,17 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                 <div className='flex-row top-row'>
                     <div className='header pill flex-row'>
                         <img width={48} src={attributeSprites[heroObj.mainAttribute]}/>
-                        {ATTRIBUTE_NAME_MAP[heroObj.mainAttribute]}
+                        {getEnumNameById(ATTRIBUTE, heroObj.mainAttribute)}
                     </div>
                     <div className='header-big pill'>{heroObj.variant ? heroObj.variant + " - " : ""}{heroObj.name}</div>
                     <div className='header pill flex-row'>
                         <img width={48} src={roleSprites[heroObj.role]}/>
-                        {ROLE_NAME_MAP[heroObj.role]}
+                        {getEnumNameById(ROLE, heroObj.role)}
                     </div>
                 </div>
 
                 {heroObj.statusEffects !== undefined && <div className='flex-row status-row'>
-                    {heroObj.statusEffects.map(status => <img width={32} src={statusSprites[STATUS_EFFECT_NAME_MAP[status.id]]} />)}
+                    {heroObj.statusEffects.map(status => <img width={32} src={statusSprites[getEnumNameById(STATUS_EFFECTS, status.id)]} />)}
                 </div>}
 
                 <div className='flex-col'>
