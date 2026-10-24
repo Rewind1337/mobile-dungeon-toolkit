@@ -174,7 +174,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
                     {itemObj.fixedPerks.map((perk, index) => (
                         <ItemPerk
                             key={"fixedperk_" + perk.id}
-                            name={perk.name.toUpperCase().replace(/\s/g, '_') || "NOTHING"}
+                            name={getPerkKey(perk)}
                             value={fixedPerkValues[index] ?? 0}
                             editable={true}
                             onValueChange={value => setFixedPerkValues(previous => previous.map((oldValue, perkIndex) => (
@@ -189,7 +189,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
                     {selectedSet.setBonus.map(bonus => (
                         <ItemPerk
                             key={"setperk_" + bonus.id}
-                            name={bonus.name.toUpperCase().replace(/\s/g, '_') || "NOTHING"}
+                            name={getPerkKey(bonus)}
                             noValue={true}
                         />
                     ))}
