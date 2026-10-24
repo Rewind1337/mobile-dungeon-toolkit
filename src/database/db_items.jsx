@@ -67,7 +67,8 @@ function add_equipment(slot, name, fixedPerks, set, rarity, attributeRequirement
                 iconSrc: (iconSprites[typeOfSet]),
                 iconType: typeOfSet,
                 perks: perks,
-                dropSource: dropSource
+                dropSource: dropSource,
+                dropLocation: dropLocation
             })
             break;
         case EQUIPMENT_SLOT.ARMOR:
@@ -78,7 +79,8 @@ function add_equipment(slot, name, fixedPerks, set, rarity, attributeRequirement
                 iconSrc: (set >= 0 ? iconSprites[typeOfSet] : null),
                 iconType: typeOfSet,
                 perks: perks,
-                dropSource: dropSource
+                dropSource: dropSource,
+                dropLocation: dropLocation
             })
             break;
         case EQUIPMENT_SLOT.NECKLACE:
@@ -89,7 +91,8 @@ function add_equipment(slot, name, fixedPerks, set, rarity, attributeRequirement
                 iconSrc: (set >= 0 ? iconSprites[typeOfSet] : null),
                 iconType: typeOfSet,
                 perks: perks,
-                dropSource: dropSource
+                dropSource: dropSource,
+                dropLocation: dropLocation
             })
             break;
         case EQUIPMENT_SLOT.RING:
@@ -100,7 +103,8 @@ function add_equipment(slot, name, fixedPerks, set, rarity, attributeRequirement
                 iconSrc: (set >= 0 ? iconSprites[typeOfSet] : null),
                 iconType: typeOfSet,
                 perks: perks,
-                dropSource: dropSource
+                dropSource: dropSource,
+                dropLocation: dropLocation
             })
             break;
         case EQUIPMENT_SLOT.OTHER:
