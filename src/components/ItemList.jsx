@@ -69,7 +69,7 @@ function ItemList({ setForceUpdate = () => { }, extraHeight = 0, filtersOffset =
                     <Item
                         itemObj={itemObj}
                         key={itemObj.key}
-                        level={null}
+                        level={savedItems ? (itemObj.level ?? 1) : null}
                         onClick={() => setSelectedItemId({ slot: itemObj.slot, id: savedItems ? itemObj.saveId : itemObj.id })}
                     />
                 ))
