@@ -93,7 +93,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
 
     const handlePerkSelect = (index) => {
         if (!onPerkClick) return
-        onPerkClick(index, itemObj, (chosenPerk) => {
+        onPerkClick(itemObj, (chosenPerk) => {
             setSelectedPerks(previous => previous.map((perk, perkIndex) => perkIndex === index ? chosenPerk : perk))
             setSelectedPerkValues(previous => previous.map((value, perkIndex) => (
                 perkIndex === index && selectedPerks[index] !== chosenPerk ? 0 : value
