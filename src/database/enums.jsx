@@ -3,14 +3,20 @@ export const DROP_SOURCE = {
     GUILD_HUNT: 1,
 }
 
-export const EQUIPMENT_SLOT_NAME_MAP = {
-    0: "WEAPON",
-    1: "HELMET",
-    2: "ARMOR",
-    3: "NECKLACE",
-    4: "RING",
-    5: "OTHER",
+// Resolve a canonical enum key or structured definition name from its numeric ID.
+// Supports both simple enums (KEY: number) and structured definitions ({ id, name, ... }).
+export function getEnumNameById(definitions, id) {
+    for (const [key, value] of Object.entries(definitions)) {
+        if (typeof value === "number" && value === id) {
+            return key;
+        }
+        if (value !== null && typeof value === "object" && value.id === id) {
+            return value.name ?? key;
+        }
+    }
+    return undefined;
 }
+
 
 export const EQUIPMENT_SLOT = {
     WEAPON: 0,
@@ -21,12 +27,6 @@ export const EQUIPMENT_SLOT = {
     OTHER: 5,
 }
 
-export const ATTRIBUTE_NAME_MAP = {
-    0: "NONE",
-    1: "STRENGTH",
-    2: "DEXTERITY",
-    3: "INTELLIGENCE",
-}
 
 export const ATTRIBUTE = {
     NONE: 0,
@@ -35,11 +35,6 @@ export const ATTRIBUTE = {
     INTELLIGENCE: 3,
 }
 
-export const PRIMARY_STAT_NAME_MAP = {
-    0: "ATTACK",
-    1: "DEFENCE",
-    2: "AGILITY",
-}
 
 export const PRIMARY_STAT = {
     ATTACK: 0,
@@ -47,12 +42,6 @@ export const PRIMARY_STAT = {
     AGILITY: 2,
 }
 
-export const ROLE_NAME_MAP = {
-    0: "OFFENSIVE",
-    1: "DEFENSIVE",
-    2: "CONTROL",
-    3: "SUPPORT",
-}
 
 export const ROLE = {
     OFFENSIVE: 0,
@@ -122,17 +111,6 @@ export const POSSIBLE_PERKS = {
     ],
 }
 
-export const RARITY_NAME_MAP = {
-    0: "COMMON",
-    1: "UNCOMMON",
-    2: "RARE",
-    3: "EPIC",
-    4: "LEGENDARY",
-    5: "MYTHIC",
-    6: "HEROIC",
-    7: "DIVINE",
-    8: "ANCIENT",
-}
 
 export const RARITY = {
     COMMON: 0,
@@ -146,14 +124,6 @@ export const RARITY = {
     ANCIENT: 8,
 }
 
-export const ELEMENT_NAME_MAP = {
-    0: "FIRE",
-    1: "WATER",
-    2: "NATURE",
-    3: "LIGHT",
-    4: "SHADOW",
-    5: "VOID"
-}
 
 export const ELEMENT = {
     FIRE: 0,
@@ -238,133 +208,6 @@ export const UNIQUE_SKILLS = {
 }
 
 // redundant
-export const STATUS_EFFECT_NAME_MAP = {
-    0: "attack_up",
-    1: "defense_up",
-    2: "critical_chance_up",
-    3: "critical_damage_up",
-    4: "accuracy_up",
-    5: "resistance_up",
-    6: "agility_up",
-    7: "critical_resistance",
-    8: "invincibility",
-    9: "immunity",
-    10: "recovery",
-    11: "preservation",
-    12: "shroud",
-    13: "guard",
-    14: "shield",
-    15: "absorbing",
-    16: "blessed",
-
-    17: "attack_down",
-    18: "defense_down",
-    19: "critical_chance_down",
-    20: "accuracy_down",
-    21: "resistance_down",
-    22: "agility_down",
-    23: "blind",
-    24: "marked",
-    25: "sick",
-    26: "cursed",
-    27: "stunned",
-    28: "sleep",
-    29: "freeze",
-    30: "petrified",
-    31: "burn",
-    32: "poison",
-    33: "bleeding",
-    34: "mute",
-    35: "bound",
-    36: "taunt",
-    37: "confused",
-    38: "cursed_flame",
-
-    39: "hellfire",
-    40: "hellfire_mode",
-    41: "frozen_heart",
-    42: "heating_up",
-    43: "mjoellnir",
-    44: "anubis_seal",
-    45: "soulmate",
-    46: "sphinx_curse",
-    47: "styx",
-    48: "burrow",
-    49: "defense_drone",
-    50: "divine_shield",
-    51: "ferryman",
-    52: "feral",
-    53: "wildfire",
-    54: "fury",
-    55: "hivemind",
-    56: "hot_saw",
-    57: "loa",
-    58: "the_moon",
-    59: "the_star",
-    60: "the_sun",
-    61: "wind_up",
-    62: "war_forge",
-    63: "drumbeat",
-    64: "foresight",
-    65: "ap_resistance",
-    66: "arachnid",
-    67: "bloodrage",
-    68: "bunny",
-    69: "pain_fueled",
-    70: "blood_transfusion",
-    71: "soul_harvest",
-    72: "buzz_meter",
-    73: "biomass",
-    74: "ignited_ego",
-    75: "life_after_death",
-    76: "sludge",
-    77: "detonator",
-    78: "courage",
-    79: "smoke",
-    80: "mana_shield",
-    81: "echo",
-    82: "ionize",
-    83: "fracture",
-    84: "irradiate",
-    85: "rift_step",
-    86: "blacklist",
-    87: "rooted",
-    88: "ash",
-    89: "phoenix_feather",
-    90: "luck",
-    91: "soul_core",
-    92: "tempered",
-    93: "soaked",
-    94: "spectral_shield",
-    95: "wither",
-    96: "backup_drone",
-    97: "reflect",
-    98: "momentum",
-    99: "dawn",
-    100: "zenith",
-    101: "dusk",
-    102: "tender",
-    103: "sealed",
-    104: "lifeblood",
-    105: "ghost_crew",
-    106: "terror",
-    107: "feast",
-    108: "pin",
-    109: "puppet",
-    110: "buzzkill",
-    111: "plagued",
-    112: "encore",
-    113: "contaminated",
-    114: "cruelty",
-    115: "portal",
-    116: "critical_condition",
-    117: "hellforge",
-    118: "spotlight",
-    119: "emission",
-    120: "flare",
-    121: "hollowing",
-    122: "miasma",
-};
 
 export const STATUS_EFFECTS = {
     //============================================================
