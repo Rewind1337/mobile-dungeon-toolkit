@@ -1,27 +1,67 @@
-import { memo, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import Button from './Button.jsx'
 
-import { perkSprites } from '../database/db_sprites.jsx';
-import { PERK_DEFINITIONS } from '../database/enums.jsx';
+import { perkSprites } from '../database/db_sprites.jsx'
+import { PERK_DEFINITIONS } from '../database/enums.jsx'
 
-function ItemPerk({ name, value, onClick, buttonText = "Change", buttonColor = 5, noValue = false, editable = false }) {
-    const [_value, _setValue] = useState(value);
+function ItemPerk({
+    name,
+    value,
+    onValueChange,
+    onClick,
+    buttonText = "Change",
+    buttonColor = 5,
+    noValue = false,
+    editable = false
+}) {
+    const [_value, _setValue] = useState(value ?? 0)
     const _perk = PERK_DEFINITIONS[name]
-    const isFlatPerk = ((_perk.id >= 4 && _perk.id <= 7) || _perk.id == 32)
+    const isFlatPerk = ((_perk.id >= 4 && _perk.id <= 7) || _perk.id === 32)
+    const displayedValue = onValueChange ? (value ?? 0) : _value
+
+    useEffect(() => {
+        if (!onValueChange) {
+            _setValue(value ?? 0)
+        }
+    }, [value, onValueChange])
+
+    const handleValueChange = (event) => {
+        const nextValue = event.target.value
+        if (onValueChange) {
+            onValueChange(nextValue)
+        } else {
+            _setValue(nextValue)
+        }
+    }
 
     return (
         <div className={"item-perk card flex-row"}>
-
-            <div className='text flex-row'><img width={32} src={perkSprites[name]}/>{_perk.name}</div>
+            <div className='text flex-row'>
+                <img width={32} src={perkSprites[name]} />
+                {_perk.name}
+            </div>
 
             {!noValue && <>
                 {editable
-                    ? <div className='text flex-row'><input type='number' className='text' value={_value} onChange={e => _setValue(e.target.value)} />{isFlatPerk ? " Flat" : " %"}</div>
-                    : <div className='text flex-row'>{value}{isFlatPerk ? " Flat" : " %"}</div>
+                    ? <div className='text flex-row'>
+                        <input
+                            type='number'
+                            className='text'
+                            value={displayedValue}
+                            onChange={handleValueChange}
+                        />
+                        {isFlatPerk ? " Flat" : " %"}
+                    </div>
+                    : <div className='text flex-row'>
+                        {displayedValue}{isFlatPerk ? " Flat" : " %"}
+                    </div>
                 }
             </>}
 
-            {onClick ? <Button slim text={buttonText} color={buttonColor} onClick={() => { onClick() }} /> : <div className='text'>not changeable</div>}
+            {onClick
+                ? <Button slim text={buttonText} color={buttonColor} onClick={() => onClick()} />
+                : <div className='text'>not changeable</div>
+            }
         </div>
     )
 }
