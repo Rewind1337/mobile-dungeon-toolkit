@@ -9,7 +9,7 @@ import ItemPerk from './ItemPerk.jsx'
 
 import '../css/item.scss'
 
-function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, setsRef }) {
+function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, onEquipItem, setsRef }) {
     const slotIndexToNameMap = { 0: "WEAPONS", 1: "HELMETS", 2: "ARMORS", 3: "NECKLACES", 4: "RINGS" }
     const [itemObj, setItemObj] = useState(null)
     const [listHeight, setListHeight] = useState(500)
@@ -103,11 +103,11 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
         })
     }
 
-    const handleSaveItem = () => {
-        if (!itemObj || !saveItem) return
+    const getConfiguredItem = () => {
+        if (!itemObj) return null
         const minimumRarity = RARITY_DEFINITIONS.RARE.id
         const rarity = Math.max(minimumRarity, Math.min(8, Number(selectedRarity) || minimumRarity))
-        saveItem({
+        return {
             ...itemObj,
             level: Math.max(1, Number(selectedLevel) || 1),
             rarity,
@@ -117,7 +117,19 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
             })),
             perks: [...selectedPerks],
             perkValues: selectedPerkValues.map(value => Number(value) || 0)
-        })
+        }
+    }
+
+    const handleSaveItem = () => {
+        if (!saveItem) return
+        const configuredItem = getConfiguredItem()
+        if (configuredItem) saveItem(configuredItem)
+    }
+
+    const handleEquipItem = () => {
+        if (!onEquipItem) return
+        const configuredItem = getConfiguredItem()
+        if (configuredItem) onEquipItem(configuredItem)
     }
 
     const handleDeleteSavedItem = () => {
@@ -250,6 +262,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
 
                 {(saveItem || !deleteSavedItem) && <div className='flex-row'>
                     {saveItem && <Button text={"Save Item"} onClick={handleSaveItem} color={1} />}
+                    {onEquipItem && <Button text={"Equip Item"} onClick={handleEquipItem} color={1} />}
                     {!deleteSavedItem && <Button text={"Delete Item"} onClick={handleDeleteSavedItem} color={1} />}
                 </div>}
             </div>
