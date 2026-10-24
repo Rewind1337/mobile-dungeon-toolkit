@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 
-import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT, ROLE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
+import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, ROLE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
 import { iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites } from '../database/db_sprites.jsx'
 
@@ -176,12 +176,12 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
 
                     <div className='header'>Equipped Items</div>
                     <div className="flex-row equipment">
-                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT.WEAPON) }} />
-                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT.HELMET) }} />
-                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT.ARMOR) }} />
-                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT.RING) }} />
-                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT.NECKLACE) }} />
-                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT.OTHER) }} />
+                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT_DEFINITIONS.WEAPON.id) }} />
+                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT_DEFINITIONS.HELMET.id) }} />
+                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT_DEFINITIONS.ARMOR.id) }} />
+                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT_DEFINITIONS.RING.id) }} />
+                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT_DEFINITIONS.NECKLACE.id) }} />
+                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT_DEFINITIONS.OTHER.id) }} />
                     </div>
                     <div className='header'>Main Stats</div>
                     <div className='flex-row base-stats'>
