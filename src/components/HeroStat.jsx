@@ -1,11 +1,11 @@
 import { memo, useState } from 'react'
 
 import { perkSprites } from '../database/db_sprites.jsx';
-import { PERKS } from '../database/enums.jsx';
+import { PERK_DEFINITIONS } from '../database/enums.jsx';
 
 function HeroStat({ name, value }) {
     const [_value, _setValue] = useState(value);
-    const _perk = PERKS[name]
+    const _perk = PERK_DEFINITIONS[name]
     const isFlatPerk = ((_perk.id >= 4 && _perk.id <= 7) || _perk.id == 32)
 
     return (
