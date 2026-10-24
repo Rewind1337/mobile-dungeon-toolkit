@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { CONSTANTS } from '../database/constants.jsx'
-import { RARITY_DEFINITIONS, getEnumNameById, getItemPerkCount } from '../database/enums.jsx'
+import { PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById, getItemPerkCount } from '../database/enums.jsx'
 import { iconSprites } from '../database/db_sprites.jsx'
 
 import Button from './Button.jsx'
@@ -45,6 +45,8 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
         (item?.unique !== undefined && item?.unique !== null && item.unique !== 0) ||
         (item?.set !== undefined && item?.set !== null && item.set >= 0)
     )
+
+    const getPerkKey = (perk) => Object.keys(PERK_DEFINITIONS).find(key => PERK_DEFINITIONS[key].id === perk.id) ?? "NOTHING"
 
     const makePerkSlots = (item, rarity) => {
         const count = getItemPerkCount(rarity, hasSetBonusOrUniqueEffect(item))
