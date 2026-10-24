@@ -172,6 +172,10 @@ import ChroniaSrc from '../sprites/heroes/chronia.png'
 import ClockmasterSrc from '../sprites/heroes/clockmaster.png'
 import CybackerSrc from '../sprites/heroes/cybacker.png'
 
+// 24.10. added
+import RodentRangersSrc from '../sprites/heroes/rodent_rangers.png'
+import NautorSrc from '../sprites/heroes/nautor.png'
+
 // RARES
 import BagHeadSrc from '../sprites/heroes/bag_head.png';
 import CircusBoxerSrc from '../sprites/heroes/circus_boxer.png';
@@ -224,6 +228,10 @@ import ParticleReaverSrc from '../sprites/heroes/particle_reaver.png';
 // 02.09. added (missed)
 import AsudemSrc from '../sprites/heroes/asudem.png'
 import PiperSrc from '../sprites/heroes/piper.png'
+
+// 24.10. added
+import MarianaSrc from '../sprites/heroes/mariana.png'
+import BobbybotSrc from '../sprites/heroes/bobbybot.png'
 
 // UNCOMMONS
 import GhoulSrc from '../sprites/heroes/ghoul.png';
@@ -377,6 +385,10 @@ export const heroSprites = {
     aeterna: AeternaSrc,
     hizumi_exe: HizumiExeSrc,
 
+    // 24.10. added
+    rodent_rangers: RodentRangersSrc,
+    nautor: NautorSrc,
+
     // EPICS
     dr__pestilence: DrPestilenceSrc,
     yulamb: YulambSrc,
@@ -467,6 +479,10 @@ export const heroSprites = {
     // 10.09. added
     clockmaster: ClockmasterSrc,
     cybacker: CybackerSrc,
+    
+    // 24.10. added
+    mariana: MarianaSrc,
+    bobbybot: BobbybotSrc,
 
     // RARES
     bag_head: BagHeadSrc,
