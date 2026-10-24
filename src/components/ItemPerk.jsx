@@ -12,12 +12,16 @@ function ItemPerk({
     buttonText = "Change",
     buttonColor = 5,
     noValue = false,
-    editable = false
+    editable = false,
+    multiplier = 1
 }) {
     const [_value, _setValue] = useState(value ?? 0)
     const _perk = PERK_DEFINITIONS[name]
     const isFlatPerk = ((_perk.id >= 4 && _perk.id <= 7) || _perk.id === 32)
     const displayedValue = onValueChange ? (value ?? 0) : _value
+    const numericValue = Number(displayedValue) || 0
+    const effectiveValue = Math.round(numericValue * multiplier * 100) / 100
+    const formatValue = number => Number.isInteger(number) ? String(number) : String(Number(number.toFixed(2)))
 
     useEffect(() => {
         if (!onValueChange) {
@@ -43,17 +47,21 @@ function ItemPerk({
 
             {!noValue && <>
                 {editable
-                    ? <div className='text flex-row'>
-                        <input
-                            type='number'
-                            className='text'
-                            value={displayedValue}
-                            onChange={handleValueChange}
-                        />
-                        {isFlatPerk ? " Flat" : " %"}
+                    ? <div className='text flex-col'>
+                        <div className='flex-row'>
+                            <input
+                                type='number'
+                                className='text'
+                                value={displayedValue}
+                                onChange={handleValueChange}
+                            />
+                            {isFlatPerk ? " Flat" : " %"}
+                        </div>
+                        {multiplier > 1 && <small>Effective: {formatValue(effectiveValue)}{isFlatPerk ? " Flat" : " %"}</small>}
                     </div>
-                    : <div className='text flex-row'>
-                        {displayedValue}{isFlatPerk ? " Flat" : " %"}
+                    : <div className='text flex-col'>
+                        <div>{displayedValue}{isFlatPerk ? " Flat" : " %"}</div>
+                        {multiplier > 1 && <small>Effective: {formatValue(effectiveValue)}{isFlatPerk ? " Flat" : " %"}</small>}
                     </div>
                 }
             </>}
