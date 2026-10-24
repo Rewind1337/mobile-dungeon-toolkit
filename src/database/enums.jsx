@@ -3,18 +3,26 @@ export const DROP_SOURCE = {
     GUILD_HUNT: 1,
 }
 
-// Resolve a canonical enum key or structured definition name from its numeric ID.
-// Supports both simple enums (KEY: number) and structured definitions ({ id, name, ... }).
+// Cache reverse indexes so repeated UI lookups don't rescan the full definition object.
+// Supports simple enums (KEY: number) and structured definitions ({ id, name, ... }).
+const enumNameIndexes = new WeakMap();
+
 export function getEnumNameById(definitions, id) {
-    for (const [key, value] of Object.entries(definitions)) {
-        if (typeof value === "number" && value === id) {
-            return key;
+    let index = enumNameIndexes.get(definitions);
+
+    if (index === undefined) {
+        index = new Map();
+        for (const [key, value] of Object.entries(definitions)) {
+            if (typeof value === "number") {
+                index.set(value, key);
+            } else if (value !== null && typeof value === "object" && typeof value.id === "number") {
+                index.set(value.id, value.name ?? key);
+            }
         }
-        if (value !== null && typeof value === "object" && value.id === id) {
-            return value.name ?? key;
-        }
+        enumNameIndexes.set(definitions, index);
     }
-    return undefined;
+
+    return index.get(id);
 }
 
 
