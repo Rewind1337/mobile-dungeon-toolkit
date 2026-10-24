@@ -42,21 +42,50 @@ const loadInitialState = () => {
       for (let key in parsedState) {
         newState[key] = parsedState[key];
       }
-      // hero element src correction
-      let hero_array = newState["savedHeroesRef"]
+      // Migrate legacy numeric hero IDs to their new stable string IDs.
+      const hero_array = newState["savedHeroesRef"] ?? []
       for (let i = 0; i < hero_array.length; i++) {
-        hero_array[i].elementSrc = elementSprites[hero_array[i].element]
+        const savedHero = hero_array[i]
+        if (typeof savedHero.id === "number") {
+          savedHero.id = BASE_HEROES[savedHero.id]?.id ?? `legacy-hero-${savedHero.id}`
+        }
+        savedHero.elementSrc = elementSprites[savedHero.element]
       }
       newState["savedHeroesRef"] = hero_array
 
-      // item icon src correction
-      let item_root = newState["savedItemsRef"]
-      for (let key in item_root) {
-        let item_array = item_root[key]
+      // Migrate saved items before using the new string IDs in the UI.
+      // Old saves used the item's array index as its ID and a numeric set index.
+      const item_root = newState["savedItemsRef"] ?? {}
+      for (const key of Object.keys(item_root)) {
+        const item_array = Array.isArray(item_root[key]) ? item_root[key] : []
+        const baseItemsForSlot = BASE_ITEMS.BASE_ITEMS[key] ?? []
         for (let i = 0; i < item_array.length; i++) {
-          item_array[i].iconSrc = iconSprites[item_array[i].iconType]
+          const savedItem = item_array[i]
+          const legacyId = savedItem.id
+          const baseItem = typeof legacyId === "number"
+            ? baseItemsForSlot[legacyId]
+            : baseItemsForSlot.find(item => item.id === legacyId) ?? baseItemsForSlot.find(item => item.name === savedItem.name)
+          const baseItemId = String(savedItem.baseItemId ?? baseItem?.id ?? legacyId ?? `legacy-item-${key}-${i}`)
+          const alreadyMigrated = typeof savedItem.id === "string"
+            && savedItem.id.startsWith("saved:")
+            && typeof savedItem.baseItemId === "string"
+            && typeof savedItem.saveId === "string"
+          const saveId = alreadyMigrated ? savedItem.saveId : `legacy-${savedItem.saveId ?? i}`
+          const stableId = alreadyMigrated ? savedItem.id : `saved:${baseItemId}:${saveId}`
+          const stableSet = typeof savedItem.set === "number"
+            ? (savedItem.set >= 0 ? BASE_ITEMS.ITEM_SETS[savedItem.set]?.id ?? null : null)
+            : (savedItem.set === -1 || savedItem.set === undefined ? null : savedItem.set)
+
+          item_array[i] = {
+            ...savedItem,
+            id: stableId,
+            baseItemId,
+            saveId,
+            set: stableSet,
+            iconSrc: iconSprites[savedItem.iconType]
+          }
         }
-        item_root[key] = item_array;
+        item_root[key] = item_array
       }
       newState["savedItemsRef"] = item_root
       console.log('Successfully loaded Save from LocalStorage!');
