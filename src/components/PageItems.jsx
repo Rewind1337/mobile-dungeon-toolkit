@@ -53,7 +53,26 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
     }
 
     const deleteSavedItem = (itemObj) => {
-        // TODO
+        const slotArray = slotIndexToNameMap[itemObj?.slot]
+        if (!slotArray || !itemObj) return
+
+        const existingItems = savedItemsRef.current[slotArray] ?? []
+        const itemKey = itemObj.saveId ?? itemObj.id
+        const nextItems = existingItems.filter(savedItem => (savedItem.saveId ?? savedItem.id) !== itemKey)
+
+        if (nextItems.length === existingItems.length) return
+
+        savedItemsRef.current = {
+            ...savedItemsRef.current,
+            [slotArray]: nextItems
+        }
+
+        if (selectedSavedItemId.id === itemObj.id) {
+            setSelectedSavedItemId({ slot: null, id: null })
+        }
+
+        setSavedItemsUpdated(previous => previous + 1)
+        if (manualSaveFunction) manualSaveFunction()
     }
 
     return (
@@ -106,7 +125,6 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                                 selectedItemId={selectedItemId}
                                 onPerkClick={handlePerkClick}
                                 saveItem={saveItem}
-                                deleteSavedItem={deleteSavedItem}
                             />
                         </div>
                     </>
@@ -130,6 +148,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                                 setsRef={itemsRef.current.ITEM_SETS}
                                 selectedItemId={selectedSavedItemId}
                                 onPerkClick={handlePerkClick}
+                                deleteSavedItem={deleteSavedItem}
                             />
                         </div>
                     </>
