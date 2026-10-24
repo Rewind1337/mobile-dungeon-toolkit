@@ -188,9 +188,12 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
                         {(() => {
                             const effect = getUniqueEffectDisplay(itemObj.unique, selectedRarity)
                             const displayedValue = (((effect.value ?? 1) - 1) * 100).toFixed(2) + "%"
+                            const [descriptionBefore, descriptionAfter = ""] = itemObj.unique.description.split("$e")
                             return <>
-                                {itemObj.unique.description.replace("$e", displayedValue)}
+                                {descriptionBefore}
+                                {displayedValue}
                                 {effect.usesHighestAvailableValue && <span title="No value is defined for this rarity yet; showing the highest available value."> (?)</span>}
+                                {descriptionAfter}
                             </>
                         })()}
                     </div>
