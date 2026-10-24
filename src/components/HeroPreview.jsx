@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, ROLE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
@@ -16,6 +16,12 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
     const listRef = useRef(null)
     const [showSkillsAndTalents, setShowSkillsAndTalents] = useState(false)
     const [selectedLevel, setSelectedLevel] = useState(1)
+    const [mainStats, setMainStats] = useState({
+        health: 1234,
+        attack: 1234,
+        defence: 1234,
+        agility: 1234
+    })
 
     function onResize() {
         let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5;
@@ -39,6 +45,16 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
     }, []);
 
     let heroObj = heroesRef.find(hero => hero.id === selectedHeroId || hero.saveId === selectedHeroId)
+
+    useEffect(() => {
+        setSelectedLevel(heroObj?.level ?? 1)
+        setMainStats({
+            health: heroObj?.stats?.health ?? 1234,
+            attack: heroObj?.stats?.attack ?? 1234,
+            defence: heroObj?.stats?.defence ?? 1234,
+            agility: heroObj?.stats?.agility ?? 1234
+        })
+    }, [selectedHeroId, heroObj?.id, heroObj?.saveId])
 
     const renderHeroSkills = () => {
         return heroObj.skills.map((skill, index) => (
@@ -187,19 +203,19 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                     <div className='flex-row base-stats'>
                         <div className='flex-row text card'>
                             <img width={32} src={perkSprites["HEALTH_FLAT"]}/>
-                            <input type='number' defaultValue={1234}/>
+                            <input type='number' value={mainStats.health} onChange={e => setMainStats(prev => ({ ...prev, health: e.target.value }))}/>
                         </div>
                         <div className='flex-row text card'>
                             <img width={32} src={perkSprites["ATTACK_FLAT"]}/>
-                            <input type='number' defaultValue={1234}/>
+                            <input type='number' value={mainStats.attack} onChange={e => setMainStats(prev => ({ ...prev, attack: e.target.value }))}/>
                         </div>
                         <div className='flex-row text card'>
                             <img width={32} src={perkSprites["DEFENCE_FLAT"]}/>
-                            <input type='number' defaultValue={1234}/>
+                            <input type='number' value={mainStats.defence} onChange={e => setMainStats(prev => ({ ...prev, defence: e.target.value }))}/>
                         </div>
                         <div className='flex-row text card'>
                             <img width={32} src={perkSprites["AGILITY_FLAT"]}/>
-                            <input type='number' defaultValue={1234}/>
+                            <input type='number' value={mainStats.agility} onChange={e => setMainStats(prev => ({ ...prev, agility: e.target.value }))}/>
                         </div>
                     </div>
                     <div className='header'>Other Stats</div>
@@ -233,7 +249,19 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                         </div>
                     </div>
                     <div className='flex-row'>
-                        <Button text={"Save Hero"} onClick={() => { saveHero(heroObj) }} />
+                        <Button text={"Save Hero"} onClick={() => {
+                            saveHero({
+                                ...heroObj,
+                                level: Math.max(1, Number(selectedLevel) || 1),
+                                stats: {
+                                    health: Number(mainStats.health) || 0,
+                                    attack: Number(mainStats.attack) || 0,
+                                    defence: Number(mainStats.defence) || 0,
+                                    agility: Number(mainStats.agility) || 0
+                                },
+                                items: []
+                            })
+                        }} />
                     </div>
                 </div>
             </div >
