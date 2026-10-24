@@ -11,7 +11,7 @@ import TextCard from './TextCard.jsx'
 import '../css/hero.scss'
 import HeroStat from './HeroStat.jsx'
 
-function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
+function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onItemClick }) {
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
     const [showSkillsAndTalents, setShowSkillsAndTalents] = useState(false)
@@ -131,6 +131,24 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
         return talents
     }
 
+    const handleSaveHero = () => {
+        saveHero({
+            ...heroObj,
+            level: Math.max(1, Number(selectedLevel) || 1),
+            stats: {
+                health: Number(mainStats.health) || 0,
+                attack: Number(mainStats.attack) || 0,
+                defence: Number(mainStats.defence) || 0,
+                agility: Number(mainStats.agility) || 0
+            },
+            items: []
+        })
+    }
+
+    const handleDeleteSavedHero = () => {
+        // TODO
+    }
+
     let noSelection = false
     if (selectedHeroId === null || heroesRef.length === 0) {
         noSelection = true
@@ -248,21 +266,10 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                             <HeroStat name={"SHADOW_DAMAGE_REDUCTION"} value={0}/>
                         </div>
                     </div>
-                    <div className='flex-row'>
-                        <Button text={"Save Hero"} onClick={() => {
-                            saveHero({
-                                ...heroObj,
-                                level: Math.max(1, Number(selectedLevel) || 1),
-                                stats: {
-                                    health: Number(mainStats.health) || 0,
-                                    attack: Number(mainStats.attack) || 0,
-                                    defence: Number(mainStats.defence) || 0,
-                                    agility: Number(mainStats.agility) || 0
-                                },
-                                items: []
-                            })
-                        }} />
-                    </div>
+                    {(saveHero || deleteSavedHero) && <div className='flex-row'>
+                        {saveHero && <Button text={"Save Hero"} onClick={handleSaveHero} color={0}/>}
+                        {deleteSavedHero && <Button text={"Delete Saved Hero"} onClick={handleDeleteSavedHero} color={0}/>}
+                    </div>}
                 </div>
             </div >
         )

@@ -52,6 +52,9 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
         if (manualSaveFunction) manualSaveFunction()
     }
 
+    const deleteSavedItem = (itemObj) => {
+        // TODO
+    }
 
     return (
         <>
@@ -103,6 +106,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                                 selectedItemId={selectedItemId}
                                 onPerkClick={handlePerkClick}
                                 saveItem={saveItem}
+                                deleteSavedItem={deleteSavedItem}
                             />
                         </div>
                     </>

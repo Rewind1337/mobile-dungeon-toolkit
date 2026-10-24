@@ -27,7 +27,10 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
         }
         savedHeroesRef.current.push(savedHero)
         clearHeroSelection()
-        if (manualSaveFunction) manualSaveFunction()
+    }
+
+    const deleteSavedHero = (heroObj) => {
+        // TODO
     }
 
     // Item Stuff
@@ -45,20 +48,6 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
 
     const clearItemSelection = () => { setSelectedItemId({ slot: null, id: null }); setSelectedSavedItemId({ slot: null, id: null }) }
 
-    const slotIndexToNameMap = { 0: "WEAPONS", 1: "HELMETS", 2: "ARMORS", 3: "NECKLACES", 4: "RINGS" }
-    const saveItem = (itemObj) => {
-        const slotArray = slotIndexToNameMap[itemObj.slot];
-        if (!slotArray) return
-
-        const savedItem = createSavedItemRecord(itemObj)
-        savedItemsRef.current = {
-            ...savedItemsRef.current,
-            [slotArray]: [...(savedItemsRef.current[slotArray] ?? []), savedItem]
-        }
-        setSavedItemsUpdated(previous => previous + 1)
-        if (manualSaveFunction) manualSaveFunction()
-    };
-
     return (
         <>
             <Modal position="left" isVisible={itemSelectionVisible} onClose={() => { setItemSelectionVisible(false); clearItemSelection(); }}>
@@ -73,8 +62,8 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
             </Modal>
             <Modal position="right" isVisible={selectedItemId.slot !== null || selectedSavedItemId.slot !== null} onClose={() => { setItemSelectionVisible(false); clearItemSelection(); }}>
                 {itemSelectionModalMode === 0 ?
-/* NOT ACTIVE    */ <ItemPreview setsRef={itemsRef.current.ITEM_SETS} itemsRef={itemsRef.current.BASE_ITEMS} selectedItemId={selectedItemId} saveItem={saveItem} /> :
-                    <ItemPreview setsRef={itemsRef.current.ITEM_SETS} itemsRef={savedItemsRef.current} selectedItemId={selectedSavedItemId} saveItem={saveItem} />
+/* NOT ACTIVE    */ <ItemPreview setsRef={itemsRef.current.ITEM_SETS} itemsRef={itemsRef.current.BASE_ITEMS} selectedItemId={selectedItemId}/> :
+                    <ItemPreview setsRef={itemsRef.current.ITEM_SETS} itemsRef={savedItemsRef.current} selectedItemId={selectedSavedItemId}/>
                 }
             </Modal>
 
@@ -106,7 +95,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                             <HeroList setForceUpdate={setForceUpdate} savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} setSelectedHeroId={setSelectedSavedHeroId} />
                         </div>
                         <div className='card w-50' style={{ display: (selectedSavedHeroId === null) ? "none" : "block" }}>
-                            <HeroPreview setForceUpdate={setForceUpdate} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} onItemClick={handleItemClick} />
+                            <HeroPreview setForceUpdate={setForceUpdate} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} deleteSavedHero={deleteSavedHero} onItemClick={handleItemClick} />
                         </div>
                     </>
                 }

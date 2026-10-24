@@ -9,7 +9,7 @@ import ItemPerk from './ItemPerk.jsx'
 
 import '../css/item.scss'
 
-function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef }) {
+function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, setsRef }) {
     const slotIndexToNameMap = { 0: "WEAPONS", 1: "HELMETS", 2: "ARMORS", 3: "NECKLACES", 4: "RINGS" }
     const [itemObj, setItemObj] = useState(null)
     const [listHeight, setListHeight] = useState(500)
@@ -120,6 +120,11 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
         })
     }
 
+    const handleDeleteSavedItem = () => {
+        // TODO
+        // probably call deleteSavedItem (from PageItems.jsx, also todo)
+    }
+
     const getUniqueEffectDisplay = (unique, rarity) => {
         const effects = unique?.rarityEffect
         if (!Array.isArray(effects) || effects.length === 0) {
@@ -173,9 +178,9 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
                 </div>
 
                 <div className='card flex-row'>
-                    <Button text={"Rarity Down"} onClick={() => changeRarity(selectedRarity - 1)} color={0} />
+                    <Button text={"Rarity Down"} onClick={() => changeRarity(selectedRarity - 1)} color={1} />
                     <div className='header'>{getEnumNameById(RARITY_DEFINITIONS, selectedRarity)}</div>
-                    <Button text={"Rarity Up"} onClick={() => changeRarity(selectedRarity + 1)} color={0} />
+                    <Button text={"Rarity Up"} onClick={() => changeRarity(selectedRarity + 1)} color={1} />
                 </div>
 
                 {itemObj.unique && itemObj.unique !== 0 && itemObj.unique.description && <div className='card'>
@@ -189,12 +194,12 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
                             const effect = getUniqueEffectDisplay(itemObj.unique, selectedRarity)
                             const displayedValue = (((effect.value ?? 1) - 1) * 100).toFixed(2) + "%"
                             const [descriptionBefore, descriptionAfter = ""] = itemObj.unique.description.split("$e")
-                            return <>
+                            return <span className='text'>
                                 {descriptionBefore}
                                 {displayedValue}
                                 {effect.usesHighestAvailableValue && <span title="No value is defined for this rarity yet; showing the highest available value."> (?)</span>}
                                 {descriptionAfter}
-                            </>
+                            </span>
                         })()}
                     </div>
                 </div>}
@@ -243,8 +248,9 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
                     ))
                 }
 
-                {saveItem && <div className='flex-row'>
-                    <Button text={"Save Item"} onClick={handleSaveItem} color={0} />
+                {(saveItem || !deleteSavedItem) && <div className='flex-row'>
+                    {saveItem && <Button text={"Save Item"} onClick={handleSaveItem} color={1} />}
+                    {!deleteSavedItem && <Button text={"Delete Item"} onClick={handleDeleteSavedItem} color={1} />}
                 </div>}
             </div>
         </div>
