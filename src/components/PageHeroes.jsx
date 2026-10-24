@@ -6,10 +6,12 @@ import HeroPreview from "./HeroPreview.jsx"
 import Button from "./Button.jsx"
 import Modal from "./Modal.jsx"
 import { POSSIBLE_PERKS } from "../database/enums.jsx"
+import { createSavedItemRecord } from "../database/ids.jsx"
 
 function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
     const [pageContent, setPageContent] = useState(0)
     const [forceUpdate, setForceUpdate] = useState({})
+    const [, setSavedItemsUpdated] = useState(0)
 
     // Hero Stuff
     const [selectedHeroId, setSelectedHeroId] = useState(null)
@@ -44,11 +46,16 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
 
     const slotIndexToNameMap = { 0: "WEAPONS", 1: "HELMETS", 2: "ARMORS", 3: "NECKLACES", 4: "RINGS" }
     const saveItem = (itemObj) => {
-        console.log("Saving " + itemObj.name + " to " + itemObj.slot);
-        let slotArray = slotIndexToNameMap[itemObj.slot];
-        itemObj.saveId = savedItemsRef.current[slotArray].length;
-        savedItemsRef.current[slotArray].push(itemObj);
-        setSavedItemsUpdated((prev) => prev + 1); // Trigger re-render
+        const slotArray = slotIndexToNameMap[itemObj.slot];
+        if (!slotArray) return
+
+        const savedItem = createSavedItemRecord(itemObj)
+        savedItemsRef.current = {
+            ...savedItemsRef.current,
+            [slotArray]: [...(savedItemsRef.current[slotArray] ?? []), savedItem]
+        }
+        setSavedItemsUpdated(previous => previous + 1)
+        if (manualSaveFunction) manualSaveFunction()
     };
 
     return (
