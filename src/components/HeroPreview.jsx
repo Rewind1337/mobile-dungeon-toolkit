@@ -6,12 +6,13 @@ import { iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites 
 
 import Button from './Button.jsx'
 import EmptyItem from './EmptyItem.jsx'
+import Item from './Item.jsx'
 import TextCard from './TextCard.jsx'
 
 import '../css/hero.scss'
 import HeroStat from './HeroStat.jsx'
 
-function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onItemClick }) {
+function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onItemClick, equippedItems = [] }) {
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
     const [showSkillsAndTalents, setShowSkillsAndTalents] = useState(false)
@@ -141,7 +142,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
                 defence: Number(mainStats.defence) || 0,
                 agility: Number(mainStats.agility) || 0
             },
-            items: []
+            items: [...equippedItems]
         })
     }
 
@@ -210,12 +211,19 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
 
                     <div className='header'>Equipped Items</div>
                     <div className="flex-row equipment">
-                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT_DEFINITIONS.WEAPON.id) }} />
-                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT_DEFINITIONS.HELMET.id) }} />
-                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT_DEFINITIONS.ARMOR.id) }} />
-                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT_DEFINITIONS.RING.id) }} />
-                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT_DEFINITIONS.NECKLACE.id) }} />
-                        <EmptyItem onClick={() => { onItemClick(EQUIPMENT_SLOT_DEFINITIONS.OTHER.id) }} />
+                        {[
+                            EQUIPMENT_SLOT_DEFINITIONS.WEAPON,
+                            EQUIPMENT_SLOT_DEFINITIONS.HELMET,
+                            EQUIPMENT_SLOT_DEFINITIONS.ARMOR,
+                            EQUIPMENT_SLOT_DEFINITIONS.RING,
+                            EQUIPMENT_SLOT_DEFINITIONS.NECKLACE,
+                            EQUIPMENT_SLOT_DEFINITIONS.OTHER
+                        ].map(slot => {
+                            const item = equippedItems[slot.id]
+                            return item
+                                ? <Item key={slot.id} itemObj={item} level={item.level ?? 1} onClick={() => onItemClick(slot.id)} />
+                                : <EmptyItem key={slot.id} onClick={() => onItemClick(slot.id)} />
+                        })}
                     </div>
                     <div className='header'>Main Stats</div>
                     <div className='flex-row base-stats'>
