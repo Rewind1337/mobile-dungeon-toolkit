@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { formatNumber } from '../js/util.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
-import { RARITY, RARITY_NAME_MAP } from '../database/enums.jsx'
+import { RARITY, getEnumNameById } from '../database/enums.jsx'
 import { iconSprites } from '../database/db_sprites.jsx'
 
 import Button from './Button.jsx'
@@ -107,7 +107,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
 
                     <div className='card flex-row'>
                         <Button text={"Rarity Down"} onClick={() => { setSelectedRarity(r => Math.max(0, r -= 1)) }} color={0} />
-                        <div className='header'>{RARITY_NAME_MAP[selectedRarity]}</div>
+                        <div className='header'>{getEnumNameById(RARITY, selectedRarity)}</div>
                         <Button text={"Rarity Up"} onClick={() => { setSelectedRarity(r => Math.min(8, r += 1)) }} color={0} />
                     </div>
 
