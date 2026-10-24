@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { formatNumber } from '../js/util.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
-import { RARITY, RARITY_NAME_MAP } from '../database/enums.jsx'
+import { RARITY_DEFINITIONS, getEnumNameById, getItemPerkCount } from '../database/enums.jsx'
 import { iconSprites } from '../database/db_sprites.jsx'
 
 import Button from './Button.jsx'
@@ -63,10 +63,10 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
 
     useEffect(() => {
         if (itemObj) {
-            let numPerks = Math.min(Math.max(0, selectedRarity - 1), 3)
-            if (selectedRarity >= 1) {
-                numPerks += ((itemObj.unique === 0 || itemObj.set === -1) ? 1 : 0)
-            }
+            const hasSetBonusOrUniqueEffect =
+                (itemObj.unique !== undefined && itemObj.unique !== 0) ||
+                (itemObj.set !== undefined && itemObj.set >= 0)
+            const numPerks = getItemPerkCount(selectedRarity, hasSetBonusOrUniqueEffect)
             let perks = Array(numPerks).fill("NOTHING")
             for (let i = 0; i < selectedPerks.length; i++) {
                 if (selectedPerks[i] !== "NOTHING")
@@ -107,7 +107,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
 
                     <div className='card flex-row'>
                         <Button text={"Rarity Down"} onClick={() => { setSelectedRarity(r => Math.max(0, r -= 1)) }} color={0} />
-                        <div className='header'>{RARITY_NAME_MAP[selectedRarity]}</div>
+                        <div className='header'>{getEnumNameById(RARITY_DEFINITIONS, selectedRarity)}</div>
                         <Button text={"Rarity Up"} onClick={() => { setSelectedRarity(r => Math.min(8, r += 1)) }} color={0} />
                     </div>
 

@@ -1,40 +1,40 @@
 import { memo, useState } from 'react'
 import Button from './Button.jsx'
-import { ELEMENT, ROLE, ATTRIBUTE, RARITY} from '../database/enums.jsx'
+import { ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, ATTRIBUTE_DEFINITIONS, RARITY_DEFINITIONS} from '../database/enums.jsx'
 
 function HeroElementFilters({ toggleFilter, filters, filterSprites }) {
     return (<div className='filter-group flex-row'>
-        <Button round onClick={() => toggleFilter('element', ELEMENT.FIRE)} imgAsText text={filterSprites[1]} active={filters.element === ELEMENT.FIRE} />
-        <Button round onClick={() => toggleFilter('element', ELEMENT.WATER)} imgAsText text={filterSprites[2]} active={filters.element === ELEMENT.WATER} />
-        <Button round onClick={() => toggleFilter('element', ELEMENT.NATURE)} imgAsText text={filterSprites[3]} active={filters.element === ELEMENT.NATURE} />
-        <Button round onClick={() => toggleFilter('element', ELEMENT.LIGHT)} imgAsText text={filterSprites[4]} active={filters.element === ELEMENT.LIGHT} />
-        <Button round onClick={() => toggleFilter('element', ELEMENT.SHADOW)} imgAsText text={filterSprites[5]} active={filters.element === ELEMENT.SHADOW} />
+        <Button round onClick={() => toggleFilter('element', ELEMENT_DEFINITIONS.FIRE.id)} imgAsText text={filterSprites[1]} active={filters.element === ELEMENT_DEFINITIONS.FIRE.id} />
+        <Button round onClick={() => toggleFilter('element', ELEMENT_DEFINITIONS.WATER.id)} imgAsText text={filterSprites[2]} active={filters.element === ELEMENT_DEFINITIONS.WATER.id} />
+        <Button round onClick={() => toggleFilter('element', ELEMENT_DEFINITIONS.NATURE.id)} imgAsText text={filterSprites[3]} active={filters.element === ELEMENT_DEFINITIONS.NATURE.id} />
+        <Button round onClick={() => toggleFilter('element', ELEMENT_DEFINITIONS.LIGHT.id)} imgAsText text={filterSprites[4]} active={filters.element === ELEMENT_DEFINITIONS.LIGHT.id} />
+        <Button round onClick={() => toggleFilter('element', ELEMENT_DEFINITIONS.SHADOW.id)} imgAsText text={filterSprites[5]} active={filters.element === ELEMENT_DEFINITIONS.SHADOW.id} />
     </div>)
 }
 
 function HeroRoleFilters({ toggleFilter, filters, filterSprites }) {
     return (<div className='filter-group flex-row'>
-        <Button round onClick={() => toggleFilter('role', ROLE.OFFENSIVE)} imgAsText text={filterSprites[10]} active={filters.role === ROLE.OFFENSIVE} />
-        <Button round onClick={() => toggleFilter('role', ROLE.DEFENSIVE)} imgAsText text={filterSprites[11]} active={filters.role === ROLE.DEFENSIVE} />
-        <Button round onClick={() => toggleFilter('role', ROLE.CONTROL)} imgAsText text={filterSprites[12]} active={filters.role === ROLE.CONTROL} />
-        <Button round onClick={() => toggleFilter('role', ROLE.SUPPORT)} imgAsText text={filterSprites[13]} active={filters.role === ROLE.SUPPORT} />
+        <Button round onClick={() => toggleFilter('role', ROLE_DEFINITIONS.OFFENSIVE.id)} imgAsText text={filterSprites[10]} active={filters.role === ROLE_DEFINITIONS.OFFENSIVE.id} />
+        <Button round onClick={() => toggleFilter('role', ROLE_DEFINITIONS.DEFENSIVE.id)} imgAsText text={filterSprites[11]} active={filters.role === ROLE_DEFINITIONS.DEFENSIVE.id} />
+        <Button round onClick={() => toggleFilter('role', ROLE_DEFINITIONS.CONTROL.id)} imgAsText text={filterSprites[12]} active={filters.role === ROLE_DEFINITIONS.CONTROL.id} />
+        <Button round onClick={() => toggleFilter('role', ROLE_DEFINITIONS.SUPPORT.id)} imgAsText text={filterSprites[13]} active={filters.role === ROLE_DEFINITIONS.SUPPORT.id} />
     </div>)
 }
 
 function HeroAttributeFilters({ toggleFilter, filters, filterSprites }) {
     return (<div className='filter-group flex-row'>
-        <Button round onClick={() => toggleFilter('mainAttribute', ATTRIBUTE.STRENGTH)} imgAsText text={filterSprites[20]} active={filters.mainAttribute === ATTRIBUTE.STRENGTH} />
-        <Button round onClick={() => toggleFilter('mainAttribute', ATTRIBUTE.DEXTERITY)} imgAsText text={filterSprites[21]} active={filters.mainAttribute === ATTRIBUTE.DEXTERITY} />
-        <Button round onClick={() => toggleFilter('mainAttribute', ATTRIBUTE.INTELLIGENCE)} imgAsText text={filterSprites[22]} active={filters.mainAttribute === ATTRIBUTE.INTELLIGENCE} />
+        <Button round onClick={() => toggleFilter('mainAttribute', ATTRIBUTE_DEFINITIONS.STRENGTH.id)} imgAsText text={filterSprites[20]} active={filters.mainAttribute === ATTRIBUTE_DEFINITIONS.STRENGTH.id} />
+        <Button round onClick={() => toggleFilter('mainAttribute', ATTRIBUTE_DEFINITIONS.DEXTERITY.id)} imgAsText text={filterSprites[21]} active={filters.mainAttribute === ATTRIBUTE_DEFINITIONS.DEXTERITY.id} />
+        <Button round onClick={() => toggleFilter('mainAttribute', ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id)} imgAsText text={filterSprites[22]} active={filters.mainAttribute === ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id} />
     </div>)
 }
 
 function HeroRarityFilters({ toggleFilter, filters, filterSprites }) {
     return (<div className='filter-group flex-row'>
-        <Button round color={"uncommon"} onClick={() => toggleFilter('rarity', RARITY.UNCOMMON)} text={filterSprites[31]} active={filters.rarity === RARITY.UNCOMMON} />
-        <Button round color={"rare"} onClick={() => toggleFilter('rarity', RARITY.RARE)} text={filterSprites[32]} active={filters.rarity === RARITY.RARE} />
-        <Button round color={"epic"} onClick={() => toggleFilter('rarity', RARITY.EPIC)} text={filterSprites[33]} active={filters.rarity === RARITY.EPIC} />
-        <Button round color={"legendary"} onClick={() => toggleFilter('rarity', RARITY.LEGENDARY)} text={filterSprites[34]} active={filters.rarity === RARITY.LEGENDARY} />
+        <Button round color={"uncommon"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.UNCOMMON.id)} text={filterSprites[31]} active={filters.rarity === RARITY_DEFINITIONS.UNCOMMON.id} />
+        <Button round color={"rare"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.RARE.id)} text={filterSprites[32]} active={filters.rarity === RARITY_DEFINITIONS.RARE.id} />
+        <Button round color={"epic"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.EPIC.id)} text={filterSprites[33]} active={filters.rarity === RARITY_DEFINITIONS.EPIC.id} />
+        <Button round color={"legendary"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.LEGENDARY.id)} text={filterSprites[34]} active={filters.rarity === RARITY_DEFINITIONS.LEGENDARY.id} />
     </div>)
 }
 

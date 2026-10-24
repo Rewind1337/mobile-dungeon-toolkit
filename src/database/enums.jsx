@@ -1,67 +1,80 @@
-export const DROP_SOURCE = {
-    EVERYWHERE: 0,
-    GUILD_HUNT: 1,
+export const DROP_SOURCE_DEFINITIONS = {
+    EVERYWHERE: { id: 0, name: "EVERYWHERE" },
+    GUILD_HUNT: { id: 1, name: "GUILD_HUNT" },
+};
+
+export const DROP_SOURCE = createNumericEnum(DROP_SOURCE_DEFINITIONS);
+
+// Cache reverse indexes so repeated UI lookups don't rescan the full definition object.
+// Supports simple enums (KEY: number) and structured definitions ({ id, name, ... }).
+const enumNameIndexes = new WeakMap();
+
+export function getEnumNameById(definitions, id) {
+    let index = enumNameIndexes.get(definitions);
+
+    if (index === undefined) {
+        index = new Map();
+        for (const [key, value] of Object.entries(definitions)) {
+            if (typeof value === "number") {
+                index.set(value, key);
+            } else if (value !== null && typeof value === "object" && typeof value.id === "number") {
+                index.set(value.id, value.name ?? key);
+            }
+        }
+        enumNameIndexes.set(definitions, index);
+    }
+
+    return index.get(id);
 }
 
-export const EQUIPMENT_SLOT_NAME_MAP = {
-    0: "WEAPON",
-    1: "HELMET",
-    2: "ARMOR",
-    3: "NECKLACE",
-    4: "RING",
-    5: "OTHER",
+function createNumericEnum(definitions) {
+    return Object.fromEntries(
+        Object.entries(definitions).map(([key, definition]) => [key, definition.id])
+    );
 }
 
-export const EQUIPMENT_SLOT = {
-    WEAPON: 0,
-    HELMET: 1,
-    ARMOR: 2,
-    RING: 3,
-    NECKLACE: 4,
-    OTHER: 5,
-}
 
-export const ATTRIBUTE_NAME_MAP = {
-    0: "NONE",
-    1: "STRENGTH",
-    2: "DEXTERITY",
-    3: "INTELLIGENCE",
-}
+export const EQUIPMENT_SLOT_DEFINITIONS = {
+    WEAPON: { id: 0, name: "WEAPON" },
+    HELMET: { id: 1, name: "HELMET" },
+    ARMOR: { id: 2, name: "ARMOR" },
+    NECKLACE: { id: 3, name: "NECKLACE" },
+    RING: { id: 4, name: "RING" },
+    OTHER: { id: 5, name: "OTHER" },
+};
 
-export const ATTRIBUTE = {
-    NONE: 0,
-    STRENGTH: 1,
-    DEXTERITY: 2,
-    INTELLIGENCE: 3,
-}
+export const EQUIPMENT_SLOT = createNumericEnum(EQUIPMENT_SLOT_DEFINITIONS);
 
-export const PRIMARY_STAT_NAME_MAP = {
-    0: "ATTACK",
-    1: "DEFENCE",
-    2: "AGILITY",
-}
 
-export const PRIMARY_STAT = {
-    ATTACK: 0,
-    DEFENCE: 1,
-    AGILITY: 2,
-}
+export const ATTRIBUTE_DEFINITIONS = {
+    NONE: { id: 0, name: "NONE" },
+    STRENGTH: { id: 1, name: "STRENGTH" },
+    DEXTERITY: { id: 2, name: "DEXTERITY" },
+    INTELLIGENCE: { id: 3, name: "INTELLIGENCE" },
+};
 
-export const ROLE_NAME_MAP = {
-    0: "OFFENSIVE",
-    1: "DEFENSIVE",
-    2: "CONTROL",
-    3: "SUPPORT",
-}
+export const ATTRIBUTE = createNumericEnum(ATTRIBUTE_DEFINITIONS);
 
-export const ROLE = {
-    OFFENSIVE: 0,
-    DEFENSIVE: 1,
-    CONTROL: 2,
-    SUPPORT: 3,
-}
 
-export const PERKS = {
+export const PRIMARY_STAT_DEFINITIONS = {
+    ATTACK: { id: 0, name: "ATTACK" },
+    DEFENCE: { id: 1, name: "DEFENCE" },
+    AGILITY: { id: 2, name: "AGILITY" },
+};
+
+export const PRIMARY_STAT = createNumericEnum(PRIMARY_STAT_DEFINITIONS);
+
+
+export const ROLE_DEFINITIONS = {
+    OFFENSIVE: { id: 0, name: "OFFENSIVE" },
+    DEFENSIVE: { id: 1, name: "DEFENSIVE" },
+    CONTROL: { id: 2, name: "CONTROL" },
+    SUPPORT: { id: 3, name: "SUPPORT" },
+};
+
+export const ROLE = createNumericEnum(ROLE_DEFINITIONS);
+
+export const PERK_DEFINITIONS = {
     NOTHING: { id: -1, name: "Nothing" },
     HEALTH_PERCENT: { id: 0, name: "Health Percent" },
     ATTACK_PERCENT: { id: 1, name: "Attack Percent" },
@@ -122,49 +135,60 @@ export const POSSIBLE_PERKS = {
     ],
 }
 
-export const RARITY_NAME_MAP = {
-    0: "COMMON",
-    1: "UNCOMMON",
-    2: "RARE",
-    3: "EPIC",
-    4: "LEGENDARY",
-    5: "MYTHIC",
-    6: "HEROIC",
-    7: "DIVINE",
-    8: "ANCIENT",
+
+export const RARITY_DEFINITIONS = {
+    COMMON: { id: 0, name: "COMMON" },
+    UNCOMMON: { id: 1, name: "UNCOMMON" },
+    RARE: { id: 2, name: "RARE" },
+    EPIC: { id: 3, name: "EPIC" },
+    LEGENDARY: { id: 4, name: "LEGENDARY" },
+    MYTHIC: { id: 5, name: "MYTHIC" },
+    HEROIC: { id: 6, name: "HEROIC" },
+    DIVINE: { id: 7, name: "DIVINE" },
+    ANCIENT: { id: 8, name: "ANCIENT" },
+};
+
+export const RARITY = createNumericEnum(RARITY_DEFINITIONS);
+
+/**
+ * Number of selectable/random perks granted by rarity.
+ * standardGear: no set bonus and no unique effect.
+ * setOrUniqueGear: has a set bonus or a unique effect.
+ */
+export const ITEM_PERK_COUNT_DEFINITIONS = {
+    COMMON: { id: RARITY.COMMON, name: "COMMON", standardGear: 0, setOrUniqueGear: 0 },
+    UNCOMMON: { id: RARITY.UNCOMMON, name: "UNCOMMON", standardGear: 1, setOrUniqueGear: 0 },
+    RARE: { id: RARITY.RARE, name: "RARE", standardGear: 2, setOrUniqueGear: 1 },
+    EPIC: { id: RARITY.EPIC, name: "EPIC", standardGear: 3, setOrUniqueGear: 2 },
+    LEGENDARY: { id: RARITY.LEGENDARY, name: "LEGENDARY", standardGear: 4, setOrUniqueGear: 3 },
+    MYTHIC: { id: RARITY.MYTHIC, name: "MYTHIC", standardGear: 4, setOrUniqueGear: 3 },
+    HEROIC: { id: RARITY.HEROIC, name: "HEROIC", standardGear: 4, setOrUniqueGear: 3 },
+    DIVINE: { id: RARITY.DIVINE, name: "DIVINE", standardGear: 4, setOrUniqueGear: 3 },
+    ANCIENT: { id: RARITY.ANCIENT, name: "ANCIENT", standardGear: 4, setOrUniqueGear: 3 },
+};
+
+export function getItemPerkCount(rarity, hasSetBonusOrUniqueEffect = false) {
+    const definition = Object.values(ITEM_PERK_COUNT_DEFINITIONS).find(entry => entry.id === rarity);
+    if (!definition) return 0;
+
+    return hasSetBonusOrUniqueEffect
+        ? definition.setOrUniqueGear
+        : definition.standardGear;
 }
 
-export const RARITY = {
-    COMMON: 0,
-    UNCOMMON: 1,
-    RARE: 2,
-    EPIC: 3,
-    LEGENDARY: 4,
-    MYTHIC: 5,
-    HEROIC: 6,
-    DIVINE: 7,
-    ANCIENT: 8,
-}
 
-export const ELEMENT_NAME_MAP = {
-    0: "FIRE",
-    1: "WATER",
-    2: "NATURE",
-    3: "LIGHT",
-    4: "SHADOW",
-    5: "VOID"
-}
+export const ELEMENT_DEFINITIONS = {
+    FIRE: { id: 0, name: "FIRE" },
+    WATER: { id: 1, name: "WATER" },
+    NATURE: { id: 2, name: "NATURE" },
+    LIGHT: { id: 3, name: "LIGHT" },
+    SHADOW: { id: 4, name: "SHADOW" },
+    VOID: { id: 5, name: "VOID" },
+};
 
-export const ELEMENT = {
-    FIRE: 0,
-    WATER: 1,
-    NATURE: 2,
-    LIGHT: 3,
-    SHADOW: 4,
-    VOID: 5,
-}
+export const ELEMENT = createNumericEnum(ELEMENT_DEFINITIONS);
 
-export const UNIQUE_SKILLS = {
+export const UNIQUE_WEAPON_DEFINITIONS = {
     NOTHING: 0,
 
     // STRENGTH
@@ -238,135 +262,8 @@ export const UNIQUE_SKILLS = {
 }
 
 // redundant
-export const STATUS_EFFECT_NAME_MAP = {
-    0: "attack_up",
-    1: "defense_up",
-    2: "critical_chance_up",
-    3: "critical_damage_up",
-    4: "accuracy_up",
-    5: "resistance_up",
-    6: "agility_up",
-    7: "critical_resistance",
-    8: "invincibility",
-    9: "immunity",
-    10: "recovery",
-    11: "preservation",
-    12: "shroud",
-    13: "guard",
-    14: "shield",
-    15: "absorbing",
-    16: "blessed",
 
-    17: "attack_down",
-    18: "defense_down",
-    19: "critical_chance_down",
-    20: "accuracy_down",
-    21: "resistance_down",
-    22: "agility_down",
-    23: "blind",
-    24: "marked",
-    25: "sick",
-    26: "cursed",
-    27: "stunned",
-    28: "sleep",
-    29: "freeze",
-    30: "petrified",
-    31: "burn",
-    32: "poison",
-    33: "bleeding",
-    34: "mute",
-    35: "bound",
-    36: "taunt",
-    37: "confused",
-    38: "cursed_flame",
-
-    39: "hellfire",
-    40: "hellfire_mode",
-    41: "frozen_heart",
-    42: "heating_up",
-    43: "mjoellnir",
-    44: "anubis_seal",
-    45: "soulmate",
-    46: "sphinx_curse",
-    47: "styx",
-    48: "burrow",
-    49: "defense_drone",
-    50: "divine_shield",
-    51: "ferryman",
-    52: "feral",
-    53: "wildfire",
-    54: "fury",
-    55: "hivemind",
-    56: "hot_saw",
-    57: "loa",
-    58: "the_moon",
-    59: "the_star",
-    60: "the_sun",
-    61: "wind_up",
-    62: "war_forge",
-    63: "drumbeat",
-    64: "foresight",
-    65: "ap_resistance",
-    66: "arachnid",
-    67: "bloodrage",
-    68: "bunny",
-    69: "pain_fueled",
-    70: "blood_transfusion",
-    71: "soul_harvest",
-    72: "buzz_meter",
-    73: "biomass",
-    74: "ignited_ego",
-    75: "life_after_death",
-    76: "sludge",
-    77: "detonator",
-    78: "courage",
-    79: "smoke",
-    80: "mana_shield",
-    81: "echo",
-    82: "ionize",
-    83: "fracture",
-    84: "irradiate",
-    85: "rift_step",
-    86: "blacklist",
-    87: "rooted",
-    88: "ash",
-    89: "phoenix_feather",
-    90: "luck",
-    91: "soul_core",
-    92: "tempered",
-    93: "soaked",
-    94: "spectral_shield",
-    95: "wither",
-    96: "backup_drone",
-    97: "reflect",
-    98: "momentum",
-    99: "dawn",
-    100: "zenith",
-    101: "dusk",
-    102: "tender",
-    103: "sealed",
-    104: "lifeblood",
-    105: "ghost_crew",
-    106: "terror",
-    107: "feast",
-    108: "pin",
-    109: "puppet",
-    110: "buzzkill",
-    111: "plagued",
-    112: "encore",
-    113: "contaminated",
-    114: "cruelty",
-    115: "portal",
-    116: "critical_condition",
-    117: "hellforge",
-    118: "spotlight",
-    119: "emission",
-    120: "flare",
-    121: "hollowing",
-    122: "miasma",
-};
-
-export const STATUS_EFFECTS = {
+export const STATUS_EFFECT_DEFINITIONS = {
     //============================================================
     // POSITIVE STATUS EFFECTS
     //============================================================

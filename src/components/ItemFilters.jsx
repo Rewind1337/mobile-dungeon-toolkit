@@ -1,6 +1,6 @@
 import { memo, useState } from 'react'
 import Button from './Button.jsx'
-import { EQUIPMENT_SLOT, ATTRIBUTE, RARITY} from '../database/enums.jsx'
+import { EQUIPMENT_SLOT_DEFINITIONS, ATTRIBUTE_DEFINITIONS, RARITY_DEFINITIONS} from '../database/enums.jsx'
 
 function ItemSetUniqueFilters({ toggleFilter, filters, filterSprites }) {
     return (<div className='filter-group flex-row'>
@@ -11,33 +11,33 @@ function ItemSetUniqueFilters({ toggleFilter, filters, filterSprites }) {
 
 function ItemSlotFilters({ toggleFilter, filters, filterSprites }) {
     return (<div className='filter-group flex-row' style={{marginLeft: 0}}>
-        <Button round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT.WEAPON)} imgAsText text={filterSprites[43]} active={filters.slot === EQUIPMENT_SLOT.WEAPON} />
-        <Button round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT.HELMET)} imgAsText text={filterSprites[44]} active={filters.slot === EQUIPMENT_SLOT.HELMET} />
-        <Button round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT.ARMOR)} imgAsText text={filterSprites[45]} active={filters.slot === EQUIPMENT_SLOT.ARMOR} />
-        <Button round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT.RING)} imgAsText text={filterSprites[46]} active={filters.slot === EQUIPMENT_SLOT.RING} />
-        <Button round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT.NECKLACE)} imgAsText text={filterSprites[47]} active={filters.slot === EQUIPMENT_SLOT.NECKLACE} />
+        <Button round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.WEAPON.id)} imgAsText text={filterSprites[43]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.WEAPON.id} />
+        <Button round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.HELMET.id)} imgAsText text={filterSprites[44]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.HELMET.id} />
+        <Button round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.ARMOR.id)} imgAsText text={filterSprites[45]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.ARMOR.id} />
+        <Button round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.RING.id)} imgAsText text={filterSprites[46]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.RING.id} />
+        <Button round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.NECKLACE.id)} imgAsText text={filterSprites[47]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.NECKLACE.id} />
     </div>)
 }
 
 function ItemAttributeFilters({ toggleFilter, filters, filterSprites }) {
     return (<div className='filter-group flex-row'>
-        <Button round onClick={() => toggleFilter('attributeRequirement', ATTRIBUTE.STRENGTH)} imgAsText text={filterSprites[20]} active={filters.attributeRequirement === ATTRIBUTE.STRENGTH} />
-        <Button round onClick={() => toggleFilter('attributeRequirement', ATTRIBUTE.DEXTERITY)} imgAsText text={filterSprites[21]} active={filters.attributeRequirement === ATTRIBUTE.DEXTERITY} />
-        <Button round onClick={() => toggleFilter('attributeRequirement', ATTRIBUTE.INTELLIGENCE)} imgAsText text={filterSprites[22]} active={filters.attributeRequirement === ATTRIBUTE.INTELLIGENCE} />
+        <Button round onClick={() => toggleFilter('attributeRequirement', ATTRIBUTE_DEFINITIONS.STRENGTH.id)} imgAsText text={filterSprites[20]} active={filters.attributeRequirement === ATTRIBUTE_DEFINITIONS.STRENGTH.id} />
+        <Button round onClick={() => toggleFilter('attributeRequirement', ATTRIBUTE_DEFINITIONS.DEXTERITY.id)} imgAsText text={filterSprites[21]} active={filters.attributeRequirement === ATTRIBUTE_DEFINITIONS.DEXTERITY.id} />
+        <Button round onClick={() => toggleFilter('attributeRequirement', ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id)} imgAsText text={filterSprites[22]} active={filters.attributeRequirement === ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id} />
     </div>)
 }
 
 function ItemRarityFilters({ toggleFilter, filters, filterSprites }) {
     return (<div className='filter-group flex-row'>
-        <Button round color={"common"} onClick={() => toggleFilter('rarity', RARITY.COMMON)} text={filterSprites[30]} active={filters.rarity === RARITY.COMMON} />
-        <Button round color={"uncommon"} onClick={() => toggleFilter('rarity', RARITY.UNCOMMON)} text={filterSprites[31]} active={filters.rarity === RARITY.UNCOMMON} />
-        <Button round color={"rare"} onClick={() => toggleFilter('rarity', RARITY.RARE)} text={filterSprites[32]} active={filters.rarity === RARITY.RARE} />
-        <Button round color={"epic"} onClick={() => toggleFilter('rarity', RARITY.EPIC)} text={filterSprites[33]} active={filters.rarity === RARITY.EPIC} />
-        <Button round color={"legendary"} onClick={() => toggleFilter('rarity', RARITY.LEGENDARY)} text={filterSprites[34]} active={filters.rarity === RARITY.LEGENDARY} />
-        <Button round color={"mythic"} onClick={() => toggleFilter('rarity', RARITY.MYTHIC)} text={filterSprites[35]} active={filters.rarity === RARITY.MYTHIC} />
-        <Button round color={"heroic"} onClick={() => toggleFilter('rarity', RARITY.HEROIC)} text={filterSprites[36]} active={filters.rarity === RARITY.HEROIC} />
-        <Button round color={"divine"} onClick={() => toggleFilter('rarity', RARITY.DIVINE)} text={filterSprites[37]} active={filters.rarity === RARITY.DIVINE} />
-        <Button round color={"ancient"} onClick={() => toggleFilter('rarity', RARITY.ANCIENT)} text={filterSprites[38]} active={filters.rarity === RARITY.ANCIENT} />
+        <Button round color={"common"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.COMMON.id)} text={filterSprites[30]} active={filters.rarity === RARITY_DEFINITIONS.COMMON.id} />
+        <Button round color={"uncommon"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.UNCOMMON.id)} text={filterSprites[31]} active={filters.rarity === RARITY_DEFINITIONS.UNCOMMON.id} />
+        <Button round color={"rare"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.RARE.id)} text={filterSprites[32]} active={filters.rarity === RARITY_DEFINITIONS.RARE.id} />
+        <Button round color={"epic"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.EPIC.id)} text={filterSprites[33]} active={filters.rarity === RARITY_DEFINITIONS.EPIC.id} />
+        <Button round color={"legendary"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.LEGENDARY.id)} text={filterSprites[34]} active={filters.rarity === RARITY_DEFINITIONS.LEGENDARY.id} />
+        <Button round color={"mythic"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.MYTHIC.id)} text={filterSprites[35]} active={filters.rarity === RARITY_DEFINITIONS.MYTHIC.id} />
+        <Button round color={"heroic"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.HEROIC.id)} text={filterSprites[36]} active={filters.rarity === RARITY_DEFINITIONS.HEROIC.id} />
+        <Button round color={"divine"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.DIVINE.id)} text={filterSprites[37]} active={filters.rarity === RARITY_DEFINITIONS.DIVINE.id} />
+        <Button round color={"ancient"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.ANCIENT.id)} text={filterSprites[38]} active={filters.rarity === RARITY_DEFINITIONS.ANCIENT.id} />
     </div>)
 }
 

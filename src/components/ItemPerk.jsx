@@ -2,11 +2,11 @@ import { memo, useState } from 'react'
 import Button from './Button.jsx'
 
 import { perkSprites } from '../database/db_sprites.jsx';
-import { PERKS } from '../database/enums.jsx';
+import { PERK_DEFINITIONS } from '../database/enums.jsx';
 
 function ItemPerk({ name, value, onClick, buttonText = "Change", buttonColor = 5, noValue = false, editable = false }) {
     const [_value, _setValue] = useState(value);
-    const _perk = PERKS[name]
+    const _perk = PERK_DEFINITIONS[name]
     const isFlatPerk = ((_perk.id >= 4 && _perk.id <= 7) || _perk.id == 32)
 
     return (
