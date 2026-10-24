@@ -74,7 +74,7 @@ export const ROLE_DEFINITIONS = {
 
 export const ROLE = createNumericEnum(ROLE_DEFINITIONS);
 
-export const PERKS = {
+export const PERK_DEFINITIONS = {
     NOTHING: { id: -1, name: "Nothing" },
     HEALTH_PERCENT: { id: 0, name: "Health Percent" },
     ATTACK_PERCENT: { id: 1, name: "Attack Percent" },
@@ -150,6 +150,32 @@ export const RARITY_DEFINITIONS = {
 
 export const RARITY = createNumericEnum(RARITY_DEFINITIONS);
 
+/**
+ * Number of selectable/random perks granted by rarity.
+ * standardGear: no set bonus and no unique effect.
+ * setOrUniqueGear: has a set bonus or a unique effect.
+ */
+export const ITEM_PERK_COUNT_DEFINITIONS = {
+    COMMON: { id: RARITY.COMMON, name: "COMMON", standardGear: 0, setOrUniqueGear: 0 },
+    UNCOMMON: { id: RARITY.UNCOMMON, name: "UNCOMMON", standardGear: 1, setOrUniqueGear: 0 },
+    RARE: { id: RARITY.RARE, name: "RARE", standardGear: 2, setOrUniqueGear: 1 },
+    EPIC: { id: RARITY.EPIC, name: "EPIC", standardGear: 3, setOrUniqueGear: 2 },
+    LEGENDARY: { id: RARITY.LEGENDARY, name: "LEGENDARY", standardGear: 4, setOrUniqueGear: 3 },
+    MYTHIC: { id: RARITY.MYTHIC, name: "MYTHIC", standardGear: 4, setOrUniqueGear: 3 },
+    HEROIC: { id: RARITY.HEROIC, name: "HEROIC", standardGear: 4, setOrUniqueGear: 3 },
+    DIVINE: { id: RARITY.DIVINE, name: "DIVINE", standardGear: 4, setOrUniqueGear: 3 },
+    ANCIENT: { id: RARITY.ANCIENT, name: "ANCIENT", standardGear: 4, setOrUniqueGear: 3 },
+};
+
+export function getItemPerkCount(rarity, hasSetBonusOrUniqueEffect = false) {
+    const definition = Object.values(ITEM_PERK_COUNT_DEFINITIONS).find(entry => entry.id === rarity);
+    if (!definition) return 0;
+
+    return hasSetBonusOrUniqueEffect
+        ? definition.setOrUniqueGear
+        : definition.standardGear;
+}
+
 
 export const ELEMENT_DEFINITIONS = {
     FIRE: { id: 0, name: "FIRE" },
@@ -162,7 +188,7 @@ export const ELEMENT_DEFINITIONS = {
 
 export const ELEMENT = createNumericEnum(ELEMENT_DEFINITIONS);
 
-export const UNIQUE_SKILLS = {
+export const UNIQUE_WEAPON_DEFINITIONS = {
     NOTHING: 0,
 
     // STRENGTH
@@ -237,7 +263,7 @@ export const UNIQUE_SKILLS = {
 
 // redundant
 
-export const STATUS_EFFECTS = {
+export const STATUS_EFFECT_DEFINITIONS = {
     //============================================================
     // POSITIVE STATUS EFFECTS
     //============================================================
