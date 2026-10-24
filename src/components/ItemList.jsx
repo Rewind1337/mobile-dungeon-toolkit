@@ -53,7 +53,7 @@ function ItemList({ setForceUpdate = () => { }, extraHeight = 0, filtersOffset =
             return matchesItemType && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity;
         });
         return result;
-    }, [allItems, filters]);
+    }, [allItems, filters, itemType]);
 
     return (<>
         <div className='header-big'>
