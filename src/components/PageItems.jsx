@@ -26,7 +26,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
         setPerkSelectionVisible(false)
     }
 
-    const handlePerkClick = (index, itemObj, applyPerk) => {
+    const handlePerkClick = (itemObj, applyPerk) => {
         const slotName = slotIndexToNameMap[itemObj?.slot]
         setPossiblePerks(POSSIBLE_PERKS[slotName] ?? [])
         setPendingPerkSelection(() => applyPerk)
@@ -57,10 +57,6 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
         if (manualSaveFunction) manualSaveFunction()
     }
 
-    const getPossiblePerks = (itemObj) => {
-        const slotName = slotIndexToNameMap[itemObj?.slot]
-        return POSSIBLE_PERKS[slotName] ?? []
-    }
 
     return (
         <>
