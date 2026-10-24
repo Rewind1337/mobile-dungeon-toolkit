@@ -20,13 +20,14 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
     const clearHeroSelection = () => { setSelectedHeroId(null) }
 
     const saveHero = (heroObj) => {
-        for (let i = 0; i < savedHeroesRef.current.length; i++) {
-            if (heroObj.name === savedHeroesRef.current[i].name) return false
+        const savedHero = {
+            ...heroObj,
+            saveId: savedHeroesRef.current.length,
+            items: [...(heroObj.items ?? [])]
         }
-        heroObj.saveId = savedHeroesRef.current.length
-        heroObj.items = []
-        savedHeroesRef.current.push(heroObj)
+        savedHeroesRef.current.push(savedHero)
         clearHeroSelection()
+        if (manualSaveFunction) manualSaveFunction()
     }
 
     // Item Stuff
