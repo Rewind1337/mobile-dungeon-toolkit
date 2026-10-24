@@ -1,6 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-import { formatNumber } from '../js/util.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
 import { RARITY_DEFINITIONS, getEnumNameById, getItemPerkCount } from '../database/enums.jsx'
 import { iconSprites } from '../database/db_sprites.jsx'
@@ -16,21 +15,15 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
     const [selectedRarity, setSelectedRarity] = useState(null)
-    const [selectedLevel, setSelectedLevel] = useState(null)
-    const [minRarity, setMinRarity] = useState(null) // unused at the moment
-    const selectedPerks = useRef()
-    const [selectedPerkValues, setSelectedPerkValues] = useState([0])
-
-    const handlePerkSelect = (perk, index) => {
-        console.log(perk, index)
-        selectedPerks.current[index] = perk;
-        onPerkClick();
-    }
+    const [selectedLevel, setSelectedLevel] = useState(1)
+    const [selectedPerks, setSelectedPerks] = useState([])
+    const [selectedPerkValues, setSelectedPerkValues] = useState([])
+    const [fixedPerkValues, setFixedPerkValues] = useState([])
 
     function onResize() {
-        let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5;
+        let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5
         if (window.matchMedia("(max-width: 900px)").matches === true) {
-            newHeight = window.innerHeight - CONSTANTS.listHeightDefault + 77;
+            newHeight = window.innerHeight - CONSTANTS.listHeightDefault + 77
         }
         if (listRef.current !== null) {
             if (window.matchMedia("(max-width: 900px)").matches === true) {
@@ -43,44 +36,85 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
     }
 
     useLayoutEffect(() => {
-        window.addEventListener('resize', onResize);
-        onResize();
-        return () => window.removeEventListener('resize', onResize);
-    }, []);
+        window.addEventListener('resize', onResize)
+        onResize()
+        return () => window.removeEventListener('resize', onResize)
+    }, [])
 
-    useEffect(() => {
-        if (selectedItemId.slot !== null && slotIndexToNameMap[selectedItemId.slot]) {
-            let _itemObj = itemsRef[slotIndexToNameMap[selectedItemId.slot]]?.[selectedItemId.id]
-            console.log(_itemObj)
-            let _rarity = _itemObj.rarity
-            let _minRarity = _itemObj.rarity
-            setItemObj(_itemObj)
-            setSelectedRarity(_rarity)
-            setMinRarity(_minRarity) // unused for now
-            setSelectedLevel(Number(_itemObj.level) || 1)
+    const hasSetBonusOrUniqueEffect = (item) => (
+        (item?.unique !== undefined && item?.unique !== null && item.unique !== 0) ||
+        (item?.set !== undefined && item?.set !== null && item.set >= 0)
+    )
+
+    const makePerkSlots = (item, rarity) => {
+        const count = getItemPerkCount(rarity, hasSetBonusOrUniqueEffect(item))
+        const existingPerks = Array.isArray(item?.perks) ? item.perks : []
+        const existingValues = Array.isArray(item?.perkValues) ? item.perkValues : []
+        return {
+            perks: Array.from({ length: count }, (_, index) => existingPerks[index] || "NOTHING"),
+            values: Array.from({ length: count }, (_, index) => Number(existingValues[index] ?? 0))
         }
-    }, [selectedItemId])
-
-    useEffect(() => {
-        if (itemObj) {
-            const hasSetBonusOrUniqueEffect =
-                (itemObj.unique !== undefined && itemObj.unique !== 0) ||
-                (itemObj.set !== undefined && itemObj.set >= 0)
-            const numPerks = getItemPerkCount(selectedRarity, hasSetBonusOrUniqueEffect)
-            let perks = Array(numPerks).fill("NOTHING")
-            for (let i = 0; i < selectedPerks.length; i++) {
-                if (selectedPerks[i] !== "NOTHING")
-                    perks[i] = selectedPerks[i]
-            }
-            selectedPerks.current = perks;
-            setSelectedPerkValues(Array(perks.length).fill(0))
-        }
-    }, [selectedRarity])
-
-    let noSelection = false
-    if (selectedItemId.slot === null || selectedItemId.id === null) {
-        noSelection = true
     }
+
+    useEffect(() => {
+        if (selectedItemId.slot === null || selectedItemId.id === null) {
+            setItemObj(null)
+            return
+        }
+
+        const slotName = slotIndexToNameMap[selectedItemId.slot]
+        const selectedItem = slotName ? itemsRef[slotName]?.[selectedItemId.id] : null
+        if (!selectedItem) {
+            setItemObj(null)
+            return
+        }
+
+        const rarity = Number(selectedItem.rarity ?? 0)
+        const perkSlots = makePerkSlots(selectedItem, rarity)
+
+        setItemObj(selectedItem)
+        setSelectedRarity(rarity)
+        setSelectedLevel(Number(selectedItem.level) || 1)
+        setSelectedPerks(perkSlots.perks)
+        setSelectedPerkValues(perkSlots.values)
+        setFixedPerkValues((selectedItem.fixedPerks ?? []).map(perk => Number(perk.value ?? 0)))
+    }, [selectedItemId, itemsRef])
+
+    const changeRarity = (nextRarity) => {
+        if (!itemObj) return
+        const rarity = Math.max(0, Math.min(8, nextRarity))
+        const perkSlots = makePerkSlots({ ...itemObj, perks: selectedPerks, perkValues: selectedPerkValues }, rarity)
+        setSelectedRarity(rarity)
+        setSelectedPerks(perkSlots.perks)
+        setSelectedPerkValues(perkSlots.values)
+    }
+
+    const handlePerkSelect = (index) => {
+        if (!onPerkClick) return
+        onPerkClick(index, itemObj, (chosenPerk) => {
+            setSelectedPerks(previous => previous.map((perk, perkIndex) => perkIndex === index ? chosenPerk : perk))
+            setSelectedPerkValues(previous => previous.map((value, perkIndex) => (
+                perkIndex === index && selectedPerks[index] !== chosenPerk ? 0 : value
+            )))
+        })
+    }
+
+    const handleSaveItem = () => {
+        if (!itemObj || !saveItem) return
+        saveItem({
+            ...itemObj,
+            level: Math.max(1, Number(selectedLevel) || 1),
+            rarity: selectedRarity,
+            fixedPerks: (itemObj.fixedPerks ?? []).map((perk, index) => ({
+                ...perk,
+                value: Number(fixedPerkValues[index] ?? 0)
+            })),
+            perks: [...selectedPerks],
+            perkValues: selectedPerkValues.map(value => Number(value) || 0)
+        })
+    }
+
+    const noSelection = selectedItemId.slot === null || selectedItemId.id === null
 
     if (noSelection || itemObj === null) {
         return (
@@ -88,91 +122,101 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
                 <div className='header-big'>Select an Item</div>
             </div>
         )
-    } else {
-        return (
-            <div ref={listRef} className='item-preview flex-col' style={{ maxHeight: listHeight }}>
-                <div className='header-big'>{itemObj.name}</div>
-                <div className='flex-col'>
-                    <div className='flex-row'>
-                        <div className={"item card selected"} data-rarity={selectedRarity} data-type={itemObj.iconType} onClick={() => { onClick() }}>
-                            <div className="item-icon"><img src={itemObj.iconSrc} draggable={false} /></div>
-                            <div className="flex-col">
-                                <div className="item-sprite"><img className="item-sprite-img" src={itemObj.itemSrc} draggable={false} /></div>
-                                <div className="input-wrapper">
-                                    <input type='number' className='' value={selectedLevel} onChange={e => setSelectedLevel(e.target.value)} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className='card flex-row'>
-                        <Button text={"Rarity Down"} onClick={() => { setSelectedRarity(r => Math.max(0, r -= 1)) }} color={0} />
-                        <div className='header'>{getEnumNameById(RARITY_DEFINITIONS, selectedRarity)}</div>
-                        <Button text={"Rarity Up"} onClick={() => { setSelectedRarity(r => Math.min(8, r += 1)) }} color={0} />
-                    </div>
-
-                    {itemObj.unique && <div className='card'>
-                        <div className='text flex-col'>
-                            <div className='flex-row'>
-                                <img src={iconSprites["unique"]} />
-                                <div className='header'>Weapon Effect</div>
-                                <img src={iconSprites["unique"]} />
-                            </div>
-                            {itemObj.unique.description.replace("$e", ((itemObj.unique.rarityEffect[itemObj.rarity] - 1) * 100).toFixed(2) + "%")}
-                        </div>
-                    </div>}
-
-                    {itemObj.set !== null && itemObj.fixedPerks.length > 0 && <>
-                        <div className='header'>Fixed Item Perks</div>
-                        {itemObj.fixedPerks.map(attr =>
-                            <ItemPerk
-                                key={"setperk_" + attr.id}
-                                name={attr.name.toUpperCase().replace(/\s/g, '_') || "NOTHING"}
-                                value={(Math.random() * 10).toFixed(2)}
-                                editable={true}
-                            />
-                        )}
-                    </>}
-
-                    {itemObj.set && <>
-                        <div className='header'>Set Bonus</div>
-                        {setsRef[itemObj.set].setBonus.map(bonus =>
-                            <ItemPerk
-                                key={"perk_" + bonus}
-                                name={bonus.name.toUpperCase().replace(/\s/g, '_') || "NOTHING"}
-                                value={(Math.random() * 10).toFixed(2)}
-                                editable={true}
-                            />
-                        )}
-                    </>}
-                    {selectedPerks.current && <>
-                        <div className='header'>Perks</div>
-                        {selectedPerks.current.length === 0 && <>
-                            <div>No perks available</div>
-                        </>}
-                        {selectedPerks.current.length >= 0 && <>
-                            {selectedPerks.current.map((perk, index) => (
-                                <ItemPerk
-                                    key={"perk_" + index}
-                                    name={perk.toUpperCase().replace(/\s/g, '_') || "NOTHING"}
-                                    value={selectedPerkValues[index]}
-                                    perkSlot={index + 1}
-                                    editable={true}
-                                    onClick={() => { handlePerkSelect(perk, index) }}
-                                />
-                            ))}
-                        </>}
-                    </>}
-
-                    {saveItem &&
-                        <div className='flex-row'>
-                            <Button text={"Save Item"} onClick={() => { saveItem(itemObj) }} color={0} />
-                        </div>
-                    }
-                </div>
-            </div>
-        )
     }
+
+    const selectedSet = itemObj.set !== undefined && itemObj.set !== null && itemObj.set >= 0
+        ? setsRef?.[itemObj.set]
+        : null
+
+    return (
+        <div ref={listRef} className='item-preview flex-col' style={{ maxHeight: listHeight }}>
+            <div className='header-big'>{itemObj.name}</div>
+            <div className='flex-col'>
+                <div className='flex-row'>
+                    <div className={"item card selected"} data-rarity={selectedRarity} data-type={itemObj.iconType}>
+                        <div className="item-icon"><img src={itemObj.iconSrc} draggable={false} /></div>
+                        <div className="flex-col">
+                            <div className="item-sprite"><img className="item-sprite-img" src={itemObj.itemSrc} draggable={false} /></div>
+                            <div className="input-wrapper">
+                                <input
+                                    type='number'
+                                    min='1'
+                                    className=''
+                                    value={selectedLevel}
+                                    onChange={event => setSelectedLevel(event.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className='card flex-row'>
+                    <Button text={"Rarity Down"} onClick={() => changeRarity(selectedRarity - 1)} color={0} />
+                    <div className='header'>{getEnumNameById(RARITY_DEFINITIONS, selectedRarity)}</div>
+                    <Button text={"Rarity Up"} onClick={() => changeRarity(selectedRarity + 1)} color={0} />
+                </div>
+
+                {itemObj.unique && itemObj.unique !== 0 && itemObj.unique.description && <div className='card'>
+                    <div className='text flex-col'>
+                        <div className='flex-row'>
+                            <img src={iconSprites["unique"]} />
+                            <div className='header'>Weapon Effect</div>
+                            <img src={iconSprites["unique"]} />
+                        </div>
+                        {itemObj.unique.description.replace("$e", (((itemObj.unique.rarityEffect?.[selectedRarity] ?? 1) - 1) * 100).toFixed(2) + "%")}
+                    </div>
+                </div>}
+
+                {itemObj.fixedPerks?.length > 0 && <>
+                    <div className='header'>Fixed Item Perks</div>
+                    {itemObj.fixedPerks.map((perk, index) => (
+                        <ItemPerk
+                            key={"fixedperk_" + perk.id}
+                            name={perk.name.toUpperCase().replace(/\s/g, '_') || "NOTHING"}
+                            value={fixedPerkValues[index] ?? 0}
+                            editable={true}
+                            onValueChange={value => setFixedPerkValues(previous => previous.map((oldValue, perkIndex) => (
+                                perkIndex === index ? value : oldValue
+                            )))}
+                        />
+                    ))}
+                </>}
+
+                {selectedSet?.setBonus && <>
+                    <div className='header'>Set Bonus</div>
+                    {selectedSet.setBonus.map(bonus => (
+                        <ItemPerk
+                            key={"setperk_" + bonus.id}
+                            name={bonus.name.toUpperCase().replace(/\s/g, '_') || "NOTHING"}
+                            noValue={true}
+                        />
+                    ))}
+                </>}
+
+                <div className='header'>Perks</div>
+                {selectedPerks.length === 0
+                    ? <div>No perks available</div>
+                    : selectedPerks.map((perk, index) => (
+                        <ItemPerk
+                            key={"perk_" + index}
+                            name={(perk || "NOTHING").toUpperCase().replace(/\s/g, '_')}
+                            value={selectedPerkValues[index] ?? 0}
+                            perkSlot={index + 1}
+                            editable={true}
+                            onValueChange={value => setSelectedPerkValues(previous => previous.map((oldValue, perkIndex) => (
+                                perkIndex === index ? value : oldValue
+                            )))}
+                            onClick={() => handlePerkSelect(index)}
+                        />
+                    ))
+                }
+
+                {saveItem && <div className='flex-row'>
+                    <Button text={"Save Item"} onClick={handleSaveItem} color={0} />
+                </div>}
+            </div>
+        </div>
+    )
 }
 
 export default ItemPreview
