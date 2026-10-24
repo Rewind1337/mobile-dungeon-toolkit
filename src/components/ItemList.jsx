@@ -22,10 +22,10 @@ function ItemList({ setForceUpdate = () => { }, extraHeight = 0, filtersOffset =
     const allItems = useMemo(() => {
         return [
             ...itemsRef.WEAPONS.map((item) => ({ ...item, key: item.id })),
-            ...itemsRef.HELMETS.map((item) => ({ ...item, key: 1000 + item.id })),
-            ...itemsRef.ARMORS.map((item) => ({ ...item, key: 2000 + item.id })),
-            ...itemsRef.NECKLACES.map((item) => ({ ...item, key: 3000 + item.id })),
-            ...itemsRef.RINGS.map((item) => ({ ...item, key: 4000 + item.id })),
+            ...itemsRef.HELMETS.map((item) => ({ ...item, key: item.id })),
+            ...itemsRef.ARMORS.map((item) => ({ ...item, key: item.id })),
+            ...itemsRef.NECKLACES.map((item) => ({ ...item, key: item.id })),
+            ...itemsRef.RINGS.map((item) => ({ ...item, key: item.id })),
         ];
     }, [itemsRef]);
 
@@ -70,7 +70,7 @@ function ItemList({ setForceUpdate = () => { }, extraHeight = 0, filtersOffset =
                         itemObj={itemObj}
                         key={itemObj.key}
                         level={savedItems ? (itemObj.level ?? 1) : null}
-                        onClick={() => setSelectedItemId({ slot: itemObj.slot, id: savedItems ? itemObj.saveId : itemObj.id })}
+                        onClick={() => setSelectedItemId({ slot: itemObj.slot, id: itemObj.id })}
                     />
                 ))
             )}
