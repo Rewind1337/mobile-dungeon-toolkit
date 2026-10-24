@@ -38,7 +38,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
         return () => window.removeEventListener('resize', onResize);
     }, []);
 
-    let heroObj = heroesRef[selectedHeroId]
+    let heroObj = heroesRef.find(hero => hero.id === selectedHeroId || hero.saveId === selectedHeroId)
 
     const renderHeroSkills = () => {
         return heroObj.skills.map((skill, index) => (
