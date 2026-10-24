@@ -133,8 +133,8 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
     }
 
     const handleDeleteSavedItem = () => {
-        // TODO
-        // probably call deleteSavedItem (from PageItems.jsx, also todo)
+        if (!deleteSavedItem || !itemObj) return
+        deleteSavedItem(itemObj)
     }
 
     const getUniqueEffectDisplay = (unique, rarity) => {
@@ -260,10 +260,10 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                     ))
                 }
 
-                {(saveItem || !deleteSavedItem) && <div className='flex-row'>
+                {(saveItem || onEquipItem || deleteSavedItem) && <div className='flex-row'>
                     {saveItem && <Button text={"Save Item"} onClick={handleSaveItem} color={1} />}
                     {onEquipItem && <Button text={"Equip Item"} onClick={handleEquipItem} color={1} />}
-                    {!deleteSavedItem && <Button text={"Delete Item"} onClick={handleDeleteSavedItem} color={1} />}
+                    {deleteSavedItem && <Button text={"Delete Item"} onClick={handleDeleteSavedItem} color={1} />}
                 </div>}
             </div>
         </div>
