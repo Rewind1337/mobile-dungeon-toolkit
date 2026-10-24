@@ -16,6 +16,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
     const listRef = useRef(null)
     const [selectedRarity, setSelectedRarity] = useState(null)
     const [selectedLevel, setSelectedLevel] = useState(1)
+    const [selectedMasterworkLevel, setSelectedMasterworkLevel] = useState(0)
     const [selectedPerks, setSelectedPerks] = useState([])
     const [selectedPerkValues, setSelectedPerkValues] = useState([])
     const [fixedPerkValues, setFixedPerkValues] = useState([])
@@ -78,6 +79,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
         setItemObj(selectedItem)
         setSelectedRarity(rarity)
         setSelectedLevel(Number(selectedItem.level) || 1)
+        setSelectedMasterworkLevel(Math.max(0, Math.min(10, Math.trunc(Number(selectedItem.masterworkLevel) || 0))))
         setSelectedPerks(perkSlots.perks)
         setSelectedPerkValues(perkSlots.values)
         setFixedPerkValues((selectedItem.fixedPerks ?? []).map(perk => Number(perk.value ?? 0)))
@@ -110,6 +112,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
         return {
             ...itemObj,
             level: Math.max(1, Number(selectedLevel) || 1),
+            masterworkLevel: Math.max(0, Math.min(10, Math.trunc(Number(selectedMasterworkLevel) || 0))),
             rarity,
             fixedPerks: (itemObj.fixedPerks ?? []).map((perk, index) => ({
                 ...perk,
@@ -195,6 +198,53 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                     <Button text={"Rarity Up"} onClick={() => changeRarity(selectedRarity + 1)} color={1} />
                 </div>
 
+                <div className='card flex-col masterwork-control'>
+                    <div className='flex-row masterwork-heading'>
+                        <div className='header'>Masterwork</div>
+                        <div className='header'>Level {selectedMasterworkLevel} / 10</div>
+                    </div>
+                    <div className='flex-row masterwork-input-row'>
+                        <input
+                            aria-label='Masterwork level'
+                            type='number'
+                            min='0'
+                            max='10'
+                            step='1'
+                            value={selectedMasterworkLevel}
+                            onChange={event => {
+                                const value = event.target.value
+                                if (value === '') {
+                                    setSelectedMasterworkLevel(0)
+                                    return
+                                }
+                                setSelectedMasterworkLevel(Math.max(0, Math.min(10, Math.trunc(Number(value) || 0))))
+                            }}
+                        />
+                        <input
+                            aria-label='Masterwork level slider'
+                            type='range'
+                            min='0'
+                            max='10'
+                            step='1'
+                            value={selectedMasterworkLevel}
+                            onChange={event => setSelectedMasterworkLevel(Number(event.target.value))}
+                        />
+                    </div>
+                    <div className='text masterwork-summary'>
+                        All item perk values: +{selectedMasterworkLevel * 10}% ({(1 + selectedMasterworkLevel / 10).toFixed(1)}×)
+                    </div>
+                    <div className='flex-row masterwork-milestones'>
+                        <div className={selectedMasterworkLevel >= 5 ? 'masterwork-milestone unlocked' : 'masterwork-milestone'}>
+                            <strong>Level 5</strong>
+                            <span>{selectedMasterworkLevel >= 5 ? 'Perk mutation unlocked' : 'Perk mutation at 5'}</span>
+                        </div>
+                        <div className={selectedMasterworkLevel >= 10 ? 'masterwork-milestone unlocked' : 'masterwork-milestone'}>
+                            <strong>Level 10</strong>
+                            <span>{selectedMasterworkLevel >= 10 ? 'Perk mutation unlocked' : 'Perk mutation at 10'}</span>
+                        </div>
+                    </div>
+                </div>
+
                 {itemObj.unique && itemObj.unique !== 0 && itemObj.unique.description && <div className='card'>
                     <div className='text flex-col'>
                         <div className='flex-row'>
@@ -223,6 +273,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                             key={"fixedperk_" + perk.id}
                             name={getPerkKey(perk)}
                             value={fixedPerkValues[index] ?? 0}
+                            multiplier={1 + selectedMasterworkLevel / 10}
                             editable={true}
                             onValueChange={value => setFixedPerkValues(previous => previous.map((oldValue, perkIndex) => (
                                 perkIndex === index ? value : oldValue
@@ -250,6 +301,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                             key={"perk_" + index}
                             name={(perk || "NOTHING").toUpperCase().replace(/\s/g, '_')}
                             value={selectedPerkValues[index] ?? 0}
+                            multiplier={1 + selectedMasterworkLevel / 10}
                             perkSlot={index + 1}
                             editable={true}
                             onValueChange={value => setSelectedPerkValues(previous => previous.map((oldValue, perkIndex) => (
