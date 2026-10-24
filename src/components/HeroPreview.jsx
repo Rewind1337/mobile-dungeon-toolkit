@@ -147,7 +147,8 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
     }
 
     const handleDeleteSavedHero = () => {
-        // TODO
+        if (!deleteSavedHero || !heroObj) return
+        deleteSavedHero(heroObj)
     }
 
     let noSelection = false
