@@ -1,7 +1,9 @@
-export const DROP_SOURCE = {
-    EVERYWHERE: 0,
-    GUILD_HUNT: 1,
-}
+export const DROP_SOURCE_DEFINITIONS = {
+    EVERYWHERE: { id: 0, name: "EVERYWHERE" },
+    GUILD_HUNT: { id: 1, name: "GUILD_HUNT" },
+};
+
+export const DROP_SOURCE = createNumericEnum(DROP_SOURCE_DEFINITIONS);
 
 // Cache reverse indexes so repeated UI lookups don't rescan the full definition object.
 // Supports simple enums (KEY: number) and structured definitions ({ id, name, ... }).
@@ -25,38 +27,52 @@ export function getEnumNameById(definitions, id) {
     return index.get(id);
 }
 
-
-export const EQUIPMENT_SLOT = {
-    WEAPON: 0,
-    HELMET: 1,
-    ARMOR: 2,
-    RING: 3,
-    NECKLACE: 4,
-    OTHER: 5,
+function createNumericEnum(definitions) {
+    return Object.fromEntries(
+        Object.entries(definitions).map(([key, definition]) => [key, definition.id])
+    );
 }
 
 
-export const ATTRIBUTE = {
-    NONE: 0,
-    STRENGTH: 1,
-    DEXTERITY: 2,
-    INTELLIGENCE: 3,
-}
+export const EQUIPMENT_SLOT_DEFINITIONS = {
+    WEAPON: { id: 0, name: "WEAPON" },
+    HELMET: { id: 1, name: "HELMET" },
+    ARMOR: { id: 2, name: "ARMOR" },
+    NECKLACE: { id: 3, name: "NECKLACE" },
+    RING: { id: 4, name: "RING" },
+    OTHER: { id: 5, name: "OTHER" },
+};
+
+export const EQUIPMENT_SLOT = createNumericEnum(EQUIPMENT_SLOT_DEFINITIONS);
 
 
-export const PRIMARY_STAT = {
-    ATTACK: 0,
-    DEFENCE: 1,
-    AGILITY: 2,
-}
+export const ATTRIBUTE_DEFINITIONS = {
+    NONE: { id: 0, name: "NONE" },
+    STRENGTH: { id: 1, name: "STRENGTH" },
+    DEXTERITY: { id: 2, name: "DEXTERITY" },
+    INTELLIGENCE: { id: 3, name: "INTELLIGENCE" },
+};
+
+export const ATTRIBUTE = createNumericEnum(ATTRIBUTE_DEFINITIONS);
 
 
-export const ROLE = {
-    OFFENSIVE: 0,
-    DEFENSIVE: 1,
-    CONTROL: 2,
-    SUPPORT: 3,
-}
+export const PRIMARY_STAT_DEFINITIONS = {
+    ATTACK: { id: 0, name: "ATTACK" },
+    DEFENCE: { id: 1, name: "DEFENCE" },
+    AGILITY: { id: 2, name: "AGILITY" },
+};
+
+export const PRIMARY_STAT = createNumericEnum(PRIMARY_STAT_DEFINITIONS);
+
+
+export const ROLE_DEFINITIONS = {
+    OFFENSIVE: { id: 0, name: "OFFENSIVE" },
+    DEFENSIVE: { id: 1, name: "DEFENSIVE" },
+    CONTROL: { id: 2, name: "CONTROL" },
+    SUPPORT: { id: 3, name: "SUPPORT" },
+};
+
+export const ROLE = createNumericEnum(ROLE_DEFINITIONS);
 
 export const PERKS = {
     NOTHING: { id: -1, name: "Nothing" },
@@ -120,27 +136,31 @@ export const POSSIBLE_PERKS = {
 }
 
 
-export const RARITY = {
-    COMMON: 0,
-    UNCOMMON: 1,
-    RARE: 2,
-    EPIC: 3,
-    LEGENDARY: 4,
-    MYTHIC: 5,
-    HEROIC: 6,
-    DIVINE: 7,
-    ANCIENT: 8,
-}
+export const RARITY_DEFINITIONS = {
+    COMMON: { id: 0, name: "COMMON" },
+    UNCOMMON: { id: 1, name: "UNCOMMON" },
+    RARE: { id: 2, name: "RARE" },
+    EPIC: { id: 3, name: "EPIC" },
+    LEGENDARY: { id: 4, name: "LEGENDARY" },
+    MYTHIC: { id: 5, name: "MYTHIC" },
+    HEROIC: { id: 6, name: "HEROIC" },
+    DIVINE: { id: 7, name: "DIVINE" },
+    ANCIENT: { id: 8, name: "ANCIENT" },
+};
+
+export const RARITY = createNumericEnum(RARITY_DEFINITIONS);
 
 
-export const ELEMENT = {
-    FIRE: 0,
-    WATER: 1,
-    NATURE: 2,
-    LIGHT: 3,
-    SHADOW: 4,
-    VOID: 5,
-}
+export const ELEMENT_DEFINITIONS = {
+    FIRE: { id: 0, name: "FIRE" },
+    WATER: { id: 1, name: "WATER" },
+    NATURE: { id: 2, name: "NATURE" },
+    LIGHT: { id: 3, name: "LIGHT" },
+    SHADOW: { id: 4, name: "SHADOW" },
+    VOID: { id: 5, name: "VOID" },
+};
+
+export const ELEMENT = createNumericEnum(ELEMENT_DEFINITIONS);
 
 export const UNIQUE_SKILLS = {
     NOTHING: 0,
