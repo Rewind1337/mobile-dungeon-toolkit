@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 
-import { ATTRIBUTE, EQUIPMENT_SLOT, ROLE, STATUS_EFFECTS, getEnumNameById } from '../database/enums.jsx'
+import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT, ROLE_DEFINITIONS, STATUS_EFFECTS, getEnumNameById } from '../database/enums.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
 import { iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites } from '../database/db_sprites.jsx'
 
@@ -132,12 +132,12 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, onItemClick }) {
                 <div className='flex-row top-row'>
                     <div className='header pill flex-row'>
                         <img width={48} src={attributeSprites[heroObj.mainAttribute]}/>
-                        {getEnumNameById(ATTRIBUTE, heroObj.mainAttribute)}
+                        {getEnumNameById(ATTRIBUTE_DEFINITIONS, heroObj.mainAttribute)}
                     </div>
                     <div className='header-big pill'>{heroObj.variant ? heroObj.variant + " - " : ""}{heroObj.name}</div>
                     <div className='header pill flex-row'>
                         <img width={48} src={roleSprites[heroObj.role]}/>
-                        {getEnumNameById(ROLE, heroObj.role)}
+                        {getEnumNameById(ROLE_DEFINITIONS, heroObj.role)}
                     </div>
                 </div>
 
