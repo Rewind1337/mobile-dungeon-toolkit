@@ -237,6 +237,7 @@ export const UNIQUE_SKILLS = {
     TUSK_FANG: { id: 318, description: "Ultimate Skill has a $e chance to grant the Caster ATK Up for 2 turns.", rarityEffect: [1.40, 1.50, 1.60, 1.70] },
 }
 
+// redundant
 export const STATUS_EFFECT_NAME_MAP = {
     0: "attack_up",
     1: "defense_up",

@@ -129,6 +129,10 @@ export function init_hero_db() {
     add_hero("Loretta", ATTRIBUTE.INTELLIGENCE, RARITY.LEGENDARY, false, ELEMENT.WATER, ROLE.CONTROL)
     add_hero("Prince Belzar", ATTRIBUTE.STRENGTH, RARITY.LEGENDARY, true, ELEMENT.FIRE, ROLE.DEFENSIVE)
 
+    // 10.09. added
+    add_hero("Aeterna", ATTRIBUTE.DEXTERITY, RARITY.LEGENDARY, true, ELEMENT.LIGHT, ROLE.SUPPORT)
+    add_hero("Hizumi.exe", ATTRIBUTE.DEXTERITY, RARITY.LEGENDARY, false, ELEMENT.WATER, ROLE.OFFENSIVE)
+
     // EPIC
     // STRENGTH
     add_hero("Dr. Pestilence", ATTRIBUTE.STRENGTH, RARITY.EPIC, false, ELEMENT.NATURE, ROLE.CONTROL)
@@ -220,6 +224,10 @@ export function init_hero_db() {
     add_hero("Sulfurok", ATTRIBUTE.STRENGTH, RARITY.EPIC, false, ELEMENT.SHADOW, ROLE.SUPPORT)
     add_hero("Princess Trixie", ATTRIBUTE.DEXTERITY, RARITY.EPIC, true, ELEMENT.LIGHT, ROLE.SUPPORT)
     add_hero("Chronia", ATTRIBUTE.DEXTERITY, RARITY.EPIC, false, ELEMENT.WATER, ROLE.SUPPORT)
+
+    // 10.09. added
+    add_hero("Clockmaster", ATTRIBUTE.INTELLIGENCE, RARITY.EPIC, false, ELEMENT.SHADOW, ROLE.CONTROL)
+    add_hero("Cybacker", ATTRIBUTE.STRENGTH, RARITY.EPIC, false, ELEMENT.NATURE, ROLE.OFFENSIVE)
 
     // RARE
     // STRENGTH

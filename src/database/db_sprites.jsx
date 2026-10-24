@@ -76,6 +76,10 @@ import CatrinaSrc from '../sprites/heroes/catrina.png'
 import LorettaSrc from '../sprites/heroes/loretta.png'
 import PrinceBelzarSrc from '../sprites/heroes/prince_belzar.png'
 
+// 10.09. added
+import AeternaSrc from '../sprites/heroes/aeterna.png'
+import HizumiExeSrc from '../sprites/heroes/hizumi_exe.png'
+
 // EPICS
 import AliceSrc from '../sprites/heroes/alice.png';
 import SylvannaSrc from '../sprites/heroes/sylvanna.png';
@@ -163,6 +167,10 @@ import DominiqueSrc from '../sprites/heroes/dominique.png'
 import SulfurokSrc from '../sprites/heroes/sulfurok.png'
 import PrincessTrixieSrc from '../sprites/heroes/princess_trixie.png'
 import ChroniaSrc from '../sprites/heroes/chronia.png'
+
+// 10.09. added
+import ClockmasterSrc from '../sprites/heroes/clockmaster.png'
+import CybackerSrc from '../sprites/heroes/cybacker.png'
 
 // RARES
 import BagHeadSrc from '../sprites/heroes/bag_head.png';
@@ -365,6 +373,10 @@ export const heroSprites = {
     loretta: LorettaSrc,
     prince_belzar: PrinceBelzarSrc,
 
+    // 10.09. added
+    aeterna: AeternaSrc,
+    hizumi_exe: HizumiExeSrc,
+
     // EPICS
     dr__pestilence: DrPestilenceSrc,
     yulamb: YulambSrc,
@@ -451,6 +463,10 @@ export const heroSprites = {
     sulfurok: SulfurokSrc,
     princess_trixie: PrincessTrixieSrc,
     chronia: ChroniaSrc,
+
+    // 10.09. added
+    clockmaster: ClockmasterSrc,
+    cybacker: CybackerSrc,
 
     // RARES
     bag_head: BagHeadSrc,
