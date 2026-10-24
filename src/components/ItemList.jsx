@@ -43,13 +43,14 @@ function ItemList({ setForceUpdate = () => { }, extraHeight = 0, filtersOffset =
     // Memoize filtered items
     const filteredItems = useMemo(() => {
         const result = allItems.filter((itemObj) => {
+            const matchesItemType = itemType === null || itemObj.slot === itemType
             const matchesSet = filters.set === null || itemObj.iconType === filters.set;
             const matchesUnique = filters.unique === null || (filters.unique ? itemObj.unique !== 'NOTHING' : itemObj.unique === 'NOTHING');
             const matchesSlot = filters.slot === null || itemObj.slot === filters.slot;
             const matchesAttribute = filters.attributeRequirement === null || itemObj.attributeRequirement === filters.attributeRequirement;
             const matchesRarity = filters.rarity === null || itemObj.rarity === filters.rarity;
 
-            return matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity;
+            return matchesItemType && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity;
         });
         return result;
     }, [allItems, filters]);
