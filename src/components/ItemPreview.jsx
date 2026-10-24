@@ -71,7 +71,8 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
             return
         }
 
-        const rarity = Number(selectedItem.rarity ?? 0)
+        const minimumRarity = RARITY_DEFINITIONS.RARE.id
+        const rarity = Math.max(minimumRarity, Math.min(8, Number(selectedItem.rarity ?? minimumRarity)))
         const perkSlots = makePerkSlots(selectedItem, rarity)
 
         setItemObj(selectedItem)
@@ -84,7 +85,8 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
 
     const changeRarity = (nextRarity) => {
         if (!itemObj) return
-        const rarity = Math.max(0, Math.min(8, nextRarity))
+        const minimumRarity = RARITY_DEFINITIONS.RARE.id
+        const rarity = Math.max(minimumRarity, Math.min(8, Number(nextRarity) || minimumRarity))
         const perkSlots = makePerkSlots({ ...itemObj, perks: selectedPerks, perkValues: selectedPerkValues }, rarity)
         setSelectedRarity(rarity)
         setSelectedPerks(perkSlots.perks)
@@ -103,10 +105,12 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
 
     const handleSaveItem = () => {
         if (!itemObj || !saveItem) return
+        const minimumRarity = RARITY_DEFINITIONS.RARE.id
+        const rarity = Math.max(minimumRarity, Math.min(8, Number(selectedRarity) || minimumRarity))
         saveItem({
             ...itemObj,
             level: Math.max(1, Number(selectedLevel) || 1),
-            rarity: selectedRarity,
+            rarity,
             fixedPerks: (itemObj.fixedPerks ?? []).map((perk, index) => ({
                 ...perk,
                 value: Number(fixedPerkValues[index] ?? 0)
@@ -114,6 +118,22 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
             perks: [...selectedPerks],
             perkValues: selectedPerkValues.map(value => Number(value) || 0)
         })
+    }
+
+    const getUniqueEffectDisplay = (unique, rarity) => {
+        const effects = unique?.rarityEffect
+        if (!Array.isArray(effects) || effects.length === 0) {
+            return { value: 1, usesHighestAvailableValue: false }
+        }
+
+        // Existing rarityEffect arrays begin at RARE and currently end at MYTHIC.
+        // Higher rarities reuse the last known value until more data is available.
+        const rarityIndex = Math.max(0, Number(rarity) - RARITY_DEFINITIONS.RARE.id)
+        const effectIndex = Math.min(rarityIndex, effects.length - 1)
+        return {
+            value: effects[effectIndex],
+            usesHighestAvailableValue: rarityIndex >= effects.length
+        }
     }
 
     const noSelection = selectedItemId.slot === null || selectedItemId.id === null
@@ -165,7 +185,14 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
                             <div className='header'>Weapon Effect</div>
                             <img src={iconSprites["unique"]} />
                         </div>
-                        {itemObj.unique.description.replace("$e", (((itemObj.unique.rarityEffect?.[selectedRarity] ?? 1) - 1) * 100).toFixed(2) + "%")}
+                        {(() => {
+                            const effect = getUniqueEffectDisplay(itemObj.unique, selectedRarity)
+                            const displayedValue = (((effect.value ?? 1) - 1) * 100).toFixed(2) + "%"
+                            return <>
+                                {itemObj.unique.description.replace("$e", displayedValue)}
+                                {effect.usesHighestAvailableValue && <span title="No value is defined for this rarity yet; showing the highest available value."> (?)</span>}
+                            </>
+                        })()}
                     </div>
                 </div>}
 
