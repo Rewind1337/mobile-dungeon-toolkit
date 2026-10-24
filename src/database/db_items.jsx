@@ -52,18 +52,20 @@ function add_equipment(slot, name, fixedPerks, set, rarity, attributeRequirement
     let normalizedName = name.toLowerCase().replace(/[^a-z]/g, '_');
     set = get_set_id_by_name(set);
     set = (set != undefined ? set : null)
+    let setDefinition = ITEM_SETS.find(itemSet => itemSet.id === set) ?? null
+    if (!setDefinition) set = null
+
     let mainAttribute
     let typeOfSet = "null"
-    if (set !== null) {
-        mainAttribute = ITEM_SETS[set].mainAttribute
-        let setPieces = ITEM_SETS[set].pieces
-        if (setPieces == 2) {
+    if (setDefinition) {
+        mainAttribute = setDefinition.mainAttribute
+        if (setDefinition.pieces == 2) {
             typeOfSet = "twoset"
-        } else if (setPieces == 4) {
+        } else if (setDefinition.pieces == 4) {
             typeOfSet = "fourset"
         }
-        if (dropSource === undefined) { dropSource = ITEM_SETS[set].dropSource }
-        if (dropLocation === undefined) { dropLocation = ITEM_SETS[set].dropLocation }
+        if (dropSource === undefined) { dropSource = setDefinition.dropSource }
+        if (dropLocation === undefined) { dropLocation = setDefinition.dropLocation }
     }
     let perkAmount = getItemPerkCount(rarity, set !== null)
     let perks = Array(perkAmount).fill("NOTHING")
