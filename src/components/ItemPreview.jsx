@@ -43,7 +43,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
 
     const hasSetBonusOrUniqueEffect = (item) => (
         (item?.unique !== undefined && item?.unique !== null && item.unique !== 0) ||
-        (item?.set !== undefined && item?.set !== null && item.set >= 0)
+        (item?.set !== undefined && item?.set !== null && item.set !== -1)
     )
 
     const getPerkKey = (perk) => Object.keys(PERK_DEFINITIONS).find(key => PERK_DEFINITIONS[key].id === perk.id) ?? "NOTHING"
@@ -65,7 +65,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
         }
 
         const slotName = slotIndexToNameMap[selectedItemId.slot]
-        const selectedItem = slotName ? itemsRef[slotName]?.[selectedItemId.id] : null
+        const selectedItem = slotName ? itemsRef[slotName]?.find(item => item.id === selectedItemId.id) : null
         if (!selectedItem) {
             setItemObj(null)
             return
@@ -146,8 +146,8 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, setsRef 
         )
     }
 
-    const selectedSet = itemObj.set !== undefined && itemObj.set !== null && itemObj.set >= 0
-        ? setsRef?.[itemObj.set]
+    const selectedSet = itemObj.set !== undefined && itemObj.set !== null && itemObj.set !== -1
+        ? setsRef?.find(set => set.id === itemObj.set)
         : null
 
     return (
