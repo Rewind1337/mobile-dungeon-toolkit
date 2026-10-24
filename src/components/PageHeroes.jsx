@@ -16,6 +16,15 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
     // Hero Stuff
     const [selectedHeroId, setSelectedHeroId] = useState(null)
     const [selectedSavedHeroId, setSelectedSavedHeroId] = useState(null)
+    const [equippedItems, setEquippedItems] = useState([])
+
+    const activeHero = pageContent === 0
+        ? heroesRef.current.find(hero => hero.id === selectedHeroId)
+        : savedHeroesRef.current.find(hero => hero.saveId === selectedSavedHeroId)
+
+    useEffect(() => {
+        setEquippedItems(Array.isArray(activeHero?.items) ? [...activeHero.items] : [])
+    }, [pageContent, selectedHeroId, selectedSavedHeroId])
 
     const clearHeroSelection = () => { setSelectedHeroId(null) }
 
@@ -42,8 +51,31 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
     const [itemSelectionModalMode, setItemSelectionModalMode] = useState(1)
 
     const handleItemClick = (slot) => {
-        setItemSelectionVisible(true)
         setItemSelectionType(slot)
+        setSelectedItemId({ slot: null, id: null })
+        setSelectedSavedItemId({ slot: null, id: null })
+        setItemSelectionVisible(true)
+    }
+
+    const equipSelectedItem = (itemObj) => {
+        const targetSlot = itemSelectionType
+        if (targetSlot === null || !itemObj || itemObj.slot !== targetSlot) return
+
+        const nextItems = [...equippedItems]
+        nextItems[targetSlot] = { ...itemObj }
+        setEquippedItems(nextItems)
+
+        if (pageContent === 1 && selectedSavedHeroId !== null) {
+            savedHeroesRef.current = savedHeroesRef.current.map(hero => (
+                hero.saveId === selectedSavedHeroId
+                    ? { ...hero, items: [...nextItems] }
+                    : hero
+            ))
+            if (manualSaveFunction) manualSaveFunction()
+        }
+
+        setItemSelectionVisible(false)
+        clearItemSelection()
     }
 
     const clearItemSelection = () => { setSelectedItemId({ slot: null, id: null }); setSelectedSavedItemId({ slot: null, id: null }) }
@@ -62,8 +94,8 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
             </Modal>
             <Modal position="right" isVisible={selectedItemId.slot !== null || selectedSavedItemId.slot !== null} onClose={() => { setItemSelectionVisible(false); clearItemSelection(); }}>
                 {itemSelectionModalMode === 0 ?
-/* NOT ACTIVE    */ <ItemPreview setsRef={itemsRef.current.ITEM_SETS} itemsRef={itemsRef.current.BASE_ITEMS} selectedItemId={selectedItemId}/> :
-                    <ItemPreview setsRef={itemsRef.current.ITEM_SETS} itemsRef={savedItemsRef.current} selectedItemId={selectedSavedItemId}/>
+/* NOT ACTIVE    */ <ItemPreview setsRef={itemsRef.current.ITEM_SETS} itemsRef={itemsRef.current.BASE_ITEMS} selectedItemId={selectedItemId} onEquipItem={equipSelectedItem}/> :
+                    <ItemPreview setsRef={itemsRef.current.ITEM_SETS} itemsRef={savedItemsRef.current} selectedItemId={selectedSavedItemId} onEquipItem={equipSelectedItem}/>
                 }
             </Modal>
 
@@ -85,7 +117,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                             <HeroList setForceUpdate={setForceUpdate} headerText={"All Heroes"} heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} setSelectedHeroId={setSelectedHeroId} />
                         </div>
                         <div className='card w-50' style={{ display: (selectedHeroId === null) ? "none" : "block" }}>
-                            <HeroPreview setForceUpdate={setForceUpdate} heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} saveHero={saveHero} onItemClick={handleItemClick} />
+                            <HeroPreview setForceUpdate={setForceUpdate} heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} saveHero={saveHero} onItemClick={handleItemClick} equippedItems={equippedItems} />
                         </div>
                     </>
                 }
@@ -95,7 +127,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                             <HeroList setForceUpdate={setForceUpdate} savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} setSelectedHeroId={setSelectedSavedHeroId} />
                         </div>
                         <div className='card w-50' style={{ display: (selectedSavedHeroId === null) ? "none" : "block" }}>
-                            <HeroPreview setForceUpdate={setForceUpdate} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} deleteSavedHero={deleteSavedHero} onItemClick={handleItemClick} />
+                            <HeroPreview setForceUpdate={setForceUpdate} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} deleteSavedHero={deleteSavedHero} onItemClick={handleItemClick} equippedItems={equippedItems} />
                         </div>
                     </>
                 }
