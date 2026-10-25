@@ -182,10 +182,20 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
         ? setsRef?.find(set => set.id === itemObj.set)
         : null
     const maxMasterworkLevel = getMaxMasterworkLevel(selectedRarity)
+    const itemMainStat = ({ 0: "attack", 1: "defence", 2: "agility" })[Number(itemObj.mainAttribute)]
     const availableMutationPerks = new Set([
         ...(itemObj.fixedPerks ?? []).map(perk => Object.keys(PERK_DEFINITIONS).find(key => PERK_DEFINITIONS[key].id === perk.id)),
         ...(selectedPerks ?? []).map(perk => String(perk ?? "NOTHING").toUpperCase().replace(/\s/g, "_"))
     ].filter(Boolean))
+
+    // MAIN_STAT perks resolve to a specific stat for each item, so expose matching
+    // mutation categories in the selector when the item has that main-stat perk.
+    if (itemMainStat && availableMutationPerks.has("MAIN_STAT_FLAT")) {
+        availableMutationPerks.add(MAIN_STAT_PERK_KEYS[itemMainStat]?.flat)
+    }
+    if (itemMainStat && availableMutationPerks.has("MAIN_STAT_PERCENT")) {
+        availableMutationPerks.add(MAIN_STAT_PERK_KEYS[itemMainStat]?.percent)
+    }
 
     return (
         <div ref={listRef} className='item-preview flex-col' style={{ maxHeight: listHeight }}>
