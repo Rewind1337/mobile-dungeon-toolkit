@@ -180,3 +180,63 @@
   }
 
 }
+
+.masterwork-control {
+  gap: 8px;
+}
+
+.masterwork-heading {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.masterwork-input-row {
+  align-items: center;
+
+  input[type="number"] {
+    width: 64px;
+    text-align: center;
+  }
+
+  input[type="range"] {
+    flex: 1;
+    min-width: 80px;
+  }
+}
+
+.masterwork-summary {
+  padding: 6px 10px;
+}
+
+.masterwork-damaged-toggle {
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+  }
+}
+
+.masterwork-milestones {
+  gap: 8px;
+}
+
+.masterwork-milestone {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid #777;
+  border-radius: V.$border-radius;
+  text-align: center;
+  font-size: V.$font-size-button;
+  opacity: 0.75;
+}
+
+.masterwork-milestone.unlocked {
+  border-color: #48a868;
+  opacity: 1;
+}

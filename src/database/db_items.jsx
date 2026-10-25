@@ -1,6 +1,8 @@
 import { ATTRIBUTE_DEFINITIONS, RARITY_DEFINITIONS, PERK_DEFINITIONS, UNIQUE_WEAPON_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PRIMARY_STAT_DEFINITIONS, DROP_SOURCE_DEFINITIONS, getItemPerkCount } from "./enums"
 import { itemSprites, iconSprites } from "./db_sprites";
 
+import { normalizeStableName } from "./ids.jsx"
+
 let ITEM_SETS = []
 let BASE_ITEMS = {
     WEAPONS: [],
@@ -12,8 +14,11 @@ let BASE_ITEMS = {
 }
 
 function add_set(name, setBonus, pieces, attributeRequirement, mainAttribute, dropSource, dropLocation) {
-    let id = ITEM_SETS.length
-    ITEM_SETS.push({ id: id, name: name, setBonus: setBonus, pieces: pieces, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute, dropSource: dropSource, dropLocation: dropLocation })
+    const id = normalizeStableName(name)
+    if (ITEM_SETS.some(set => set.id === id)) {
+        throw new Error(`Duplicate stable item-set ID "${id}". Give this set a distinct name/key.`)
+    }
+    ITEM_SETS.push({ id, name, setBonus, pieces, attributeRequirement, mainAttribute, dropSource, dropLocation })
 }
 
 function get_set_id_by_name(name) {
@@ -24,8 +29,11 @@ function get_set_id_by_name(name) {
 }
 
 function add_weapon(name, fixedPerks, unique, rarity, attributeRequirement, mainAttribute, dropSource, dropLocation) {
-    let id = BASE_ITEMS.WEAPONS.length
-    let normalizedName = name.toLowerCase().replace(/[^a-z']/g, '_').replace(/[']/g, '');
+    const normalizedName = name.toLowerCase().replace(/[^a-z']/g, '_').replace(/[']/g, '');
+    const id = `weapon:${normalizeStableName(name)}`
+    if (BASE_ITEMS.WEAPONS.some(item => item.id === id)) {
+        throw new Error(`Duplicate stable weapon ID "${id}". Give this weapon a distinct name/key.`)
+    }
     unique = (unique != undefined ? unique : UNIQUE_WEAPON_DEFINITIONS.NOTHING)
     let perkAmount = getItemPerkCount(rarity, Boolean(unique))
     let perks = Array(perkAmount).fill("NOTHING")
@@ -43,26 +51,31 @@ function add_weapon(name, fixedPerks, unique, rarity, attributeRequirement, main
 function add_equipment(slot, name, fixedPerks, set, rarity, attributeRequirement, dropSource, dropLocation) {
     let normalizedName = name.toLowerCase().replace(/[^a-z]/g, '_');
     set = get_set_id_by_name(set);
-    set = (set != undefined ? set : -1)
+    set = (set != undefined ? set : null)
+    let setDefinition = ITEM_SETS.find(itemSet => itemSet.id === set) ?? null
+    if (!setDefinition) set = null
+
     let mainAttribute
     let typeOfSet = "null"
-    if (set >= 0) {
-        mainAttribute = ITEM_SETS[set].mainAttribute
-        let setPieces = ITEM_SETS[set].pieces
-        if (setPieces == 2) {
+    if (setDefinition) {
+        mainAttribute = setDefinition.mainAttribute
+        if (setDefinition.pieces == 2) {
             typeOfSet = "twoset"
-        } else if (setPieces == 4) {
+        } else if (setDefinition.pieces == 4) {
             typeOfSet = "fourset"
         }
-        if (dropSource === undefined) { dropSource = ITEM_SETS[set].dropSource }
-        if (dropLocation === undefined) { dropLocation = ITEM_SETS[set].dropLocation }
+        if (dropSource === undefined) { dropSource = setDefinition.dropSource }
+        if (dropLocation === undefined) { dropLocation = setDefinition.dropLocation }
     }
-    let perkAmount = getItemPerkCount(rarity, set >= 0)
+    let perkAmount = getItemPerkCount(rarity, set !== null)
     let perks = Array(perkAmount).fill("NOTHING")
     let id
     switch (slot) {
         case EQUIPMENT_SLOT_DEFINITIONS.HELMET.id:
-            id = BASE_ITEMS.HELMETS.length
+            id = `helmet:${normalizeStableName(name)}`
+            if (BASE_ITEMS.HELMETS.some(item => item.id === id)) {
+                throw new Error(`Duplicate stable helmet ID "${id}". Give this item a distinct name/key.`)
+            }
             BASE_ITEMS.HELMETS.push({
                 id: id, slot: slot, name: name, fixedPerks: fixedPerks, set: set, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
                 itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
@@ -74,11 +87,14 @@ function add_equipment(slot, name, fixedPerks, set, rarity, attributeRequirement
             })
             break;
         case EQUIPMENT_SLOT_DEFINITIONS.ARMOR.id:
-            id = BASE_ITEMS.ARMORS.length
+            id = `armor:${normalizeStableName(name)}`
+            if (BASE_ITEMS.ARMORS.some(item => item.id === id)) {
+                throw new Error(`Duplicate stable armor ID "${id}". Give this item a distinct name/key.`)
+            }
             BASE_ITEMS.ARMORS.push({
                 id: id, slot: slot, name: name, fixedPerks: fixedPerks, set: set, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
                 itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
-                iconSrc: (set >= 0 ? iconSprites[typeOfSet] : null),
+                iconSrc: (set !== null ? iconSprites[typeOfSet] : null),
                 iconType: typeOfSet,
                 perks: perks,
                 dropSource: dropSource,
@@ -86,11 +102,14 @@ function add_equipment(slot, name, fixedPerks, set, rarity, attributeRequirement
             })
             break;
         case EQUIPMENT_SLOT_DEFINITIONS.NECKLACE.id:
-            id = BASE_ITEMS.NECKLACES.length
+            id = `necklace:${normalizeStableName(name)}`
+            if (BASE_ITEMS.NECKLACES.some(item => item.id === id)) {
+                throw new Error(`Duplicate stable necklace ID "${id}". Give this item a distinct name/key.`)
+            }
             BASE_ITEMS.NECKLACES.push({
                 id: id, slot: slot, name: name, fixedPerks: fixedPerks, set: set, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
                 itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
-                iconSrc: (set >= 0 ? iconSprites[typeOfSet] : null),
+                iconSrc: (set !== null ? iconSprites[typeOfSet] : null),
                 iconType: typeOfSet,
                 perks: perks,
                 dropSource: dropSource,
@@ -98,11 +117,14 @@ function add_equipment(slot, name, fixedPerks, set, rarity, attributeRequirement
             })
             break;
         case EQUIPMENT_SLOT_DEFINITIONS.RING.id:
-            id = BASE_ITEMS.RINGS.length
+            id = `ring:${normalizeStableName(name)}`
+            if (BASE_ITEMS.RINGS.some(item => item.id === id)) {
+                throw new Error(`Duplicate stable ring ID "${id}". Give this item a distinct name/key.`)
+            }
             BASE_ITEMS.RINGS.push({
                 id: id, slot: slot, name: name, fixedPerks: fixedPerks, set: set, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
                 itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
-                iconSrc: (set >= 0 ? iconSprites[typeOfSet] : null),
+                iconSrc: (set !== null ? iconSprites[typeOfSet] : null),
                 iconType: typeOfSet,
                 perks: perks,
                 dropSource: dropSource,
@@ -134,7 +156,7 @@ export function init_item_db() {
     add_set("Pumpkin", [PERK_DEFINITIONS.HEALTH_PERCENT, PERK_DEFINITIONS.RESISTANCE], 2, ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id, PRIMARY_STAT_DEFINITIONS.AGILITY.id, DROP_SOURCE_DEFINITIONS.EVERYWHERE.id, ["C2-D2"])
     add_set("Warlock", [PERK_DEFINITIONS.ATTACK_PERCENT, PERK_DEFINITIONS.CRIT_CHANCE, PERK_DEFINITIONS.CRIT_DAMAGE], 4, ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id, PRIMARY_STAT_DEFINITIONS.ATTACK.id, DROP_SOURCE_DEFINITIONS.EVERYWHERE.id, ["C8-D1", "C11-D2"])
     add_set("Warden", [PERK_DEFINITIONS.HEALTH_PERCENT, PERK_DEFINITIONS.CRIT_RESISTANCE, PERK_DEFINITIONS.AP_DAMAGE_REDUCTION], 4, ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id, PRIMARY_STAT_DEFINITIONS.DEFENCE.id, DROP_SOURCE_DEFINITIONS.EVERYWHERE.id, ["C6-D2", "C13-D1"])
-    add_set("Saint", [PERK_DEFINITIONS.AGILITY_PERCENT, PERK_DEFINITIONS.HEALING_RECEIVED, PERK_DEFINITIONS.HEALING_EFFICIENCY], 4, ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id, PRIMARY_STAT_DEFINITIONS.AGILITY.id, DROP_SOURCE_DEFINITIONS.EVERYWHERE.id, ["C9-D2, C17-D2"])
+    add_set("Saint", [PERK_DEFINITIONS.AGILITY_PERCENT, PERK_DEFINITIONS.HEALING_RECEIVED, PERK_DEFINITIONS.HEALING_EFFICIENCY], 4, ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id, PRIMARY_STAT_DEFINITIONS.AGILITY.id, DROP_SOURCE_DEFINITIONS.EVERYWHERE.id, ["C9-D2", "C17-D2"])
 
     add_set("Lab", [PERK_DEFINITIONS.AGILITY_PERCENT, PERK_DEFINITIONS.CRIT_CHANCE], 2, ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id, PRIMARY_STAT_DEFINITIONS.AGILITY.id, DROP_SOURCE_DEFINITIONS.EVERYWHERE.id, ["C15-D2"])
     add_set("Elementor", [PERK_DEFINITIONS.ATTACK_PERCENT, PERK_DEFINITIONS.ACCURACY, PERK_DEFINITIONS.BOSS_DAMAGE], 4, ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id, PRIMARY_STAT_DEFINITIONS.ATTACK.id, DROP_SOURCE_DEFINITIONS.GUILD_HUNT.id, ["Elemental Weaver"])

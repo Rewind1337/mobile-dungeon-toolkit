@@ -22,10 +22,10 @@ function ItemList({ setForceUpdate = () => { }, extraHeight = 0, filtersOffset =
     const allItems = useMemo(() => {
         return [
             ...itemsRef.WEAPONS.map((item) => ({ ...item, key: item.id })),
-            ...itemsRef.HELMETS.map((item) => ({ ...item, key: 1000 + item.id })),
-            ...itemsRef.ARMORS.map((item) => ({ ...item, key: 2000 + item.id })),
-            ...itemsRef.NECKLACES.map((item) => ({ ...item, key: 3000 + item.id })),
-            ...itemsRef.RINGS.map((item) => ({ ...item, key: 4000 + item.id })),
+            ...itemsRef.HELMETS.map((item) => ({ ...item, key: item.id })),
+            ...itemsRef.ARMORS.map((item) => ({ ...item, key: item.id })),
+            ...itemsRef.NECKLACES.map((item) => ({ ...item, key: item.id })),
+            ...itemsRef.RINGS.map((item) => ({ ...item, key: item.id })),
         ];
     }, [itemsRef]);
 
@@ -43,16 +43,17 @@ function ItemList({ setForceUpdate = () => { }, extraHeight = 0, filtersOffset =
     // Memoize filtered items
     const filteredItems = useMemo(() => {
         const result = allItems.filter((itemObj) => {
+            const matchesItemType = itemType === null || itemObj.slot === itemType
             const matchesSet = filters.set === null || itemObj.iconType === filters.set;
             const matchesUnique = filters.unique === null || (filters.unique ? itemObj.unique !== 'NOTHING' : itemObj.unique === 'NOTHING');
             const matchesSlot = filters.slot === null || itemObj.slot === filters.slot;
             const matchesAttribute = filters.attributeRequirement === null || itemObj.attributeRequirement === filters.attributeRequirement;
             const matchesRarity = filters.rarity === null || itemObj.rarity === filters.rarity;
 
-            return matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity;
+            return matchesItemType && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity;
         });
         return result;
-    }, [allItems, filters]);
+    }, [allItems, filters, itemType]);
 
     return (<>
         <div className='header-big'>
@@ -69,8 +70,8 @@ function ItemList({ setForceUpdate = () => { }, extraHeight = 0, filtersOffset =
                     <Item
                         itemObj={itemObj}
                         key={itemObj.key}
-                        level={null}
-                        onClick={() => setSelectedItemId({ slot: itemObj.slot, id: savedItems ? itemObj.saveId : itemObj.id })}
+                        level={savedItems ? (itemObj.level ?? 1) : null}
+                        onClick={() => setSelectedItemId({ slot: itemObj.slot, id: itemObj.id })}
                     />
                 ))
             )}

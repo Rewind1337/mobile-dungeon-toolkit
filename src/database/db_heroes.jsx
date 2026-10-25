@@ -4,8 +4,11 @@ import { heroSprites, elementSprites } from "./db_sprites.jsx"
 let BASE_HEROES = []
 
 function add_hero(name, mainAttribute, rarity, isStarred, element, role, variant = null, skills, talents) {
-    let id = BASE_HEROES.length
     let normalizedName = name.toLowerCase().replace(/[^a-z]/g, '_') + (variant !== null ? "_" + variant : "");
+    let id = normalizedName
+    if (BASE_HEROES.some(hero => hero.id === id)) {
+        throw new Error(`Duplicate stable hero ID "${id}". Give this hero variant a distinct value.`)
+    }
     BASE_HEROES.push({
         id: id,
         name: name,

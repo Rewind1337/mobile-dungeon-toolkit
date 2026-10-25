@@ -6,25 +6,62 @@ import HeroPreview from "./HeroPreview.jsx"
 import Button from "./Button.jsx"
 import Modal from "./Modal.jsx"
 import { POSSIBLE_PERKS } from "../database/enums.jsx"
+import { createSavedItemRecord } from "../database/ids.jsx"
 
 function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
     const [pageContent, setPageContent] = useState(0)
     const [forceUpdate, setForceUpdate] = useState({})
+    const [, setSavedItemsUpdated] = useState(0)
 
     // Hero Stuff
     const [selectedHeroId, setSelectedHeroId] = useState(null)
     const [selectedSavedHeroId, setSelectedSavedHeroId] = useState(null)
+    const [equippedItems, setEquippedItems] = useState([])
+
+    const activeHero = pageContent === 0
+        ? heroesRef.current.find(hero => hero.id === selectedHeroId)
+        : savedHeroesRef.current.find(hero => hero.saveId === selectedSavedHeroId)
+
+    useEffect(() => {
+        setEquippedItems(Array.isArray(activeHero?.items) ? [...activeHero.items] : [])
+    }, [pageContent, selectedHeroId, selectedSavedHeroId])
 
     const clearHeroSelection = () => { setSelectedHeroId(null) }
 
     const saveHero = (heroObj) => {
-        for (let i = 0; i < savedHeroesRef.current.length; i++) {
-            if (heroObj.name === savedHeroesRef.current[i].name) return false
+        const nextSaveId = Math.max(
+            -1,
+            ...savedHeroesRef.current
+                .map(hero => Number(hero.saveId))
+                .filter(Number.isFinite)
+        ) + 1
+        const savedHero = {
+            ...heroObj,
+            saveId: nextSaveId,
+            items: [...(heroObj.items ?? [])]
         }
-        heroObj.saveId = savedHeroesRef.current.length
-        heroObj.items = []
-        savedHeroesRef.current.push(heroObj)
+        savedHeroesRef.current.push(savedHero)
+        setForceUpdate({})
         clearHeroSelection()
+    }
+
+    const deleteSavedHero = (heroObj) => {
+        const saveId = heroObj?.saveId ?? selectedSavedHeroId
+        if (saveId === null || saveId === undefined) return
+
+        const currentSavedHeroes = savedHeroesRef.current
+        const nextSavedHeroes = currentSavedHeroes.filter(hero => hero.saveId !== saveId)
+        if (nextSavedHeroes.length === currentSavedHeroes.length) return
+
+        savedHeroesRef.current = nextSavedHeroes
+
+        if (selectedSavedHeroId === saveId) {
+            setSelectedSavedHeroId(null)
+            setEquippedItems([])
+        }
+
+        setForceUpdate({})
+        if (manualSaveFunction) manualSaveFunction()
     }
 
     // Item Stuff
@@ -36,20 +73,34 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
     const [itemSelectionModalMode, setItemSelectionModalMode] = useState(1)
 
     const handleItemClick = (slot) => {
-        setItemSelectionVisible(true)
         setItemSelectionType(slot)
+        setSelectedItemId({ slot: null, id: null })
+        setSelectedSavedItemId({ slot: null, id: null })
+        setItemSelectionVisible(true)
+    }
+
+    const equipSelectedItem = (itemObj) => {
+        const targetSlot = itemSelectionType
+        if (targetSlot === null || !itemObj || itemObj.slot !== targetSlot) return
+
+        const nextItems = [...equippedItems]
+        nextItems[targetSlot] = { ...itemObj }
+        setEquippedItems(nextItems)
+
+        if (pageContent === 1 && selectedSavedHeroId !== null) {
+            savedHeroesRef.current = savedHeroesRef.current.map(hero => (
+                hero.saveId === selectedSavedHeroId
+                    ? { ...hero, items: [...nextItems] }
+                    : hero
+            ))
+            if (manualSaveFunction) manualSaveFunction()
+        }
+
+        setItemSelectionVisible(false)
+        clearItemSelection()
     }
 
     const clearItemSelection = () => { setSelectedItemId({ slot: null, id: null }); setSelectedSavedItemId({ slot: null, id: null }) }
-
-    const slotIndexToNameMap = { 0: "WEAPONS", 1: "HELMETS", 2: "ARMORS", 3: "NECKLACES", 4: "RINGS" }
-    const saveItem = (itemObj) => {
-        console.log("Saving " + itemObj.name + " to " + itemObj.slot);
-        let slotArray = slotIndexToNameMap[itemObj.slot];
-        itemObj.saveId = savedItemsRef.current[slotArray].length;
-        savedItemsRef.current[slotArray].push(itemObj);
-        setSavedItemsUpdated((prev) => prev + 1); // Trigger re-render
-    };
 
     return (
         <>
@@ -65,8 +116,8 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
             </Modal>
             <Modal position="right" isVisible={selectedItemId.slot !== null || selectedSavedItemId.slot !== null} onClose={() => { setItemSelectionVisible(false); clearItemSelection(); }}>
                 {itemSelectionModalMode === 0 ?
-/* NOT ACTIVE    */ <ItemPreview setsRef={itemsRef.current.ITEM_SETS} itemsRef={itemsRef.current.BASE_ITEMS} selectedItemId={selectedItemId} saveItem={saveItem} /> :
-                    <ItemPreview setsRef={itemsRef.current.ITEM_SETS} itemsRef={savedItemsRef.current} selectedItemId={selectedSavedItemId} saveItem={saveItem} />
+/* NOT ACTIVE    */ <ItemPreview setsRef={itemsRef.current.ITEM_SETS} itemsRef={itemsRef.current.BASE_ITEMS} selectedItemId={selectedItemId} onEquipItem={equipSelectedItem}/> :
+                    <ItemPreview setsRef={itemsRef.current.ITEM_SETS} itemsRef={savedItemsRef.current} selectedItemId={selectedSavedItemId} onEquipItem={equipSelectedItem}/>
                 }
             </Modal>
 
@@ -88,7 +139,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                             <HeroList setForceUpdate={setForceUpdate} headerText={"All Heroes"} heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} setSelectedHeroId={setSelectedHeroId} />
                         </div>
                         <div className='card w-50' style={{ display: (selectedHeroId === null) ? "none" : "block" }}>
-                            <HeroPreview setForceUpdate={setForceUpdate} heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} saveHero={saveHero} onItemClick={handleItemClick} />
+                            <HeroPreview setForceUpdate={setForceUpdate} heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} saveHero={saveHero} onItemClick={handleItemClick} equippedItems={equippedItems} />
                         </div>
                     </>
                 }
@@ -98,7 +149,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                             <HeroList setForceUpdate={setForceUpdate} savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} setSelectedHeroId={setSelectedSavedHeroId} />
                         </div>
                         <div className='card w-50' style={{ display: (selectedSavedHeroId === null) ? "none" : "block" }}>
-                            <HeroPreview setForceUpdate={setForceUpdate} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} onItemClick={handleItemClick} />
+                            <HeroPreview setForceUpdate={setForceUpdate} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} deleteSavedHero={deleteSavedHero} onItemClick={handleItemClick} equippedItems={equippedItems} />
                         </div>
                     </>
                 }

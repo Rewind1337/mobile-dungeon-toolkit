@@ -42,23 +42,6 @@ const loadInitialState = () => {
       for (let key in parsedState) {
         newState[key] = parsedState[key];
       }
-      // hero element src correction
-      let hero_array = newState["savedHeroesRef"]
-      for (let i = 0; i < hero_array.length; i++) {
-        hero_array[i].elementSrc = elementSprites[hero_array[i].element]
-      }
-      newState["savedHeroesRef"] = hero_array
-
-      // item icon src correction
-      let item_root = newState["savedItemsRef"]
-      for (let key in item_root) {
-        let item_array = item_root[key]
-        for (let i = 0; i < item_array.length; i++) {
-          item_array[i].iconSrc = iconSprites[item_array[i].iconType]
-        }
-        item_root[key] = item_array;
-      }
-      newState["savedItemsRef"] = item_root
       console.log('Successfully loaded Save from LocalStorage!');
       return newState
     } catch (error) {
