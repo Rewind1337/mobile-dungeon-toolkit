@@ -72,7 +72,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
             setSelectedSavedItemId({ slot: null, id: null })
         }
 
-        setSavedItemsUpdated(previous => previous + 1)
+        setSavedItemsRevision(revision => revision + 1)
         if (manualSaveFunction) manualSaveFunction()
     }
 
