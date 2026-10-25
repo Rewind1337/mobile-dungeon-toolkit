@@ -1,9 +1,11 @@
 import { useMemo, useState } from "react"
+import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import Button from "./Button.jsx"
 import SubPageDrops from "./SubPageDrops.jsx"
 
 function PageOther({ itemsRef }) {
     const [activeTab, setActiveTab] = useState("drops")
+    const { listHeight, listRef, events } = useDynamicList()
     const itemData = itemsRef?.current?.BASE_ITEMS ?? {}
     const sets = itemsRef?.current?.ITEM_SETS ?? []
 
@@ -26,7 +28,7 @@ function PageOther({ itemsRef }) {
                 </div>
             </div>
 
-            <div id="page-other" className="page flex-row w-100">
+            <div id="page-other" className="page flex-row w-100" ref={listRef} {...events} style={{ maxHeight: listHeight, overflowY: "auto", minHeight: 0, alignContent: "start" }}>
                 {activeTab === "drops" && (
                     <SubPageDrops itemsRef={itemData} setsRef={sets} />
                 )}
