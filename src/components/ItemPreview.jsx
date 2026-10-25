@@ -188,6 +188,11 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
         : null
     const maxMasterworkLevel = getMaxMasterworkLevel(selectedRarity)
     const itemMainStat = ({ 0: "attack", 1: "defence", 2: "agility" })[Number(itemObj.mainAttribute)]
+    const getPerkSpriteName = name => {
+        if (name === "MAIN_STAT_FLAT") return MAIN_STAT_PERK_KEYS[itemMainStat]?.flat ?? name
+        if (name === "MAIN_STAT_PERCENT") return MAIN_STAT_PERK_KEYS[itemMainStat]?.percent ?? name
+        return name
+    }
     const availableMutationPerks = new Set([
         ...(itemObj.fixedPerks ?? []).map(perk => Object.keys(PERK_DEFINITIONS).find(key => PERK_DEFINITIONS[key].id === perk.id)),
         ...(selectedPerks ?? []).map(perk => String(perk ?? "NOTHING").toUpperCase().replace(/\s/g, "_"))
@@ -333,6 +338,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                         <ItemPerk
                             key={"fixedperk_" + perk.id}
                             name={getPerkKey(perk)}
+                            spriteName={getPerkSpriteName(getPerkKey(perk))}
                             value={fixedPerkValues[index] ?? 0}
                             multiplier={1 + selectedMasterworkLevel / 10}
                             editable={true}
@@ -349,6 +355,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                         <ItemPerk
                             key={"setperk_" + bonus.id + "_" + index}
                             name={getPerkKey(bonus)}
+                            spriteName={getPerkSpriteName(getPerkKey(bonus))}
                             value={selectedSetBonusValues[index] ?? 0}
                             editable={true}
                             onValueChange={value => setSelectedSetBonusValues(previous => {
@@ -367,6 +374,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                         <ItemPerk
                             key={"perk_" + index}
                             name={(perk || "NOTHING").toUpperCase().replace(/\s/g, '_')}
+                            spriteName={getPerkSpriteName((perk || "NOTHING").toUpperCase().replace(/\s/g, '_'))}
                             value={selectedPerkValues[index] ?? 0}
                             multiplier={1 + selectedMasterworkLevel / 10}
                             perkSlot={index + 1}
