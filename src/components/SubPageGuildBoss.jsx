@@ -1,8 +1,6 @@
-import { useLayoutEffect, useRef, useState } from "react"
+import { useState } from "react"
 
-import { elementSprites, guildBossSprites } from "../database/db_sprites.jsx"
-import TextCard from "./TextCard.jsx"
-import { CONSTANTS } from "../database/constants.jsx"
+import { elementSprites } from "../database/db_sprites.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx";
 
 const GUILD_BOSSES = [
@@ -19,7 +17,7 @@ function GuildBoss({ id, name, elementSrcArray, setSelectedGuildBoss }) {
 }
 
 function SubPageGuildBoss({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef }) {
-    const { listHeight, listRef, events } = useDynamicList(() => { }, 0, CONSTANTS.listHeightSubPage);
+    const { listHeight, listRef } = useDynamicList(0, true);
     const [selectedGuildBoss, setSelectedGuildBoss] = useState(null);
 
     return (
