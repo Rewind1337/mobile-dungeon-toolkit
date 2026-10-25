@@ -275,9 +275,9 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                     <div className='card flex-col masterwork-mutation-controls'>
                     <div className='header'>Masterwork Mutations</div>
                     {[5, 10].map(milestone => (
-                        <label className='flex-col masterwork-mutation-select' key={milestone}>
+                        <div className='flex-col masterwork-mutation-select' key={milestone}>
                             <span className='text'>Level {milestone} mutation</span>
-                            <select
+                            <select className='text'
                                 value={selectedMutations[milestone] ? `${selectedMutations[milestone].perkKey}:${selectedMutations[milestone].id}` : ""}
                                 disabled={selectedMasterworkLevel < milestone || maxMasterworkLevel < milestone}
                                 onChange={event => {
@@ -294,9 +294,9 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                                         </option>
                                     )))}
                             </select>
-                        </label>
+                        </div>
                     ))}
-                    <small>Conditional mutations contribute to MAX; permanent mutations affect the calculated value.</small>
+                    <small className='text'>Conditional mutations contribute to MAX; permanent mutations affect the calculated value.</small>
                 </div>
 
                 <div className='flex-row masterwork-milestones'>

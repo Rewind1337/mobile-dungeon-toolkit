@@ -377,7 +377,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
                             const hasMax = Math.abs(calculatedStats.mainMax[name] - calculatedStats.main[name]) > 0.001
                             return <div className='flex-row text card calculated-stat' key={name} title={`Final ${name} after equipped gear`}>
                                 <img width={32} src={perkSprites[mapping.flat]}/>
-                                <span>{formatStatValue(calculatedStats.main[name])}{hasMax ? ` (${formatStatValue(calculatedStats.mainMax[name])} MAX)` : ""}</span>
+                                <div>{formatStatValue(calculatedStats.main[name])}{hasMax ? ` (${formatStatValue(calculatedStats.mainMax[name])} MAX)` : ""}</div>
                             </div>
                         })}
                     </div>

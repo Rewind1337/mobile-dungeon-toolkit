@@ -163,6 +163,10 @@ body::after {
   width: 100%;
 }
 
+.no-gaps {
+  gap: 0;
+}
+
 .margin-auto {
   margin-inline: auto;
 }
@@ -913,8 +917,8 @@ a {
 .name-search-filter {
   display: flex;
   align-items: center;
-  min-width: 100px;
-  max-width: 200px;
+  min-width: 50px;
+  max-width: 350px;
 
   input[type="text"] {
     min-width: 0;
@@ -925,10 +929,14 @@ a {
     outline: 2px solid black;
     border: none;
     border-radius: V.$border-radius;
-    font-family: V.$font-family-header;
-    font-size: 32px;
+    font-family: V.$font-family-stats;
+    font-size: V.$font-size-button;
     text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black;
     user-select: text;
+
+    @include M.media-query-max(V.$bp-mobile, ()) {
+      height: 32px;
+    }
   }
 }
 
@@ -938,7 +946,7 @@ input[type="number"] {
   background: rgba(0, 0, 0, 0.25);
   outline: 2px solid black;
   width: 100%;
-  font-family: V.$font-family-header;
+  font-family: V.$font-family-stats;
   font-size: V.$font-size-button;
   text-align: center;
   text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black;

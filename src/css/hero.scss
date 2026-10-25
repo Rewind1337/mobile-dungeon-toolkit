@@ -58,17 +58,28 @@
     gap: 4px;
 
     .card {
+      padding-right: 1px;
+      padding-top: 0;
+      padding-bottom: 0;
       flex-grow: 1;
       min-width: 0;
+
+      input {
+        height: 32px;
+      }
     }
   }
 
   .calculated-stats {
-    margin-top: 4px;
-    opacity: 0.9;
 
-    .calculated-stat { justify-content: flex-start; font-weight: 600; gap: 6px; padding-right: 6px; overflow-wrap: anywhere; }
-    .calculated-stat span { font-size: 0.9em; }
+    .calculated-stat {
+      font-weight: 600;
+    }
+
+    .calculated-stat div {
+      width: 100%;
+      font-size: 0.9em;
+    }
   }
 
   .hero-stat {
@@ -274,4 +285,3 @@
     background: linear-gradient(160deg, hsl(109, 46%, 50%) 0%, hsl(109, 46%, 30%) 100%);
   }
 }
-.masterwork-mutation-controls { gap: 8px; .masterwork-mutation-select select { width: 100%; min-width: 0; } }
