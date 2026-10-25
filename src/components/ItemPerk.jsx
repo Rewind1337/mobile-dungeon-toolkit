@@ -15,7 +15,8 @@ function ItemPerk({
     editable = false,
     multiplier = 1,
     changeDisabled = false,
-    spriteName = name
+    spriteName = name,
+    hideChangeButton = false
 }) {
     const [_value, _setValue] = useState(value ?? 0)
     const _perk = PERK_DEFINITIONS[name]
@@ -68,10 +69,10 @@ function ItemPerk({
                 }
             </>}
 
-            {onClick
+            {!hideChangeButton && (onClick
                 ? <Button slim text={buttonText} color={buttonColor} disabled={changeDisabled} onClick={() => onClick()} />
                 : <div className='text'>not changeable</div>
-            }
+            )}
         </div>
     )
 }
