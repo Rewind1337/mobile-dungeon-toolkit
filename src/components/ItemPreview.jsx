@@ -378,10 +378,10 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                             value={selectedPerkValues[index] ?? 0}
                             multiplier={1 + selectedMasterworkLevel / 10}
                             perkSlot={index + 1}
-                            editable={!onEquipItem}
-                            onValueChange={!onEquipItem ? value => setSelectedPerkValues(previous => previous.map((oldValue, perkIndex) => (
+                            editable={true}
+                            onValueChange={value => setSelectedPerkValues(previous => previous.map((oldValue, perkIndex) => (
                                 perkIndex === index ? value : oldValue
-                            ))) : undefined}
+                            )))}
                             onClick={!onEquipItem ? () => handlePerkSelect(index) : undefined}
                             changeDisabled={selectedItemDamaged}
                             hideChangeButton={Boolean(onEquipItem)}
