@@ -8,8 +8,8 @@ import Button from './Button.jsx'
 import { filterSprites } from '../database/db_sprites.jsx'
 import ItemFilters from './ItemFilters.jsx'
 
-function ItemList({ setForceUpdate = () => { }, extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, itemType = null, setSelectedItemId, setsRef }) {
-    const { listHeight, listRef, events } = useDynamicList(setForceUpdate, extraHeight);
+function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, itemType = null, setSelectedItemId, setsRef }) {
+    const { listHeight, listRef, events } = useDynamicList(extraHeight);
     const [filters, setFilters] = useState({
         set: null,
         unique: null,

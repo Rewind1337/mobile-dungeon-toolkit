@@ -15,7 +15,8 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
     const [perkSelectionVisible, setPerkSelectionVisible] = useState(false)
     const [possiblePerks, setPossiblePerks] = useState([])
     const [pendingPerkSelection, setPendingPerkSelection] = useState(null)
-    const [, setSavedItemsUpdated] = useState(0)
+    // Ref changes do not trigger renders; this revision refreshes memoized lists after save/delete.
+    const [, setSavedItemsRevision] = useState(0)
 
     const slotIndexToNameMap = { 0: "WEAPONS", 1: "HELMETS", 2: "ARMORS", 3: "NECKLACES", 4: "RINGS" }
 
@@ -46,7 +47,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
             ...savedItemsRef.current,
             [slotArray]: [...existingItems, savedItem]
         }
-        setSavedItemsUpdated(previous => previous + 1)
+        setSavedItemsRevision(revision => revision + 1)
 
         // A saved item should be present in the local save immediately, not only after a tab change.
         if (manualSaveFunction) manualSaveFunction()
@@ -71,7 +72,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
             setSelectedSavedItemId({ slot: null, id: null })
         }
 
-        setSavedItemsUpdated(previous => previous + 1)
+        setSavedItemsRevision(revision => revision + 1)
         if (manualSaveFunction) manualSaveFunction()
     }
 
@@ -110,7 +111,6 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                     <>
                         <div className='card w-50' style={{ width: (selectedItemId.slot === null) ? "300%" : "50%" }}>
                             <ItemList
-                                setForceUpdate={setSavedItemsUpdated}
                                 headerText={"All Items"}
                                 filtersOffset={"5px"}
                                 itemsRef={itemsRef.current.BASE_ITEMS}
@@ -133,7 +133,6 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                     <>
                         <div className='card w-50' style={{ width: (selectedSavedItemId.slot === null) ? "300%" : "50%" }}>
                             <ItemList
-                                setForceUpdate={setSavedItemsUpdated}
                                 savedItems
                                 headerText={"Saved Items"}
                                 filtersOffset={"5px"}

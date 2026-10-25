@@ -7,10 +7,9 @@ import Button from "./Button.jsx"
 import EmptyHero from "./EmptyHero.jsx"
 import Hero from "./Hero.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
-import { CONSTANTS } from "../database/constants.jsx"
 
 function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
-    const { listHeight, listRef, events } = useDynamicList(() => { }, 165, CONSTANTS.listHeightSubPage);
+    const { listHeight, listRef, events } = useDynamicList(165, true);
     const [pageContent, setPageContent] = useState(0)
     const [selectedSavedHeroId, setSelectedSavedHeroId] = useState(null)
     const [selectedSavedItemId, setSelectedSavedItemId] = useState({ slot: null, id: null })
@@ -18,7 +17,6 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
     const [teamIndex, setTeamIndex] = useState(null)
     const [heroIndex, setHeroIndex] = useState(null)
 
-    const [forceUpdate, setForceUpdate] = useState({})
 
     const handleTeamHeroClick = (teamIndex, heroIndex) => {
         setTeamIndex(teamIndex)
@@ -91,7 +89,7 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                             </div>
                         </div>
                         <div className='card w-50'>
-                            <HeroList setForceUpdate={setForceUpdate} savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} setSelectedHeroId={setSelectedSavedHeroId} />
+                            <HeroList savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} setSelectedHeroId={setSelectedSavedHeroId} />
                         </div>
                     </>
                 }
