@@ -68,12 +68,25 @@ function calculateEquippedStats(baseStats, items, sets) {
             if (mutation) selectedMutations.push({ perkKey: selection.perkKey, mutation })
         }
 
+        const itemMainStat = ({ 0: "attack", 1: "defence", 2: "agility" })[Number(item.mainAttribute)]
         for (const perk of getItemPerkEntries(item)) {
+            const getTargetKey = key => {
+                if (key === "MAIN_STAT_FLAT" || key === "MAIN_STAT_PERCENT") {
+                    if (!itemMainStat) return null
+                    return key === "MAIN_STAT_FLAT"
+                        ? MAIN_STAT_PERKS[itemMainStat].flat
+                        : MAIN_STAT_PERKS[itemMainStat].percent
+                }
+                return key
+            }
+
+            const targetKey = getTargetKey(perk.key)
+            if (!targetKey) continue
             const mutationKey = Object.keys(MUTATION_PERK_ALIASES).find(
-                key => MUTATION_PERK_ALIASES[key] === perk.key
-            ) ?? perk.key
+                key => MUTATION_PERK_ALIASES[key] === targetKey
+            ) ?? targetKey
             const matchingMutations = selectedMutations.filter(
-                selection => selection.perkKey === perk.key || selection.perkKey === mutationKey
+                selection => selection.perkKey === targetKey || selection.perkKey === mutationKey
             )
 
             // A mutation modifies the matching item perk by its stated percentage.
@@ -88,22 +101,8 @@ function calculateEquippedStats(baseStats, items, sets) {
 
             const normalValue = perk.value * masterworkMultiplier * normalMutationMultiplier
             const maxValue = perk.value * masterworkMultiplier * maxMutationMultiplier
-
-            const itemMainStat = ({ 0: "attack", 1: "defence", 2: "agility" })[Number(item.mainAttribute)]
-            const getTargetKey = key => {
-                if (key === "MAIN_STAT_FLAT" || key === "MAIN_STAT_PERCENT") {
-                    if (!itemMainStat) return null
-                    return key === "MAIN_STAT_FLAT"
-                        ? MAIN_STAT_PERKS[itemMainStat].flat
-                        : MAIN_STAT_PERKS[itemMainStat].percent
-                }
-                return key
-            }
-
-            const normalKey = getTargetKey(perk.key)
-            const maxKey = getTargetKey(perk.key)
-            if (normalKey) add(perks, normalKey, normalValue)
-            if (maxKey) add(maxPerks, maxKey, maxValue)
+            add(perks, targetKey, normalValue)
+            add(maxPerks, targetKey, maxValue)
         }
     }
 
