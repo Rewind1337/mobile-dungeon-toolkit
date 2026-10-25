@@ -62,7 +62,7 @@ function ItemFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, cl
         return (
             <div className='filters flex-row flex-wrap card'>
                 <Button round onClick={() => {setFiltersAdvanced(advanced => !advanced)}} imgAsText text={(advanced ? filterSprites[54] : filterSprites[53])} active={advanced} />
-                <Button round onClick={clearFilters} text={"ALL"} active={Object.values(filters).every((v) => v === null)} />
+                <Button round onClick={clearFilters} text={"ALL"} active={Object.values(filters).every((v) => v === null || v === "")} />
                 <ItemSlotFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <Button round onClick={() => toggleFilter('unique', 'unique')} imgAsText text={filterSprites[42]} active={filters.unique === 'unique'} />
                 <Button round onClick={() => setSortOrder(sortOrder => !sortOrder)} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
