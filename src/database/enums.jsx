@@ -148,6 +148,109 @@ export const RARITY_DEFINITIONS = {
     ANCIENT: { id: 8, name: "ANCIENT" },
 };
 
+
+// Masterwork is only available from Legendary rarity upward.
+// Lower rarities explicitly map to 0 so callers never need to guess a fallback.
+export const MASTERWORK_MAX_LEVEL_BY_RARITY = {
+    [RARITY_DEFINITIONS.COMMON.id]: 0,
+    [RARITY_DEFINITIONS.UNCOMMON.id]: 0,
+    [RARITY_DEFINITIONS.RARE.id]: 0,
+    [RARITY_DEFINITIONS.EPIC.id]: 0,
+    [RARITY_DEFINITIONS.LEGENDARY.id]: 2,
+    [RARITY_DEFINITIONS.MYTHIC.id]: 4,
+    [RARITY_DEFINITIONS.HEROIC.id]: 6,
+    [RARITY_DEFINITIONS.DIVINE.id]: 8,
+    [RARITY_DEFINITIONS.ANCIENT.id]: 10,
+};
+
+export function getMaxMasterworkLevel(rarity) {
+    const rarityId = Number(rarity);
+    return Number.isInteger(rarityId)
+        ? (MASTERWORK_MAX_LEVEL_BY_RARITY[rarityId] ?? 0)
+        : 0;
+}
+
+// Known mutation observations. bonusPercent modifies the selected perk's value.
+// observedOnPerk records where this mutation was seen, not a confirmed restriction.
+export const MASTERWORK_MUTATION_DEFINITIONS = {
+    NO_DEAD_ALLIES: {
+        id: 1,
+        name: "+20% if no allies are dead",
+        bonusPercent: 20,
+        condition: "dead_allies_count_is_zero",
+        observedOnPerk: "AGILITY_PERCENT",
+    },
+    FULL_HEALTH: {
+        id: 2,
+        name: "+35% if HP is at least 100%",
+        bonusPercent: 35,
+        condition: "hp_at_least_100_percent",
+        observedOnPerk: "AGILITY_FLAT",
+    },
+    PERMANENT_SHADOW_DAMAGE: {
+        id: 3,
+        name: "+10% permanently",
+        bonusPercent: 10,
+        condition: "permanent",
+        observedOnPerk: "SHADOW_DAMAGE",
+    },
+    PERMANENT_CRIT_DAMAGE: {
+        id: 4,
+        name: "+25% permanently",
+        bonusPercent: 25,
+        condition: "permanent",
+        observedOnPerk: "CRIT_DAMAGE",
+    },
+    PERMANENT_DEFENCE: {
+        id: 5,
+        name: "+10% permanently",
+        bonusPercent: 10,
+        condition: "permanent",
+        observedOnPerk: "DEFENCE_PERCENT",
+    },
+    PERMANENT_CRIT_CHANCE: {
+        id: 6,
+        name: "+5% permanently",
+        bonusPercent: 5,
+        condition: "permanent",
+        observedOnPerk: "CRIT_CHANCE",
+    },
+    WHILE_DEBUFFED: {
+        id: 7,
+        name: "+35% while debuffed",
+        bonusPercent: 35,
+        condition: "while_debuffed",
+        observedOnPerk: "AGILITY_FLAT",
+    },
+    ULTIMATE_ON_COOLDOWN: {
+        id: 8,
+        name: "+25% while ultimate skill is on cooldown",
+        bonusPercent: 25,
+        condition: "ultimate_skill_on_cooldown",
+        observedOnPerk: "AOE_DAMAGE_REDUCTION",
+    },
+    FIRST_TURN_AGILITY_FLAT: {
+        id: 9,
+        name: "+20% on the first turn",
+        bonusPercent: 20,
+        condition: "first_turn",
+        observedOnPerk: "AGILITY_FLAT",
+    },
+    FIRST_TURN_AGILITY_PERCENT: {
+        id: 10,
+        name: "+20% on the first turn",
+        bonusPercent: 20,
+        condition: "first_turn",
+        observedOnPerk: "AGILITY_PERCENT",
+    },
+};
+
+// A null value means no mutation has been selected for that milestone.
+export const DEFAULT_MASTERWORK_MUTATIONS = {
+    5: null,
+    10: null,
+};
+
 export const RARITY = createNumericEnum(RARITY_DEFINITIONS);
 
 /**
