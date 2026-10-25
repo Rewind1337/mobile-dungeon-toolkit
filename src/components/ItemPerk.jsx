@@ -14,7 +14,8 @@ function ItemPerk({
     noValue = false,
     editable = false,
     multiplier = 1,
-    changeDisabled = false
+    changeDisabled = false,
+    spriteName = name
 }) {
     const [_value, _setValue] = useState(value ?? 0)
     const _perk = PERK_DEFINITIONS[name]
@@ -42,7 +43,7 @@ function ItemPerk({
     return (
         <div className={"item-perk card flex-row"}>
             <div className='text flex-row'>
-                <img width={32} src={perkSprites[name]} />
+                <img width={32} src={perkSprites[spriteName] ?? perkSprites[name]} />
                 {_perk.name}
             </div>
 
