@@ -1,7 +1,6 @@
-import { useLayoutEffect, useRef, useState } from "react"
+import { useState } from "react"
 
 import { elementSprites } from "../database/db_sprites.jsx"
-import { CONSTANTS } from "../database/constants.jsx";
 import { useDynamicList } from "../hooks/useDynamicList.jsx";
 
 const TITANS = [
@@ -20,7 +19,7 @@ function Titan({ id, name, elementSrc, setSelectedTitan }) {
 }
 
 function SubPageTitans({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef }) {
-    const { listHeight, listRef, events } = useDynamicList(() => { }, 0, CONSTANTS.listHeightSubPage);
+    const { listHeight, listRef, events } = useDynamicList(0, true);
     const [selectedTitan, setSelectedTitan] = useState(null);
 
     return (
