@@ -1,7 +1,6 @@
 import { useState } from "react"
 
 import Hero from "./Hero.jsx"
-import { CONSTANTS } from "../database/constants.jsx";
 import { useDynamicList } from "../hooks/useDynamicList.jsx";
 
 const TOWERS = [
@@ -58,7 +57,7 @@ function TowerStage({ id, towerId, setSelectedStage, heroesRef }) {
 }
 
 function SubPageTowers({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef }) {
-    const { listHeight, listRef, events } = useDynamicList(() => { }, 0, CONSTANTS.listHeightSubPage);
+    const { listHeight, listRef, events } = useDynamicList(0, true);
     const [selectedTower, setSelectedTower] = useState(null);
     const [selectedStage, setSelectedStage] = useState(null);
 
