@@ -15,7 +15,8 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
         role: null,
         mainAttribute: null,
         rarity: null,
-        isStarred: null
+        isStarred: null,
+        name: ""
     });
     const [filtersAdvanced, setFiltersAdvanced] = useState(false)
 
@@ -27,7 +28,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
     };
 
     const clearFilters = () => {
-        setFilters({ element: null, role: null, mainAttribute: null, rarity: null, isStarred: null });
+        setFilters({ element: null, role: null, mainAttribute: null, rarity: null, isStarred: null, name: "" });
     };
 
     const filteredHeroes = useMemo(() => {
@@ -37,7 +38,8 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
                 (filters.role === null || heroObj.role === filters.role) &&
                 (filters.mainAttribute === null || heroObj.mainAttribute === filters.mainAttribute) &&
                 (filters.rarity === null || heroObj.rarity === filters.rarity) &&
-                (filters.isStarred === null || heroObj.isStarred === filters.isStarred)
+                (filters.isStarred === null || heroObj.isStarred === filters.isStarred) &&
+                heroObj.name.toLowerCase().includes(filters.name.trim().toLowerCase())
             );
         });
     }, [heroesRef, filters]);
@@ -45,7 +47,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
     return (<>
         <div className='header-big'>
             <div className='flex-row'>
-                <HeroFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} />
+                <HeroFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={(name) => setFilters((prev) => ({ ...prev, name }))} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} />
             </div>{headerText}</div>
         <div className='list hero-list flex-row' ref={listRef} {...events} style={(filtersAdvanced ? { maxHeight: (listHeight - 189)} : { maxHeight: listHeight })}>
             {filteredHeroes.length === 0 ? (

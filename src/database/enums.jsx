@@ -170,79 +170,174 @@ export function getMaxMasterworkLevel(rarity) {
         : 0;
 }
 
-// Known mutation observations. bonusPercent modifies the selected perk's value.
-// observedOnPerk records where this mutation was seen, not a confirmed restriction.
+// Masterwork mutations are grouped by the perk they modify.
+// Each array contains the known mutations observed for that perk; IDs remain stable
+// for existing entries, while new observations receive new IDs.
 export const MASTERWORK_MUTATION_DEFINITIONS = {
-    NO_DEAD_ALLIES: {
-        id: 1,
-        name: "+20% if no allies are dead",
-        bonusPercent: 20,
-        condition: "dead_allies_count_is_zero",
-        observedOnPerk: "AGILITY_PERCENT",
-    },
-    FULL_HEALTH: {
-        id: 2,
-        name: "+35% if HP is at least 100%",
-        bonusPercent: 35,
-        condition: "hp_at_least_100_percent",
-        observedOnPerk: "AGILITY_FLAT",
-    },
-    PERMANENT_SHADOW_DAMAGE: {
-        id: 3,
-        name: "+10% permanently",
-        bonusPercent: 10,
-        condition: "permanent",
-        observedOnPerk: "SHADOW_DAMAGE",
-    },
-    PERMANENT_CRIT_DAMAGE: {
-        id: 4,
-        name: "+25% permanently",
-        bonusPercent: 25,
-        condition: "permanent",
-        observedOnPerk: "CRIT_DAMAGE",
-    },
-    PERMANENT_DEFENCE: {
-        id: 5,
-        name: "+10% permanently",
-        bonusPercent: 10,
-        condition: "permanent",
-        observedOnPerk: "DEFENCE_PERCENT",
-    },
-    PERMANENT_CRIT_CHANCE: {
-        id: 6,
-        name: "+5% permanently",
-        bonusPercent: 5,
-        condition: "permanent",
-        observedOnPerk: "CRIT_CHANCE",
-    },
-    WHILE_DEBUFFED: {
-        id: 7,
-        name: "+35% while debuffed",
-        bonusPercent: 35,
-        condition: "while_debuffed",
-        observedOnPerk: "AGILITY_FLAT",
-    },
-    ULTIMATE_ON_COOLDOWN: {
-        id: 8,
-        name: "+25% while ultimate skill is on cooldown",
-        bonusPercent: 25,
-        condition: "ultimate_skill_on_cooldown",
-        observedOnPerk: "AOE_DAMAGE_REDUCTION",
-    },
-    FIRST_TURN_AGILITY_FLAT: {
-        id: 9,
-        name: "+20% on the first turn",
-        bonusPercent: 20,
-        condition: "first_turn",
-        observedOnPerk: "AGILITY_FLAT",
-    },
-    FIRST_TURN_AGILITY_PERCENT: {
-        id: 10,
-        name: "+20% on the first turn",
-        bonusPercent: 20,
-        condition: "first_turn",
-        observedOnPerk: "AGILITY_PERCENT",
-    },
+    AGILITY_PERCENT: [
+        {
+            id: 1,
+            name: "+20% if no allies are dead",
+            bonusPercent: 20,
+            condition: "dead_allies_count_is_zero",
+        },
+        {
+            id: 10,
+            name: "+20% on the first turn",
+            bonusPercent: 20,
+            condition: "first_turn",
+        },
+    ],
+    AGILITY_FLAT: [
+        {
+            id: 2,
+            name: "+35% if own HP is at least 100%",
+            bonusPercent: 35,
+            condition: "own_hp_at_least_100_percent",
+        },
+        {
+            id: 7,
+            name: "+35% while debuffed",
+            bonusPercent: 35,
+            condition: "while_debuffed",
+        },
+        {
+            id: 9,
+            name: "+20% on the first turn",
+            bonusPercent: 20,
+            condition: "first_turn",
+        },
+    ],
+    SHADOW_DAMAGE: [
+        {
+            id: 3,
+            name: "+10% permanently",
+            bonusPercent: 10,
+            condition: "permanent",
+        },
+    ],
+    DEFENCE_PERCENT: [
+        {
+            id: 5,
+            name: "+10% permanently",
+            bonusPercent: 10,
+            condition: "permanent",
+        },
+    ],
+    HEAL_RECOVERY: [
+        {
+            id: 11,
+            name: "+25% if own HP is below 50%",
+            bonusPercent: 25,
+            condition: "own_hp_below_50_percent",
+        },
+        {
+            id: 12,
+            name: "+25% if exactly 1 ally is dead",
+            bonusPercent: 25,
+            condition: "dead_allies_count_is_one",
+        },
+    ],
+    NATURE_DAMAGE: [
+        {
+            id: 13,
+            name: "+10% permanently",
+            bonusPercent: 10,
+            condition: "permanent",
+        },
+        {
+            id: 14,
+            name: "+20% on the first turn",
+            bonusPercent: 20,
+            condition: "first_turn",
+        },
+        {
+            id: 15,
+            name: "+20% if the primary target is debuffed",
+            bonusPercent: 20,
+            condition: "primary_target_is_debuffed",
+        },
+    ],
+    CRIT_DAMAGE: [
+        {
+            id: 4,
+            name: "+25% permanently",
+            bonusPercent: 25,
+            condition: "permanent",
+        },
+        {
+            id: 16,
+            name: "+50% if the primary target's HP is below 50%",
+            bonusPercent: 50,
+            condition: "primary_target_hp_below_50_percent",
+        },
+        {
+            id: 17,
+            name: "+50% if the primary target's HP is at least 100%",
+            bonusPercent: 50,
+            condition: "primary_target_hp_at_least_100_percent",
+        },
+    ],
+    CRIT_CHANCE: [
+        {
+            id: 6,
+            name: "+5% permanently",
+            bonusPercent: 5,
+            condition: "permanent",
+        },
+        {
+            id: 18,
+            name: "+10% if the primary target's HP is below 50%",
+            bonusPercent: 10,
+            condition: "primary_target_hp_below_50_percent",
+        },
+        {
+            id: 19,
+            name: "+10% if the primary target's HP is at least 100%",
+            bonusPercent: 10,
+            condition: "primary_target_hp_at_least_100_percent",
+        },
+    ],
+    RESISTANCE: [
+        {
+            id: 20,
+            name: "+10% while debuffed",
+            bonusPercent: 10,
+            condition: "while_debuffed",
+        },
+        {
+            id: 21,
+            name: "+10% if own HP is below 50%",
+            bonusPercent: 10,
+            condition: "own_hp_below_50_percent",
+        },
+        {
+            id: 22,
+            name: "+10% on the first turn",
+            bonusPercent: 10,
+            condition: "first_turn",
+        },
+    ],
+    AOE_DAMAGE_REDUCTION: [
+        {
+            id: 8,
+            name: "+25% while the ultimate skill is on cooldown",
+            bonusPercent: 25,
+            condition: "ultimate_skill_on_cooldown",
+        },
+        {
+            id: 23,
+            name: "+25% if own HP is below 50%",
+            bonusPercent: 25,
+            condition: "own_hp_below_50_percent",
+        },
+        {
+            id: 24,
+            name: "+25% while the hero is shielded",
+            bonusPercent: 25,
+            condition: "own_hero_is_shielded",
+        },
+    ],
 };
 
 // A null value means no mutation has been selected for that milestone.
@@ -354,14 +449,15 @@ export const UNIQUE_WEAPON_DEFINITIONS = {
     BLACK_FEATHER_BOW: { id: 308, description: "Primary Skill has a $e chance to inflict Marked on target for 2 turns.", rarityEffect: [1.24, 1.30, 1.36, 1.42] },
     SHADOW_FANGS: { id: 309, description: "+$e damage on targets with Blind.", rarityEffect: [1.05, 1.06, 1.08, 1.10] },
     VORTEX_DANCER: { id: 310, description: "Critical hits have a $e chance to inflict AGI Down on the target for 1 turn.", rarityEffect: [1.40, 1.50, 1.60, 1.70] },
-    RELICFANG_DAGGER: { id: 311, description: "Critical hits have a $e chance to reduce AP of the target by 20%.", rarityEffect: [1.30, 1.36, 1.43, 1.50] },
-    NEEDLE_POINT: { id: 312, description: "Critical hits have a $e chance to inflinct Marked on the target for 1 turn.", rarityEffect: [1.32, 1.40, 1.48, 1.56] },
-    BRUTE_FORCE: { id: 313, description: "Primary Skill has a $e chance to inflict DEF Down on target for 2 turns.", rarityEffect: [1.24, 1.30, 1.36, 1.42] },
-    CLAWTASTROPHE: { id: 314, description: "Ultimate Skill has a $e chance to grant self Crit Chance Up for 2 turns", rarityEffect: [1.30, 1.36, 1.43, 1.50] },
-    STARFALL: { id: 315, description: "At the start of every 3rd turn, heals all allies for $e of own max HP.", rarityEffect: [1.04, 1.06, 1.08, 1.10] },
-    TWILIGHT: { id: 316, description: "Critical hits have a $e chance to dispel 1 Buff from the target.", rarityEffect: [1.40, 1.50, 1.60, 1.70] },
-    DICE_OF_DOOM: { id: 317, description: "Buffs (except Invincibility & Preservation) have a $e chance to extend their Duration by 1 round.", rarityEffect: [1.30, 1.36, 1.43, 1.50] },
-    TUSK_FANG: { id: 318, description: "Ultimate Skill has a $e chance to grant the Caster ATK Up for 2 turns.", rarityEffect: [1.40, 1.50, 1.60, 1.70] },
+    SHADOW_SPIKES: { id: 311, description: "+$e damage on targets with Marked.", rarityEffect: [1.05, 1.06, 1.08, 1.10] },
+    RELICFANG_DAGGER: { id: 312, description: "Critical hits have a $e chance to reduce AP of the target by 20%.", rarityEffect: [1.30, 1.36, 1.43, 1.50] },
+    NEEDLE_POINT: { id: 313, description: "Critical hits have a $e chance to inflinct Marked on the target for 1 turn.", rarityEffect: [1.32, 1.40, 1.48, 1.56] },
+    BRUTE_FORCE: { id: 314, description: "Primary Skill has a $e chance to inflict DEF Down on target for 2 turns.", rarityEffect: [1.24, 1.30, 1.36, 1.42] },
+    CLAWTASTROPHE: { id: 315, description: "Ultimate Skill has a $e chance to grant self Crit Chance Up for 2 turns", rarityEffect: [1.30, 1.36, 1.43, 1.50] },
+    STARFALL: { id: 316, description: "At the start of every 3rd turn, heals all allies for $e of own max HP.", rarityEffect: [1.04, 1.06, 1.08, 1.10] },
+    TWILIGHT: { id: 317, description: "Critical hits have a $e chance to dispel 1 Buff from the target.", rarityEffect: [1.40, 1.50, 1.60, 1.70] },
+    DICE_OF_DOOM: { id: 318, description: "Buffs (except Invincibility & Preservation) have a $e chance to extend their Duration by 1 round.", rarityEffect: [1.30, 1.36, 1.43, 1.50] },
+    TUSK_FANG: { id: 319, description: "Ultimate Skill has a $e chance to grant the Caster ATK Up for 2 turns.", rarityEffect: [1.40, 1.50, 1.60, 1.70] },
 }
 
 // redundant

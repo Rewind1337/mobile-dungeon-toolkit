@@ -643,6 +643,7 @@ import WolfClawsSrc from '../sprites/weapons/unique/wolf_claws.png';
 import CorkscrewKnuckleSrc from '../sprites/weapons/unique/corkscrew_knuckle.png';
 import ShadowFangsSrc from '../sprites/weapons/unique/shadow_fangs.png';
 import VortexDancerSrc from '../sprites/weapons/unique/vortex_dancer.png';
+import ShadowSpikesSrc from '../sprites/weapons/unique/shadow_spikes.png';
 import BruteForceSrc from '../sprites/weapons/unique/brute_force.png';
 import BoneBowSrc from '../sprites/weapons/unique/bone_bow.png';
 import SoulStabberSrc from '../sprites/weapons/unique/soul_stabber.png';
@@ -692,6 +693,10 @@ import NovaHelmetSrc from '../sprites/helmets/sets/nova.png';
 import NovaArmorSrc from '../sprites/armors/sets/nova.png';
 import NovaRingSrc from '../sprites/rings/sets/nova.png';
 import NovaNecklaceSrc from '../sprites/necklaces/sets/nova.png';
+import VanguardHelmetSrc from '../sprites/helmets/sets/vanguard.png';
+import VanguardArmorSrc from '../sprites/armors/sets/vanguard.png';
+import VanguardRingSrc from '../sprites/rings/sets/vanguard.png';
+import VanguardNecklaceSrc from '../sprites/necklaces/sets/vanguard.png';
 
 import CyberHelmetSrc from '../sprites/helmets/sets/cyber.png';
 import CyberArmorSrc from '../sprites/armors/sets/cyber.png';
@@ -715,6 +720,10 @@ import ElementorHelmetSrc from '../sprites/helmets/sets/elementor.png';
 import ElementorArmorSrc from '../sprites/armors/sets/elementor.png';
 import ElementorRingSrc from '../sprites/rings/sets/elementor.png';
 import ElementorNecklaceSrc from '../sprites/necklaces/sets/elementor.png';
+// import GeneralHelmetSrc from '../sprites/helmets/sets/general.png';
+// import GeneralArmorSrc from '../sprites/armors/sets/general.png';
+import GeneralRingSrc from '../sprites/rings/sets/general.png';
+import GeneralNecklaceSrc from '../sprites/necklaces/sets/general.png';
 
 import DragonboneHelmetSrc from '../sprites/helmets/sets/dragonbone.png';
 import DragonboneArmorSrc from '../sprites/armors/sets/dragonbone.png';
@@ -736,6 +745,19 @@ import EclipseHelmetSrc from '../sprites/helmets/sets/eclipse.png';
 import EclipseArmorSrc from '../sprites/armors/sets/eclipse.png';
 import EclipseRingSrc from '../sprites/rings/sets/eclipse.png';
 import EclipseNecklaceSrc from '../sprites/necklaces/sets/eclipse.png';
+import LeonidasHelmetSrc from '../sprites/helmets/sets/leonidas.png';
+import LeonidasArmorSrc from '../sprites/armors/sets/leonidas.png';
+import ShogunHelmetSrc from '../sprites/helmets/sets/shogun.png';
+// import ShogunArmorSrc from '../sprites/armors/sets/shogun.png';
+import ShogunRingSrc from '../sprites/rings/sets/shogun.png';
+import ShogunNecklaceSrc from '../sprites/necklaces/sets/shogun.png';
+
+import CelestialRingSrc from '../sprites/rings/sets/celestial.png';
+import CelestialNecklaceSrc from '../sprites/necklaces/sets/celestial.png';
+import WeaverRingSrc from '../sprites/rings/sets/weaver.png';
+import WeaverNecklaceSrc from '../sprites/necklaces/sets/weaver.png';
+import MysticRingSrc from '../sprites/rings/sets/mystic.png';
+import MysticNecklaceSrc from '../sprites/necklaces/sets/mystic.png';
 
 export const itemSprites = {
     null: NullSrc,
@@ -784,6 +806,7 @@ export const itemSprites = {
     whisper_blade: WhisperBladeSrc,
     shadow_fangs: ShadowFangsSrc,
     needle_point: NeedlePointSrc,
+    shadow_spikes: ShadowSpikesSrc,
     starfire_ballista: StarfireBallistaSrc,
     black_feather_bow: BlackFeatherBowSrc,
     equilibrium: EquilibriumSrc,
@@ -828,6 +851,10 @@ export const itemSprites = {
     nova_armor: NovaArmorSrc,
     nova_ring: NovaRingSrc,
     nova_necklace: NovaNecklaceSrc,
+    vanguard_helmet: VanguardHelmetSrc,
+    vanguard_armor: VanguardArmorSrc,
+    vanguard_ring: VanguardRingSrc,
+    vanguard_necklace: VanguardNecklaceSrc,
 
     cyber_helmet: CyberHelmetSrc,
     cyber_armor: CyberArmorSrc,
@@ -851,6 +878,10 @@ export const itemSprites = {
     elementor_armor: ElementorArmorSrc,
     elementor_ring: ElementorRingSrc,
     elementor_necklace: ElementorNecklaceSrc,
+//    general_helmet: GeneralHelmetSrc,
+//    general_armor: GeneralArmorSrc,
+    general_ring: GeneralRingSrc,
+    general_necklace: GeneralNecklaceSrc,
 
     dragonbone_helmet: DragonboneHelmetSrc,
     dragonbone_armor: DragonboneArmorSrc,
@@ -872,6 +903,19 @@ export const itemSprites = {
     eclipse_armor: EclipseArmorSrc,
     eclipse_ring: EclipseRingSrc,
     eclipse_necklace: EclipseNecklaceSrc,
+    leonidas_helmet: LeonidasHelmetSrc,
+    leonidas_armor: LeonidasArmorSrc,
+    shogun_helmet: ShogunHelmetSrc,
+//    shogun_armor: ShogunArmorSrc,
+    shogun_ring: ShogunRingSrc,
+    shogun_necklace: ShogunNecklaceSrc,
+
+    celestial_ring: CelestialRingSrc,
+    celestial_necklace: CelestialNecklaceSrc,
+    weaver_ring: WeaverRingSrc,
+    weaver_necklace: WeaverNecklaceSrc,
+    mystic_ring: MysticRingSrc,
+    mystic_necklace: MysticNecklaceSrc,
 }
 
 import TwoSetSrc from '../sprites/buttons/twoset.png'

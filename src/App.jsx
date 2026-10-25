@@ -13,6 +13,7 @@ import PageItems from './components/PageItems.jsx'
 import PageHeroes from './components/PageHeroes.jsx'
 import PageSimulators from './components/PageSimulators.jsx'
 import PageTeams from './components/PageTeams.jsx'
+import PageOther from './components/PageOther.jsx'
 
 import { heroSprites, itemSprites, iconSprites, elementSprites, roleSprites, attributeSprites, statusSprites } from './database/db_sprites.jsx'
 import { usePreloadImages } from './hooks/usePreloadImages.jsx'
@@ -207,7 +208,7 @@ function App() {
 
       {pageContent === 'simulator' && <PageSimulators itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
 
-      {pageContent === 'other' && <></>}
+      {pageContent === 'other' && <PageOther itemsRef={itemsRef} />}
 
       {
         pageContent === '' && <div className='flex-row flex-wrap'>

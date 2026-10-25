@@ -14,7 +14,9 @@ function ItemPerk({
     noValue = false,
     editable = false,
     multiplier = 1,
-    changeDisabled = false
+    changeDisabled = false,
+    spriteName = name,
+    hideChangeButton = false
 }) {
     const [_value, _setValue] = useState(value ?? 0)
     const _perk = PERK_DEFINITIONS[name]
@@ -41,36 +43,36 @@ function ItemPerk({
 
     return (
         <div className={"item-perk card flex-row"}>
-            <div className='text flex-row'>
-                <img width={32} src={perkSprites[name]} />
-                {_perk.name}
+            <div className='flex-row'>
+                <img width={32} src={perkSprites[spriteName] ?? perkSprites[name]} />
+                <div className='text perk-name'>{_perk.name}</div>
             </div>
 
             {!noValue && <>
                 {editable
-                    ? <div className='text flex-col'>
-                        <div className='flex-row'>
+                    ? <div className='flex-col no-gaps'>
+                        <div className='flex-row perk-input-row'>
                             <input
                                 type='number'
                                 className='text'
                                 value={displayedValue}
                                 onChange={handleValueChange}
                             />
-                            {isFlatPerk ? " Flat" : " %"}
+                            <div className='text perk-flat-percent'>{isFlatPerk ? " Flat" : " %"}</div>
                         </div>
-                        {multiplier > 1 && <small>Effective: {formatValue(effectiveValue)}{isFlatPerk ? " Flat" : " %"}</small>}
+                        <div className='text perk-effective'>{multiplier > 1 && <small>Effective: {formatValue(effectiveValue)}{isFlatPerk ? " Flat" : " %"}</small>}</div>
                     </div>
                     : <div className='text flex-col'>
-                        <div>{displayedValue}{isFlatPerk ? " Flat" : " %"}</div>
-                        {multiplier > 1 && <small>Effective: {formatValue(effectiveValue)}{isFlatPerk ? " Flat" : " %"}</small>}
+                        <div className='text perk-flat-percent'>{displayedValue}{isFlatPerk ? " Flat" : " %"}</div>
+                        <div className='text perk-effective'>{multiplier > 1 && <small>Effective: {formatValue(effectiveValue)}{isFlatPerk ? " Flat" : " %"}</small>}</div>
                     </div>
                 }
             </>}
 
-            {onClick
-                ? <Button slim text={buttonText} color={buttonColor} disabled={changeDisabled} onClick={() => onClick()} />
-                : <div className='text'>not changeable</div>
-            }
+            {!hideChangeButton && (onClick
+                ? <Button text={buttonText} color={buttonColor} disabled={changeDisabled} onClick={() => onClick()} />
+                : <div className='text perk-not-changeable'>not changeable</div>
+            )}
         </div>
     )
 }

@@ -14,6 +14,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
 
     const [perkSelectionVisible, setPerkSelectionVisible] = useState(false)
     const [possiblePerks, setPossiblePerks] = useState([])
+    const [perkSelectionMainAttribute, setPerkSelectionMainAttribute] = useState(null)
     const [pendingPerkSelection, setPendingPerkSelection] = useState(null)
     // Ref changes do not trigger renders; this revision refreshes memoized lists after save/delete.
     const [, setSavedItemsRevision] = useState(0)
@@ -31,8 +32,21 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
     const handlePerkClick = (itemObj, applyPerk) => {
         const slotName = slotIndexToNameMap[itemObj?.slot]
         setPossiblePerks(POSSIBLE_PERKS[slotName] ?? [])
+        setPerkSelectionMainAttribute(itemObj?.mainAttribute ?? null)
         setPendingPerkSelection(() => applyPerk)
         setPerkSelectionVisible(true)
+    }
+
+    const getPerkSpriteName = name => {
+        const mainStat = perkSelectionMainAttribute == null
+            ? undefined
+            : ({ 0: "attack", 1: "defence", 2: "agility" })[Number(perkSelectionMainAttribute)]
+        const mainStatPerkKeys = {
+            attack: { MAIN_STAT_FLAT: "ATTACK_FLAT", MAIN_STAT_PERCENT: "ATTACK_PERCENT" },
+            defence: { MAIN_STAT_FLAT: "DEFENCE_FLAT", MAIN_STAT_PERCENT: "DEFENCE_PERCENT" },
+            agility: { MAIN_STAT_FLAT: "AGILITY_FLAT", MAIN_STAT_PERCENT: "AGILITY_PERCENT" }
+        }
+        return mainStatPerkKeys[mainStat]?.[name] ?? name
     }
 
     const saveItem = (itemObj) => {
@@ -88,6 +102,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                         <ItemPerk
                             key={perk}
                             name={perk}
+                            spriteName={getPerkSpriteName(perk)}
                             noValue={true}
                             onClick={() => handleSelectPerkClick(perk)}
                             buttonText={"Choose"}

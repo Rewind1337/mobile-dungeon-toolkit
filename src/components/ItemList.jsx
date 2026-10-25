@@ -16,6 +16,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
         slot: null,
         attributeRequirement: null,
         rarity: null,
+        name: "",
     });
     const [filtersAdvanced, setFiltersAdvanced] = useState(false)
 
@@ -37,7 +38,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
     };
 
     const clearFilters = () => {
-        setFilters({ set: null, unique: null, slot: null, attributeRequirement: null, rarity: null });
+        setFilters({ set: null, unique: null, slot: null, attributeRequirement: null, rarity: null, name: "" });
     };
 
     // Memoize filtered items
@@ -49,8 +50,9 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
             const matchesSlot = filters.slot === null || itemObj.slot === filters.slot;
             const matchesAttribute = filters.attributeRequirement === null || itemObj.attributeRequirement === filters.attributeRequirement;
             const matchesRarity = filters.rarity === null || itemObj.rarity === filters.rarity;
+            const matchesName = itemObj.name.toLowerCase().includes(filters.name.trim().toLowerCase());
 
-            return matchesItemType && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity;
+            return matchesItemType && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity && matchesName;
         });
         return result;
     }, [allItems, filters, itemType]);
@@ -58,7 +60,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
     return (<>
         <div className='header-big'>
             <div className='flex-row'>
-                <ItemFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} topOffset={filtersOffset} />
+                <ItemFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={(name) => setFilters((prev) => ({ ...prev, name }))} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} topOffset={filtersOffset} />
             </div>
             {headerText}</div>
 

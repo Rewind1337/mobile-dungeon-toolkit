@@ -58,7 +58,27 @@
     gap: 4px;
 
     .card {
+      padding-right: 1px;
+      padding-top: 0;
+      padding-bottom: 0;
       flex-grow: 1;
+      min-width: 0;
+
+      input {
+        height: 32px;
+      }
+    }
+  }
+
+  .calculated-stats {
+
+    .calculated-stat {
+      font-weight: 600;
+    }
+
+    .calculated-stat div {
+      width: 100%;
+      font-size: 0.9em;
     }
   }
 
