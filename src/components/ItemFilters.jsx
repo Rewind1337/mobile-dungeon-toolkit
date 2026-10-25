@@ -41,17 +41,21 @@ function ItemRarityFilters({ toggleFilter, filters, filterSprites }) {
     </div>)
 }
 
-function ItemFilters({ setFiltersAdvanced, advanced, toggleFilter, clearFilters, filters, filterSprites, topOffset }) {
+function ItemFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, clearFilters, filters, filterSprites, topOffset }) {
     const [sortOrder, setSortOrder] = useState(0) // 0 ascending, 1 descending, unused
 
     if (!advanced) {
         return (
             <div className='filters flex-row card' style={{ top: topOffset }}>
                 <Button round onClick={() => {setFiltersAdvanced(advanced => !advanced)}} imgAsText text={(advanced ? filterSprites[54] : filterSprites[53])} active={advanced} />
-                <Button round onClick={clearFilters} text={"ALL"} active={Object.values(filters).every((v) => v === null)} />
+                <Button round onClick={clearFilters} text={"ALL"} active={Object.values(filters).every((v) => v === null || v === "")} />
                 <ItemSlotFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <Button round onClick={() => toggleFilter('unique', 'unique')} imgAsText text={filterSprites[42]} active={filters.unique === 'unique'} />
                 <Button round onClick={() => setSortOrder(sortOrder => !sortOrder)} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
+                <div className="name-search-filter">
+                    <input className="selectable" type="text" aria-label="Search items by name" placeholder="Search items..." value={filters.name} onChange={(event) => setSearch(event.target.value)} />
+                    {filters.name !== "" && <button type="button" className="search-clear" aria-label="Clear item search" onClick={() => setSearch("")}>×</button>}
+                </div>
             </div>
         )
     } else {
@@ -62,6 +66,10 @@ function ItemFilters({ setFiltersAdvanced, advanced, toggleFilter, clearFilters,
                 <ItemSlotFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <Button round onClick={() => toggleFilter('unique', 'unique')} imgAsText text={filterSprites[42]} active={filters.unique === 'unique'} />
                 <Button round onClick={() => setSortOrder(sortOrder => !sortOrder)} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
+                <div className="name-search-filter">
+                    <input className="selectable" type="text" aria-label="Search items by name" placeholder="Search items..." value={filters.name} onChange={(event) => setSearch(event.target.value)} />
+                    {filters.name !== "" && <button type="button" className="search-clear" aria-label="Clear item search" onClick={() => setSearch("")}>×</button>}
+                </div>
                 <div className='flex-wrapper' />
                 <ItemSetUniqueFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <div className='flex-wrapper' />
