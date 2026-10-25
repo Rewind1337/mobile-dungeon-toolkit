@@ -1,58 +1,58 @@
 
 
 // LEGENDARIES
-import ThorSrc from '../sprites/heroes/thor.png';
-import ArachnotaurSrc from '../sprites/heroes/arachnotaur.png';
-import PrellbogSrc from '../sprites/heroes/prellbog.png';
-import ValkyreSrc from '../sprites/heroes/valkyre.png';
-import JackOLanternSrc from '../sprites/heroes/jack_o_lantern.png';
-import HeadlessHorsemanSrc from '../sprites/heroes/headless_horseman.png';
-import ShroomEmperorSrc from '../sprites/heroes/shroom_emperor.png';
+import ThorSrc from '../sprites/heroes/thor.webp';
+import ArachnotaurSrc from '../sprites/heroes/arachnotaur.webp';
+import PrellbogSrc from '../sprites/heroes/prellbog.webp';
+import ValkyreSrc from '../sprites/heroes/valkyre.webp';
+import JackOLanternSrc from '../sprites/heroes/jack_o_lantern.webp';
+import HeadlessHorsemanSrc from '../sprites/heroes/headless_horseman.webp';
+import ShroomEmperorSrc from '../sprites/heroes/shroom_emperor.webp';
 import UndeadDragonSrc from '../sprites/heroes/undead_dragon.png';
-import DraculaSrc from '../sprites/heroes/dracula.png';
-import MonkSrc from '../sprites/heroes/monk.png';
-import SirenSrc from '../sprites/heroes/siren.png';
-import LilithSrc from '../sprites/heroes/lilith.png';
-import MercySrc from '../sprites/heroes/mercy.png';
-import ShroomEmpressSrc from '../sprites/heroes/shroom_empress.png';
-import CyborkSrc from '../sprites/heroes/cybork.png';
-import KrampusSrc from '../sprites/heroes/krampus.png';
-import ShakesSrc from '../sprites/heroes/shakes.png';
-import FidgetSrc from '../sprites/heroes/fidget.png';
-import SphinxSrc from '../sprites/heroes/sphinx.png';
-import MurderingMassSrc from '../sprites/heroes/murdering_mass.png';
-import BastetSrc from '../sprites/heroes/bastet.png';
-import AnubisSrc from '../sprites/heroes/anubis.png';
-import ProfessorSrc from '../sprites/heroes/professor.png';
-import CthulhuSrc from '../sprites/heroes/cthulhu.png';
-import MedusaSrc from '../sprites/heroes/medusa.png';
-import WendigoSrc from '../sprites/heroes/wendigo.png';
-import AthenaSrc from '../sprites/heroes/athena.png';
-import HeimdallSrc from '../sprites/heroes/heimdall.png';
-import HephaestusSrc from '../sprites/heroes/hephaestus.png';
-import GravitatorSrc from '../sprites/heroes/gravitator.png';
-import PhoenixSrc from '../sprites/heroes/phoenix.png';
-import VoidAssassinSrc from '../sprites/heroes/void_assassin.png';
-import ThorneSrc from '../sprites/heroes/thorne.png';
-import PeleSrc from '../sprites/heroes/pele.png';
-import JackbotSrc from '../sprites/heroes/jackbot.png';
-import EmperorFedgetSrc from '../sprites/heroes/emperor_fedget.png';
-import GoblinShredderSrc from '../sprites/heroes/goblin_shredder.png';
-import IsoldeSrc from '../sprites/heroes/isolde.png';
-import LokiSrc from '../sprites/heroes/loki.png';
-import AphroditeSrc from '../sprites/heroes/aphrodite.png';
-import OdinSrc from '../sprites/heroes/odin.png';
-import MuzenSrc from '../sprites/heroes/muzen.png';
-import SleipnirSrc from '../sprites/heroes/sleipnir.png';
-import MurdermachineSrc from '../sprites/heroes/murdermachine.png';
+import DraculaSrc from '../sprites/heroes/dracula.webp';
+import MonkSrc from '../sprites/heroes/monk.webp';
+import SirenSrc from '../sprites/heroes/siren.webp';
+import LilithSrc from '../sprites/heroes/lilith.webp';
+import MercySrc from '../sprites/heroes/mercy.webp';
+import ShroomEmpressSrc from '../sprites/heroes/shroom_empress.webp';
+import CyborkSrc from '../sprites/heroes/cybork.webp';
+import KrampusSrc from '../sprites/heroes/krampus.webp';
+import ShakesSrc from '../sprites/heroes/shakes.webp';
+import FidgetSrc from '../sprites/heroes/fidget.webp';
+import SphinxSrc from '../sprites/heroes/sphinx.webp';
+import MurderingMassSrc from '../sprites/heroes/murdering_mass.webp';
+import BastetSrc from '../sprites/heroes/bastet.webp';
+import AnubisSrc from '../sprites/heroes/anubis.webp';
+import ProfessorSrc from '../sprites/heroes/professor.webp';
+import CthulhuSrc from '../sprites/heroes/cthulhu.webp';
+import MedusaSrc from '../sprites/heroes/medusa.webp';
+import WendigoSrc from '../sprites/heroes/wendigo.webp';
+import AthenaSrc from '../sprites/heroes/athena.webp';
+import HeimdallSrc from '../sprites/heroes/heimdall.webp';
+import HephaestusSrc from '../sprites/heroes/hephaestus.webp';
+import GravitatorSrc from '../sprites/heroes/gravitator.webp';
+import PhoenixSrc from '../sprites/heroes/phoenix.webp';
+import VoidAssassinSrc from '../sprites/heroes/void_assassin.webp';
+import ThorneSrc from '../sprites/heroes/thorne.webp';
+import PeleSrc from '../sprites/heroes/pele.webp';
+import JackbotSrc from '../sprites/heroes/jackbot.webp';
+import EmperorFedgetSrc from '../sprites/heroes/emperor_fedget.webp';
+import GoblinShredderSrc from '../sprites/heroes/goblin_shredder.webp';
+import IsoldeSrc from '../sprites/heroes/isolde.webp';
+import LokiSrc from '../sprites/heroes/loki.webp';
+import AphroditeSrc from '../sprites/heroes/aphrodite.webp';
+import OdinSrc from '../sprites/heroes/odin.webp';
+import MuzenSrc from '../sprites/heroes/muzen.webp';
+import SleipnirSrc from '../sprites/heroes/sleipnir.webp';
+import MurdermachineSrc from '../sprites/heroes/murdermachine.webp';
 import DrillbertSrc from '../sprites/heroes/drillbert.png';
-import ArmadraxSrc from '../sprites/heroes/armadrax.png';
-import BeholderSrc from '../sprites/heroes/beholder.png';
-import CorneliusPrimeSrc from '../sprites/heroes/cornelius_prime.png';
-import BlackSkullOverlordSrc from '../sprites/heroes/black_skull_overlord.png';
-import DavyJaneSrc from '../sprites/heroes/davy_jane.png';
-import HadesSrc from '../sprites/heroes/hades.png';
-import LuciferSrc from '../sprites/heroes/lucifer.png';
+import ArmadraxSrc from '../sprites/heroes/armadrax.webp';
+import BeholderSrc from '../sprites/heroes/beholder.webp';
+import CorneliusPrimeSrc from '../sprites/heroes/cornelius_prime.webp';
+import BlackSkullOverlordSrc from '../sprites/heroes/black_skull_overlord.webp';
+import DavyJaneSrc from '../sprites/heroes/davy_jane.webp';
+import HadesSrc from '../sprites/heroes/hades.webp';
+import LuciferSrc from '../sprites/heroes/lucifer.webp';
 
 // 03.04. added
 import HighPriestAureusSrc from '../sprites/heroes/high_priest_aureus.png'
@@ -81,70 +81,70 @@ import AeternaSrc from '../sprites/heroes/aeterna.png'
 import HizumiExeSrc from '../sprites/heroes/hizumi_exe.png'
 
 // EPICS
-import AliceSrc from '../sprites/heroes/alice.png';
-import SylvannaSrc from '../sprites/heroes/sylvanna.png';
-import CatalinaSrc from '../sprites/heroes/catalina.png';
-import DrPestilenceSrc from '../sprites/heroes/dr__pestilence.png';
-import YulambSrc from '../sprites/heroes/yulamb.png';
-import CorneliusSrc from '../sprites/heroes/cornelius.png';
-import OrkdozerSrc from '../sprites/heroes/orkdozer.png';
-import ConstructSrc from '../sprites/heroes/construct.png';
-import MonikaSrc from '../sprites/heroes/monika.png';
-import WerewolfSrc from '../sprites/heroes/werewolf.png';
-import BanditCaptainSrc from '../sprites/heroes/bandit_captain.png';
-import GolemSrc from '../sprites/heroes/golem.png';
-import ScourgeSrc from '../sprites/heroes/scourge.png';
-import RagnorSrc from '../sprites/heroes/ragnor.png';
-import FrankensteinSrc from '../sprites/heroes/frankenstein.png';
-import HermesSrc from '../sprites/heroes/hermes.png';
-import DroneSrc from '../sprites/heroes/drone.png';
-import PredatorSrc from '../sprites/heroes/predator.png';
-import AssassinSrc from '../sprites/heroes/assassin.png';
-import JackTheRipperSrc from '../sprites/heroes/jack_the_ripper.png';
-import RobynSrc from '../sprites/heroes/robyn.png';
-import BadgererSrc from '../sprites/heroes/badgerer.png';
-import CandyElementalSrc from '../sprites/heroes/candy_elemental.png';
-import OilElementalSrc from '../sprites/heroes/oil_elemental.png';
-import JoanneSrc from '../sprites/heroes/joanne.png';
-import BlackSkullMageSrc from '../sprites/heroes/black_skull_mage.png';
-import MargretheSrc from '../sprites/heroes/margrethe.png';
-import BansheeSrc from '../sprites/heroes/banshee.png';
-import TaurusSrc from '../sprites/heroes/taurus.png';
-import LotteSrc from '../sprites/heroes/lotte.png';
-import GondolfSrc from '../sprites/heroes/gondolf.png';
-import AlienSrc from '../sprites/heroes/alien.png';
-import LegbaSrc from '../sprites/heroes/legba.png';
-import UnicornSrc from '../sprites/heroes/unicorn.png';
-import IceWormSrc from '../sprites/heroes/ice_worm.png';
-import NerissaSrc from '../sprites/heroes/nerissa.png';
-import CleoSrc from '../sprites/heroes/cleo.png';
-import GnarlerSrc from '../sprites/heroes/gnarler.png';
-import BusterSrc from '../sprites/heroes/buster.png';
-import BuzzfreakSrc from '../sprites/heroes/buzzfreak.png';
-import MirageSrc from '../sprites/heroes/mirage.png';
-import DesertRangerSrc from '../sprites/heroes/desert_ranger.png';
-import DoctressSrc from '../sprites/heroes/doctress.png';
-import AqualonSrc from '../sprites/heroes/aqualon.png'
-import RudolphSrc from '../sprites/heroes/rudolph.png';
-import OrcaSrc from '../sprites/heroes/orca.png';
-import OrkopterSrc from '../sprites/heroes/orkopter.png';
-import WitchSrc from '../sprites/heroes/witch.png';
-import FlameBruiserSrc from '../sprites/heroes/flame_bruiser.png';
-import DrorcSrc from '../sprites/heroes/drorc.png';
-import RiftProtectorSrc from '../sprites/heroes/rift_protector.png';
-import AxolottySrc from '../sprites/heroes/axolotty.png';
-import BonnieBulletSrc from '../sprites/heroes/bonnie_bullet.png';
-import YaotlSrc from '../sprites/heroes/yaotl.png';
-import BlackSkullWarriorSrc from '../sprites/heroes/black_skull_warrior.png';
-import CyntrixSrc from '../sprites/heroes/cyntrix.png';
+import AliceSrc from '../sprites/heroes/alice.webp';
+import SylvannaSrc from '../sprites/heroes/sylvanna.webp';
+import CatalinaSrc from '../sprites/heroes/catalina.webp';
+import DrPestilenceSrc from '../sprites/heroes/dr__pestilence.webp';
+import YulambSrc from '../sprites/heroes/yulamb.webp';
+import CorneliusSrc from '../sprites/heroes/cornelius.webp';
+import OrkdozerSrc from '../sprites/heroes/orkdozer.webp';
+import ConstructSrc from '../sprites/heroes/construct.webp';
+import MonikaSrc from '../sprites/heroes/monika.webp';
+import WerewolfSrc from '../sprites/heroes/werewolf.webp';
+import BanditCaptainSrc from '../sprites/heroes/bandit_captain.webp';
+import GolemSrc from '../sprites/heroes/golem.webp';
+import ScourgeSrc from '../sprites/heroes/scourge.webp';
+import RagnorSrc from '../sprites/heroes/ragnor.webp';
+import FrankensteinSrc from '../sprites/heroes/frankenstein.webp';
+import HermesSrc from '../sprites/heroes/hermes.webp';
+import DroneSrc from '../sprites/heroes/drone.webp';
+import PredatorSrc from '../sprites/heroes/predator.webp';
+import AssassinSrc from '../sprites/heroes/assassin.webp';
+import JackTheRipperSrc from '../sprites/heroes/jack_the_ripper.webp';
+import RobynSrc from '../sprites/heroes/robyn.webp';
+import BadgererSrc from '../sprites/heroes/badgerer.webp';
+import CandyElementalSrc from '../sprites/heroes/candy_elemental.webp';
+import OilElementalSrc from '../sprites/heroes/oil_elemental.webp';
+import JoanneSrc from '../sprites/heroes/joanne.webp';
+import BlackSkullMageSrc from '../sprites/heroes/black_skull_mage.webp';
+import MargretheSrc from '../sprites/heroes/margrethe.webp';
+import BansheeSrc from '../sprites/heroes/banshee.webp';
+import TaurusSrc from '../sprites/heroes/taurus.webp';
+import LotteSrc from '../sprites/heroes/lotte.webp';
+import GondolfSrc from '../sprites/heroes/gondolf.webp';
+import AlienSrc from '../sprites/heroes/alien.webp';
+import LegbaSrc from '../sprites/heroes/legba.webp';
+import UnicornSrc from '../sprites/heroes/unicorn.webp';
+import IceWormSrc from '../sprites/heroes/ice_worm.webp';
+import NerissaSrc from '../sprites/heroes/nerissa.webp';
+import CleoSrc from '../sprites/heroes/cleo.webp';
+import GnarlerSrc from '../sprites/heroes/gnarler.webp';
+import BusterSrc from '../sprites/heroes/buster.webp';
+import BuzzfreakSrc from '../sprites/heroes/buzzfreak.webp';
+import MirageSrc from '../sprites/heroes/mirage.webp';
+import DesertRangerSrc from '../sprites/heroes/desert_ranger.webp';
+import DoctressSrc from '../sprites/heroes/doctress.webp';
+import AqualonSrc from '../sprites/heroes/aqualon.webp'
+import RudolphSrc from '../sprites/heroes/rudolph.webp';
+import OrcaSrc from '../sprites/heroes/orca.webp';
+import OrkopterSrc from '../sprites/heroes/orkopter.webp';
+import WitchSrc from '../sprites/heroes/witch.webp';
+import FlameBruiserSrc from '../sprites/heroes/flame_bruiser.webp';
+import DrorcSrc from '../sprites/heroes/drorc.webp';
+import RiftProtectorSrc from '../sprites/heroes/rift_protector.webp';
+import AxolottySrc from '../sprites/heroes/axolotty.webp';
+import BonnieBulletSrc from '../sprites/heroes/bonnie_bullet.webp';
+import YaotlSrc from '../sprites/heroes/yaotl.webp';
+import BlackSkullWarriorSrc from '../sprites/heroes/black_skull_warrior.webp';
+import CyntrixSrc from '../sprites/heroes/cyntrix.webp';
 import WoolinatorSrc from '../sprites/heroes/woolinator.png';
-import AtomicSeagullSrc from '../sprites/heroes/atomic_seagull.png';
-import WarBardSrc from '../sprites/heroes/war_bard.png';
-import RamgorSrc from '../sprites/heroes/ramgor.png';
-import DjinnSrc from '../sprites/heroes/djinn.png';
-import KingCrabSrc from '../sprites/heroes/king_crab.png';
-import NeanderthalSrc from '../sprites/heroes/neanderthal.png';
-import JotunnSrc from '../sprites/heroes/jotunn.png';
+import AtomicSeagullSrc from '../sprites/heroes/atomic_seagull.webp';
+import WarBardSrc from '../sprites/heroes/war_bard.webp';
+import RamgorSrc from '../sprites/heroes/ramgor.webp';
+import DjinnSrc from '../sprites/heroes/djinn.webp';
+import KingCrabSrc from '../sprites/heroes/king_crab.webp';
+import NeanderthalSrc from '../sprites/heroes/neanderthal.webp';
+import JotunnSrc from '../sprites/heroes/jotunn.webp';
 
 // 03.04. added
 import WineSlimeSrc from '../sprites/heroes/wine_slime.png'
@@ -177,111 +177,112 @@ import RodentRangersSrc from '../sprites/heroes/rodent_rangers.png'
 import NautorSrc from '../sprites/heroes/nautor.png'
 
 // RARES
-import BagHeadSrc from '../sprites/heroes/bag_head.png';
-import CircusBoxerSrc from '../sprites/heroes/circus_boxer.png';
-import SkeletonWarriorSrc from '../sprites/heroes/skeleton_warrior.png';
-import ZombieGruntSrc from '../sprites/heroes/zombie_grunt.png';
-import WolfSrc from '../sprites/heroes/wolf.png';
-import CursedPirateSrc from '../sprites/heroes/cursed_pirate.png';
-import GrilledChickenSrc from '../sprites/heroes/grilled_chicken.png';
-import CrookSrc from '../sprites/heroes/crook.png';
-import GraveDiggerSrc from '../sprites/heroes/grave_digger.png';
-import MummySrc from '../sprites/heroes/mummy.png';
-import OrkitectSrc from '../sprites/heroes/orkitect.png';
-import CursedGoatSrc from '../sprites/heroes/cursed_goat.png';
-import SuccubusSrc from '../sprites/heroes/succubus.png';
-import VoodooDollSrc from '../sprites/heroes/voodoo_doll.png';
-import ExtraterrestrialSrc from '../sprites/heroes/extraterrestrial.png';
-import LabRatSrc from '../sprites/heroes/lab_rat.png';
-import ImpSrc from '../sprites/heroes/imp.png';
-import SoulSrc from '../sprites/heroes/soul.png';
-import MuncherSrc from '../sprites/heroes/muncher.png';
-import InfectedMushroomSrc from '../sprites/heroes/infected_mushroom.png';
-import PumpkinManSrc from '../sprites/heroes/pumpkin_man.png';
-import BrainiacSrc from '../sprites/heroes/brainiac.png';
-import DraculasBridesSrc from '../sprites/heroes/draculas_brides.png';
-import ForestTerrorSrc from '../sprites/heroes/forest_terror.png';
-import FireElementalSrc from '../sprites/heroes/fire_elemental.png';
-import KillerBunnySrc from '../sprites/heroes/killer_bunny.png';
-import NagaSrc from '../sprites/heroes/naga.png';
-import BeaverSrc from '../sprites/heroes/beaver.png';
-import RaptorSrc from '../sprites/heroes/raptor.png';
-import WatcherSrc from '../sprites/heroes/watcher.png';
-import FreezerGoatSrc from '../sprites/heroes/freezer_goat.png';
-import FrogPrinceSrc from '../sprites/heroes/frog_prince.png';
-import MimicToiletSrc from '../sprites/heroes/mimic_toilet.png';
-import ArachneSrc from '../sprites/heroes/arachne.png';
-import HarpySrc from '../sprites/heroes/harpy.png';
-import BattleBotSrc from '../sprites/heroes/battle_bot.png';
-import JollySrc from '../sprites/heroes/jolly.png';
-import NutcrackerSrc from '../sprites/heroes/nutcracker.png';
-import ClawMachineSrc from '../sprites/heroes/claw_machine.png';
-import CooklinSrc from '../sprites/heroes/cooklin.png';
-import LightFlySrc from '../sprites/heroes/light_fly.png';
-import EarthwormSrc from '../sprites/heroes/earthworm.png';
+import BagHeadSrc from '../sprites/heroes/bag_head.webp';
+import CircusBoxerSrc from '../sprites/heroes/circus_boxer.webp';
+import SkeletonWarriorSrc from '../sprites/heroes/skeleton_warrior.webp';
+import ZombieGruntSrc from '../sprites/heroes/zombie_grunt.webp';
+import WolfSrc from '../sprites/heroes/wolf.webp';
+import CursedPirateSrc from '../sprites/heroes/cursed_pirate.webp';
+import GrilledChickenSrc from '../sprites/heroes/grilled_chicken.webp';
+import CrookSrc from '../sprites/heroes/crook.webp';
+import GraveDiggerSrc from '../sprites/heroes/grave_digger.webp';
+import MummySrc from '../sprites/heroes/mummy.webp';
+import OrkitectSrc from '../sprites/heroes/orkitect.webp';
+import CursedGoatSrc from '../sprites/heroes/cursed_goat.webp';
+import SuccubusSrc from '../sprites/heroes/succubus.webp';
+import VoodooDollSrc from '../sprites/heroes/voodoo_doll.webp';
+import ExtraterrestrialSrc from '../sprites/heroes/extraterrestrial.webp';
+import LabRatSrc from '../sprites/heroes/lab_rat.webp';
+import ImpSrc from '../sprites/heroes/imp.webp';
+import SoulSrc from '../sprites/heroes/soul.webp';
+import MuncherSrc from '../sprites/heroes/muncher.webp';
+import InfectedMushroomSrc from '../sprites/heroes/infected_mushroom.webp';
+import PumpkinManSrc from '../sprites/heroes/pumpkin_man.webp';
+import BrainiacSrc from '../sprites/heroes/brainiac.webp';
+import DraculasBridesSrc from '../sprites/heroes/draculas_brides.webp';
+import ForestTerrorSrc from '../sprites/heroes/forest_terror.webp';
+import FireElementalSrc from '../sprites/heroes/fire_elemental.webp';
+import KillerBunnySrc from '../sprites/heroes/killer_bunny.webp';
+import NagaSrc from '../sprites/heroes/naga.webp';
+import BeaverSrc from '../sprites/heroes/beaver.webp';
+import RaptorSrc from '../sprites/heroes/raptor.webp';
+import WatcherSrc from '../sprites/heroes/watcher.webp';
+import FreezerGoatSrc from '../sprites/heroes/freezer_goat.webp';
+import FrogPrinceSrc from '../sprites/heroes/frog_prince.webp';
+import MimicToiletSrc from '../sprites/heroes/mimic_toilet.webp';
+import ArachneSrc from '../sprites/heroes/arachne.webp';
+import HarpySrc from '../sprites/heroes/harpy.webp';
+import BattleBotSrc from '../sprites/heroes/battle_bot.webp';
+import JollySrc from '../sprites/heroes/jolly.webp';
+import NutcrackerSrc from '../sprites/heroes/nutcracker.webp';
+import ClawMachineSrc from '../sprites/heroes/claw_machine.webp';
+import CooklinSrc from '../sprites/heroes/cooklin.webp';
+import LightFlySrc from '../sprites/heroes/light_fly.webp';
+import EarthwormSrc from '../sprites/heroes/earthworm.webp';
 import TortureDummySrc from '../sprites/heroes/torture_dummy.png';
-import MoleTamerSrc from '../sprites/heroes/mole_tamer.png';
-import TurboHareSrc from '../sprites/heroes/turbo_hare.png';
-import ManBatSrc from '../sprites/heroes/man_bat.png';
+import MoleTamerSrc from '../sprites/heroes/mole_tamer.webp';
+import TurboHareSrc from '../sprites/heroes/turbo_hare.webp';
+import ManBatSrc from '../sprites/heroes/man_bat.webp';
 import ParticleReaverSrc from '../sprites/heroes/particle_reaver.png';
 
 // 02.09. added (missed)
 import AsudemSrc from '../sprites/heroes/asudem.png'
-import PiperSrc from '../sprites/heroes/piper.png'
+import PiperSrc from '../sprites/heroes/piper.webp'
 
 // 24.10. added
 import MarianaSrc from '../sprites/heroes/mariana.png'
 import BobbybotSrc from '../sprites/heroes/bobbybot.png'
 
 // UNCOMMONS
-import GhoulSrc from '../sprites/heroes/ghoul.png';
-import ButtWithEarsSrc from '../sprites/heroes/butt_with_ears.png';
-import ScarabSrc from '../sprites/heroes/scarab.png';
-import SkeletonSrc from '../sprites/heroes/skeleton.png';
-import ChickletSrc from '../sprites/heroes/chicklet.png';
-import ScorpionSrc from '../sprites/heroes/scorpion.png';
-import ZombieSrc from '../sprites/heroes/zombie.png';
-import GingerbreadBoySrc from '../sprites/heroes/gingerbread_boy.png';
-import LabApeSrc from '../sprites/heroes/lab_ape.png';
-import SlimeSrc from '../sprites/heroes/slime.png';
-import GhostSrc from '../sprites/heroes/ghost.png';
-import SheepSrc from '../sprites/heroes/sheep.png';
-import SnakeSrc from '../sprites/heroes/snake.png';
-import CockatriceSrc from '../sprites/heroes/cockatrice.png';
-import SeagullSrc from '../sprites/heroes/seagull.png';
-import CannonScavengerSrc from '../sprites/heroes/cannon_scavenger.png';
-import RottenKittySrc from '../sprites/heroes/rotten_kitty.png';
-import GargoyleSrc from '../sprites/heroes/gargoyle.png';
-import LandDiverSrc from '../sprites/heroes/land_diver.png';
-import RatSrc from '../sprites/heroes/rat.png';
-import GlompfSrc from '../sprites/heroes/glompf.png';
-import BatSrc from '../sprites/heroes/bat.png';
-import VultureSrc from '../sprites/heroes/vulture.png';
-import SeagullMeanSrc from '../sprites/heroes/seagull_mean.png';
-import SnowmanSrc from '../sprites/heroes/snowman.png';
-import TentacleSrc from '../sprites/heroes/tentacle.png';
-import MosquitoSrc from '../sprites/heroes/mosquito.png';
-import MallorcSrc from '../sprites/heroes/mallorc.png';
-import MagmaBlobbySrc from '../sprites/heroes/magma_blobby.png';
-import IrradieelSrc from '../sprites/heroes/irradieel.png';
-import BlockWorkerSrc from '../sprites/heroes/block_worker.png';
+import GhoulSrc from '../sprites/heroes/ghoul.webp';
+import ButtWithEarsSrc from '../sprites/heroes/butt_with_ears.webp';
+import ScarabSrc from '../sprites/heroes/scarab.webp';
+import SkeletonSrc from '../sprites/heroes/skeleton.webp';
+import ChickletSrc from '../sprites/heroes/chicklet.webp';
+import ScorpionSrc from '../sprites/heroes/scorpion.webp';
+import ZombieSrc from '../sprites/heroes/zombie.webp';
+import GingerbreadBoySrc from '../sprites/heroes/gingerbread_boy.webp';
+import LabApeSrc from '../sprites/heroes/lab_ape.webp';
+import SlimeSrc from '../sprites/heroes/slime.webp';
+import GhostSrc from '../sprites/heroes/ghost.webp';
+import SheepSrc from '../sprites/heroes/sheep.webp';
+import SnakeSrc from '../sprites/heroes/snake.webp';
+import CockatriceSrc from '../sprites/heroes/cockatrice.webp';
+import SeagullSrc from '../sprites/heroes/seagull.webp';
+import CannonScavengerSrc from '../sprites/heroes/cannon_scavenger.webp';
+import RottenKittySrc from '../sprites/heroes/rotten_kitty.webp';
+import GargoyleSrc from '../sprites/heroes/gargoyle.webp';
+import LandDiverSrc from '../sprites/heroes/land_diver.webp';
+import RatSrc from '../sprites/heroes/rat.webp';
+import GlompfSrc from '../sprites/heroes/glompf.webp';
+import BatSrc from '../sprites/heroes/bat.webp';
+import VultureSrc from '../sprites/heroes/vulture.webp';
+import SeagullMeanSrc from '../sprites/heroes/seagull_mean.webp';
+import SnowmanSrc from '../sprites/heroes/snowman.webp';
+import TentacleSrc from '../sprites/heroes/tentacle.webp';
+import MosquitoSrc from '../sprites/heroes/mosquito.webp';
+import MallorcSrc from '../sprites/heroes/mallorc.webp';
+import MagmaBlobbySrc from '../sprites/heroes/magma_blobby.webp';
+import IrradieelSrc from '../sprites/heroes/irradieel.webp';
+import BlockWorkerSrc from '../sprites/heroes/block_worker.webp';
 
 // VARIANTS & UNOBTAINABLE
-import ShieldMaidenSrc from '../sprites/heroes/shield_maiden.png';
-import CentaurSrc from '../sprites/heroes/centaur.png';
-import DummySrc from '../sprites/heroes/dummy.png';
+import ShieldMaidenSrc from '../sprites/heroes/shield_maiden.webp';
+import CentaurSrc from '../sprites/heroes/centaur.webp';
+import DummySrc from '../sprites/heroes/dummy.webp';
 
-import HermitCrabSrc from '../sprites/heroes/hermit_crab.png';
-import HermitCrabGreenSrc from '../sprites/heroes/hermit_crab_green.png';
-import HermitCrabRedSrc from '../sprites/heroes/hermit_crab_red.png';
+import HermitCrabSrc from '../sprites/heroes/hermit_crab.webp';
+import HermitCrabGreenSrc from '../sprites/heroes/hermit_crab_green.webp';
+import HermitCrabRedSrc from '../sprites/heroes/hermit_crab_red.webp';
 import GargoyleGreenSrc from '../sprites/heroes/gargoyle_green.png';
 import GargoyleRedSrc from '../sprites/heroes/gargoyle_red.png';
 import GlompfRedSrc from '../sprites/heroes/glompf_red.png';
 import GlompfBlueSrc from '../sprites/heroes/glompf_blue.png';
 import SnakeStripedSrc from '../sprites/heroes/snake_striped.png';
 import SnakeGreenSrc from '../sprites/heroes/snake_green.png';
-import CrabSrc from '../sprites/heroes/crab.png';
+import CrabSrc from '../sprites/heroes/crab.webp';
 import CrabGreenSrc from '../sprites/heroes/crab_green.png';
+import CrabRedSrc from '../sprites/heroes/crab_red.webp';
 import ScorpionBlueSrc from '../sprites/heroes/scorpion_blue.png';
 import CockatriceBlueSrc from '../sprites/heroes/cockatrice_blue.png';
 import SkeletonBlueSrc from '../sprites/heroes/skeleton_blue.png';
@@ -586,6 +587,7 @@ export const heroSprites = {
     snake_green: SnakeGreenSrc,
     crab: CrabSrc,
     crab_green: CrabGreenSrc,
+    crab_red: CrabRedSrc,
     scorpion_blue: ScorpionBlueSrc,
     cockatrice_blue: CockatriceBlueSrc,
     skeleton_blue: SkeletonBlueSrc,
@@ -720,7 +722,7 @@ import ElementorHelmetSrc from '../sprites/helmets/sets/elementor.png';
 import ElementorArmorSrc from '../sprites/armors/sets/elementor.png';
 import ElementorRingSrc from '../sprites/rings/sets/elementor.png';
 import ElementorNecklaceSrc from '../sprites/necklaces/sets/elementor.png';
-// import GeneralHelmetSrc from '../sprites/helmets/sets/general.png';
+import GeneralHelmetSrc from '../sprites/helmets/sets/general.png';
 // import GeneralArmorSrc from '../sprites/armors/sets/general.png';
 import GeneralRingSrc from '../sprites/rings/sets/general.png';
 import GeneralNecklaceSrc from '../sprites/necklaces/sets/general.png';
@@ -748,7 +750,7 @@ import EclipseNecklaceSrc from '../sprites/necklaces/sets/eclipse.png';
 import LeonidasHelmetSrc from '../sprites/helmets/sets/leonidas.png';
 import LeonidasArmorSrc from '../sprites/armors/sets/leonidas.png';
 import ShogunHelmetSrc from '../sprites/helmets/sets/shogun.png';
-// import ShogunArmorSrc from '../sprites/armors/sets/shogun.png';
+import ShogunArmorSrc from '../sprites/armors/sets/shogun.png';
 import ShogunRingSrc from '../sprites/rings/sets/shogun.png';
 import ShogunNecklaceSrc from '../sprites/necklaces/sets/shogun.png';
 
@@ -878,7 +880,7 @@ export const itemSprites = {
     elementor_armor: ElementorArmorSrc,
     elementor_ring: ElementorRingSrc,
     elementor_necklace: ElementorNecklaceSrc,
-//    general_helmet: GeneralHelmetSrc,
+    general_helmet: GeneralHelmetSrc,
 //    general_armor: GeneralArmorSrc,
     general_ring: GeneralRingSrc,
     general_necklace: GeneralNecklaceSrc,
@@ -906,7 +908,7 @@ export const itemSprites = {
     leonidas_helmet: LeonidasHelmetSrc,
     leonidas_armor: LeonidasArmorSrc,
     shogun_helmet: ShogunHelmetSrc,
-//    shogun_armor: ShogunArmorSrc,
+    shogun_armor: ShogunArmorSrc,
     shogun_ring: ShogunRingSrc,
     shogun_necklace: ShogunNecklaceSrc,
 
