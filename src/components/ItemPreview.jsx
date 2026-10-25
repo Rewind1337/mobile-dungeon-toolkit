@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { CONSTANTS } from '../database/constants.jsx'
-import { PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById, getItemPerkCount } from '../database/enums.jsx'
+import { DEFAULT_MASTERWORK_MUTATIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById, getItemPerkCount, getMaxMasterworkLevel } from '../database/enums.jsx'
 import { iconSprites } from '../database/db_sprites.jsx'
 
 import Button from './Button.jsx'
@@ -17,6 +17,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
     const [selectedRarity, setSelectedRarity] = useState(null)
     const [selectedLevel, setSelectedLevel] = useState(1)
     const [selectedMasterworkLevel, setSelectedMasterworkLevel] = useState(0)
+    const [selectedItemDamaged, setSelectedItemDamaged] = useState(false)
     const [selectedPerks, setSelectedPerks] = useState([])
     const [selectedPerkValues, setSelectedPerkValues] = useState([])
     const [fixedPerkValues, setFixedPerkValues] = useState([])
@@ -79,7 +80,8 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
         setItemObj(selectedItem)
         setSelectedRarity(rarity)
         setSelectedLevel(Number(selectedItem.level) || 1)
-        setSelectedMasterworkLevel(Math.max(0, Math.min(10, Math.trunc(Number(selectedItem.masterworkLevel) || 0))))
+        setSelectedMasterworkLevel(Math.max(0, Math.min(getMaxMasterworkLevel(rarity), Math.trunc(Number(selectedItem.masterworkLevel) || 0))))
+        setSelectedItemDamaged(Boolean(selectedItem.isDamaged))
         setSelectedPerks(perkSlots.perks)
         setSelectedPerkValues(perkSlots.values)
         setFixedPerkValues((selectedItem.fixedPerks ?? []).map(perk => Number(perk.value ?? 0)))
@@ -91,12 +93,13 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
         const rarity = Math.max(minimumRarity, Math.min(8, Number(nextRarity) || minimumRarity))
         const perkSlots = makePerkSlots({ ...itemObj, perks: selectedPerks, perkValues: selectedPerkValues }, rarity)
         setSelectedRarity(rarity)
+        setSelectedMasterworkLevel(previous => Math.max(0, Math.min(getMaxMasterworkLevel(rarity), Math.trunc(Number(previous) || 0))))
         setSelectedPerks(perkSlots.perks)
         setSelectedPerkValues(perkSlots.values)
     }
 
     const handlePerkSelect = (index) => {
-        if (!onPerkClick) return
+        if (selectedItemDamaged || !onPerkClick) return
         onPerkClick(itemObj, (chosenPerk) => {
             setSelectedPerks(previous => previous.map((perk, perkIndex) => perkIndex === index ? chosenPerk : perk))
             setSelectedPerkValues(previous => previous.map((value, perkIndex) => (
@@ -112,7 +115,9 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
         return {
             ...itemObj,
             level: Math.max(1, Number(selectedLevel) || 1),
-            masterworkLevel: Math.max(0, Math.min(10, Math.trunc(Number(selectedMasterworkLevel) || 0))),
+            masterworkLevel: Math.max(0, Math.min(getMaxMasterworkLevel(rarity), Math.trunc(Number(selectedMasterworkLevel) || 0))),
+            isDamaged: selectedItemDamaged,
+            mutations: { ...DEFAULT_MASTERWORK_MUTATIONS, ...(itemObj.mutations ?? {}) },
             rarity,
             fixedPerks: (itemObj.fixedPerks ?? []).map((perk, index) => ({
                 ...perk,
@@ -169,6 +174,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
     const selectedSet = itemObj.set !== undefined && itemObj.set !== null && itemObj.set !== -1
         ? setsRef?.find(set => set.id === itemObj.set)
         : null
+    const maxMasterworkLevel = getMaxMasterworkLevel(selectedRarity)
 
     return (
         <div ref={listRef} className='item-preview flex-col' style={{ maxHeight: listHeight }}>
@@ -201,15 +207,15 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                 <div className='card flex-col masterwork-control'>
                     <div className='flex-row justify-evenly masterwork-heading'>
                         <div className='header'>Masterwork</div>
-                        <div className='header'>Level {selectedMasterworkLevel} / 10</div>
+                        <div className='header'>Level {selectedMasterworkLevel} / {maxMasterworkLevel}</div>
                     </div>
                     <div className='flex-row masterwork-input-row'>
-                    <Button text={"Masterwork - 1"} onClick={() => setSelectedMasterworkLevel(Math.max(0, Math.min(10, Math.trunc(Number(selectedMasterworkLevel - 1)))))} color={1} />
+                    <Button text={"Masterwork - 1"} disabled={selectedMasterworkLevel <= 0} onClick={() => setSelectedMasterworkLevel(Math.max(0, Math.min(maxMasterworkLevel, Math.trunc(Number(selectedMasterworkLevel - 1)))))} color={1} />
                         <input
                             aria-label='Masterwork level'
                             type='number'
                             min='0'
-                            max='10'
+                            max={maxMasterworkLevel}
                             step='1'
                             value={selectedMasterworkLevel}
                             onChange={event => {
@@ -218,22 +224,30 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                                     setSelectedMasterworkLevel(0)
                                     return
                                 }
-                                setSelectedMasterworkLevel(Math.max(0, Math.min(10, Math.trunc(Number(value) || 0))))
+                                setSelectedMasterworkLevel(Math.max(0, Math.min(maxMasterworkLevel, Math.trunc(Number(value) || 0))))
                             }}
                         />
-                    <Button text={"Masterwork + 1"} onClick={() => setSelectedMasterworkLevel(Math.max(0, Math.min(10, Math.trunc(Number(selectedMasterworkLevel + 1)))))} color={1} />
+                    <Button text={"Masterwork + 1"} disabled={selectedMasterworkLevel >= maxMasterworkLevel} onClick={() => setSelectedMasterworkLevel(Math.max(0, Math.min(maxMasterworkLevel, Math.trunc(Number(selectedMasterworkLevel + 1)))))} color={1} />
                     </div>
                     <div className='text masterwork-summary'>
                         All item perk values: +{selectedMasterworkLevel * 10}% ({(1 + selectedMasterworkLevel / 10).toFixed(1)}×)
                     </div>
+                    <label className='flex-row masterwork-damaged-toggle'>
+                        <input
+                            type='checkbox'
+                            checked={selectedItemDamaged}
+                            onChange={event => setSelectedItemDamaged(event.target.checked)}
+                        />
+                        <span>Damaged item (locks perk changes)</span>
+                    </label>
                     <div className='flex-row masterwork-milestones'>
                         <div className={selectedMasterworkLevel >= 5 ? 'masterwork-milestone unlocked' : 'masterwork-milestone'}>
                             <strong>Level 5</strong>
-                            <span>{selectedMasterworkLevel >= 5 ? 'Perk mutation unlocked' : 'Perk mutation at 5'}</span>
+                            <span>{maxMasterworkLevel < 5 ? 'Unavailable at this rarity' : selectedMasterworkLevel >= 5 ? 'Perk mutation unlocked' : 'Perk mutation at 5'}</span>
                         </div>
                         <div className={selectedMasterworkLevel >= 10 ? 'masterwork-milestone unlocked' : 'masterwork-milestone'}>
                             <strong>Level 10</strong>
-                            <span>{selectedMasterworkLevel >= 10 ? 'Perk mutation unlocked' : 'Perk mutation at 10'}</span>
+                            <span>{maxMasterworkLevel < 10 ? 'Unavailable at this rarity' : selectedMasterworkLevel >= 10 ? 'Perk mutation unlocked' : 'Perk mutation at 10'}</span>
                         </div>
                     </div>
                 </div>
@@ -301,6 +315,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                                 perkIndex === index ? value : oldValue
                             )))}
                             onClick={() => handlePerkSelect(index)}
+                            changeDisabled={selectedItemDamaged}
                         />
                     ))
                 }
