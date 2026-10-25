@@ -946,6 +946,46 @@ a {
 }
 
 
+ .name-search-filter {
+  display: flex;
+  align-items: center;
+  flex: 1 1 150px;
+  min-width: 100px;
+  max-width: 260px;
+  margin: 4px 5px;
+  gap: 4px;
+
+  input[type="text"] {
+    min-width: 0;
+    width: 100%;
+    height: 34px;
+    padding: 4px 8px;
+    color: inherit;
+    background: rgba(0, 0, 0, 0.25);
+    outline: 2px solid black;
+    border: none;
+    border-radius: V.$border-radius;
+    font-family: V.$font-family-header;
+    font-size: V.$font-size-button;
+    text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black;
+    user-select: text;
+  }
+
+  .search-clear {
+    flex: 0 0 30px;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    color: inherit;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: V.$border-radius;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+  }
+}
+
 input[type="number"] {
   padding: 4px;
   height: 30px;
