@@ -671,7 +671,7 @@ import DoomRodSrc from '../sprites/weapons/unique/doom_rod.png';
 import LavaCatalystSrc from '../sprites/weapons/unique/lava_catalyst.png';
 import TuskFangSrc from '../sprites/weapons/unique/tusk_fang.png';
 import RiftPiercerSrc from '../sprites/weapons/unique/rift_piercer.png';
-
+import RelicfangDaggerSrc from '../sprites/weapons/unique/relicfang_dagger.png';
 
 import DownholeHelmetSrc from '../sprites/helmets/sets/downhole.png';
 import DownholeArmorSrc from '../sprites/armors/sets/downhole.png';
@@ -829,7 +829,7 @@ export const itemSprites = {
     tusk_fang: TuskFangSrc,
     dice_of_doom: DiceOfDoomSrc,
     rift_piercer: RiftPiercerSrc,
-
+    relicfang_dagger: RelicfangDaggerSrc,
 
     downhole_helmet: DownholeHelmetSrc,
     downhole_armor: DownholeArmorSrc,
