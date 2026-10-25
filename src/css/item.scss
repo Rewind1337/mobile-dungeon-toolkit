@@ -181,13 +181,12 @@
 
 }
 
-.masterwork-control {
+.masterwork-control, .rarity-control {
   gap: 8px;
 }
 
-.masterwork-heading {
-  align-items: center;
-  justify-content: space-between;
+.masterwork-heading, .rarity-heading {
+  align-self: center;
 }
 
 .masterwork-input-row {
@@ -210,11 +209,14 @@
 
 .masterwork-damaged-toggle {
   align-items: center;
+  width: fit-content;
+  margin: auto;
   gap: 8px;
   cursor: pointer;
 
   input[type="checkbox"] {
-    width: auto;
+    width: 32px;
+    aspect-ratio: 1;
     margin: 0;
   }
 }

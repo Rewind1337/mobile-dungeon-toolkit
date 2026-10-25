@@ -126,6 +126,11 @@ body::after {
   justify-content: space-evenly;
 }
 
+.justify-center {
+  justify-items: center;
+  justify-content: center;
+}
+
 .w-0 {
   width: 0.1px;
 }

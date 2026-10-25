@@ -191,9 +191,9 @@ export const MASTERWORK_MUTATION_DEFINITIONS = {
     AGILITY_FLAT: [
         {
             id: 2,
-            name: "+35% if HP is at least 100%",
+            name: "+35% if own HP is at least 100%",
             bonusPercent: 35,
-            condition: "hp_at_least_100_percent",
+            condition: "own_hp_at_least_100_percent",
         },
         {
             id: 7,

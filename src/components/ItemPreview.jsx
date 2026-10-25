@@ -203,16 +203,17 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                     </div>
                 </div>
 
-                <div className='card flex-row justify-evenly'>
+                <div className='card flex-row justify-evenly rarity-control'>
                     <Button text={"Rarity - 1"} onClick={() => changeRarity(selectedRarity - 1)} color={1} />
-                    <div className='header'>{getEnumNameById(RARITY_DEFINITIONS, selectedRarity)}</div>
+                    <div className='rarity-heading'>
+                        <div className='header'>{getEnumNameById(RARITY_DEFINITIONS, selectedRarity)}</div>
+                    </div>
                     <Button text={"Rarity + 1"} onClick={() => changeRarity(selectedRarity + 1)} color={1} />
                 </div>
 
                 <div className='card flex-col masterwork-control'>
-                    <div className='flex-row justify-evenly masterwork-heading'>
-                        <div className='header'>Masterwork</div>
-                        <div className='header'>Level {selectedMasterworkLevel} / {maxMasterworkLevel}</div>
+                    <div className='masterwork-heading'>
+                        <div className='header'>Masterwork - Level {selectedMasterworkLevel} / {maxMasterworkLevel}</div>
                     </div>
                     <div className='flex-row masterwork-input-row'>
                     <Button text={"Masterwork - 1"} disabled={selectedMasterworkLevel <= 0} onClick={() => setSelectedMasterworkLevel(Math.max(0, Math.min(maxMasterworkLevel, Math.trunc(Number(selectedMasterworkLevel - 1)))))} color={1} />
@@ -243,16 +244,16 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                             checked={selectedItemDamaged}
                             onChange={event => setSelectedItemDamaged(event.target.checked)}
                         />
-                        <span>Damaged item (locks perk changes)</span>
+                        <div className='text'>Damaged item (locks perk changes)</div>
                     </label>
                     <div className='flex-row masterwork-milestones'>
                         <div className={selectedMasterworkLevel >= 5 ? 'masterwork-milestone unlocked' : 'masterwork-milestone'}>
-                            <strong>Level 5</strong>
-                            <span>{maxMasterworkLevel < 5 ? 'Unavailable at this rarity' : selectedMasterworkLevel >= 5 ? 'Perk mutation unlocked' : 'Perk mutation at 5'}</span>
+                            <div className='header'>Level 5</div>
+                            <div className='text'>{maxMasterworkLevel < 5 ? 'Unavailable at this rarity' : selectedMasterworkLevel >= 5 ? 'Perk mutation unlocked' : 'Perk mutation at 5'}</div>
                         </div>
                         <div className={selectedMasterworkLevel >= 10 ? 'masterwork-milestone unlocked' : 'masterwork-milestone'}>
-                            <strong>Level 10</strong>
-                            <span>{maxMasterworkLevel < 10 ? 'Unavailable at this rarity' : selectedMasterworkLevel >= 10 ? 'Perk mutation unlocked' : 'Perk mutation at 10'}</span>
+                            <div className='header'>Level 10</div>
+                            <div className='text'>{maxMasterworkLevel < 10 ? 'Unavailable at this rarity' : selectedMasterworkLevel >= 10 ? 'Perk mutation unlocked' : 'Perk mutation at 10'}</div>
                         </div>
                     </div>
                 </div>
