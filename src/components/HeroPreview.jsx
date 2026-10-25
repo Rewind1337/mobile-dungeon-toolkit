@@ -48,7 +48,18 @@ function calculateEquippedStats(baseStats, items, sets) {
     for (const item of equipped) {
         if (item.set !== undefined && item.set !== null && item.set !== -1) setCounts.set(item.set, (setCounts.get(item.set) ?? 0) + 1)
         const multiplier = 1 + Math.max(0, Number(item.masterworkLevel) || 0) / 10
-        for (const perk of getItemPerkEntries(item)) add(perk.key, perk.value * multiplier)
+        const itemMainStat = ({ 0: "attack", 1: "defence", 2: "agility" })[Number(item.mainAttribute)]
+        for (const perk of getItemPerkEntries(item)) {
+            if (perk.key === "MAIN_STAT_FLAT" || perk.key === "MAIN_STAT_PERCENT") {
+                if (!itemMainStat) continue
+                const targetKey = perk.key === "MAIN_STAT_FLAT"
+                    ? MAIN_STAT_PERKS[itemMainStat].flat
+                    : MAIN_STAT_PERKS[itemMainStat].percent
+                add(targetKey, perk.value * multiplier)
+            } else {
+                add(perk.key, perk.value * multiplier)
+            }
+        }
     }
     const appliedSets = new Set()
     for (const item of equipped) {
