@@ -1,5 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react"
-import { CONSTANTS } from "../database/constants";
+import { useState } from "react"
 import { useDynamicList } from "../hooks/useDynamicList";
 
 const CHAPTERS = [
@@ -41,7 +40,7 @@ function Chapter({ id, name, setSelectedChapter }) {
 }
 
 function SubPageChapters({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef }) {
-    const { listHeight, listRef, events } = useDynamicList(() => { }, 0, CONSTANTS.listHeightSubPage);
+    const { listHeight, listRef, events } = useDynamicList(0, true);
     const [selectedChapter, setSelectedChapter] = useState(null);
 
     return (
