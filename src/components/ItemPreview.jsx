@@ -230,11 +230,21 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                 </div>
 
                 <div className='card flex-row justify-evenly rarity-control'>
-                    <Button text={"Rarity - 1"} onClick={() => changeRarity(selectedRarity - 1)} color={1} />
+                    <Button
+                        text={"Rarity - 1"}
+                        disabled={selectedRarity <= RARITY_DEFINITIONS.RARE.id}
+                        onClick={() => changeRarity(selectedRarity - 1)}
+                        color={1}
+                    />
                     <div className='rarity-heading'>
                         <div className='header'>{getEnumNameById(RARITY_DEFINITIONS, selectedRarity)}</div>
                     </div>
-                    <Button text={"Rarity + 1"} onClick={() => changeRarity(selectedRarity + 1)} color={1} />
+                    <Button
+                        text={"Rarity + 1"}
+                        disabled={selectedRarity >= RARITY_DEFINITIONS.ANCIENT.id}
+                        onClick={() => changeRarity(selectedRarity + 1)}
+                        color={1}
+                    />
                 </div>
 
                 <div className='card flex-col masterwork-control'>
