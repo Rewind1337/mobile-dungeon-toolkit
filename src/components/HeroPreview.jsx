@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, ROLE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
+import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, ROLE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, PERK_DEFINITIONS, MASTERWORK_MUTATION_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
 import { iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites } from '../database/db_sprites.jsx'
 
@@ -12,7 +12,92 @@ import TextCard from './TextCard.jsx'
 import '../css/hero.scss'
 import HeroStat from './HeroStat.jsx'
 
-function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onItemClick, equippedItems = [] }) {
+
+const MAIN_STAT_PERKS = {
+    health: { flat: "HEALTH_FLAT", percent: "HEALTH_PERCENT" },
+    attack: { flat: "ATTACK_FLAT", percent: "ATTACK_PERCENT" },
+    defence: { flat: "DEFENCE_FLAT", percent: "DEFENCE_PERCENT" },
+    agility: { flat: "AGILITY_FLAT", percent: "AGILITY_PERCENT" }
+}
+const OTHER_STAT_DEFAULTS = {
+    CRIT_CHANCE: 10, CRIT_RESISTANCE: 0, CRIT_DAMAGE: 150, CRIT_DAMAGE_REDUCTION: 0,
+    ACCURACY: 10, RESISTANCE: 20, BOSS_DAMAGE: 0, BOSS_DAMAGE_REDUCTION: 0,
+    AOE_DAMAGE_REDUCTION: 0, AP_DAMAGE_REDUCTION: 0, LIFE_STEAL: 0, HEALING_EFFICIENCY: 0,
+    HEALING_RECEIVED: 0, FIRE_DAMAGE: 0, NATURE_DAMAGE: 0, WATER_DAMAGE: 0, LIGHT_DAMAGE: 0,
+    SHADOW_DAMAGE: 0, FIRE_DAMAGE_REDUCTION: 0, NATURE_DAMAGE_REDUCTION: 0,
+    WATER_DAMAGE_REDUCTION: 0, LIGHT_DAMAGE_REDUCTION: 0, SHADOW_DAMAGE_REDUCTION: 0
+}
+const MUTATION_PERK_ALIASES = { HEAL_RECOVERY: "HEALING_RECEIVED" }
+function getItemPerkEntries(item) {
+    const entries = []
+    for (const perk of item?.fixedPerks ?? []) {
+        const key = Object.keys(PERK_DEFINITIONS).find(name => PERK_DEFINITIONS[name].id === perk.id)
+        if (key && key !== "NOTHING") entries.push({ key, value: Number(perk.value ?? 0) })
+    }
+    for (let index = 0; index < (item?.perks ?? []).length; index++) {
+        const key = String(item.perks[index] ?? "NOTHING").toUpperCase().replace(/\s/g, "_")
+        if (PERK_DEFINITIONS[key] && key !== "NOTHING") entries.push({ key, value: Number(item.perkValues?.[index] ?? 0) })
+    }
+    return entries
+}
+function calculateEquippedStats(baseStats, items, sets) {
+    const perks = {}, conditionalMutationBonuses = {}
+    const add = (key, value) => { perks[key] = (perks[key] ?? 0) + (Number(value) || 0) }
+    const equipped = (items ?? []).filter(Boolean)
+    const setCounts = new Map()
+    for (const item of equipped) {
+        if (item.set !== undefined && item.set !== null && item.set !== -1) setCounts.set(item.set, (setCounts.get(item.set) ?? 0) + 1)
+        const multiplier = 1 + Math.max(0, Number(item.masterworkLevel) || 0) / 10
+        for (const perk of getItemPerkEntries(item)) add(perk.key, perk.value * multiplier)
+    }
+    const appliedSets = new Set()
+    for (const item of equipped) {
+        if (item.set == null || item.set === -1 || appliedSets.has(item.set)) continue
+        const set = (sets ?? []).find(entry => entry.id === item.set)
+        if (!set || (setCounts.get(item.set) ?? 0) < Number(set.pieces ?? 0)) continue
+        appliedSets.add(item.set)
+        for (let index = 0; index < (set.setBonus ?? []).length; index++) {
+            const perk = set.setBonus[index]
+            const key = Object.keys(PERK_DEFINITIONS).find(name => PERK_DEFINITIONS[name].id === perk.id)
+            if (key) add(key, item.setBonusValues?.[index] ?? 0)
+        }
+    }
+    for (const item of equipped) {
+        const level = Math.max(0, Number(item.masterworkLevel) || 0)
+        for (const milestone of [5, 10]) {
+            if (level < milestone) continue
+            const selection = item.mutations?.[milestone]
+            if (!selection || typeof selection !== "object" || !selection.perkKey || selection.id == null) continue
+            const mutation = MASTERWORK_MUTATION_DEFINITIONS[selection.perkKey]?.find(entry => entry.id === Number(selection.id))
+            if (!mutation) continue
+            const perkKey = MUTATION_PERK_ALIASES[selection.perkKey] ?? selection.perkKey
+            if (mutation.condition === "permanent") add(perkKey, mutation.bonusPercent)
+            else conditionalMutationBonuses[perkKey] = (conditionalMutationBonuses[perkKey] ?? 0) + mutation.bonusPercent
+        }
+    }
+    const main = {}, mainMax = {}
+    for (const [name, mapping] of Object.entries(MAIN_STAT_PERKS)) {
+        const base = Number(baseStats?.[name]) || 0
+        const flat = perks[mapping.flat] ?? 0
+        const percent = perks[mapping.percent] ?? 0
+        main[name] = (base + flat) * (1 + percent / 100)
+        mainMax[name] = (base + flat + (conditionalMutationBonuses[mapping.flat] ?? 0)) *
+            (1 + (percent + (conditionalMutationBonuses[mapping.percent] ?? 0)) / 100)
+    }
+    const other = { ...OTHER_STAT_DEFAULTS }, otherMax = {}
+    for (const [key, base] of Object.entries(OTHER_STAT_DEFAULTS)) {
+        other[key] = base + (perks[key] ?? 0)
+        const mutationKey = key === "HEALING_RECEIVED" ? "HEAL_RECOVERY" : key
+        otherMax[key] = other[key] + (conditionalMutationBonuses[mutationKey] ?? conditionalMutationBonuses[key] ?? 0)
+    }
+    return { main, mainMax, other, otherMax }
+}
+function formatStatValue(value) {
+    const rounded = Math.round((Number(value) || 0) * 100) / 100
+    return Number.isInteger(rounded) ? String(rounded) : String(rounded)
+}
+
+function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onItemClick, equippedItems = [], setsRef = [] }) {
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
     const [showSkillsAndTalents, setShowSkillsAndTalents] = useState(false)
@@ -46,6 +131,8 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
     }, []);
 
     let heroObj = heroesRef.find(hero => hero.id === selectedHeroId || hero.saveId === selectedHeroId)
+
+    const calculatedStats = calculateEquippedStats(mainStats, equippedItems, setsRef)
 
     useEffect(() => {
         setSelectedLevel(heroObj?.level ?? 1)
@@ -228,51 +315,33 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
                     </div>
                     <div className='header'>Main Stats</div>
                     <div className='flex-row base-stats'>
-                        <div className='flex-row text card'>
-                            <img width={32} src={perkSprites["HEALTH_FLAT"]}/>
-                            <input type='number' value={mainStats.health} onChange={e => setMainStats(prev => ({ ...prev, health: e.target.value }))}/>
-                        </div>
-                        <div className='flex-row text card'>
-                            <img width={32} src={perkSprites["ATTACK_FLAT"]}/>
-                            <input type='number' value={mainStats.attack} onChange={e => setMainStats(prev => ({ ...prev, attack: e.target.value }))}/>
-                        </div>
-                        <div className='flex-row text card'>
-                            <img width={32} src={perkSprites["DEFENCE_FLAT"]}/>
-                            <input type='number' value={mainStats.defence} onChange={e => setMainStats(prev => ({ ...prev, defence: e.target.value }))}/>
-                        </div>
-                        <div className='flex-row text card'>
-                            <img width={32} src={perkSprites["AGILITY_FLAT"]}/>
-                            <input type='number' value={mainStats.agility} onChange={e => setMainStats(prev => ({ ...prev, agility: e.target.value }))}/>
-                        </div>
+                        {Object.entries(MAIN_STAT_PERKS).map(([name, mapping]) => (
+                            <div className='flex-row text card' key={name}>
+                                <img width={32} src={perkSprites[mapping.flat]}/>
+                                <input aria-label={`Base ${name}`} type='number' value={mainStats[name]} onChange={event => setMainStats(previous => ({ ...previous, [name]: event.target.value }))}/>
+                            </div>
+                        ))}
+                    </div>
+                    <div className='flex-row base-stats calculated-stats' aria-label='Calculated main stats'>
+                        {Object.entries(MAIN_STAT_PERKS).map(([name, mapping]) => {
+                            const hasMax = Math.abs(calculatedStats.mainMax[name] - calculatedStats.main[name]) > 0.001
+                            return <div className='flex-row text card calculated-stat' key={name} title={`Final ${name} after equipped gear`}>
+                                <img width={32} src={perkSprites[mapping.flat]}/>
+                                <span>{formatStatValue(calculatedStats.main[name])}{hasMax ? ` (${formatStatValue(calculatedStats.mainMax[name])} MAX)` : ""}</span>
+                            </div>
+                        })}
                     </div>
                     <div className='header'>Other Stats</div>
                     <div className='flex-row details'>
                         <div className='flex-col'>
-                            <HeroStat name={"CRIT_CHANCE"} value={10}/>
-                            <HeroStat name={"CRIT_RESISTANCE"} value={0}/>
-                            <HeroStat name={"CRIT_DAMAGE"} value={150}/>
-                            <HeroStat name={"CRIT_DAMAGE_REDUCTION"} value={0}/>
-                            <HeroStat name={"ACCURACY"} value={10}/>
-                            <HeroStat name={"RESISTANCE"} value={20}/>
-                            <HeroStat name={"BOSS_DAMAGE"} value={0}/>
-                            <HeroStat name={"BOSS_DAMAGE_REDUCTION"} value={0}/>
-                            <HeroStat name={"AOE_DAMAGE_REDUCTION"} value={0}/>
-                            <HeroStat name={"AP_DAMAGE_REDUCTION"} value={0}/>
-                            <HeroStat name={"LIFE_STEAL"} value={0}/>
-                            <HeroStat name={"HEALING_EFFICIENCY"} value={0}/>
-                            <HeroStat name={"HEALING_RECEIVED"} value={0}/>
+                            {["CRIT_CHANCE","CRIT_RESISTANCE","CRIT_DAMAGE","CRIT_DAMAGE_REDUCTION","ACCURACY","RESISTANCE","BOSS_DAMAGE","BOSS_DAMAGE_REDUCTION","AOE_DAMAGE_REDUCTION","AP_DAMAGE_REDUCTION","LIFE_STEAL","HEALING_EFFICIENCY","HEALING_RECEIVED"].map(name => (
+                                <HeroStat key={name} name={name} value={formatStatValue(calculatedStats.other[name])} maxValue={Math.abs(calculatedStats.otherMax[name] - calculatedStats.other[name]) > 0.001 ? formatStatValue(calculatedStats.otherMax[name]) : null}/>
+                            ))}
                         </div>
                         <div className='flex-col'>
-                            <HeroStat name={"FIRE_DAMAGE"} value={0}/>
-                            <HeroStat name={"NATURE_DAMAGE"} value={0}/>
-                            <HeroStat name={"WATER_DAMAGE"} value={0}/>
-                            <HeroStat name={"LIGHT_DAMAGE"} value={0}/>
-                            <HeroStat name={"SHADOW_DAMAGE"} value={0}/>
-                            <HeroStat name={"FIRE_DAMAGE_REDUCTION"} value={0}/>
-                            <HeroStat name={"NATURE_DAMAGE_REDUCTION"} value={0}/>
-                            <HeroStat name={"WATER_DAMAGE_REDUCTION"} value={0}/>
-                            <HeroStat name={"LIGHT_DAMAGE_REDUCTION"} value={0}/>
-                            <HeroStat name={"SHADOW_DAMAGE_REDUCTION"} value={0}/>
+                            {["FIRE_DAMAGE","NATURE_DAMAGE","WATER_DAMAGE","LIGHT_DAMAGE","SHADOW_DAMAGE","FIRE_DAMAGE_REDUCTION","NATURE_DAMAGE_REDUCTION","WATER_DAMAGE_REDUCTION","LIGHT_DAMAGE_REDUCTION","SHADOW_DAMAGE_REDUCTION"].map(name => (
+                                <HeroStat key={name} name={name} value={formatStatValue(calculatedStats.other[name])} maxValue={Math.abs(calculatedStats.otherMax[name] - calculatedStats.other[name]) > 0.001 ? formatStatValue(calculatedStats.otherMax[name]) : null}/>
+                            ))}
                         </div>
                     </div>
                     {(saveHero || deleteSavedHero) && <div className='flex-row'>
