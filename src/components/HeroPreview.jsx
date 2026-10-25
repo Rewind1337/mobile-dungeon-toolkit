@@ -41,66 +41,106 @@ function getItemPerkEntries(item) {
     return entries
 }
 function calculateEquippedStats(baseStats, items, sets) {
-    const perks = {}, conditionalMutationBonuses = {}
-    const add = (key, value) => { perks[key] = (perks[key] ?? 0) + (Number(value) || 0) }
+    const perks = {}, maxPerks = {}
+    const add = (target, key, value) => {
+        target[key] = (target[key] ?? 0) + (Number(value) || 0)
+    }
     const equipped = (items ?? []).filter(Boolean)
     const setCounts = new Map()
+
     for (const item of equipped) {
-        if (item.set !== undefined && item.set !== null && item.set !== -1) setCounts.set(item.set, (setCounts.get(item.set) ?? 0) + 1)
-        const multiplier = 1 + Math.max(0, Number(item.masterworkLevel) || 0) / 10
-        const itemMainStat = ({ 0: "attack", 1: "defence", 2: "agility" })[Number(item.mainAttribute)]
+        if (item.set !== undefined && item.set !== null && item.set !== -1) {
+            setCounts.set(item.set, (setCounts.get(item.set) ?? 0) + 1)
+        }
+
+        const masterworkMultiplier = 1 + Math.max(0, Number(item.masterworkLevel) || 0) / 10
+        const selectedMutations = []
+        const level = Math.max(0, Number(item.masterworkLevel) || 0)
+
+        for (const milestone of [5, 10]) {
+            if (level < milestone) continue
+            const selection = item.mutations?.[milestone]
+            if (!selection || typeof selection !== "object" || !selection.perkKey || selection.id == null) continue
+
+            const mutation = MASTERWORK_MUTATION_DEFINITIONS[selection.perkKey]?.find(
+                entry => entry.id === Number(selection.id)
+            )
+            if (mutation) selectedMutations.push({ perkKey: selection.perkKey, mutation })
+        }
+
         for (const perk of getItemPerkEntries(item)) {
-            if (perk.key === "MAIN_STAT_FLAT" || perk.key === "MAIN_STAT_PERCENT") {
-                if (!itemMainStat) continue
-                const targetKey = perk.key === "MAIN_STAT_FLAT"
-                    ? MAIN_STAT_PERKS[itemMainStat].flat
-                    : MAIN_STAT_PERKS[itemMainStat].percent
-                add(targetKey, perk.value * multiplier)
-            } else {
-                add(perk.key, perk.value * multiplier)
+            const mutationKey = Object.keys(MUTATION_PERK_ALIASES).find(
+                key => MUTATION_PERK_ALIASES[key] === perk.key
+            ) ?? perk.key
+            const matchingMutations = selectedMutations.filter(
+                selection => selection.perkKey === perk.key || selection.perkKey === mutationKey
+            )
+
+            // A mutation modifies the matching item perk by its stated percentage.
+            // Permanent mutations affect the normal value; conditional mutations only affect MAX.
+            let normalMutationMultiplier = 1
+            let maxMutationMultiplier = 1
+            for (const { mutation } of matchingMutations) {
+                const multiplier = 1 + (Number(mutation.bonusPercent) || 0) / 100
+                maxMutationMultiplier *= multiplier
+                if (mutation.condition === "permanent") normalMutationMultiplier *= multiplier
             }
+
+            const normalValue = perk.value * masterworkMultiplier * normalMutationMultiplier
+            const maxValue = perk.value * masterworkMultiplier * maxMutationMultiplier
+
+            const itemMainStat = ({ 0: "attack", 1: "defence", 2: "agility" })[Number(item.mainAttribute)]
+            const getTargetKey = key => {
+                if (key === "MAIN_STAT_FLAT" || key === "MAIN_STAT_PERCENT") {
+                    if (!itemMainStat) return null
+                    return key === "MAIN_STAT_FLAT"
+                        ? MAIN_STAT_PERKS[itemMainStat].flat
+                        : MAIN_STAT_PERKS[itemMainStat].percent
+                }
+                return key
+            }
+
+            const normalKey = getTargetKey(perk.key)
+            const maxKey = getTargetKey(perk.key)
+            if (normalKey) add(perks, normalKey, normalValue)
+            if (maxKey) add(maxPerks, maxKey, maxValue)
         }
     }
+
     const appliedSets = new Set()
     for (const item of equipped) {
         if (item.set == null || item.set === -1 || appliedSets.has(item.set)) continue
         const set = (sets ?? []).find(entry => entry.id === item.set)
         if (!set || (setCounts.get(item.set) ?? 0) < Number(set.pieces ?? 0)) continue
         appliedSets.add(item.set)
+
         for (let index = 0; index < (set.setBonus ?? []).length; index++) {
             const perk = set.setBonus[index]
             const key = Object.keys(PERK_DEFINITIONS).find(name => PERK_DEFINITIONS[name].id === perk.id)
-            if (key) add(key, item.setBonusValues?.[index] ?? 0)
+            if (!key) continue
+            const value = item.setBonusValues?.[index] ?? 0
+            add(perks, key, value)
+            add(maxPerks, key, value)
         }
     }
-    for (const item of equipped) {
-        const level = Math.max(0, Number(item.masterworkLevel) || 0)
-        for (const milestone of [5, 10]) {
-            if (level < milestone) continue
-            const selection = item.mutations?.[milestone]
-            if (!selection || typeof selection !== "object" || !selection.perkKey || selection.id == null) continue
-            const mutation = MASTERWORK_MUTATION_DEFINITIONS[selection.perkKey]?.find(entry => entry.id === Number(selection.id))
-            if (!mutation) continue
-            const perkKey = MUTATION_PERK_ALIASES[selection.perkKey] ?? selection.perkKey
-            if (mutation.condition === "permanent") add(perkKey, mutation.bonusPercent)
-            else conditionalMutationBonuses[perkKey] = (conditionalMutationBonuses[perkKey] ?? 0) + mutation.bonusPercent
-        }
-    }
+
     const main = {}, mainMax = {}
     for (const [name, mapping] of Object.entries(MAIN_STAT_PERKS)) {
         const base = Number(baseStats?.[name]) || 0
         const flat = perks[mapping.flat] ?? 0
         const percent = perks[mapping.percent] ?? 0
+        const maxFlat = maxPerks[mapping.flat] ?? 0
+        const maxPercent = maxPerks[mapping.percent] ?? 0
         main[name] = (base + flat) * (1 + percent / 100)
-        mainMax[name] = (base + flat + (conditionalMutationBonuses[mapping.flat] ?? 0)) *
-            (1 + (percent + (conditionalMutationBonuses[mapping.percent] ?? 0)) / 100)
+        mainMax[name] = (base + maxFlat) * (1 + maxPercent / 100)
     }
+
     const other = { ...OTHER_STAT_DEFAULTS }, otherMax = {}
     for (const [key, base] of Object.entries(OTHER_STAT_DEFAULTS)) {
         other[key] = base + (perks[key] ?? 0)
-        const mutationKey = key === "HEALING_RECEIVED" ? "HEAL_RECOVERY" : key
-        otherMax[key] = other[key] + (conditionalMutationBonuses[mutationKey] ?? conditionalMutationBonuses[key] ?? 0)
+        otherMax[key] = base + (maxPerks[key] ?? 0)
     }
+
     return { main, mainMax, other, otherMax }
 }
 function formatStatValue(value) {
