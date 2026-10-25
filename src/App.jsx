@@ -19,6 +19,15 @@ import { usePreloadImages } from './hooks/usePreloadImages.jsx'
 
 const BASE_HEROES = init_hero_db()
 const BASE_ITEMS = init_item_db()
+const PRELOAD_IMAGE_SOURCES = [
+  ...Object.values(heroSprites),
+  ...Object.values(itemSprites),
+  ...Object.values(iconSprites),
+  ...Object.values(elementSprites),
+  ...Object.values(roleSprites),
+  ...Object.values(attributeSprites),
+  ...Object.values(statusSprites),
+]
 const defaultState = {
   pageContent: 'splash',
   savedHeroesRef: [],
@@ -54,16 +63,8 @@ const loadInitialState = () => {
 };
 
 function App() {
-  usePreloadImages([
-    ...Object.values(heroSprites),
-    ...Object.values(itemSprites),
-    ...Object.values(iconSprites),
-    ...Object.values(elementSprites),
-    ...Object.values(roleSprites),
-    ...Object.values(attributeSprites),
-    ...Object.values(statusSprites),
-  ]);
-  const initialState = loadInitialState()
+  usePreloadImages(PRELOAD_IMAGE_SOURCES);
+  const [initialState] = useState(loadInitialState)
 
   const heroesRef = useRef(BASE_HEROES)
   const savedHeroesRef = useRef(initialState.savedHeroesRef)
@@ -73,7 +74,6 @@ function App() {
 
   // app related
   const [pageContent, setPageContent] = useState(initialState.pageContent)
-  const [timeStamp, setTimeStamp] = useState(0)
 
   const saveToLocalStorage = () => {
     let saveState = {}
@@ -103,13 +103,6 @@ function App() {
       console.error('Failed to save to LocalStorage; ', error)
     }
   }
-
-  useEffect(() => {
-    let timerID = setInterval(() => { setTimeStamp(Date.now()) }, 30000)
-    return () => {
-      clearInterval(timerID)
-    }
-  }, [])
 
   useEffect(() => {
     saveToLocalStorage()
