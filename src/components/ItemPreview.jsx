@@ -21,6 +21,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
     const [selectedPerks, setSelectedPerks] = useState([])
     const [selectedPerkValues, setSelectedPerkValues] = useState([])
     const [fixedPerkValues, setFixedPerkValues] = useState([])
+    const [selectedSetBonusValues, setSelectedSetBonusValues] = useState([])
 
     function onResize() {
         let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5
@@ -85,6 +86,9 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
         setSelectedPerks(perkSlots.perks)
         setSelectedPerkValues(perkSlots.values)
         setFixedPerkValues((selectedItem.fixedPerks ?? []).map(perk => Number(perk.value ?? 0)))
+        setSelectedSetBonusValues(Array.isArray(selectedItem.setBonusValues)
+            ? selectedItem.setBonusValues.map(value => Number(value ?? 0))
+            : [])
     }, [selectedItemId, itemsRef])
 
     const changeRarity = (nextRarity) => {
@@ -123,6 +127,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                 ...perk,
                 value: Number(fixedPerkValues[index] ?? 0)
             })),
+            setBonusValues: [...selectedSetBonusValues].map(value => Number(value) || 0),
             perks: [...selectedPerks],
             perkValues: selectedPerkValues.map(value => Number(value) || 0)
         }
@@ -291,11 +296,17 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
 
                 {selectedSet?.setBonus && <>
                     <div className='header'>Set Bonus</div>
-                    {selectedSet.setBonus.map(bonus => (
+                    {selectedSet.setBonus.map((bonus, index) => (
                         <ItemPerk
-                            key={"setperk_" + bonus.id}
+                            key={"setperk_" + bonus.id + "_" + index}
                             name={getPerkKey(bonus)}
-                            noValue={true}
+                            value={selectedSetBonusValues[index] ?? 0}
+                            editable={true}
+                            onValueChange={value => setSelectedSetBonusValues(previous => {
+                                const nextValues = [...previous]
+                                nextValues[index] = value
+                                return nextValues
+                            })}
                         />
                     ))}
                 </>}
