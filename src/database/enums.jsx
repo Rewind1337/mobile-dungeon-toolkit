@@ -191,9 +191,9 @@ export const MASTERWORK_MUTATION_DEFINITIONS = {
     AGILITY_FLAT: [
         {
             id: 2,
-            name: "+35% if own HP is at least 100%",
+            name: "+35% if HP is at least 100%",
             bonusPercent: 35,
-            condition: "own_hp_at_least_100_percent",
+            condition: "hp_at_least_100_percent",
         },
         {
             id: 7,
@@ -338,7 +338,7 @@ export const MASTERWORK_MUTATION_DEFINITIONS = {
             condition: "own_hero_is_shielded",
         },
     ],
-}; 
+};
 
 // A null value means no mutation has been selected for that milestone.
 export const DEFAULT_MASTERWORK_MUTATIONS = {
