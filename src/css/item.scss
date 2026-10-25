@@ -208,6 +208,17 @@
   padding: 6px 10px;
 }
 
+.masterwork-damaged-toggle {
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+  }
+}
+
 .masterwork-milestones {
   gap: 8px;
 }
