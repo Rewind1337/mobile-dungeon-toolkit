@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { CONSTANTS } from '../database/constants.jsx'
-import { DEFAULT_MASTERWORK_MUTATIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById, getItemPerkCount, getMaxMasterworkLevel } from '../database/enums.jsx'
+import { DEFAULT_MASTERWORK_MUTATIONS, MASTERWORK_MUTATION_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById, getItemPerkCount, getMaxMasterworkLevel } from '../database/enums.jsx'
 import { iconSprites } from '../database/db_sprites.jsx'
 
 import Button from './Button.jsx'
@@ -22,6 +22,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
     const [selectedPerkValues, setSelectedPerkValues] = useState([])
     const [fixedPerkValues, setFixedPerkValues] = useState([])
     const [selectedSetBonusValues, setSelectedSetBonusValues] = useState([])
+    const [selectedMutations, setSelectedMutations] = useState({ ...DEFAULT_MASTERWORK_MUTATIONS })
 
     function onResize() {
         let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5
@@ -89,6 +90,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
         setSelectedSetBonusValues(Array.isArray(selectedItem.setBonusValues)
             ? selectedItem.setBonusValues.map(value => Number(value ?? 0))
             : [])
+        setSelectedMutations({ ...DEFAULT_MASTERWORK_MUTATIONS, ...(selectedItem.mutations ?? {}) })
     }, [selectedItemId, itemsRef])
 
     const changeRarity = (nextRarity) => {
@@ -121,7 +123,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
             level: Math.max(1, Number(selectedLevel) || 1),
             masterworkLevel: Math.max(0, Math.min(getMaxMasterworkLevel(rarity), Math.trunc(Number(selectedMasterworkLevel) || 0))),
             isDamaged: selectedItemDamaged,
-            mutations: { ...DEFAULT_MASTERWORK_MUTATIONS, ...(itemObj.mutations ?? {}) },
+            mutations: { ...DEFAULT_MASTERWORK_MUTATIONS, ...selectedMutations },
             rarity,
             fixedPerks: (itemObj.fixedPerks ?? []).map((perk, index) => ({
                 ...perk,
@@ -180,6 +182,10 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
         ? setsRef?.find(set => set.id === itemObj.set)
         : null
     const maxMasterworkLevel = getMaxMasterworkLevel(selectedRarity)
+    const availableMutationPerks = new Set([
+        ...(itemObj.fixedPerks ?? []).map(perk => Object.keys(PERK_DEFINITIONS).find(key => PERK_DEFINITIONS[key].id === perk.id)),
+        ...(selectedPerks ?? []).map(perk => String(perk ?? "NOTHING").toUpperCase().replace(/\s/g, "_"))
+    ].filter(Boolean))
 
     return (
         <div ref={listRef} className='item-preview flex-col' style={{ maxHeight: listHeight }}>
@@ -246,7 +252,34 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                         />
                         <div className='text'>Damaged item (locks perk changes)</div>
                     </label>
-                    <div className='flex-row masterwork-milestones'>
+                    <div className='card flex-col masterwork-mutation-controls'>
+                    <div className='header'>Masterwork Mutations</div>
+                    {[5, 10].map(milestone => (
+                        <label className='flex-col masterwork-mutation-select' key={milestone}>
+                            <span className='text'>Level {milestone} mutation</span>
+                            <select
+                                value={selectedMutations[milestone] ? `${selectedMutations[milestone].perkKey}:${selectedMutations[milestone].id}` : ""}
+                                disabled={selectedMasterworkLevel < milestone || maxMasterworkLevel < milestone}
+                                onChange={event => {
+                                    const [perkKey, id] = event.target.value.split(":")
+                                    setSelectedMutations(previous => ({ ...previous, [milestone]: event.target.value ? { perkKey, id: Number(id) } : null }))
+                                }}
+                            >
+                                <option value="">No mutation</option>
+                                {Object.entries(MASTERWORK_MUTATION_DEFINITIONS)
+                                    .filter(([perkKey]) => availableMutationPerks.has(perkKey) || (perkKey === "HEAL_RECOVERY" && availableMutationPerks.has("HEALING_RECEIVED")))
+                                    .flatMap(([perkKey, mutations]) => mutations.map(mutation => (
+                                        <option key={`${perkKey}:${mutation.id}`} value={`${perkKey}:${mutation.id}`}>
+                                            {`${perkKey.replace(/_/g, " ")} — ${mutation.name}`}
+                                        </option>
+                                    )))}
+                            </select>
+                        </label>
+                    ))}
+                    <small>Conditional mutations contribute to MAX; permanent mutations affect the calculated value.</small>
+                </div>
+
+                <div className='flex-row masterwork-milestones'>
                         <div className={selectedMasterworkLevel >= 5 ? 'masterwork-milestone unlocked' : 'masterwork-milestone'}>
                             <div className='header'>Level 5</div>
                             <div className='text'>{maxMasterworkLevel < 5 ? 'Unavailable at this rarity' : selectedMasterworkLevel >= 5 ? 'Perk mutation unlocked' : 'Perk mutation at 5'}</div>
