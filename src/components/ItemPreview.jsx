@@ -10,6 +10,11 @@ import ItemPerk from './ItemPerk.jsx'
 import '../css/item.scss'
 
 function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, onEquipItem, setsRef }) {
+    const MAIN_STAT_PERK_KEYS = {
+        attack: { flat: "ATTACK_FLAT", percent: "ATTACK_PERCENT" },
+        defence: { flat: "DEFENCE_FLAT", percent: "DEFENCE_PERCENT" },
+        agility: { flat: "AGILITY_FLAT", percent: "AGILITY_PERCENT" }
+    }
     const slotIndexToNameMap = { 0: "WEAPONS", 1: "HELMETS", 2: "ARMORS", 3: "NECKLACES", 4: "RINGS" }
     const [itemObj, setItemObj] = useState(null)
     const [listHeight, setListHeight] = useState(500)
