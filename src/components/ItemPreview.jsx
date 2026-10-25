@@ -192,18 +192,19 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                     </div>
                 </div>
 
-                <div className='card flex-row'>
-                    <Button text={"Rarity Down"} onClick={() => changeRarity(selectedRarity - 1)} color={1} />
+                <div className='card flex-row justify-evenly'>
+                    <Button text={"Rarity - 1"} onClick={() => changeRarity(selectedRarity - 1)} color={1} />
                     <div className='header'>{getEnumNameById(RARITY_DEFINITIONS, selectedRarity)}</div>
-                    <Button text={"Rarity Up"} onClick={() => changeRarity(selectedRarity + 1)} color={1} />
+                    <Button text={"Rarity + 1"} onClick={() => changeRarity(selectedRarity + 1)} color={1} />
                 </div>
 
                 <div className='card flex-col masterwork-control'>
-                    <div className='flex-row masterwork-heading'>
+                    <div className='flex-row justify-evenly masterwork-heading'>
                         <div className='header'>Masterwork</div>
                         <div className='header'>Level {selectedMasterworkLevel} / 10</div>
                     </div>
                     <div className='flex-row masterwork-input-row'>
+                    <Button text={"Masterwork - 1"} onClick={() => setSelectedMasterworkLevel(Math.max(0, Math.min(10, Math.trunc(Number(selectedMasterworkLevel - 1)))))} color={1} />
                         <input
                             aria-label='Masterwork level'
                             type='number'
@@ -220,15 +221,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                                 setSelectedMasterworkLevel(Math.max(0, Math.min(10, Math.trunc(Number(value) || 0))))
                             }}
                         />
-                        <input
-                            aria-label='Masterwork level slider'
-                            type='range'
-                            min='0'
-                            max='10'
-                            step='1'
-                            value={selectedMasterworkLevel}
-                            onChange={event => setSelectedMasterworkLevel(Number(event.target.value))}
-                        />
+                    <Button text={"Masterwork + 1"} onClick={() => setSelectedMasterworkLevel(Math.max(0, Math.min(10, Math.trunc(Number(selectedMasterworkLevel + 1)))))} color={1} />
                     </div>
                     <div className='text masterwork-summary'>
                         All item perk values: +{selectedMasterworkLevel * 10}% ({(1 + selectedMasterworkLevel / 10).toFixed(1)}×)

@@ -121,6 +121,11 @@ body::after {
   justify-content: space-around;
 }
 
+.justify-evenly {
+  justify-items: space-evenly;
+  justify-content: space-evenly;
+}
+
 .w-0 {
   width: 0.1px;
 }

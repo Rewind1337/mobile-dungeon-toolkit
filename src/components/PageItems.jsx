@@ -148,6 +148,7 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                                 setsRef={itemsRef.current.ITEM_SETS}
                                 selectedItemId={selectedSavedItemId}
                                 onPerkClick={handlePerkClick}
+                                saveItem={saveItem}
                                 deleteSavedItem={deleteSavedItem}
                             />
                         </div>
