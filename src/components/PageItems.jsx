@@ -38,7 +38,9 @@ function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
     }
 
     const getPerkSpriteName = name => {
-        const mainStat = ({ 0: "attack", 1: "defence", 2: "agility" })[Number(perkSelectionMainAttribute)]
+        const mainStat = perkSelectionMainAttribute == null
+            ? undefined
+            : ({ 0: "attack", 1: "defence", 2: "agility" })[Number(perkSelectionMainAttribute)]
         const mainStatPerkKeys = {
             attack: { MAIN_STAT_FLAT: "ATTACK_FLAT", MAIN_STAT_PERCENT: "ATTACK_PERCENT" },
             defence: { MAIN_STAT_FLAT: "DEFENCE_FLAT", MAIN_STAT_PERCENT: "DEFENCE_PERCENT" },
