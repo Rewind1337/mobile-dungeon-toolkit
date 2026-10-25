@@ -10,8 +10,8 @@ import { createSavedItemRecord } from "../database/ids.jsx"
 
 function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
     const [pageContent, setPageContent] = useState(0)
-    const [forceUpdate, setForceUpdate] = useState({})
-    const [, setSavedItemsUpdated] = useState(0)
+    // Ref changes do not trigger renders, so this revision refreshes memoized hero lists after saved-hero changes.
+    const [, setSavedHeroesRevision] = useState(0)
 
     // Hero Stuff
     const [selectedHeroId, setSelectedHeroId] = useState(null)
@@ -40,8 +40,8 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
             saveId: nextSaveId,
             items: [...(heroObj.items ?? [])]
         }
-        savedHeroesRef.current.push(savedHero)
-        setForceUpdate({})
+        savedHeroesRef.current = [...savedHeroesRef.current, savedHero]
+        setSavedHeroesRevision(revision => revision + 1)
         clearHeroSelection()
     }
 
@@ -60,7 +60,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
             setEquippedItems([])
         }
 
-        setForceUpdate({})
+        setSavedHeroesRevision(revision => revision + 1)
         if (manualSaveFunction) manualSaveFunction()
     }
 
@@ -136,20 +136,20 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                 {pageContent === 0 &&
                     <>
                         <div className='card w-50' style={{ width: (selectedHeroId === null) ? "300%" : "50%" }}>
-                            <HeroList setForceUpdate={setForceUpdate} headerText={"All Heroes"} heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} setSelectedHeroId={setSelectedHeroId} />
+                            <HeroList headerText={"All Heroes"} heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} setSelectedHeroId={setSelectedHeroId} />
                         </div>
                         <div className='card w-50' style={{ display: (selectedHeroId === null) ? "none" : "block" }}>
-                            <HeroPreview setForceUpdate={setForceUpdate} heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} saveHero={saveHero} onItemClick={handleItemClick} equippedItems={equippedItems} />
+                            <HeroPreview heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} saveHero={saveHero} onItemClick={handleItemClick} equippedItems={equippedItems} />
                         </div>
                     </>
                 }
                 {pageContent === 1 &&
                     <>
                         <div className='card w-50' style={{ width: (selectedSavedHeroId === null) ? "300%" : "50%" }}>
-                            <HeroList setForceUpdate={setForceUpdate} savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} setSelectedHeroId={setSelectedSavedHeroId} />
+                            <HeroList savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} setSelectedHeroId={setSelectedSavedHeroId} />
                         </div>
                         <div className='card w-50' style={{ display: (selectedSavedHeroId === null) ? "none" : "block" }}>
-                            <HeroPreview setForceUpdate={setForceUpdate} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} deleteSavedHero={deleteSavedHero} onItemClick={handleItemClick} equippedItems={equippedItems} />
+                            <HeroPreview heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} deleteSavedHero={deleteSavedHero} onItemClick={handleItemClick} equippedItems={equippedItems} />
                         </div>
                     </>
                 }
