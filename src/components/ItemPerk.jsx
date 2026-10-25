@@ -13,7 +13,8 @@ function ItemPerk({
     buttonColor = 5,
     noValue = false,
     editable = false,
-    multiplier = 1
+    multiplier = 1,
+    changeDisabled = false
 }) {
     const [_value, _setValue] = useState(value ?? 0)
     const _perk = PERK_DEFINITIONS[name]
@@ -67,7 +68,7 @@ function ItemPerk({
             </>}
 
             {onClick
-                ? <Button slim text={buttonText} color={buttonColor} onClick={() => onClick()} />
+                ? <Button slim text={buttonText} color={buttonColor} disabled={changeDisabled} onClick={() => onClick()} />
                 : <div className='text'>not changeable</div>
             }
         </div>
