@@ -17,7 +17,7 @@ function GuildBoss({ id, name, elementSrcArray, setSelectedGuildBoss }) {
 }
 
 function SubPageGuildBoss({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef }) {
-    const { listHeight, listRef, events } = useDynamicList(0, true);
+    const { listHeight, listRef } = useDynamicList(0, true);
     const [selectedGuildBoss, setSelectedGuildBoss] = useState(null);
 
     return (
