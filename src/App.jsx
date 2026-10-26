@@ -6,6 +6,7 @@ import Seagull from './sprites/seagull.webp'
 
 import NavBar from './components/NavBar.jsx'
 import Button from './components/Button.jsx'
+import './css/not-found.scss'
 
 import { init_hero_db } from './database/db_heroes.jsx'
 import { init_item_db } from './database/db_items.jsx'
