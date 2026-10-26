@@ -422,7 +422,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
     } else {
         return (
             <div ref={listRef} className='hero-preview flex-col' style={{ maxHeight: listHeight }}>
-                <Modal position="left" isVisible={exportModalVisible} onClose={() => setExportModalVisible(false)}>
+                <Modal position="center" isVisible={exportModalVisible} onClose={() => setExportModalVisible(false)}>
                     <div className="flex-col card w-100">
                         <div className="header">Export Hero</div>
                         <div className="text">Share this link to import the hero, level, stats, and talents.</div>
