@@ -34,7 +34,7 @@ const sets = itemsRef?.current?.ITEM_SETS ?? []
         >
             <div className="sub-nav-bar flex-row" style={{ flex: "0 0 auto" }}>
                 <div className="pagination flex-row card w-100">
-                    <Button text="Drop Catalogue" color={5} active={activeTab === "drops"} onClick={() => setActiveTab("drops")} />
+                    <Button text="Item Catalogue" color={5} active={activeTab === "drops"} onClick={() => setActiveTab("drops")} />
                     <Button text="Item Overview" color={5} active={activeTab === "overview"} onClick={() => setActiveTab("overview")} />
                 </div>
             </div>
