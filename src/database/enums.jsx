@@ -436,7 +436,7 @@ export const UNIQUE_WEAPON_DEFINITIONS = {
     DUALITY: { id: 218, description: "Ultimate Skill heals the ally with the lowest HP by $e of total damage dealt.", rarityEffect: [1.08, 1.10, 1.12, 1.14] },
     DOOM_ROD: { id: 219, description: "Ultimate Skill has a $e chance to inflict Bound on target for 1 turn.", rarityEffect: [1.12, 1.15, 1.18, 1.21] },
     SINGULARITY_TOME: { id: 220, description: "Increases Splash Damage by $e.", rarityEffect: [1.05, 1.06, 1.08, 1.10] },
-    LAVA_CATALYST: { id: 221, description: "Increases Critical Damage by $e in turn 1 and every 2 turns.", rarityEffect: [1.15, 1.20, 1.25, 1.30] },
+    LAVA_CATALYST: { id: 221, description: "Increases Splash Damage by $e.", rarityEffect: [1.05, 1.06, 1.08, 1.10] },
 
     // AGILITY
     BLASTER: { id: 300, description: "Critical hits heal self by $e of damage dealt.", rarityEffect: [1.07, 1.10, 1.13, 1.16] },
@@ -459,7 +459,7 @@ export const UNIQUE_WEAPON_DEFINITIONS = {
     TWILIGHT: { id: 317, description: "Critical hits have a $e chance to dispel 1 Buff from the target.", rarityEffect: [1.40, 1.50, 1.60, 1.70] },
     DICE_OF_DOOM: { id: 318, description: "Buffs (except Invincibility & Preservation) have a $e chance to extend their Duration by 1 round.", rarityEffect: [1.30, 1.36, 1.43, 1.50] },
     TUSK_FANG: { id: 319, description: "Ultimate Skill has a $e chance to grant the Caster ATK Up for 2 turns.", rarityEffect: [1.40, 1.50, 1.60, 1.70] },
-    RIFT_PIERCER: { id: 320, description: "Primary Skill has a $e chance to ignore Shields.", rarityEffect: [1.30, 1.36, 1.43, 1.50] },
+    RIFT_PIERCER: { id: 320, description: "Primary Skill has a $e chance to ignore Shields.", rarityEffect: [1.24, 1.30, 1.36, 1.42] },
 }
 
 // redundant
