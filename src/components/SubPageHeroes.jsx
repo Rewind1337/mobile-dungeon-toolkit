@@ -9,8 +9,6 @@ import {
 import Button from "./Button.jsx"
 import Hero from "./Hero.jsx"
 
-import "../css/other.scss"
-
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
     rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
 )

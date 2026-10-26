@@ -230,11 +230,11 @@ function SetCatalogueCard({ set, pieces }) {
     return (
         <article className="catalogue-set-card card">
             <header className="catalogue-set-header">
-                <h3 className="catalogue-set-name header">{set.name}</h3>
-                <p className="catalogue-set-meta text">
-                    {set.pieces} pieces <span aria-hidden="true">·</span> {humanize(getSourceName(set.dropSource))}
+                <h3 className="catalogue-set-name flex-row header">{set.name}</h3>
+                <p className="catalogue-set-meta flex-row justify-center text">
+                    {humanize(getSourceName(set.dropSource))}
+                    {locations.length > 0 && <p className="catalogue-set-locations text">Locations: {locations.join(", ")}</p>}
                 </p>
-                {locations.length > 0 && <p className="catalogue-set-locations text">Locations: {locations.join(", ")}</p>}
             </header>
 
             <PerkList perks={set.setBonus} label="Set bonuses" />
@@ -244,7 +244,7 @@ function SetCatalogueCard({ set, pieces }) {
                 {pieces.length > 0
                     ? <ul className="catalogue-piece-list">
                         {pieces.map(item => (
-                            <li className="catalogue-piece" key={item.id}>
+                            <li className="catalogue-piece card" key={item.id}>
                                 <img className="catalogue-piece-image" src={item.itemSrc} alt="" draggable={false} />
                                 <span className="catalogue-piece-name text">{item.name}</span>
                             </li>

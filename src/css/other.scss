@@ -286,7 +286,7 @@
 }
 
 .catalogue-piece-list {
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .catalogue-piece {
@@ -295,6 +295,7 @@
   gap: V.$gap-small;
   min-width: 0;
   padding: 3px 0;
+  flex-basis: 49%;
 }
 
 .catalogue-piece-image {

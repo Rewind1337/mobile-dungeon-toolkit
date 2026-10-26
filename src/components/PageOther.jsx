@@ -4,6 +4,9 @@ import Button from "./Button.jsx"
 import SubPageDrops from "./SubPageDrops.jsx"
 import SubPageHeroes from "./SubPageHeroes.jsx"
 
+import "../css/other.scss"
+import "../css/hero.scss"
+
 const EMPTY_ITEM_DATA = {}
 
 function PageOther({ itemsRef, heroesRef }) {
