@@ -616,3 +616,47 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+
+/* Keep catalogue results in normal document flow so the overview remains reachable below them. */
+.item-catalogue,
+.catalogue-results,
+.catalogue-overview {
+  height: auto;
+  max-height: none;
+  overflow: visible;
+}
+
+.catalogue-results {
+  flex: 0 0 auto;
+}
+
+.catalogue-overview {
+  display: flex;
+  flex: 0 0 auto;
+  align-self: stretch;
+  position: relative;
+  z-index: 1;
+  min-height: 180px;
+  height: auto;
+  visibility: visible;
+  opacity: 1;
+}
+
+.catalogue-item-source,
+.catalogue-item-location {
+  flex: 1 1 100%;
+  margin: 0;
+  font-size: V.$font-size-small;
+  overflow-wrap: anywhere;
+}
+
+.catalogue-item-location {
+  opacity: 0.9;
+}
+
+@media (min-width: 1500px) {
+  .catalogue-item-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
