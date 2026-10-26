@@ -29,6 +29,38 @@ const PRELOAD_IMAGE_SOURCES = [
   ...Object.values(attributeSprites),
   ...Object.values(statusSprites),
 ]
+const PAGE_TO_ROUTE = {
+  splash: '/',
+  heroes: '/heroes/',
+  items: '/items/',
+  teams: '/teams/',
+  simulator: '/simulators/',
+  other: '/other/',
+};
+
+const normalizeRoute = (route) => {
+  while (route.length > 1 && route.endsWith('/')) {
+    route = route.slice(0, -1);
+  }
+  return route;
+};
+
+const ROUTE_TO_PAGE = Object.fromEntries(
+  Object.entries(PAGE_TO_ROUTE).map(([page, route]) => [normalizeRoute(route), page])
+);
+
+const getPageFromPath = () => {
+  const baseUrl = import.meta.env.BASE_URL;
+  const basePath = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+  let pathname = window.location.pathname;
+
+  if (basePath && pathname.startsWith(basePath)) {
+    pathname = pathname.slice(basePath.length) || '/';
+  }
+
+  return ROUTE_TO_PAGE[normalizeRoute(pathname)] ?? 'splash';
+};
+
 const defaultState = {
   pageContent: 'splash',
   savedHeroesRef: [],
@@ -74,7 +106,7 @@ function App() {
   const savedItemsRef = useRef(initialState.savedItemsRef)
 
   // app related
-  const [pageContent, setPageContent] = useState(initialState.pageContent)
+  const [pageContent, setPageContent] = useState(getPageFromPath)
 
   const saveToLocalStorage = useCallback(() => {
     const saveState = {
@@ -97,11 +129,26 @@ function App() {
 
 
   useEffect(() => {
+    const handlePopState = () => setPageContent(getPageFromPath());
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  useEffect(() => {
     saveToLocalStorage();
   }, [saveToLocalStorage]);
 
   const switchTabTo = (page) => {
-    setPageContent(page)
+    const route = PAGE_TO_ROUTE[page] ?? PAGE_TO_ROUTE.splash;
+    const baseUrl = import.meta.env.BASE_URL;
+    const destination = route === '/' ? baseUrl : `${baseUrl}${route.slice(1)}`;
+
+    if (window.location.pathname !== destination) {
+      window.history.pushState({}, '', destination);
+    }
+
+    setPageContent(page);
   }
 
   return (
