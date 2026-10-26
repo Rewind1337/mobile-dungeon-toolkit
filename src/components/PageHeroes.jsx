@@ -38,7 +38,11 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                 !payload.hero ||
                 typeof payload.hero !== "object" ||
                 typeof payload.hero.id !== "string" ||
-                typeof payload.hero.name !== "string"
+                typeof payload.hero.name !== "string" ||
+                !Number.isFinite(Number(payload.hero.mainAttribute)) ||
+                !Number.isFinite(Number(payload.hero.rarity)) ||
+                !Number.isFinite(Number(payload.hero.element)) ||
+                !Number.isFinite(Number(payload.hero.role))
             ) {
                 throw new Error("This file is not a supported Mobile Dungeon Toolkit hero export.")
             }
@@ -177,7 +181,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
             <div className="sub-nav-bar flex-row">
                 <div className="pagination flex-row card w-100">
                     <Button text={"All Heroes"} color={0} onClick={() => { setPageContent(0) }} />
-                    <Button text={"Your Saved Heroes"} color={0} onClick={() => { setPageContent(1) }} />
+                    <Button text={"Saved Heroes"} color={0} onClick={() => { setPageContent(1) }} />
                     <Button text={"Import Hero"} color={0} onClick={() => heroImportInputRef.current?.click()} />
                     <input
                         ref={heroImportInputRef}
