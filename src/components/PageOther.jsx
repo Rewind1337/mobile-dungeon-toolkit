@@ -61,6 +61,7 @@ function PageOther({ itemsRef, heroesRef }) {
                 {activeTab === "heroes" && (
                     <SubPageHeroCatalogue heroesRef={heroes} />
                 )}
+                {activeTab === "statuses" && <SubPageStatusCatalogue />}
             </div>
         </div>
     )
