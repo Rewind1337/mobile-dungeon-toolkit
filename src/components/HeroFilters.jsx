@@ -61,7 +61,7 @@ function HeroFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, cl
                 <div className="name-search-filter">
                     <input className="selectable" type="text" aria-label="Search heroes by name" placeholder="Search heroes..." value={filters.name} onChange={(event) => setSearch(event.target.value)} />
                 </div>
-                <Button className='filters-sort-button' round onClick={() => setSortOrder(sortOrder => !sortOrder)} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
+                <Button className='filters-sort-button' round onClick={onToggleSort} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
                 <div className='flex-wrapper' />
                 <HeroRoleFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <div className='flex-wrapper' />
