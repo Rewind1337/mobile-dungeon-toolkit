@@ -275,7 +275,7 @@ function App() {
 
         {pageContent === 'simulator' && <PageSimulators itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
 
-        {pageContent === 'other' && <PageOther itemsRef={itemsRef} />}
+        {pageContent === 'other' && <PageOther itemsRef={itemsRef} heroesRef={heroesRef} />}
 
       </Suspense>
     </>
