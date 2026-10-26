@@ -253,14 +253,14 @@
 }
 
 .catalogue-section-label {
-  display: flex;
   align-self: center;
-  align-items: center;
-  justify-content: center;
-  gap: V.$gap-small;
   margin: 0;
   font-size: V.$font-size-button;
   font-weight: 700;
+
+  > * {
+    align-self: center;
+  }
 }
 
 .catalogue-effect-description {
