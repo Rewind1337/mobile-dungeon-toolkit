@@ -2,9 +2,11 @@ import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 
 import MDLogo from './sprites/logo.webp'
 import PlayaLogo from './sprites/playa_games_logo.webp'
+import Seagull from './sprites/seagull.webp'
 
 import NavBar from './components/NavBar.jsx'
 import Button from './components/Button.jsx'
+import './css/not-found.scss'
 
 import { init_hero_db } from './database/db_heroes.jsx'
 import { init_item_db } from './database/db_items.jsx'
@@ -29,6 +31,38 @@ const PRELOAD_IMAGE_SOURCES = [
   ...Object.values(attributeSprites),
   ...Object.values(statusSprites),
 ]
+const PAGE_TO_ROUTE = {
+  splash: '/',
+  heroes: '/heroes/',
+  items: '/items/',
+  teams: '/teams/',
+  simulator: '/simulators/',
+  other: '/other/',
+};
+
+const normalizeRoute = (route) => {
+  while (route.length > 1 && route.endsWith('/')) {
+    route = route.slice(0, -1);
+  }
+  return route;
+};
+
+const ROUTE_TO_PAGE = Object.fromEntries(
+  Object.entries(PAGE_TO_ROUTE).map(([page, route]) => [normalizeRoute(route), page])
+);
+
+const getPageFromPath = () => {
+  const baseUrl = import.meta.env.BASE_URL;
+  const basePath = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+  let pathname = window.location.pathname;
+
+  if (basePath && pathname.startsWith(basePath)) {
+    pathname = pathname.slice(basePath.length) || '/';
+  }
+
+  return ROUTE_TO_PAGE[normalizeRoute(pathname)] ?? 'notFound';
+};
+
 const defaultState = {
   pageContent: 'splash',
   savedHeroesRef: [],
@@ -74,7 +108,7 @@ function App() {
   const savedItemsRef = useRef(initialState.savedItemsRef)
 
   // app related
-  const [pageContent, setPageContent] = useState(initialState.pageContent)
+  const [pageContent, setPageContent] = useState(getPageFromPath)
 
   const saveToLocalStorage = useCallback(() => {
     const saveState = {
@@ -97,22 +131,56 @@ function App() {
 
 
   useEffect(() => {
+    const handlePopState = () => setPageContent(getPageFromPath());
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  useEffect(() => {
     saveToLocalStorage();
   }, [saveToLocalStorage]);
 
   const switchTabTo = (page) => {
-    setPageContent(page)
+    const route = PAGE_TO_ROUTE[page] ?? PAGE_TO_ROUTE.splash;
+    const baseUrl = import.meta.env.BASE_URL;
+    const destination = route === '/' ? baseUrl : `${baseUrl}${route.slice(1)}`;
+
+    if (window.location.pathname !== destination) {
+      window.history.pushState({}, '', destination);
+    }
+
+    setPageContent(page);
   }
 
   return (
     <>
-      <NavBar switchTabTo={switchTabTo} />
+      {pageContent !== 'notFound' && <NavBar switchTabTo={switchTabTo} />}
 
       <Suspense fallback={
         <div className="page flex-row w-100">
             <div className="card">Loading...</div>
         </div>
       }>
+        {pageContent === 'notFound' &&
+          <main id="page-not-found" className="not-found-page">
+            <section className="not-found-card card flex-col">
+              <div className="header-big">Sorry</div>
+              <img className="not-found-seagull margin-auto" src={Seagull} alt="A seagull" />
+              <div className="header">Looks like you've flown off course.</div>
+              <p className="text">We couldn't find the page you were looking for.</p>
+              <nav className="not-found-links flex-row w-100" aria-label="Toolkit pages">
+                <Button className="not-found-link" text="Heroes" color={0} onClick={() => switchTabTo('heroes')} />
+                <Button className="not-found-link" text="Items" color={1} onClick={() => switchTabTo('items')} />
+                <Button className="not-found-link" text="Teams" color={2} onClick={() => switchTabTo('teams')} />
+                <Button className="not-found-link" text="Home" color={3} onClick={() => switchTabTo('splash')} />
+                <Button className="not-found-link" text="Simulators" color={4} onClick={() => switchTabTo('simulator')} />
+                <Button className="not-found-link" text="Other Stuff" color={5} onClick={() => switchTabTo('other')} />
+              </nav>
+            </section>
+          </main>
+        }
+
         {pageContent === 'splash' &&
           <div id='page-splash' className='page flex-col w-100'>
             <div className='flex-row top'>

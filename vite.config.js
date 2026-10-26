@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [
     react(),
     visualizer({
@@ -13,5 +13,7 @@ export default defineConfig({
       open: false,
     }),
   ],
-  base: './',
-});
+  // GitHub Pages hosts this project under /mobile-dungeon-toolkit/.
+  // Keep local development at the root path.
+  base: command === 'build' ? '/mobile-dungeon-toolkit/' : '/',
+}));
