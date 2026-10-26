@@ -13,5 +13,7 @@ export default defineConfig({
       open: false,
     }),
   ],
-  base: './',
+  // GitHub Pages hosts this project under /mobile-dungeon-toolkit/.
+  // Keep local development at the root path.
+  base: process.env.NODE_ENV === 'production' ? '/mobile-dungeon-toolkit/' : '/',
 });
