@@ -1,6 +1,14 @@
 @use './_variables.scss' as V;
 
-.item-catalogue {
+/*
+ * The shared .card, .header, .text, .flex-row and related utility classes
+ * live in global.scss. Keep this file focused on catalogue-specific layout.
+ */
+
+/* Shared catalogue layout */
+
+.item-catalogue,
+.hero-catalogue {
   display: flex;
   flex-direction: column;
   gap: V.$gap;
@@ -11,10 +19,10 @@
 
 .catalogue-header {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
   gap: V.$gap;
-  flex-wrap: wrap;
 }
 
 .catalogue-heading-copy {
@@ -25,7 +33,8 @@
   min-width: 0;
 }
 
-.catalogue-title {
+.catalogue-title,
+.catalogue-overview-title {
   margin: 0;
 }
 
@@ -35,22 +44,16 @@
 .catalogue-item-set,
 .catalogue-set-meta,
 .catalogue-set-locations,
-.catalogue-group-meta,
 .catalogue-effect-description,
-.catalogue-muted {
+.catalogue-muted,
+.catalogue-item-source,
+.catalogue-item-location,
+.hero-catalogue-name,
+.hero-catalogue-meta,
+.hero-catalogue-variant,
+.hero-catalogue-description {
   margin: 0;
   overflow-wrap: anywhere;
-}
-
-.catalogue-description,
-.catalogue-result-count,
-.catalogue-item-meta,
-.catalogue-item-set,
-.catalogue-set-meta,
-.catalogue-set-locations,
-.catalogue-group-meta,
-.catalogue-muted {
-  font-size: V.$font-size-small;
 }
 
 .catalogue-result-count {
@@ -61,18 +64,26 @@
 .catalogue-view-switch {
   display: flex;
   flex-wrap: wrap;
-  gap: V.$gap-small;
   align-items: center;
+  gap: V.$gap-small;
 }
 
-.catalogue-filters {
+.catalogue-filters,
+.hero-catalogue-filters {
   display: grid;
-  grid-template-columns: minmax(260px, 2fr) repeat(4, minmax(145px, 1fr)) auto;
   gap: V.$gap;
   align-items: end;
   padding: V.$padding-card;
   border-radius: V.$border-radius;
   background: rgba(0, 0, 0, 0.2);
+}
+
+.catalogue-filters {
+  grid-template-columns: minmax(260px, 2fr) repeat(4, minmax(145px, 1fr)) auto;
+}
+
+.hero-catalogue-filters {
+  grid-template-columns: minmax(240px, 2fr) repeat(4, minmax(140px, 1fr)) auto;
 }
 
 .catalogue-search,
@@ -85,9 +96,9 @@
 }
 
 .catalogue-control-label {
+  padding-inline: 2px;
   font-size: V.$font-size-xsmall;
   opacity: 0.85;
-  padding-inline: 2px;
 }
 
 .catalogue-input,
@@ -106,41 +117,21 @@
 
 .catalogue-results {
   display: flex;
+  flex: 0 0 auto;
   flex-direction: column;
   gap: V.$gap;
   min-width: 0;
+  height: auto;
+  max-height: none;
+  overflow: visible;
 }
 
-.catalogue-source-group {
-  display: flex;
-  flex-direction: column;
-  gap: V.$gap-small;
-  min-width: 0;
-}
-
-.catalogue-group-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: V.$gap;
-  flex-wrap: wrap;
-  padding: 0 2px;
-}
-
-.catalogue-group-title,
-.catalogue-item-name,
-.catalogue-set-name {
+.catalogue-empty {
   margin: 0;
-  overflow-wrap: anywhere;
+  padding: V.$gap;
 }
 
-.catalogue-group-title {
-  font-size: V.$font-size-header-small;
-}
-
-.catalogue-group-meta {
-  text-align: right;
-}
+/* Item cards and set cards */
 
 .catalogue-item-grid,
 .catalogue-set-grid {
@@ -151,7 +142,17 @@
   min-width: 0;
 }
 
-.catalogue-item-card,
+.catalogue-item-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: V.$gap;
+  width: auto;
+  min-width: 0;
+  padding: V.$padding-card;
+  text-align: left;
+}
+
 .catalogue-set-card {
   display: flex;
   flex-direction: column;
@@ -163,17 +164,19 @@
   text-align: left;
 }
 
-.catalogue-item-card {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  align-content: start;
-}
-
 .catalogue-item-identity {
   display: flex;
   align-items: flex-start;
   gap: V.$gap;
   min-width: 0;
+}
+
+.catalogue-item-preview {
+  flex: 0 0 auto;
+}
+
+.catalogue-item-preview .item {
+  cursor: default;
 }
 
 .catalogue-item-heading {
@@ -187,19 +190,50 @@
 
 .catalogue-item-name {
   flex: 1 1 100%;
+  margin: 0;
   font-size: V.$font-size-header-small;
   line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 .catalogue-item-meta,
-.catalogue-item-set {
+.catalogue-item-set,
+.catalogue-item-source,
+.catalogue-item-location {
   flex: 1 1 100%;
+}
+
+.catalogue-item-meta-row,
+.catalogue-item-source-row {
+  display: flex;
+  flex: 1 1 100%;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px V.$gap-small;
+  min-width: 0;
+}
+
+.catalogue-item-meta-row .catalogue-item-meta,
+.catalogue-item-meta-row .catalogue-item-set,
+.catalogue-item-source-row .catalogue-item-source,
+.catalogue-item-source-row .catalogue-item-location {
+  flex: 0 1 auto;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.catalogue-item-source-row {
+  opacity: 0.9;
+}
+
+.catalogue-item-location {
+  opacity: 0.9;
 }
 
 .catalogue-statuses {
   display: flex;
-  align-items: center;
   flex-wrap: wrap;
+  align-items: center;
   gap: V.$gap-small;
 }
 
@@ -219,14 +253,14 @@
 }
 
 .catalogue-section-label {
+  display: flex;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  gap: V.$gap-small;
   margin: 0;
   font-size: V.$font-size-button;
   font-weight: 700;
-  align-self: center;
-
-  > * {
-    align-self: center;
-  }
 }
 
 .catalogue-effect-description {
@@ -241,9 +275,9 @@
   align-items: center;
   justify-content: center;
   gap: V.$gap-small;
-  list-style: none;
   margin: 0;
   padding: 0;
+  list-style: none;
 }
 
 .catalogue-perk {
@@ -257,9 +291,9 @@
 }
 
 .catalogue-perk-icon {
+  flex: 0 0 24px;
   width: 24px;
   height: 24px;
-  flex: 0 0 24px;
   object-fit: contain;
 }
 
@@ -277,7 +311,9 @@
 }
 
 .catalogue-set-name {
+  margin: 0;
   font-size: V.$font-size-header;
+  overflow-wrap: anywhere;
 }
 
 .catalogue-set-meta,
@@ -291,17 +327,17 @@
 
 .catalogue-piece {
   display: flex;
+  flex: 0 1 49%;
   align-items: center;
   gap: V.$gap-small;
   min-width: 0;
   padding: 3px 0;
-  flex-basis: 49%;
 }
 
 .catalogue-piece-image {
+  flex: 0 0 34px;
   width: 34px;
   height: 34px;
-  flex: 0 0 34px;
   object-fit: contain;
 }
 
@@ -310,77 +346,25 @@
   overflow-wrap: anywhere;
 }
 
-.catalogue-empty {
-  margin: 0;
-  padding: V.$gap;
-}
+/* Item catalogue overview */
 
-@media (min-width: 1500px) {
-  .catalogue-item-grid,
-  .catalogue-set-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .catalogue-item-card {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-@media (max-width: 1200px) {
-  .catalogue-filters {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .catalogue-search {
-    grid-column: 1 / -1;
-  }
-
-  .catalogue-filter-actions {
-    justify-content: flex-start;
-  }
-}
-
-@media (max-width: 900px) {
-  .item-catalogue {
-    padding: 0;
-  }
-
-  .catalogue-item-grid,
-  .catalogue-set-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .catalogue-filters {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .catalogue-search {
-    grid-column: auto;
-  }
-
-  .catalogue-result-count {
-    flex-basis: 100%;
-    text-align: left;
-  }
-
-  .catalogue-group-meta {
-    text-align: left;
-  }
-}
-
-
-/* Item catalogue overview, now displayed after the catalogue results. */
 .catalogue-overview {
+  position: relative;
+  z-index: 1;
   display: flex;
+  flex: 0 0 auto;
   flex-direction: column;
+  align-self: stretch;
   gap: V.$gap;
   min-width: 0;
+  min-height: 180px;
+  height: auto;
+  max-height: none;
   margin-top: V.$gap;
   padding: V.$padding-card;
-}
-
-.catalogue-overview-title {
-  margin: 0;
+  overflow: visible;
+  visibility: visible;
+  opacity: 1;
 }
 
 .catalogue-overview-stats {
@@ -419,24 +403,6 @@
 }
 
 /* Hero catalogue */
-.hero-catalogue {
-  display: flex;
-  flex-direction: column;
-  gap: V.$gap;
-  width: 100%;
-  min-width: 0;
-  padding: V.$padding-card;
-}
-
-.hero-catalogue-filters {
-  display: grid;
-  grid-template-columns: minmax(240px, 2fr) repeat(4, minmax(140px, 1fr)) auto;
-  gap: V.$gap;
-  align-items: end;
-  padding: V.$padding-card;
-  border-radius: V.$border-radius;
-  background: rgba(0, 0, 0, 0.2);
-}
 
 .hero-catalogue-grid {
   display: grid;
@@ -462,11 +428,15 @@
   min-width: 0;
 }
 
-.hero-catalogue-image {
-  width: 76px;
-  height: 76px;
-  flex: 0 0 76px;
-  object-fit: contain;
+.hero-catalogue-portrait {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.hero-catalogue-portrait .hero {
+  cursor: default;
 }
 
 .hero-catalogue-heading {
@@ -478,38 +448,7 @@
   min-width: 0;
 }
 
-.hero-catalogue-name,
-.hero-catalogue-meta,
-.hero-catalogue-variant {
-  margin: 0;
-  overflow-wrap: anywhere;
-}
-
-.hero-catalogue-name {
-  font-size: V.$font-size-header;
-}
-
-.hero-catalogue-meta,
-.hero-catalogue-variant,
-.hero-catalogue-skill-meta {
-  font-size: V.$font-size-small;
-}
-
-.hero-catalogue-starred {
-  padding: 2px 7px;
-  border-radius: V.$border-radius-small;
-  background: rgba(255, 190, 70, 0.2);
-  font-size: V.$font-size-xsmall;
-  font-weight: 700;
-}
-
-.hero-catalogue-section {
-  display: flex;
-  flex-direction: column;
-  gap: V.$gap-small;
-  min-width: 0;
-}
-
+.hero-catalogue-section,
 .hero-catalogue-skills,
 .hero-catalogue-talents {
   display: flex;
@@ -537,12 +476,6 @@
   gap: V.$gap-small;
 }
 
-.hero-catalogue-description {
-  margin: 0;
-  font-size: V.$font-size-small;
-  overflow-wrap: anywhere;
-}
-
 .hero-catalogue-details summary {
   cursor: pointer;
   font-size: V.$font-size-small;
@@ -561,19 +494,38 @@
   font-size: V.$font-size-xsmall;
 }
 
+.hero-catalogue-talent-effects {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: V.$gap-small 0 0;
+  padding-left: 1.2rem;
+  overflow-wrap: anywhere;
+}
+
+/* Responsive layouts */
+
 @media (min-width: 1500px) {
+  .catalogue-item-grid,
+  .catalogue-set-grid,
   .hero-catalogue-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 1200px) {
+  .catalogue-filters,
   .hero-catalogue-filters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .catalogue-search,
   .hero-catalogue-filters .catalogue-search {
     grid-column: 1 / -1;
+  }
+
+  .catalogue-filter-actions {
+    justify-content: flex-start;
   }
 
   .catalogue-overview-stats {
@@ -582,125 +534,33 @@
 }
 
 @media (max-width: 900px) {
-  .hero-catalogue,
-  .item-catalogue {
+  .item-catalogue,
+  .hero-catalogue {
     padding: 0;
   }
 
+  .catalogue-item-grid,
+  .catalogue-set-grid,
   .hero-catalogue-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .catalogue-filters,
   .hero-catalogue-filters {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .catalogue-search,
   .hero-catalogue-filters .catalogue-search {
     grid-column: auto;
+  }
+
+  .catalogue-result-count {
+    flex-basis: 100%;
+    text-align: left;
   }
 
   .catalogue-overview-stats {
     grid-template-columns: minmax(0, 1fr);
   }
-}
-
-
-/* Keep catalogue results in normal document flow so the overview remains reachable below them. */
-.item-catalogue,
-.catalogue-results,
-.catalogue-overview {
-  height: auto;
-  max-height: none;
-  overflow: visible;
-}
-
-.catalogue-results {
-  flex: 0 0 auto;
-}
-
-.catalogue-overview {
-  display: flex;
-  flex: 0 0 auto;
-  align-self: stretch;
-  position: relative;
-  z-index: 1;
-  min-height: 180px;
-  height: auto;
-  visibility: visible;
-  opacity: 1;
-}
-
-.catalogue-item-source,
-.catalogue-item-location {
-  flex: 1 1 100%;
-  margin: 0;
-  font-size: V.$font-size-small;
-  overflow-wrap: anywhere;
-}
-
-.catalogue-item-location {
-  opacity: 0.9;
-}
-
-@media (min-width: 1500px) {
-  .catalogue-item-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.catalogue-item-meta-row,
-.catalogue-item-source-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px V.$gap-small;
-  min-width: 0;
-}
-
-.catalogue-item-meta-row {
-  flex: 1 1 100%;
-}
-
-.catalogue-item-meta-row .catalogue-item-meta,
-.catalogue-item-meta-row .catalogue-item-set,
-.catalogue-item-source-row .catalogue-item-source,
-.catalogue-item-source-row .catalogue-item-location {
-  flex: 0 1 auto;
-  margin: 0;
-  font-size: V.$font-size-small;
-  overflow-wrap: anywhere;
-}
-
-.catalogue-item-source-row {
-  flex: 1 1 100%;
-  opacity: 0.9;
-}
-
-.hero-catalogue-portrait {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-.hero-catalogue-portrait .hero {
-  cursor: default;
-}
-
-.hero-catalogue-talent-effects {
-  margin: V.$gap-small 0 0;
-  padding-left: 1.2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  overflow-wrap: anywhere;
-}
-
-
-.catalogue-item-preview {
-  flex: 0 0 auto;
-}
-
-.catalogue-item-preview .item {
-  cursor: default;
 }
