@@ -122,16 +122,15 @@ export function decodeHeroShareInput(input) {
     if (!trimmed) throw new Error("Paste a hero share link or its encoded data.")
 
     let token = trimmed
-    try {
-        const url = new URL(trimmed)
+    if (/^(https?:\\/\\/|\\/|\\.\\/|heroes\\/)/i.test(trimmed) || trimmed.includes("hero=")) {
+        let url
+        try {
+            url = new URL(trimmed, window.location.origin)
+        } catch {
+            throw new Error("That does not look like a valid hero share link.")
+        }
         token = url.searchParams.get("hero") ?? ""
         if (!token) throw new Error("That link does not contain hero share data.")
-    } catch (error) {
-        if (error instanceof TypeError) {
-            // Not a URL; treat the input as a raw share token.
-        } else {
-            throw error
-        }
     }
 
     let payload
