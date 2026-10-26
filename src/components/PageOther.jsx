@@ -10,8 +10,10 @@ import "../css/hero.scss"
 
 const EMPTY_ITEM_DATA = {}
 
-function PageOther({ itemsRef, heroesRef }) {
-    const [activeTab, setActiveTab] = useState("item-catalogue")
+function PageOther({ itemsRef, heroesRef, activeTab = "item-catalogue", onTabChange }) {
+    const setActiveTab = (tab) => {
+        onTabChange?.(tab)
+    }
     const { listRef, events } = useDynamicList(0)
     const itemData = itemsRef?.current?.BASE_ITEMS ?? EMPTY_ITEM_DATA
     const sets = itemsRef?.current?.ITEM_SETS ?? []
