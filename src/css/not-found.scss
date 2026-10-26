@@ -53,10 +53,35 @@
   width: 100%;
   margin-top: 8px;
 
-  button {
+  .not-found-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-width: 120px;
     flex: 1 1 120px;
     max-width: 180px;
+    height: 45px;
+    padding: V.$padding-button;
+    border-radius: V.$border-radius;
+    outline: 1px solid V.$border-color-medium;
+    color: rgba(255, 255, 255, 0.87);
+    font-size: V.$font-size-button;
+    font-weight: 500;
+    text-decoration: none;
+    text-shadow: -2px 0 4px black, 2px 0 4px black, 0 -2px 4px black, 0 2px 4px black;
+    transition: V.$transition-button;
+    
+    &:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.2);
+    }
+
+    &[data-color="0"] { background: V.$button-one-gradient; }
+    &[data-color="1"] { background: V.$button-two-gradient; }
+    &[data-color="2"] { background: V.$button-three-gradient; }
+    &[data-color="3"] { background: V.$button-four-gradient; }
+    &[data-color="4"] { background: V.$button-five-gradient; }
+    &[data-color="5"] { background: V.$button-six-gradient; }
   }
 }
 
@@ -82,9 +107,12 @@
   .not-found-links {
     gap: 6px;
 
-    button {
+    .not-found-link {
       min-width: 95px;
       flex-basis: 95px;
+      font-size: V.$mobile-button-text;
+      height: V.$mobile-button-height;
+      border-radius: 0;
     }
   }
 }
