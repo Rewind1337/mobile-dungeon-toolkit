@@ -35,9 +35,7 @@ function add_weapon(name, fixedPerks, unique, rarity, attributeRequirement, main
         throw new Error(`Duplicate stable weapon ID "${id}". Give this weapon a distinct name/key.`)
     }
     unique = (unique != undefined ? unique : UNIQUE_WEAPON_DEFINITIONS.NOTHING)
-    // These two unique weapons currently lack entries in UNIQUE_WEAPON_DEFINITIONS.
-    // Keep their unique-item marker visible without inventing missing effect values.
-    const isUnique = Boolean(unique) || name === "Lava Catalyst" || name === "Rift Piercer"
+    const isUnique = Boolean(unique)
     let perkAmount = getItemPerkCount(rarity, Boolean(unique))
     let perks = Array(perkAmount).fill("NOTHING")
     BASE_ITEMS.WEAPONS.push({
