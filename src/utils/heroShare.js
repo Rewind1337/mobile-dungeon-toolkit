@@ -90,7 +90,7 @@ function expandItem(compact, allItems) {
 
 export function createHeroShareToken(hero) {
     const talentKeys = Object.keys(hero.talents ?? {})
-        .filter(key => /^\\d+$/.test(key))
+        .filter(key => key !== "" && Number.isInteger(Number(key)))
         .sort((a, b) => Number(a) - Number(b))
     const talentMask = talentKeys.reduce(
         (mask, key, index) => hero.talents[key]?.active ? mask | (1 << index) : mask,
@@ -122,7 +122,7 @@ export function decodeHeroShareInput(input) {
     if (!trimmed) throw new Error("Paste a hero share link or its encoded data.")
 
     let token = trimmed
-    if (/^(https?:\\/\\/|\\/|\\.\\/|heroes\\/)/i.test(trimmed) || trimmed.includes("hero=")) {
+    if (trimmed.startsWith("http://") || trimmed.startsWith("https://") || trimmed.startsWith("/") || trimmed.startsWith("./") || trimmed.startsWith("heroes/") || trimmed.includes("hero=")) {
         let url
         try {
             url = new URL(trimmed, window.location.origin)
@@ -166,7 +166,7 @@ export function restoreSharedHero(payload, baseHeroes, baseItems) {
     const talents = baseHero.talents ? { ...baseHero.talents } : baseHero.talents
     if (talents) {
         const talentKeys = Object.keys(talents)
-            .filter(key => /^\\d+$/.test(key))
+            .filter(key => key !== "" && Number.isInteger(Number(key)))
             .sort((a, b) => Number(a) - Number(b))
         for (let index = 0; index < talentKeys.length; index++) {
             const key = talentKeys[index]
