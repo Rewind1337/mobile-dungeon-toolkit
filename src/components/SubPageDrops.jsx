@@ -30,7 +30,8 @@ function getLocations(item) {
 
 function getSourceName(source) {
     if (source === null || source === undefined || source === "") return "Unspecified source"
-    return getEnumNameById(DROP_SOURCE_DEFINITIONS, Number(source)) ?? String(source)
+    const name = getEnumNameById(DROP_SOURCE_DEFINITIONS, Number(source)) ?? String(source)
+    return name.toLowerCase() === "everywhere" ? "Any Dungeon" : name
 }
 
 function getPerkKey(perk) {
@@ -119,8 +120,6 @@ function CatalogueFilters({
     setSourceFilter,
     slotFilter,
     setSlotFilter,
-    rarityFilter,
-    setRarityFilter,
     locationFilter,
     setLocationFilter,
     allSources,
@@ -164,15 +163,6 @@ function CatalogueFilters({
                         )}
                     </select>
                 </label>
-                <label className="catalogue-filter">
-                    <span className="catalogue-control-label text">Rarity</span>
-                    <select aria-label="Filter by rarity" value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
-                        <option value="all">All rarities</option>
-                        {Object.values(RARITY_DEFINITIONS).map(rarity =>
-                            <option key={rarity.id} value={String(rarity.id)}>{humanize(rarity.name)}</option>
-                        )}
-                    </select>
-                </label>
             </>}
             <div className="catalogue-filter-actions">
                 <Button text="Clear filters" color={5} onClick={clearFilters} />
@@ -192,15 +182,19 @@ function ItemCatalogueCard({ item, set }) {
                 <img className="catalogue-item-image" src={item.itemSrc} alt="" draggable={false} />
                 <div className="catalogue-item-heading">
                     <h3 className="catalogue-item-name header">{item.name}</h3>
-                    {unique && <span className="catalogue-unique-label text">Unique Item</span>}
-                    <p className="catalogue-item-meta text">
-                        {humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity")} · {humanize(item.slotLabel ?? "Unknown slot")}
-                    </p>
-                    <p className="catalogue-item-source text">Source: {humanize(getSourceName(item.dropSource))}</p>
-                    <p className="catalogue-item-location text">
-                        Drop location: {getLocations(item).filter(location => location !== "Unspecified location").join(", ") || "Unspecified"}
-                    </p>
-                    {set && <p className="catalogue-item-set text">Set: {set.name}</p>}
+                    {unique && <span className="catalogue-unique-label text">Unique Item</span>} 
+                    <div className="catalogue-item-meta-row">
+                        <p className="catalogue-item-meta text">
+                            {humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity")} · {humanize(item.slotLabel ?? "Unknown slot")}
+                        </p>
+                        {set && <p className="catalogue-item-set text">Set: {set.name}</p>}
+                    </div>
+                    <div className="catalogue-item-source-row text">
+                        <p className="catalogue-item-source">Source: {humanize(getSourceName(item.dropSource))}</p>
+                        <p className="catalogue-item-location">
+                            Drop location: {getLocations(item).filter(location => location !== "Unspecified location").join(", ") || "Unspecified"}
+                        </p>
+                    </div>
                     {statuses.length > 0 && (
                         <div className="catalogue-statuses" aria-label="Statuses applied by weapon effect">
                             {statuses.map(status => (
@@ -316,7 +310,6 @@ function SubPageDrops({ itemsRef, setsRef }) {
     const [search, setSearch] = useState("")
     const [sourceFilter, setSourceFilter] = useState("all")
     const [slotFilter, setSlotFilter] = useState("all")
-    const [rarityFilter, setRarityFilter] = useState("all")
     const [locationFilter, setLocationFilter] = useState("all")
 
     const allItems = useMemo(() => {
@@ -369,10 +362,9 @@ function SubPageDrops({ itemsRef, setsRef }) {
         const matchesSearch = !query || searchable.includes(query)
         const matchesSource = sourceFilter === "all" || sourceName === sourceFilter
         const matchesSlot = slotFilter === "all" || String(item.slot) === slotFilter
-        const matchesRarity = rarityFilter === "all" || String(item.rarity) === rarityFilter
         const matchesLocation = locationFilter === "all" || getLocations(item).includes(locationFilter)
-        return matchesSearch && matchesSource && matchesSlot && matchesRarity && matchesLocation
-    }), [allItems, search, sourceFilter, slotFilter, rarityFilter, locationFilter])
+        return matchesSearch && matchesSource && matchesSlot && matchesLocation
+    }), [allItems, search, sourceFilter, slotFilter, locationFilter])
 
     const filteredSets = useMemo(() => (setsRef ?? []).filter(set => {
         const query = search.trim().toLowerCase()
@@ -396,7 +388,6 @@ function SubPageDrops({ itemsRef, setsRef }) {
         setSearch("")
         setSourceFilter("all")
         setSlotFilter("all")
-        setRarityFilter("all")
         setLocationFilter("all")
     }
 
@@ -423,8 +414,6 @@ function SubPageDrops({ itemsRef, setsRef }) {
                 setSourceFilter={setSourceFilter}
                 slotFilter={slotFilter}
                 setSlotFilter={setSlotFilter}
-                rarityFilter={rarityFilter}
-                setRarityFilter={setRarityFilter}
                 locationFilter={locationFilter}
                 setLocationFilter={setLocationFilter}
                 allSources={allSources}
