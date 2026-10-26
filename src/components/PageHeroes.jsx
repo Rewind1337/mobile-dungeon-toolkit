@@ -5,10 +5,13 @@ import HeroList from "./HeroList.jsx"
 import HeroPreview from "./HeroPreview.jsx"
 import Button from "./Button.jsx"
 import Modal from "./Modal.jsx"
+import { decodeHeroShareInput, restoreSharedHero } from "../utils/heroShare.js"
 
 function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
     const [pageContent, setPageContent] = useState(0)
     const heroImportInputRef = useRef(null)
+    const [importModalVisible, setImportModalVisible] = useState(false)
+    const [heroShareInput, setHeroShareInput] = useState("")
     // Ref changes do not trigger renders, so this revision refreshes memoized hero lists after saved-hero changes.
     const [, setSavedHeroesRevision] = useState(0)
 
@@ -26,7 +29,42 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
     }, [pageContent, selectedHeroId, selectedSavedHeroId, activeHero?.items])
 
 
-    const handleImportHero = async (event) => {
+    const importHero = (hero) => {
+        const nextSaveId = Math.max(
+            -1,
+            ...savedHeroesRef.current
+                .map(savedHero => Number(savedHero.saveId))
+                .filter(Number.isFinite)
+        ) + 1
+
+        const savedHero = {
+            ...hero,
+            saveId: nextSaveId,
+            items: Array.isArray(hero.items) ? [...hero.items] : []
+        }
+
+        savedHeroesRef.current = [...savedHeroesRef.current, savedHero]
+        setSavedHeroesRevision(revision => revision + 1)
+        setPageContent(1)
+        setSelectedHeroId(null)
+        setSelectedSavedHeroId(nextSaveId)
+        setEquippedItems([...savedHero.items])
+        setImportModalVisible(false)
+        setHeroShareInput("")
+        if (manualSaveFunction) manualSaveFunction()
+    }
+
+    const handleImportHeroLink = () => {
+        try {
+            const payload = decodeHeroShareInput(heroShareInput)
+            const hero = restoreSharedHero(payload, heroesRef.current, itemsRef.current.BASE_ITEMS)
+            importHero(hero)
+        } catch (error) {
+            window.alert(error.message || "Could not import this hero link.")
+        }
+    }
+
+    const handleImportHeroFile = async (event) => {
         const file = event.target.files?.[0]
         if (!file) return
 
@@ -37,43 +75,24 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                 payload?.version !== 1 ||
                 !payload.hero ||
                 typeof payload.hero !== "object" ||
-                typeof payload.hero.id !== "string" ||
-                typeof payload.hero.name !== "string" ||
-                !Number.isFinite(Number(payload.hero.mainAttribute)) ||
-                !Number.isFinite(Number(payload.hero.rarity)) ||
-                !Number.isFinite(Number(payload.hero.element)) ||
-                !Number.isFinite(Number(payload.hero.role))
+                typeof payload.hero.id !== "string"
             ) {
-                throw new Error("This file is not a supported Mobile Dungeon Toolkit hero export.")
+                throw new Error("This JSON file is not a supported hero export.")
             }
 
-            const importedHero = JSON.parse(JSON.stringify(payload.hero))
-            delete importedHero.saveId
-            delete importedHero.heroSrc
-            delete importedHero.elementSrc
+            const baseHero = heroesRef.current.find(hero => hero.id === payload.hero.id)
+            if (!baseHero) throw new Error("This hero is not present in the current toolkit database.")
 
-            const nextSaveId = Math.max(
-                -1,
-                ...savedHeroesRef.current
-                    .map(hero => Number(hero.saveId))
-                    .filter(Number.isFinite)
-            ) + 1
-
-            const savedHero = {
-                ...importedHero,
-                saveId: nextSaveId,
-                items: Array.isArray(importedHero.items) ? importedHero.items : []
-            }
-
-            savedHeroesRef.current = [...savedHeroesRef.current, savedHero]
-            setSavedHeroesRevision(revision => revision + 1)
-            setPageContent(1)
-            setSelectedHeroId(null)
-            setSelectedSavedHeroId(nextSaveId)
-            setEquippedItems([...savedHero.items])
-            if (manualSaveFunction) manualSaveFunction()
+            importHero({
+                ...baseHero,
+                ...payload.hero,
+                skills: baseHero.skills,
+                talents: payload.hero.talents ?? baseHero.talents,
+                heroSrc: baseHero.heroSrc,
+                elementSrc: baseHero.elementSrc
+            })
         } catch (error) {
-            console.error("Failed to import hero:", error)
+            console.error("Failed to import hero file:", error)
             window.alert(error instanceof SyntaxError
                 ? "Could not import this file. Make sure it contains valid JSON."
                 : (error.message || "Could not import this hero file."))
@@ -81,6 +100,25 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
             event.target.value = ""
         }
     }
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search)
+        const token = params.get("hero")
+        if (!token) return
+
+        try {
+            const payload = decodeHeroShareInput(token)
+            const hero = restoreSharedHero(payload, heroesRef.current, itemsRef.current.BASE_ITEMS)
+            importHero(hero)
+        } catch (error) {
+            window.alert(error.message || "Could not import this hero link.")
+        } finally {
+            params.delete("hero")
+            const query = params.toString()
+            const cleanUrl = window.location.pathname + (query ? `?${query}` : "") + window.location.hash
+            window.history.replaceState({}, "", cleanUrl)
+        }
+    }, [])
 
     const clearHeroSelection = () => { setSelectedHeroId(null) }
 
@@ -160,6 +198,28 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
 
     return (
         <>
+            <Modal position="left" isVisible={importModalVisible} onClose={() => setImportModalVisible(false)}>
+                <div className="flex-col card w-100">
+                    <div className="header">Import Hero</div>
+                    <div className="text">Paste a hero share link below. You can also paste the encoded data by itself.</div>
+                    <textarea
+                        rows={4}
+                        value={heroShareInput}
+                        onChange={event => setHeroShareInput(event.target.value)}
+                        placeholder="https://…/heroes/?hero=…"
+                        aria-label="Hero share link"
+                    />
+                    <Button text={"Import Hero"} color={0} onClick={handleImportHeroLink} />
+                    <div className="text">Or import a legacy JSON export:</div>
+                    <input
+                        ref={heroImportInputRef}
+                        type="file"
+                        accept=".json,application/json"
+                        aria-label="Choose a legacy hero JSON export"
+                        onChange={handleImportHeroFile}
+                    />
+                </div>
+            </Modal>
             <Modal position="left" isVisible={itemSelectionVisible} onClose={() => { setItemSelectionVisible(false); clearItemSelection(); }}>
                 <div className="flex-row card w-100" style={{ marginBottom: "10px" }}>
                     <Button disabled text={"All Items"} color={1} onClick={() => setItemSelectionModalMode(0)} />
@@ -182,15 +242,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                 <div className="pagination flex-row card w-100">
                     <Button text={"All Heroes"} color={0} onClick={() => { setPageContent(0) }} />
                     <Button text={"Saved Heroes"} color={0} onClick={() => { setPageContent(1) }} />
-                    <Button text={"Import Hero"} color={0} onClick={() => heroImportInputRef.current?.click()} />
-                    <input
-                        ref={heroImportInputRef}
-                        type="file"
-                        accept=".json,application/json"
-                        aria-label="Choose a hero export file to import"
-                        style={{ display: "none" }}
-                        onChange={handleImportHero}
-                    />
+                    <Button text={"Import Hero"} color={0} onClick={() => setImportModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">
                     <Button text={"Manual Save"} color={5} onClick={() => { manualSaveFunction() }} />
