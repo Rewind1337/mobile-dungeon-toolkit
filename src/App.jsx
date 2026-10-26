@@ -169,14 +169,14 @@ function App() {
               <img className="not-found-seagull" src={Seagull} alt="A seagull" />
               <div className="header">Looks like you've flown off course.</div>
               <p className="text">We couldn't find the page you were looking for.</p>
-              <div className="not-found-links">
-                <Button text="Heroes" color={0} onMouseDown={() => switchTabTo('heroes')} />
-                <Button text="Items" color={1} onMouseDown={() => switchTabTo('items')} />
-                <Button text="Teams" color={2} onMouseDown={() => switchTabTo('teams')} />
-                <Button text="Home" color={3} onMouseDown={() => switchTabTo('splash')} />
-                <Button text="Simulators" color={4} onMouseDown={() => switchTabTo('simulator')} />
-                <Button text="Other Stuff" color={5} onMouseDown={() => switchTabTo('other')} />
-              </div>
+              <nav className="not-found-links" aria-label="Toolkit pages">
+                <a className="not-found-link" data-color="0" href={`${import.meta.env.BASE_URL}heroes/`}>Heroes</a>
+                <a className="not-found-link" data-color="1" href={`${import.meta.env.BASE_URL}items/`}>Items</a>
+                <a className="not-found-link" data-color="2" href={`${import.meta.env.BASE_URL}teams/`}>Teams</a>
+                <a className="not-found-link" data-color="3" href={import.meta.env.BASE_URL}>Home</a>
+                <a className="not-found-link" data-color="4" href={`${import.meta.env.BASE_URL}simulators/`}>Simulators</a>
+                <a className="not-found-link" data-color="5" href={`${import.meta.env.BASE_URL}other/`}>Other Stuff</a>
+              </nav>
             </section>
           </main>
         }
