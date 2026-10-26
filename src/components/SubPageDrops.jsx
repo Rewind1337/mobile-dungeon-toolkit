@@ -3,7 +3,9 @@ import { useMemo, useState } from "react"
 import { DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
 import { perkSprites, statusSprites } from "../database/db_sprites.jsx"
 import Button from "./Button.jsx"
+import Item from "./Item.jsx"
 
+import "../css/item.scss"
 import "../css/other.scss"
 
 const SLOT_NAMES = Object.fromEntries(
@@ -172,18 +174,18 @@ function CatalogueFilters({
 }
 
 function ItemCatalogueCard({ item, set }) {
-    const unique = isUniqueItem(item)
     const statuses = getEffectStatuses(item)
     const effectDescription = item.unique?.description
 
     return (
         <article className="catalogue-item-card card" data-rarity={item.rarity}>
             <div className="catalogue-item-identity">
-                <img className="catalogue-item-image" src={item.itemSrc} alt="" draggable={false} />
+                <div className="catalogue-item-preview" aria-hidden="true">
+                    <Item itemObj={item} selected={false} level={null} />
+                </div>
                 <div className="catalogue-item-heading">
                     <h3 className="catalogue-item-name header">{item.name}</h3>
                     <div className="catalogue-item-meta-row">
-                        {unique && <span className="text">Unique ·</span>} 
                         <p className="catalogue-item-meta text">
                             {humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity")} · {humanize(item.slotLabel ?? "Unknown slot")}
                         </p>
@@ -209,14 +211,7 @@ function ItemCatalogueCard({ item, set }) {
                             </div>
                         )}
                         <div className="text">Unique Effect</div>
-                        {statuses.length > 0 && (
-                            <div className="catalogue-statuses" aria-label="Statuses applied by weapon effect">
-                                {statuses.map(status => (
-                                    <img className="catalogue-status-icon" key={status.key} src={status.sprite} alt={status.name} title={status.name} draggable={false} />
-                                ))}
-                            </div>
-                        )}
-                        </h4>
+                    </h4>
                     <p className="catalogue-effect-description text">{effectDescription}</p>
                 </section>
             )}
@@ -355,8 +350,10 @@ function SubPageDrops({ itemsRef, setsRef }) {
     const filteredItems = useMemo(() => allItems.filter(item => {
         const query = search.trim().toLowerCase()
         const sourceName = getSourceName(item.dropSource)
+        const unique = isUniqueItem(item)
         const searchable = [
             ...getSearchableValues(item),
+            unique ? "unique" : "not unique",
             item.name,
             item.id,
             item.slotLabel,
@@ -368,7 +365,7 @@ function SubPageDrops({ itemsRef, setsRef }) {
             ...(item.fixedPerks ?? []).map(getPerkLabel),
             ...(item.setBonusLabels ?? [])
         ].join(" ").toLowerCase()
-        const matchesSearch = !query || searchable.includes(query)
+        const matchesSearch = !query || (query === "unique" ? unique : query === "not unique" ? !unique : searchable.includes(query))
         const matchesSource = sourceFilter === "all" || sourceName === sourceFilter
         const matchesSlot = slotFilter === "all" || String(item.slot) === slotFilter
         const matchesLocation = locationFilter === "all" || getLocations(item).includes(locationFilter)
