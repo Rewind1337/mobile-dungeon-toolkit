@@ -380,3 +380,239 @@
     text-align: left;
   }
 }
+
+
+/* Item catalogue overview, now displayed after the catalogue results. */
+.catalogue-overview {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap;
+  min-width: 0;
+  margin-top: V.$gap;
+  padding: V.$padding-card;
+}
+
+.catalogue-overview-title {
+  margin: 0;
+}
+
+.catalogue-overview-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: V.$gap;
+}
+
+.catalogue-overview-stat {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 0;
+  padding: V.$padding-card;
+}
+
+.catalogue-overview-slots {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+}
+
+.catalogue-overview-slot-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: V.$gap-small;
+}
+
+.catalogue-overview-slot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: V.$gap-small;
+  min-width: 0;
+  padding: V.$padding-card;
+}
+
+/* Hero catalogue */
+.hero-catalogue {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap;
+  width: 100%;
+  min-width: 0;
+  padding: V.$padding-card;
+}
+
+.hero-catalogue-filters {
+  display: grid;
+  grid-template-columns: minmax(240px, 2fr) repeat(4, minmax(140px, 1fr)) auto;
+  gap: V.$gap;
+  align-items: end;
+  padding: V.$padding-card;
+  border-radius: V.$border-radius;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.hero-catalogue-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.hero-catalogue-card {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap;
+  min-width: 0;
+  padding: V.$padding-card;
+  text-align: left;
+}
+
+.hero-catalogue-identity {
+  display: flex;
+  align-items: flex-start;
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.hero-catalogue-image {
+  width: 76px;
+  height: 76px;
+  flex: 0 0 76px;
+  object-fit: contain;
+}
+
+.hero-catalogue-heading {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.hero-catalogue-name,
+.hero-catalogue-meta,
+.hero-catalogue-variant {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.hero-catalogue-name {
+  font-size: V.$font-size-header;
+}
+
+.hero-catalogue-meta,
+.hero-catalogue-variant,
+.hero-catalogue-skill-meta {
+  font-size: V.$font-size-small;
+}
+
+.hero-catalogue-starred {
+  padding: 2px 7px;
+  border-radius: V.$border-radius-small;
+  background: rgba(255, 190, 70, 0.2);
+  font-size: V.$font-size-xsmall;
+  font-weight: 700;
+}
+
+.hero-catalogue-section {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.hero-catalogue-skills,
+.hero-catalogue-talents {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.hero-catalogue-skill,
+.hero-catalogue-talent {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  padding: V.$padding-card;
+  border-radius: V.$border-radius-small;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.hero-catalogue-skill-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: V.$gap-small;
+}
+
+.hero-catalogue-description {
+  margin: 0;
+  font-size: V.$font-size-small;
+  overflow-wrap: anywhere;
+}
+
+.hero-catalogue-details summary {
+  cursor: pointer;
+  font-size: V.$font-size-small;
+}
+
+.hero-catalogue-code {
+  max-width: 100%;
+  margin: V.$gap-small 0 0;
+  padding: V.$padding-card;
+  overflow-x: auto;
+  border-radius: V.$border-radius-small;
+  background: rgba(0, 0, 0, 0.25);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: monospace;
+  font-size: V.$font-size-xsmall;
+}
+
+@media (min-width: 1500px) {
+  .hero-catalogue-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1200px) {
+  .hero-catalogue-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-catalogue-filters .catalogue-search {
+    grid-column: 1 / -1;
+  }
+
+  .catalogue-overview-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-catalogue,
+  .item-catalogue {
+    padding: 0;
+  }
+
+  .hero-catalogue-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-catalogue-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-catalogue-filters .catalogue-search {
+    grid-column: auto;
+  }
+
+  .catalogue-overview-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
