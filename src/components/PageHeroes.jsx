@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import ItemList from "./ItemList.jsx"
 import ItemPreview from "./ItemPreview.jsx"
 import HeroList from "./HeroList.jsx"
@@ -9,7 +9,6 @@ import { decodeHeroShareInput, restoreSharedHero } from "../utils/heroShare.js"
 
 function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
     const [pageContent, setPageContent] = useState(0)
-    const heroImportInputRef = useRef(null)
     const [importModalVisible, setImportModalVisible] = useState(false)
     const [heroShareInput, setHeroShareInput] = useState("")
     // Ref changes do not trigger renders, so this revision refreshes memoized hero lists after saved-hero changes.
@@ -72,44 +71,6 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
         }
     }
 
-    const handleImportHeroFile = async (event) => {
-        const file = event.target.files?.[0]
-        if (!file) return
-
-        if (onImportStatusChange) onImportStatusChange("Importing Hero...")
-        try {
-            const payload = JSON.parse(await file.text())
-            if (
-                payload?.format !== "mobile-dungeon-toolkit-hero" ||
-                payload?.version !== 1 ||
-                !payload.hero ||
-                typeof payload.hero !== "object" ||
-                typeof payload.hero.id !== "string"
-            ) {
-                throw new Error("This JSON file is not a supported hero export.")
-            }
-
-            const baseHero = heroesRef.current.find(hero => hero.id === payload.hero.id)
-            if (!baseHero) throw new Error("This hero is not present in the current toolkit database.")
-
-            importHero({
-                ...baseHero,
-                ...payload.hero,
-                skills: baseHero.skills,
-                talents: payload.hero.talents ?? baseHero.talents,
-                heroSrc: baseHero.heroSrc,
-                elementSrc: baseHero.elementSrc
-            })
-        } catch (error) {
-            console.error("Failed to import hero file:", error)
-            window.alert(error instanceof SyntaxError
-                ? "Could not import this file. Make sure it contains valid JSON."
-                : (error.message || "Could not import this hero file."))
-        } finally {
-            event.target.value = ""
-            if (onImportStatusChange) onImportStatusChange("")
-        }
-    }
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search)
