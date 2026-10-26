@@ -33,12 +33,16 @@ function PageOther({ itemsRef, heroesRef }) {
 
             <div
                 id="page-other"
-                className="page card flex-row w-100"
+                className="page card w-100"
                 style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "stretch",
                     flex: "1 1 0",
                     minHeight: 0,
                     minWidth: 0,
                     overflowY: "auto",
+                    overflowX: "hidden",
                     alignContent: "start"
                 }}
             >
