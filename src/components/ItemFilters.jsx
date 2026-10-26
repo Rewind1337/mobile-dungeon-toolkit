@@ -42,8 +42,7 @@ function ItemRarityFilters({ toggleFilter, filters, filterSprites }) {
     </div>)
 }
 
-function ItemFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, clearFilters, filters, filterSprites, topOffset }) {
-    const [sortOrder, setSortOrder] = useState(0) // 0 ascending, 1 descending, unused
+function ItemFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, clearFilters, filters, filterSprites, topOffset, sortOrder, onToggleSort }) {
 
     if (!advanced) {
         return (
@@ -54,7 +53,7 @@ function ItemFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, cl
                 <div className="name-search-filter">
                     <input className="selectable" type="text" aria-label="Search items by name" placeholder="Search items..." value={filters.name} onChange={(event) => setSearch(event.target.value)} />
                 </div>
-                <Button className='filters-sort-button' round onClick={() => setSortOrder(sortOrder => !sortOrder)} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
+                <Button className='filters-sort-button' round onClick={onToggleSort} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
             </div>
         )
     } else {
