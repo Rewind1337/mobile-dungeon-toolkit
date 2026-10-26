@@ -1,4 +1,5 @@
-const SHARE_FORMAT_VERSION = 1
+const SHARE_FORMAT_VERSION = 2
+const SUPPORTED_SHARE_FORMAT_VERSIONS = new Set([1, SHARE_FORMAT_VERSION])
 
 function toBase64Url(value) {
     const bytes = new TextEncoder().encode(value)
@@ -201,7 +202,7 @@ function decodeInput(input, queryKey) {
 export function decodeHeroShareInput(input) {
     const payload = decodeInput(input, "hero")
     if (
-        payload?.v !== SHARE_FORMAT_VERSION ||
+        !SUPPORTED_SHARE_FORMAT_VERSIONS.has(payload?.v) ||
         (payload.k !== undefined && payload.k !== "hero") ||
         typeof payload.i !== "string" ||
         !Number.isInteger(payload.l) ||
@@ -220,7 +221,7 @@ export function decodeHeroShareInput(input) {
 export function decodeItemShareInput(input) {
     const payload = decodeInput(input, "item")
     if (
-        payload?.v !== SHARE_FORMAT_VERSION ||
+        !SUPPORTED_SHARE_FORMAT_VERSIONS.has(payload?.v) ||
         payload.k !== "item" ||
         !payload.i ||
         typeof payload.i !== "object" ||
@@ -234,7 +235,7 @@ export function decodeItemShareInput(input) {
 export function decodeItemsShareInput(input) {
     const payload = decodeInput(input, "items")
     if (
-        payload?.v !== SHARE_FORMAT_VERSION ||
+        !SUPPORTED_SHARE_FORMAT_VERSIONS.has(payload?.v) ||
         payload.k !== "items" ||
         !Array.isArray(payload.a) ||
         payload.a.some(item => !item || !Number.isInteger(item.s))
