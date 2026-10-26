@@ -7,7 +7,7 @@ import Button from "./Button.jsx"
 import Modal from "./Modal.jsx"
 import { decodeHeroShareInput, restoreSharedHero } from "../utils/heroShare.js"
 
-function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
+function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
     const [pageContent, setPageContent] = useState(0)
     const heroImportInputRef = useRef(null)
     const [importModalVisible, setImportModalVisible] = useState(false)
@@ -54,13 +54,21 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
         if (manualSaveFunction) manualSaveFunction()
     }
 
-    const handleImportHeroLink = () => {
+    const handleImportHeroLink = async (input = heroShareInput) => {
+        if (!String(input ?? "").trim()) {
+            window.alert("Paste a hero share link or its encoded data.")
+            return
+        }
+        if (onImportStatusChange) onImportStatusChange("Importing Hero...")
+        await new Promise(resolve => window.setTimeout(resolve, 0))
         try {
-            const payload = decodeHeroShareInput(heroShareInput)
+            const payload = decodeHeroShareInput(input)
             const hero = restoreSharedHero(payload, heroesRef.current, itemsRef.current.BASE_ITEMS)
             importHero(hero)
         } catch (error) {
             window.alert(error.message || "Could not import this hero link.")
+        } finally {
+            if (onImportStatusChange) onImportStatusChange("")
         }
     }
 
@@ -68,6 +76,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
         const file = event.target.files?.[0]
         if (!file) return
 
+        if (onImportStatusChange) onImportStatusChange("Importing Hero...")
         try {
             const payload = JSON.parse(await file.text())
             if (
@@ -98,6 +107,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                 : (error.message || "Could not import this hero file."))
         } finally {
             event.target.value = ""
+            if (onImportStatusChange) onImportStatusChange("")
         }
     }
 
@@ -106,18 +116,22 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
         const token = params.get("hero")
         if (!token) return
 
-        try {
-            const payload = decodeHeroShareInput(token)
-            const hero = restoreSharedHero(payload, heroesRef.current, itemsRef.current.BASE_ITEMS)
-            importHero(hero)
-        } catch (error) {
-            window.alert(error.message || "Could not import this hero link.")
-        } finally {
-            params.delete("hero")
-            const query = params.toString()
-            const cleanUrl = window.location.pathname + (query ? `?${query}` : "") + window.location.hash
-            window.history.replaceState({}, "", cleanUrl)
-        }
+        if (onImportStatusChange) onImportStatusChange("Importing Hero...")
+        window.setTimeout(() => {
+            try {
+                const payload = decodeHeroShareInput(token)
+                const hero = restoreSharedHero(payload, heroesRef.current, itemsRef.current.BASE_ITEMS)
+                importHero(hero)
+            } catch (error) {
+                window.alert(error.message || "Could not import this hero link.")
+            } finally {
+                if (onImportStatusChange) onImportStatusChange("")
+                params.delete("hero")
+                const query = params.toString()
+                const cleanUrl = window.location.pathname + (query ? `?${query}` : "") + window.location.hash
+                window.history.replaceState({}, "", cleanUrl)
+            }
+        }, 0)
     }, [])
 
     const clearHeroSelection = () => { setSelectedHeroId(null) }
