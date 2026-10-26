@@ -149,7 +149,9 @@ function SubPageHeroes({ heroesRef }) {
                 hero.isStarred ? "true" : "false"
             ].join(" ").toLowerCase()
 
-            return (!query || searchable.includes(query))
+            const matchesSearch = !query || (query === "starred" ? hero.isStarred === true : searchable.includes(query))
+
+            return matchesSearch
                 && (rarityFilter === "all" || String(hero.rarity) === rarityFilter)
                 && (attributeFilter === "all" || String(hero.mainAttribute) === attributeFilter)
                 && (elementFilter === "all" || String(hero.element) === elementFilter)
