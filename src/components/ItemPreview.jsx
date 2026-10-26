@@ -35,7 +35,7 @@ function makePerkSlots(item, rarity) {
     }
 }
 
-function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, onEquipItem, setsRef }) {
+function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, onEquipItem, onExportItem, setsRef }) {
     const MAIN_STAT_PERK_KEYS = {
         attack: { flat: "ATTACK_FLAT", percent: "ATTACK_PERCENT" },
         defence: { flat: "DEFENCE_FLAT", percent: "DEFENCE_PERCENT" },
@@ -409,9 +409,10 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                     ))
                 }
 
-                {(saveItem || onEquipItem || deleteSavedItem) && <div className='flex-row'>
+                {(saveItem || onEquipItem || deleteSavedItem || onExportItem) && <div className='flex-row'>
                     {saveItem && <Button text={"Save Item"} onClick={handleSaveItem} color={1} />}
                     {onEquipItem && <Button text={"Equip Item"} onClick={handleEquipItem} color={1} />}
+                    {onExportItem && <Button text={"Export Item"} onClick={() => onExportItem(getConfiguredItem())} color={1} />}
                     {deleteSavedItem && <Button text={"Delete Item"} onClick={handleDeleteSavedItem} color={1} />}
                 </div>}
             </div>
