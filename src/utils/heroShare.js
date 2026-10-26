@@ -97,14 +97,6 @@ function getAllItems(baseItems) {
     return Object.values(baseItems ?? {}).flat().filter(Boolean)
 }
 
-function makeShareUrl(queryKey, token, route) {
-    const baseUrl = import.meta.env.BASE_URL
-    const basePath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`
-    const url = new URL(`${basePath}${route}/`, window.location.origin)
-    url.searchParams.set(queryKey, token)
-    return url.toString()
-}
-
 export function createHeroShareToken(hero, { includeItems = true } = {}) {
     const talentKeys = Object.keys(hero.talents ?? {})
         .filter(key => key !== "" && Number.isInteger(Number(key)))
