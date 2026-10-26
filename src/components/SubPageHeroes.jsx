@@ -7,6 +7,7 @@ import {
     getEnumNameById
 } from "../database/enums.jsx"
 import Button from "./Button.jsx"
+import Hero from "./Hero.jsx"
 
 import "../css/other.scss"
 
@@ -33,12 +34,23 @@ function formatEffect(effect) {
     }
 }
 
+function formatTalentEffects(effect) {
+    if (effect === null || effect === undefined) return []
+    const effects = Array.isArray(effect) ? effect : [effect]
+    return effects.flatMap(entry => {
+        if (!entry || typeof entry !== "object") return [String(entry)]
+        return Object.entries(entry).map(([key, value]) => {
+            const displayValue = typeof value === "number" ? Number(value.toPrecision(12)) : value
+            return `${key} : x${displayValue}`
+        })
+    })
+}
+
 function HeroCatalogueCard({ hero }) {
     const rarity = getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? "Unknown rarity"
     const attribute = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? "Unknown attribute"
     const element = getEnumNameById(ELEMENT_DEFINITIONS, Number(hero.element)) ?? "Unknown element"
     const role = getEnumNameById(ROLE_DEFINITIONS, Number(hero.role)) ?? "Unknown role"
-    const image = hero.heroSrc ?? heroSprites[hero.id] ?? heroSprites["null"]
 
     const skills = Array.isArray(hero.skills) ? hero.skills : []
     const talents = hero.talents && typeof hero.talents === "object"
@@ -48,14 +60,15 @@ function HeroCatalogueCard({ hero }) {
     return (
         <article className="hero-catalogue-card card">
             <header className="hero-catalogue-identity">
-                {image && <img className="hero-catalogue-image" src={image} alt="" draggable={false} />}
+                <div className="hero-catalogue-portrait">
+                    <Hero heroObj={hero} selected={false} level={null} onClick={() => {}} />
+                </div>
                 <div className="hero-catalogue-heading">
                     <h3 className="hero-catalogue-name header">{hero.name}</h3>
                     <p className="hero-catalogue-meta text">
-                        {humanize(rarity)} · {humanize(attribute)} · {humanize(element)} · {humanize(role)}
+                        {humanize(rarity)} · {humanize(attribute)} · {humanize(role)}
                     </p>
                     {hero.variant && <p className="hero-catalogue-variant text">Variant: {hero.variant}</p>}
-                    {hero.isStarred && <span className="hero-catalogue-starred text">Starred</span>}
                 </div>
             </header>
 
@@ -93,10 +106,11 @@ function HeroCatalogueCard({ hero }) {
                             <article className="hero-catalogue-talent" key={key}>
                                 <strong className="text">{talent?.name ?? `Talent ${key}`}</strong>
                                 {talent?.effect !== undefined && (
-                                    <details className="hero-catalogue-details">
-                                        <summary className="text">Effect data</summary>
-                                        <pre className="hero-catalogue-code text">{formatEffect(talent.effect)}</pre>
-                                    </details>
+                                    <ul className="hero-catalogue-talent-effects">
+                                        {formatTalentEffects(talent.effect).map((effectLine, index) => (
+                                            <li className="text" key={`${key}-effect-${index}`}>{effectLine}</li>
+                                        ))}
+                                    </ul>
                                 )}
                             </article>
                         ))}
@@ -131,7 +145,9 @@ function SubPageHeroes({ heroesRef }) {
                 role,
                 hero.name,
                 hero.id,
-                hero.variant ?? ""
+                hero.variant ?? "",
+                hero.isStarred ? "starred" : "not starred",
+                hero.isStarred ? "true" : "false"
             ].join(" ").toLowerCase()
 
             return (!query || searchable.includes(query))
