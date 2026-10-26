@@ -5,9 +5,12 @@ import HeroList from "./HeroList.jsx"
 import HeroPreview from "./HeroPreview.jsx"
 import Button from "./Button.jsx"
 import Modal from "./Modal.jsx"
+import { decodeHeroShareInput, restoreSharedHero } from "../utils/heroShare.js"
 
-function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
+function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
     const [pageContent, setPageContent] = useState(0)
+    const [importModalVisible, setImportModalVisible] = useState(false)
+    const [heroShareInput, setHeroShareInput] = useState("")
     // Ref changes do not trigger renders, so this revision refreshes memoized hero lists after saved-hero changes.
     const [, setSavedHeroesRevision] = useState(0)
 
@@ -24,9 +27,93 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
         setEquippedItems(Array.isArray(activeHero?.items) ? [...activeHero.items] : [])
     }, [pageContent, selectedHeroId, selectedSavedHeroId, activeHero?.items])
 
+
+    const importHero = (hero) => {
+        const nextSaveId = Math.max(
+            -1,
+            ...savedHeroesRef.current
+                .map(savedHero => Number(savedHero.saveId))
+                .filter(Number.isFinite)
+        ) + 1
+
+        const savedHero = {
+            ...hero,
+            saveId: nextSaveId,
+            items: Array.isArray(hero.items) ? [...hero.items] : []
+        }
+
+        savedHeroesRef.current = [...savedHeroesRef.current, savedHero]
+        setSavedHeroesRevision(revision => revision + 1)
+        setPageContent(1)
+        setSelectedHeroId(null)
+        setSelectedSavedHeroId(nextSaveId)
+        setEquippedItems([...savedHero.items])
+        setImportModalVisible(false)
+        setHeroShareInput("")
+        if (manualSaveFunction) manualSaveFunction()
+    }
+
+    const handleImportHeroLink = async (input = heroShareInput) => {
+        if (!String(input ?? "").trim()) {
+            window.alert("Paste a hero share link or its encoded data.")
+            return
+        }
+        if (onImportStatusChange) onImportStatusChange("Importing Hero...")
+        await new Promise(resolve => window.setTimeout(resolve, 0))
+        try {
+            const payload = decodeHeroShareInput(input)
+            const hero = restoreSharedHero(payload, heroesRef.current, itemsRef.current.BASE_ITEMS)
+            importHero(hero)
+        } catch (error) {
+            window.alert(error.message || "Could not import this hero link.")
+        } finally {
+            if (onImportStatusChange) onImportStatusChange("")
+        }
+    }
+
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search)
+        const token = params.get("hero")
+        if (!token) return
+
+        if (onImportStatusChange) onImportStatusChange("Importing Hero...")
+        window.setTimeout(() => {
+            try {
+                const payload = decodeHeroShareInput(token)
+                const hero = restoreSharedHero(payload, heroesRef.current, itemsRef.current.BASE_ITEMS)
+                importHero(hero)
+            } catch (error) {
+                window.alert(error.message || "Could not import this hero link.")
+            } finally {
+                if (onImportStatusChange) onImportStatusChange("")
+                params.delete("hero")
+                const query = params.toString()
+                const cleanUrl = window.location.pathname + (query ? `?${query}` : "") + window.location.hash
+                window.history.replaceState({}, "", cleanUrl)
+            }
+        }, 0)
+    }, [])
+
     const clearHeroSelection = () => { setSelectedHeroId(null) }
 
     const saveHero = (heroObj) => {
+        const existingSaveId = heroObj?.saveId
+        const existingIndex = savedHeroesRef.current.findIndex(hero => hero.saveId === existingSaveId)
+
+        if (existingIndex !== -1) {
+            savedHeroesRef.current = savedHeroesRef.current.map(hero => (
+                hero.saveId === existingSaveId
+                    ? { ...hero, ...heroObj, saveId: existingSaveId, items: [...(heroObj.items ?? [])] }
+                    : hero
+            ))
+            setSavedHeroesRevision(revision => revision + 1)
+            setSelectedSavedHeroId(existingSaveId)
+            setPageContent(1)
+            if (manualSaveFunction) manualSaveFunction()
+            return
+        }
+
         const nextSaveId = Math.max(
             -1,
             ...savedHeroesRef.current
@@ -41,6 +128,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
         savedHeroesRef.current = [...savedHeroesRef.current, savedHero]
         setSavedHeroesRevision(revision => revision + 1)
         clearHeroSelection()
+        if (manualSaveFunction) manualSaveFunction()
     }
 
     const deleteSavedHero = (heroObj) => {
@@ -102,6 +190,23 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
 
     return (
         <>
+            <Modal position="center" isVisible={importModalVisible} onClose={() => setImportModalVisible(false)}>
+                <div className="flex-col card w-100">
+                    <div className="header-big margin-auto">Import Hero</div>
+                    <div className="text margin-auto">Paste a hero share link below. You can also paste the encoded data by itself.</div>
+                    <textarea
+                        rows={3}
+                        value={heroShareInput}
+                        onChange={event => setHeroShareInput(event.target.value)}
+                        placeholder="https://…/heroes/?hero=…"
+                        aria-label="Hero share link"
+                    />
+                    <div className="flex-row">
+                        <Button className="w-25" text={"Import Hero"} color={"confirm"} onClick={handleImportHeroLink} />
+                        <Button className="w-25" text={"Cancel"} color={"cancel"} onClick={() => setImportModalVisible(false)} />
+                    </div>
+                </div>
+            </Modal>
             <Modal position="left" isVisible={itemSelectionVisible} onClose={() => { setItemSelectionVisible(false); clearItemSelection(); }}>
                 <div className="flex-row card w-100" style={{ marginBottom: "10px" }}>
                     <Button disabled text={"All Items"} color={1} onClick={() => setItemSelectionModalMode(0)} />
@@ -123,7 +228,8 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
             <div className="sub-nav-bar flex-row">
                 <div className="pagination flex-row card w-100">
                     <Button text={"All Heroes"} color={0} onClick={() => { setPageContent(0) }} />
-                    <Button text={"Your Saved Heroes"} color={0} onClick={() => { setPageContent(1) }} />
+                    <Button text={"Saved Heroes"} color={0} onClick={() => { setPageContent(1) }} />
+                    <Button text={"Import Hero"} color={0} onClick={() => setImportModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">
                     <Button text={"Manual Save"} color={5} onClick={() => { manualSaveFunction() }} />
@@ -147,7 +253,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                             <HeroList savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} setSelectedHeroId={setSelectedSavedHeroId} />
                         </div>
                         <div className='card w-50' style={{ display: (selectedSavedHeroId === null) ? "none" : "block" }}>
-                            <HeroPreview heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} deleteSavedHero={deleteSavedHero} onItemClick={handleItemClick} equippedItems={equippedItems} setsRef={itemsRef.current.ITEM_SETS} />
+                            <HeroPreview heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} saveHero={saveHero} deleteSavedHero={deleteSavedHero} onItemClick={handleItemClick} equippedItems={equippedItems} setsRef={itemsRef.current.ITEM_SETS} />
                         </div>
                     </>
                 }

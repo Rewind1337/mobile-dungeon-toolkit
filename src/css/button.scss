@@ -150,6 +150,30 @@ button {
     }
   }
 
+  &[data-color="confirm"]:not(.disabled) {
+    background: V.$button-confirm-gradient;
+
+    &:hover {
+      background: V.$button-confirm-gradient-hover;
+
+      &:active {
+        background: V.$button-confirm-gradient-click;
+      }
+    }
+  }
+
+  &[data-color="cancel"]:not(.disabled) {
+    background: V.$button-cancel-gradient;
+
+    &:hover {
+      background: V.$button-cancel-gradient-hover;
+
+      &:active {
+        background: V.$button-cancel-gradient-click;
+      }
+    }
+  }
+
   &.round {
     border-radius: 50%;
     width: 47px;

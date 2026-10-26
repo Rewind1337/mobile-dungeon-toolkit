@@ -5,6 +5,8 @@ import { CONSTANTS } from '../database/constants.jsx'
 import { heroSprites, iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites, elementSprites } from '../database/db_sprites.jsx'
 
 import Button from './Button.jsx'
+import Modal from './Modal.jsx'
+import { createHeroShareToken, createItemsShareToken } from '../utils/heroShare.js'
 import EmptyItem from './EmptyItem.jsx'
 import Item from './Item.jsx'
 import TextCard from './TextCard.jsx'
@@ -151,6 +153,12 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
     const [showSkillsAndTalents, setShowSkillsAndTalents] = useState(false)
+    const [exportModalVisible, setExportModalVisible] = useState(false)
+    const [heroShareUrl, setHeroShareUrl] = useState("")
+    const [shareLinkCopied, setShareLinkCopied] = useState(false)
+    const [exportItemsOnHero, setExportItemsOnHero] = useState(false)
+    const [equippedItemsShareUrl, setEquippedItemsShareUrl] = useState("")
+    const [itemsShareLinkCopied, setItemsShareLinkCopied] = useState(false)
     const [selectedLevel, setSelectedLevel] = useState(1)
     const [mainStats, setMainStats] = useState({
         health: 1234,
@@ -293,6 +301,108 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
         })
     }
 
+
+    const buildShareUrl = (queryKey, token, route) => {
+        const baseUrl = import.meta.env.BASE_URL
+        const basePath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`
+        const shareUrl = new URL(`${basePath}${route}/`, window.location.origin)
+        shareUrl.searchParams.set(queryKey, token)
+        return shareUrl.toString()
+    }
+
+    const handleExportSavedHero = () => {
+        if (!heroObj) return
+        setExportItemsOnHero(false)
+        setEquippedItemsShareUrl("")
+        setItemsShareLinkCopied(false)
+        setShareLinkCopied(false)
+        setHeroShareUrl(buildShareUrl("hero", createHeroShareToken({
+            ...heroObj,
+            level: Math.max(1, Number(selectedLevel) || 1),
+            stats: {
+                health: Number(mainStats.health) || 0,
+                attack: Number(mainStats.attack) || 0,
+                defence: Number(mainStats.defence) || 0,
+                agility: Number(mainStats.agility) || 0
+            },
+            items: [...equippedItems]
+        }, { includeItems: false }), "heroes"))
+        setExportModalVisible(true)
+    }
+
+    const handleExportItemsToggle = (event) => {
+        const includeItems = event.target.checked
+        setExportItemsOnHero(includeItems)
+        setShareLinkCopied(false)
+        setItemsShareLinkCopied(false)
+
+        if (!includeItems) {
+            setEquippedItemsShareUrl("")
+            setHeroShareUrl(buildShareUrl("hero", createHeroShareToken({
+                ...heroObj,
+                level: Math.max(1, Number(selectedLevel) || 1),
+                stats: {
+                    health: Number(mainStats.health) || 0,
+                    attack: Number(mainStats.attack) || 0,
+                    defence: Number(mainStats.defence) || 0,
+                    agility: Number(mainStats.agility) || 0
+                },
+                items: [...equippedItems]
+            }, { includeItems: false }), "heroes"))
+            return
+        }
+
+        try {
+            const heroWithCurrentItems = { ...heroObj, items: [...equippedItems] }
+            setHeroShareUrl(buildShareUrl("hero", createHeroShareToken({
+                ...heroWithCurrentItems,
+                level: Math.max(1, Number(selectedLevel) || 1),
+                stats: {
+                    health: Number(mainStats.health) || 0,
+                    attack: Number(mainStats.attack) || 0,
+                    defence: Number(mainStats.defence) || 0,
+                    agility: Number(mainStats.agility) || 0
+                }
+            }, { includeItems: true }), "heroes"))
+            setEquippedItemsShareUrl(buildShareUrl("items", createItemsShareToken(equippedItems), "items"))
+        } catch (error) {
+            setExportItemsOnHero(false)
+            setEquippedItemsShareUrl("")
+            setHeroShareUrl(buildShareUrl("hero", createHeroShareToken({
+                ...heroObj,
+                level: Math.max(1, Number(selectedLevel) || 1),
+                stats: {
+                    health: Number(mainStats.health) || 0,
+                    attack: Number(mainStats.attack) || 0,
+                    defence: Number(mainStats.defence) || 0,
+                    agility: Number(mainStats.agility) || 0
+                },
+                items: [...equippedItems]
+            }, { includeItems: false }), "heroes"))
+            window.alert(error.message || "Could not export equipped items.")
+        }
+    }
+
+    const handleCopyShareLink = async () => {
+        if (!heroShareUrl) return
+        try {
+            await navigator.clipboard.writeText(heroShareUrl)
+            setShareLinkCopied(true)
+        } catch {
+            window.alert("Copying was blocked by your browser. Select and copy the link manually.")
+        }
+    }
+
+    const handleCopyItemsShareLink = async () => {
+        if (!equippedItemsShareUrl) return
+        try {
+            await navigator.clipboard.writeText(equippedItemsShareUrl)
+            setItemsShareLinkCopied(true)
+        } catch {
+            window.alert("Copying was blocked by your browser. Select and copy the link manually.")
+        }
+    }
+
     const handleDeleteSavedHero = () => {
         if (!deleteSavedHero || !heroObj) return
         deleteSavedHero(heroObj)
@@ -312,6 +422,46 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
     } else {
         return (
             <div ref={listRef} className='hero-preview flex-col' style={{ maxHeight: listHeight }}>
+                <Modal position="center" isVisible={exportModalVisible} onClose={() => setExportModalVisible(false)}>
+                    <div className="flex-col card w-100">
+                        <div className="header-big margin-auto">Export Hero</div>
+                        <label className="flex-row text margin-auto export-items-checkbox-label">
+                            <input type="checkbox" checked={exportItemsOnHero} onChange={handleExportItemsToggle} />
+                            <div className='header'>Export items on hero</div>
+                        </label>
+                        <div className="text margin-auto">Share this link to import the hero, level, stats, and talents.</div>
+                        {exportItemsOnHero && <>
+                            <div className="text margin-auto">This hero link also includes the equipped items. The separate link below only imports the Items.</div>
+                        </>}
+                        <textarea
+                            rows={3}
+                            value={heroShareUrl}
+                            readOnly
+                            onFocus={event => event.target.select()}
+                            aria-label="Hero share link"
+                        />
+                        <div className="flex-row">
+                            <Button className="w-25" text={shareLinkCopied ? "Hero Link Copied!" : "Copy Hero Link"} color={"confirm"} onClick={handleCopyShareLink} />
+                            <Button className="w-25" text={"Close"} color={"cancel"} onClick={() => setExportModalVisible(false)} />
+                        </div>
+                        {exportItemsOnHero && <>
+                            <hr className='w-100'/>
+                            <div className="header-big margin-auto">Export Items only</div>
+                            <textarea
+                                rows={3}
+                                value={equippedItemsShareUrl}
+                                readOnly
+                                onFocus={event => event.target.select()}
+                                aria-label="Equipped items share link"
+                            />
+                            <div className="text margin-auto">This item link only includes the equipped items, not the hero. The first link above can import the hero as well.</div>
+                            <div className="flex-row">
+                                <Button className='w-25' text={itemsShareLinkCopied ? "Items Link Copied!" : "Copy Items Link"} color={"confirm"} onClick={handleCopyItemsShareLink} />
+                                <Button className="w-25" text={"Close"} color={"cancel"} onClick={() => setExportModalVisible(false)} />
+                            </div>
+                        </>}
+                    </div>
+                </Modal>
                 <div className='flex-row top-row'>
                     <div className='header pill flex-row'>
                         <img width={48} src={attributeSprites[heroObj.mainAttribute]}/>
@@ -416,8 +566,9 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
                         </div>
                     </div>
                     {(saveHero || deleteSavedHero) && <div className='flex-row'>
-                        {saveHero && <Button text={"Save Hero"} onClick={handleSaveHero} color={0}/>}
-                        {deleteSavedHero && <Button text={"Delete Saved Hero"} onClick={handleDeleteSavedHero} color={0}/>}
+                        {saveHero && <Button text={"Save Hero"} onClick={handleSaveHero} color={"confirm"}/>}
+                        {deleteSavedHero && <Button text={"Export Hero"} onClick={handleExportSavedHero} color={0}/>}
+                        {deleteSavedHero && <Button text={"Delete Saved Hero"} onClick={handleDeleteSavedHero} color={"cancel"}/>}
                     </div>}
                 </div>
             </div >
