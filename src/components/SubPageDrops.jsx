@@ -1,7 +1,10 @@
 import { useMemo, useState } from "react"
+
 import { DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
 import { perkSprites, statusSprites } from "../database/db_sprites.jsx"
 import Button from "./Button.jsx"
+
+import "../css/other.scss"
 
 const SLOT_NAMES = Object.fromEntries(
     Object.values(EQUIPMENT_SLOT_DEFINITIONS).map(({ id, name }) => [id, name])
@@ -78,9 +81,7 @@ function getEffectStatuses(item) {
         .map(status => ({ key: status.key, name: humanize(status.key), sprite: statusSprites[status.key] }))
 }
 
-function getUniqueLabel(item) {
-    // Lava Catalyst and Rift Piercer are known unique weapons whose effect metadata
-    // is currently missing from UNIQUE_WEAPON_DEFINITIONS.
+function isUniqueItem(item) {
     return Boolean(item?.isUnique) || (item?.unique !== undefined && item?.unique !== null && item.unique !== 0)
 }
 
@@ -89,23 +90,168 @@ function PerkList({ perks, label = "Perks" }) {
         const key = getPerkKey(perk)
         return key && key !== "NOTHING"
     })
-    if (visiblePerks.length === 0) return <div className="text">{label}: none recorded</div>
 
     return (
-        <div className="flex-col" style={{ gap: "4px" }}>
-            <div className="text">{label}</div>
-            <div className="flex-row flex-wrap" style={{ gap: "5px" }}>
-                {visiblePerks.map((perk, index) => {
-                    const key = getPerkKey(perk)
-                    return (
-                        <div className="flex-row card" key={key + "-" + index} title={getPerkLabel(perk)} style={{ alignItems: "center", gap: "5px", padding: "4px 6px" }}>
-                            {perkSprites[key] && <img src={perkSprites[key]} alt="" draggable={false} style={{ width: "24px", height: "24px", objectFit: "contain" }} />}
-                            <span className="text">{getPerkLabel(perk)}</span>
-                        </div>
-                    )
-                })}
+        <section className="catalogue-perks">
+            <h4 className="catalogue-section-label">{label}</h4>
+            {visiblePerks.length === 0
+                ? <p className="catalogue-muted">None recorded</p>
+                : <ul className="catalogue-perk-list">
+                    {visiblePerks.map((perk, index) => {
+                        const key = getPerkKey(perk)
+                        return (
+                            <li className="catalogue-perk" key={key + "-" + index} title={getPerkLabel(perk)}>
+                                {perkSprites[key] && <img className="catalogue-perk-icon" src={perkSprites[key]} alt="" draggable={false} />}
+                                <span className="catalogue-perk-name">{getPerkLabel(perk)}</span>
+                            </li>
+                        )
+                    })}
+                </ul>
+            }
+        </section>
+    )
+}
+
+function CatalogueFilters({
+    search,
+    setSearch,
+    sourceFilter,
+    setSourceFilter,
+    slotFilter,
+    setSlotFilter,
+    rarityFilter,
+    setRarityFilter,
+    locationFilter,
+    setLocationFilter,
+    allSources,
+    allLocations,
+    view,
+    clearFilters
+}) {
+    return (
+        <div className="catalogue-filters">
+            <label className="catalogue-search">
+                <span className="catalogue-control-label">Search all item data</span>
+                <input
+                    className="selectable catalogue-input"
+                    aria-label="Search item catalogue"
+                    placeholder="Name, effect text, perk, set, source, ID…"
+                    value={search}
+                    onChange={event => setSearch(event.target.value)}
+                />
+            </label>
+            <label className="catalogue-filter">
+                <span className="catalogue-control-label">Source</span>
+                <select aria-label="Filter by source" value={sourceFilter} onChange={event => setSourceFilter(event.target.value)}>
+                    <option value="all">All sources</option>
+                    {allSources.map(source => <option key={source} value={source}>{humanize(source)}</option>)}
+                </select>
+            </label>
+            <label className="catalogue-filter">
+                <span className="catalogue-control-label">Location</span>
+                <select aria-label="Filter by location" value={locationFilter} onChange={event => setLocationFilter(event.target.value)}>
+                    <option value="all">All locations</option>
+                    {allLocations.map(location => <option key={location} value={location}>{location}</option>)}
+                </select>
+            </label>
+            {view === "items" && <>
+                <label className="catalogue-filter">
+                    <span className="catalogue-control-label">Slot</span>
+                    <select aria-label="Filter by slot" value={slotFilter} onChange={event => setSlotFilter(event.target.value)}>
+                        <option value="all">All slots</option>
+                        {Object.values(EQUIPMENT_SLOT_DEFINITIONS).map(slot =>
+                            <option key={slot.id} value={String(slot.id)}>{humanize(slot.name)}</option>
+                        )}
+                    </select>
+                </label>
+                <label className="catalogue-filter">
+                    <span className="catalogue-control-label">Rarity</span>
+                    <select aria-label="Filter by rarity" value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
+                        <option value="all">All rarities</option>
+                        {Object.values(RARITY_DEFINITIONS).map(rarity =>
+                            <option key={rarity.id} value={String(rarity.id)}>{humanize(rarity.name)}</option>
+                        )}
+                    </select>
+                </label>
+            </>}
+            <div className="catalogue-filter-actions">
+                <Button text="Clear filters" color={5} onClick={clearFilters} />
             </div>
         </div>
+    )
+}
+
+function ItemCatalogueCard({ item, set }) {
+    const unique = isUniqueItem(item)
+    const statuses = getEffectStatuses(item)
+    const effectDescription = item.unique?.description
+
+    return (
+        <article className="catalogue-item-card card" data-rarity={item.rarity}>
+            <div className="catalogue-item-identity">
+                <img className="catalogue-item-image" src={item.itemSrc} alt="" draggable={false} />
+                <div className="catalogue-item-heading">
+                    <h3 className="catalogue-item-name">{item.name}</h3>
+                    {unique && <span className="catalogue-unique-label">Unique Item</span>}
+                    <p className="catalogue-item-meta">
+                        {humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity")} · {humanize(item.slotLabel ?? "Unknown slot")}
+                    </p>
+                    {set && <p className="catalogue-item-set">Set: {set.name}</p>}
+                </div>
+            </div>
+
+            {statuses.length > 0 && (
+                <div className="catalogue-statuses" aria-label="Statuses applied by weapon effect">
+                    {statuses.map(status => (
+                        <img className="catalogue-status-icon" key={status.key} src={status.sprite} alt={status.name} title={status.name} draggable={false} />
+                    ))}
+                </div>
+            )}
+
+            {effectDescription && (
+                <section className="catalogue-effect">
+                    <h4 className="catalogue-section-label">Unique effect</h4>
+                    <p className="catalogue-effect-description">{effectDescription}</p>
+                </section>
+            )}
+
+            <PerkList perks={item.fixedPerks} label="Fixed perks" />
+        </article>
+    )
+}
+
+function SetCatalogueCard({ set, pieces }) {
+    const locations = set.dropLocation !== undefined
+        ? getLocations(set)
+        : [...new Set(pieces.flatMap(getLocations))]
+
+    return (
+        <article className="catalogue-set-card card">
+            <header className="catalogue-set-header">
+                <h3 className="catalogue-set-name">{set.name}</h3>
+                <p className="catalogue-set-meta">
+                    {set.pieces} pieces <span aria-hidden="true">·</span> {humanize(getSourceName(set.dropSource))}
+                </p>
+                {locations.length > 0 && <p className="catalogue-set-locations">Locations: {locations.join(", ")}</p>}
+            </header>
+
+            <PerkList perks={set.setBonus} label="Set bonuses" />
+
+            <section className="catalogue-set-pieces">
+                <h4 className="catalogue-section-label">Pieces ({pieces.length})</h4>
+                {pieces.length > 0
+                    ? <ul className="catalogue-piece-list">
+                        {pieces.map(item => (
+                            <li className="catalogue-piece" key={item.id}>
+                                <img className="catalogue-piece-image" src={item.itemSrc} alt="" draggable={false} />
+                                <span className="catalogue-piece-name">{item.name}</span>
+                            </li>
+                        ))}
+                    </ul>
+                    : <p className="catalogue-muted">No item pieces are currently linked to this set in the item database.</p>
+                }
+            </section>
+        </article>
     )
 }
 
@@ -210,128 +356,76 @@ function SubPageDrops({ itemsRef, setsRef }) {
     }
 
     return (
-        <section className="card flex-col w-100" style={{ gap: "12px", minWidth: 0 }}>
-            <div className="flex-col" style={{ gap: "4px" }}>
-                <div className="header-big">Item Catalogue</div>
-                <div className="text">
-                    Search the item database across item names, unique-effect descriptions, fixed perks, set names and bonuses, rarity, source, location, and other stored item fields.
+        <section className="item-catalogue">
+            <header className="catalogue-header">
+                <div className="catalogue-heading-copy">
+                    <h2 className="header-big catalogue-title">Item Catalogue</h2>
+                    <p className="catalogue-description">
+                        Search item names, unique-effect descriptions, fixed perks, set bonuses, rarity, source, location, and other stored item data.
+                    </p>
                 </div>
-                <div className="text">
+                <p className="catalogue-result-count">
                     {view === "items"
                         ? `${filteredItems.length} matching items · ${groupedItems.length} source/location groups`
                         : `${filteredSets.length} matching sets · ${setsRef?.length ?? 0} total sets`}
-                </div>
-            </div>
+                </p>
+            </header>
 
-            <div className="flex-row flex-wrap" style={{ gap: "8px" }}>
+            <nav className="catalogue-view-switch" aria-label="Catalogue view">
                 <Button text="Items" color={5} active={view === "items"} onClick={() => setView("items")} />
                 <Button text="Set Overview" color={5} active={view === "sets"} onClick={() => setView("sets")} />
-            </div>
+            </nav>
 
-            <div className="card flex-row flex-wrap" style={{ alignItems: "center", gap: "8px" }}>
-                <input
-                    className="selectable"
-                    aria-label="Search item catalogue"
-                    placeholder="Search any item field or effect description…"
-                    value={search}
-                    onChange={event => setSearch(event.target.value)}
-                    style={{ minWidth: "220px", flex: "1 1 260px" }}
-                />
-                <select aria-label="Filter by source" value={sourceFilter} onChange={event => setSourceFilter(event.target.value)}>
-                    <option value="all">All sources</option>
-                    {allSources.map(source => <option key={source} value={source}>{humanize(source)}</option>)}
-                </select>
-                <select aria-label="Filter by location" value={locationFilter} onChange={event => setLocationFilter(event.target.value)}>
-                    <option value="all">All locations</option>
-                    {allLocations.map(location => <option key={location} value={location}>{location}</option>)}
-                </select>
-                {view === "items" && <>
-                    <select aria-label="Filter by slot" value={slotFilter} onChange={event => setSlotFilter(event.target.value)}>
-                        <option value="all">All slots</option>
-                        {Object.values(EQUIPMENT_SLOT_DEFINITIONS).map(slot =>
-                            <option key={slot.id} value={String(slot.id)}>{humanize(slot.name)}</option>
-                        )}
-                    </select>
-                    <select aria-label="Filter by rarity" value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
-                        <option value="all">All rarities</option>
-                        {Object.values(RARITY_DEFINITIONS).map(rarity =>
-                            <option key={rarity.id} value={String(rarity.id)}>{humanize(rarity.name)}</option>
-                        )}
-                    </select>
-                </>}
-                <Button text="Clear filters" color={5} onClick={clearFilters} />
-            </div>
+            <CatalogueFilters
+                search={search}
+                setSearch={setSearch}
+                sourceFilter={sourceFilter}
+                setSourceFilter={setSourceFilter}
+                slotFilter={slotFilter}
+                setSlotFilter={setSlotFilter}
+                rarityFilter={rarityFilter}
+                setRarityFilter={setRarityFilter}
+                locationFilter={locationFilter}
+                setLocationFilter={setLocationFilter}
+                allSources={allSources}
+                allLocations={allLocations}
+                view={view}
+                clearFilters={clearFilters}
+            />
 
-            {view === "items" && (groupedItems.length === 0
-                ? <div className="card text">No items match these filters.</div>
-                : groupedItems.map(group => (
-                    <section className="card flex-col" key={group.source + "::" + group.location} style={{ gap: "8px" }}>
-                        <div className="flex-row" style={{ alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap" }}>
-                            <div className="header">{group.location}</div>
-                            <div className="text">{humanize(group.source)} · {group.items.length} item{group.items.length === 1 ? "" : "s"}</div>
-                        </div>
-                        <div className="flex-row flex-wrap" style={{ gap: "8px", alignItems: "stretch" }}>
-                            {group.items.map(item => {
-                                const set = item.set ? (setsRef ?? []).find(candidate => candidate.id === item.set) : null
-                                const unique = getUniqueLabel(item)
-                                const statuses = getEffectStatuses(item)
-                                const effectDescription = item.unique?.description
-                                return (
-                                    <article className="card flex-row" key={item.id} data-rarity={item.rarity} style={{ gap: "8px", alignItems: "flex-start", minWidth: "250px", flex: "1 1 300px" }}>
-                                        <img src={item.itemSrc} alt="" draggable={false} style={{ width: "58px", height: "58px", objectFit: "contain", flex: "0 0 auto" }} />
-                                        <div className="flex-col" style={{ gap: "5px", minWidth: 0, flex: "1 1 auto" }}>
-                                            <div className="flex-row flex-wrap" style={{ alignItems: "center", gap: "6px" }}>
-                                                <div className="header">{item.name}</div>
-                                                {unique && <span className="text">Unique Item</span>}
-                                            </div>
-                                            <div className="text">{humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity")} · {humanize(item.slotLabel ?? "Unknown slot")}</div>
-                                            {set && <div className="text">Set: {set.name}</div>}
-                                            {statuses.length > 0 && (
-                                                <div className="flex-row flex-wrap" style={{ gap: "5px", alignItems: "center" }} aria-label="Statuses applied by weapon effect">
-                                                    {statuses.map(status => (
-                                                        <img key={status.key} src={status.sprite} alt={status.name} title={status.name} draggable={false} style={{ width: "30px", height: "30px", objectFit: "contain" }} />
-                                                    ))}
-                                                </div>
-                                            )}
-                                            {effectDescription && <div className="text">{effectDescription}</div>}
-                                            <PerkList perks={item.fixedPerks} label="Fixed perks" />
-                                        </div>
-                                    </article>
-                                )
-                            })}
-                        </div>
-                    </section>
-                ))
+            {view === "items" && (
+                <div className="catalogue-results">
+                    {groupedItems.length === 0
+                        ? <p className="catalogue-empty card">No items match these filters.</p>
+                        : groupedItems.map(group => (
+                            <section className="catalogue-source-group" key={group.source + "::" + group.location}>
+                                <header className="catalogue-group-header">
+                                    <h3 className="catalogue-group-title">{group.location}</h3>
+                                    <p className="catalogue-group-meta">
+                                        {humanize(group.source)} <span aria-hidden="true">·</span> {group.items.length} item{group.items.length === 1 ? "" : "s"}
+                                    </p>
+                                </header>
+                                <div className="catalogue-item-grid">
+                                    {group.items.map(item => {
+                                        const set = item.set ? (setsRef ?? []).find(candidate => candidate.id === item.set) : null
+                                        return <ItemCatalogueCard key={item.id} item={item} set={set} />
+                                    })}
+                                </div>
+                            </section>
+                        ))
+                    }
+                </div>
             )}
 
-            {view === "sets" && (filteredSets.length === 0
-                ? <div className="card text">No sets match these filters.</div>
-                : <div className="flex-row flex-wrap" style={{ gap: "8px", alignItems: "stretch" }}>
-                    {filteredSets.map(set => {
-                        const pieces = allItems.filter(item => item.set === set.id)
-                        const locations = set.dropLocation !== undefined ? getLocations(set) : [...new Set(pieces.flatMap(getLocations))]
-                        return (
-                            <article className="card flex-col" key={set.id} style={{ gap: "8px", flex: "1 1 300px", minWidth: 0 }}>
-                                <div className="header">{set.name}</div>
-                                <div className="text">{set.pieces} pieces · {humanize(getSourceName(set.dropSource))}</div>
-                                {locations.length > 0 && <div className="text">Locations: {locations.join(", ")}</div>}
-                                <div className="header">Set bonuses</div>
-                                <PerkList perks={set.setBonus} label="Bonuses" />
-                                <div className="header">Pieces ({pieces.length})</div>
-                                {pieces.length > 0
-                                    ? <div className="flex-col" style={{ gap: "4px" }}>
-                                        {pieces.map(item => (
-                                            <div className="flex-row" key={item.id} style={{ alignItems: "center", gap: "7px" }}>
-                                                <img src={item.itemSrc} alt="" draggable={false} style={{ width: "34px", height: "34px", objectFit: "contain" }} />
-                                                <span className="text">{item.name}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    : <div className="text">No item pieces are currently linked to this set in the item database.</div>
-                                }
-                            </article>
-                        )
-                    })}
+            {view === "sets" && (
+                <div className="catalogue-set-grid">
+                    {filteredSets.length === 0
+                        ? <p className="catalogue-empty card">No sets match these filters.</p>
+                        : filteredSets.map(set => {
+                            const pieces = allItems.filter(item => item.set === set.id)
+                            return <SetCatalogueCard key={set.id} set={set} pieces={pieces} />
+                        })
+                    }
                 </div>
             )}
         </section>
