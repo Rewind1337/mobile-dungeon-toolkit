@@ -1,5 +1,13 @@
-const SHARE_FORMAT_VERSION = 2
-const SUPPORTED_SHARE_FORMAT_VERSIONS = new Set([1, SHARE_FORMAT_VERSION])
+import { PERK_DEFINITIONS } from "../database/enums.jsx"
+
+const SHARE_FORMAT_VERSION = 3
+const SUPPORTED_SHARE_FORMAT_VERSIONS = new Set([1, 2, SHARE_FORMAT_VERSION])
+const PERK_NAME_TO_ID = Object.fromEntries(
+    Object.entries(PERK_DEFINITIONS).map(([name, definition]) => [name, definition.id])
+)
+const PERK_ID_TO_NAME = Object.fromEntries(
+    Object.entries(PERK_DEFINITIONS).map(([name, definition]) => [definition.id, name])
+)
 
 function toBase64Url(value) {
     const bytes = new TextEncoder().encode(value)
@@ -61,6 +69,11 @@ function compactItem(item) {
         compact[shortKey] = value
     }
 
+    if (Array.isArray(compact.p)) {
+        // Perk IDs are stable in enums.jsx and much shorter than their string names.
+        compact.p = compact.p.map(perk => PERK_NAME_TO_ID[perk] ?? perk)
+    }
+
     if (Array.isArray(item.fixedPerks) && item.fixedPerks.length > 0) {
         // The fixed perk IDs are part of the base item template; only their configured values are needed.
         compact.f = item.fixedPerks.map(perk => Number(perk?.value ?? 0))
@@ -95,6 +108,13 @@ function expandItem(compact, allItems) {
 
     for (const [shortKey, field] of Object.entries(fields)) {
         if (compact[shortKey] !== undefined) item[field] = compact[shortKey]
+    }
+
+    if (Array.isArray(compact.p)) {
+        // v3 stores numeric perk IDs; v1/v2 links still contain string names.
+        item.perks = compact.p.map(perk => (
+            typeof perk === "number" ? (PERK_ID_TO_NAME[perk] ?? perk) : perk
+        ))
     }
 
     if (Array.isArray(compact.f)) {
