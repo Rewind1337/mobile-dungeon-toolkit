@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import ItemList from "./ItemList.jsx"
 import ItemPreview from "./ItemPreview.jsx"
 import HeroList from "./HeroList.jsx"
@@ -8,6 +8,7 @@ import Modal from "./Modal.jsx"
 
 function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
     const [pageContent, setPageContent] = useState(0)
+    const heroImportInputRef = useRef(null)
     // Ref changes do not trigger renders, so this revision refreshes memoized hero lists after saved-hero changes.
     const [, setSavedHeroesRevision] = useState(0)
 
@@ -23,6 +24,59 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
     useEffect(() => {
         setEquippedItems(Array.isArray(activeHero?.items) ? [...activeHero.items] : [])
     }, [pageContent, selectedHeroId, selectedSavedHeroId, activeHero?.items])
+
+
+    const handleImportHero = async (event) => {
+        const file = event.target.files?.[0]
+        if (!file) return
+
+        try {
+            const payload = JSON.parse(await file.text())
+            if (
+                payload?.format !== "mobile-dungeon-toolkit-hero" ||
+                payload?.version !== 1 ||
+                !payload.hero ||
+                typeof payload.hero !== "object" ||
+                typeof payload.hero.id !== "string" ||
+                typeof payload.hero.name !== "string"
+            ) {
+                throw new Error("This file is not a supported Mobile Dungeon Toolkit hero export.")
+            }
+
+            const importedHero = JSON.parse(JSON.stringify(payload.hero))
+            delete importedHero.saveId
+            delete importedHero.heroSrc
+            delete importedHero.elementSrc
+
+            const nextSaveId = Math.max(
+                -1,
+                ...savedHeroesRef.current
+                    .map(hero => Number(hero.saveId))
+                    .filter(Number.isFinite)
+            ) + 1
+
+            const savedHero = {
+                ...importedHero,
+                saveId: nextSaveId,
+                items: Array.isArray(importedHero.items) ? importedHero.items : []
+            }
+
+            savedHeroesRef.current = [...savedHeroesRef.current, savedHero]
+            setSavedHeroesRevision(revision => revision + 1)
+            setPageContent(1)
+            setSelectedHeroId(null)
+            setSelectedSavedHeroId(nextSaveId)
+            setEquippedItems([...savedHero.items])
+            if (manualSaveFunction) manualSaveFunction()
+        } catch (error) {
+            console.error("Failed to import hero:", error)
+            window.alert(error instanceof SyntaxError
+                ? "Could not import this file. Make sure it contains valid JSON."
+                : (error.message || "Could not import this hero file."))
+        } finally {
+            event.target.value = ""
+        }
+    }
 
     const clearHeroSelection = () => { setSelectedHeroId(null) }
 
@@ -124,6 +178,15 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                 <div className="pagination flex-row card w-100">
                     <Button text={"All Heroes"} color={0} onClick={() => { setPageContent(0) }} />
                     <Button text={"Your Saved Heroes"} color={0} onClick={() => { setPageContent(1) }} />
+                    <Button text={"Import Hero"} color={0} onClick={() => heroImportInputRef.current?.click()} />
+                    <input
+                        ref={heroImportInputRef}
+                        type="file"
+                        accept=".json,application/json"
+                        aria-label="Choose a hero export file to import"
+                        style={{ display: "none" }}
+                        onChange={handleImportHero}
+                    />
                 </div>
                 <div className="options flex-row card">
                     <Button text={"Manual Save"} color={5} onClick={() => { manualSaveFunction() }} />
