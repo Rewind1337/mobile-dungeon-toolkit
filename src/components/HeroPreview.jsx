@@ -338,6 +338,17 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
 
         if (!includeItems) {
             setEquippedItemsShareUrl("")
+            setHeroShareUrl(buildShareUrl("hero", createHeroShareToken({
+                ...heroObj,
+                level: Math.max(1, Number(selectedLevel) || 1),
+                stats: {
+                    health: Number(mainStats.health) || 0,
+                    attack: Number(mainStats.attack) || 0,
+                    defence: Number(mainStats.defence) || 0,
+                    agility: Number(mainStats.agility) || 0
+                },
+                items: [...equippedItems]
+            }, { includeItems: false }), "heroes"))
             return
         }
 
