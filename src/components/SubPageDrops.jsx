@@ -93,14 +93,14 @@ function PerkList({ perks, label = "Perks" }) {
 
     return (
         <section className="catalogue-perks">
-            <h4 className="catalogue-section-label">{label}</h4>
+            <h4 className="catalogue-section-label text">{label}</h4>
             {visiblePerks.length === 0
                 ? <p className="catalogue-muted">None recorded</p>
                 : <ul className="catalogue-perk-list">
                     {visiblePerks.map((perk, index) => {
                         const key = getPerkKey(perk)
                         return (
-                            <li className="catalogue-perk" key={key + "-" + index} title={getPerkLabel(perk)}>
+                            <li className="catalogue-perk text" key={key + "-" + index} title={getPerkLabel(perk)}>
                                 {perkSprites[key] && <img className="catalogue-perk-icon" src={perkSprites[key]} alt="" draggable={false} />}
                                 <span className="catalogue-perk-name">{getPerkLabel(perk)}</span>
                             </li>
@@ -131,7 +131,7 @@ function CatalogueFilters({
     return (
         <div className="catalogue-filters">
             <label className="catalogue-search">
-                <span className="catalogue-control-label">Search all item data</span>
+                <span className="catalogue-control-label text">Search all item data</span>
                 <input
                     className="selectable catalogue-input"
                     aria-label="Search item catalogue"
@@ -141,14 +141,14 @@ function CatalogueFilters({
                 />
             </label>
             <label className="catalogue-filter">
-                <span className="catalogue-control-label">Source</span>
+                <span className="catalogue-control-label text">Source</span>
                 <select aria-label="Filter by source" value={sourceFilter} onChange={event => setSourceFilter(event.target.value)}>
                     <option value="all">All sources</option>
                     {allSources.map(source => <option key={source} value={source}>{humanize(source)}</option>)}
                 </select>
             </label>
             <label className="catalogue-filter">
-                <span className="catalogue-control-label">Location</span>
+                <span className="catalogue-control-label text">Location</span>
                 <select aria-label="Filter by location" value={locationFilter} onChange={event => setLocationFilter(event.target.value)}>
                     <option value="all">All locations</option>
                     {allLocations.map(location => <option key={location} value={location}>{location}</option>)}
@@ -156,7 +156,7 @@ function CatalogueFilters({
             </label>
             {view === "items" && <>
                 <label className="catalogue-filter">
-                    <span className="catalogue-control-label">Slot</span>
+                    <span className="catalogue-control-label text">Slot</span>
                     <select aria-label="Filter by slot" value={slotFilter} onChange={event => setSlotFilter(event.target.value)}>
                         <option value="all">All slots</option>
                         {Object.values(EQUIPMENT_SLOT_DEFINITIONS).map(slot =>
@@ -165,7 +165,7 @@ function CatalogueFilters({
                     </select>
                 </label>
                 <label className="catalogue-filter">
-                    <span className="catalogue-control-label">Rarity</span>
+                    <span className="catalogue-control-label text">Rarity</span>
                     <select aria-label="Filter by rarity" value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
                         <option value="all">All rarities</option>
                         {Object.values(RARITY_DEFINITIONS).map(rarity =>
@@ -191,27 +191,26 @@ function ItemCatalogueCard({ item, set }) {
             <div className="catalogue-item-identity">
                 <img className="catalogue-item-image" src={item.itemSrc} alt="" draggable={false} />
                 <div className="catalogue-item-heading">
-                    <h3 className="catalogue-item-name">{item.name}</h3>
-                    {unique && <span className="catalogue-unique-label">Unique Item</span>}
-                    <p className="catalogue-item-meta">
+                    <h3 className="catalogue-item-name header">{item.name}</h3>
+                    {unique && <span className="catalogue-unique-label text">Unique Item</span>}
+                    <p className="catalogue-item-meta text">
                         {humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity")} · {humanize(item.slotLabel ?? "Unknown slot")}
                     </p>
-                    {set && <p className="catalogue-item-set">Set: {set.name}</p>}
+                    {set && <p className="catalogue-item-set text">Set: {set.name}</p>}
+                    {statuses.length > 0 && (
+                        <div className="catalogue-statuses" aria-label="Statuses applied by weapon effect">
+                            {statuses.map(status => (
+                                <img className="catalogue-status-icon" key={status.key} src={status.sprite} alt={status.name} title={status.name} draggable={false} />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
 
-            {statuses.length > 0 && (
-                <div className="catalogue-statuses" aria-label="Statuses applied by weapon effect">
-                    {statuses.map(status => (
-                        <img className="catalogue-status-icon" key={status.key} src={status.sprite} alt={status.name} title={status.name} draggable={false} />
-                    ))}
-                </div>
-            )}
-
             {effectDescription && (
-                <section className="catalogue-effect">
-                    <h4 className="catalogue-section-label">Unique effect</h4>
-                    <p className="catalogue-effect-description">{effectDescription}</p>
+                <section className="catalogue-effect card">
+                    <h4 className="catalogue-section-label text">Unique effect</h4>
+                    <p className="catalogue-effect-description text">{effectDescription}</p>
                 </section>
             )}
 
@@ -228,23 +227,23 @@ function SetCatalogueCard({ set, pieces }) {
     return (
         <article className="catalogue-set-card card">
             <header className="catalogue-set-header">
-                <h3 className="catalogue-set-name">{set.name}</h3>
-                <p className="catalogue-set-meta">
+                <h3 className="catalogue-set-name header">{set.name}</h3>
+                <p className="catalogue-set-meta text">
                     {set.pieces} pieces <span aria-hidden="true">·</span> {humanize(getSourceName(set.dropSource))}
                 </p>
-                {locations.length > 0 && <p className="catalogue-set-locations">Locations: {locations.join(", ")}</p>}
+                {locations.length > 0 && <p className="catalogue-set-locations text">Locations: {locations.join(", ")}</p>}
             </header>
 
             <PerkList perks={set.setBonus} label="Set bonuses" />
 
             <section className="catalogue-set-pieces">
-                <h4 className="catalogue-section-label">Pieces ({pieces.length})</h4>
+                <h4 className="catalogue-section-label text">Pieces ({pieces.length})</h4>
                 {pieces.length > 0
                     ? <ul className="catalogue-piece-list">
                         {pieces.map(item => (
                             <li className="catalogue-piece" key={item.id}>
                                 <img className="catalogue-piece-image" src={item.itemSrc} alt="" draggable={false} />
-                                <span className="catalogue-piece-name">{item.name}</span>
+                                <span className="catalogue-piece-name text">{item.name}</span>
                             </li>
                         ))}
                     </ul>
@@ -359,16 +358,11 @@ function SubPageDrops({ itemsRef, setsRef }) {
         <section className="item-catalogue">
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
-                    <h2 className="header-big catalogue-title">Item Catalogue</h2>
-                    <p className="catalogue-description">
+                    <h2 className="catalogue-title header-big">Item Catalogue</h2>
+                    <p className="catalogue-description text">
                         Search item names, unique-effect descriptions, fixed perks, set bonuses, rarity, source, location, and other stored item data.
                     </p>
                 </div>
-                <p className="catalogue-result-count">
-                    {view === "items"
-                        ? `${filteredItems.length} matching items · ${groupedItems.length} source/location groups`
-                        : `${filteredSets.length} matching sets · ${setsRef?.length ?? 0} total sets`}
-                </p>
             </header>
 
             <nav className="catalogue-view-switch" aria-label="Catalogue view">
@@ -398,9 +392,9 @@ function SubPageDrops({ itemsRef, setsRef }) {
                     {groupedItems.length === 0
                         ? <p className="catalogue-empty card">No items match these filters.</p>
                         : groupedItems.map(group => (
-                            <section className="catalogue-source-group" key={group.source + "::" + group.location}>
+                            <section className="catalogue-source-group card" key={group.source + "::" + group.location}>
                                 <header className="catalogue-group-header">
-                                    <h3 className="catalogue-group-title">{group.location}</h3>
+                                    <h3 className="catalogue-group-title text">{group.location}</h3>
                                     <p className="catalogue-group-meta">
                                         {humanize(group.source)} <span aria-hidden="true">·</span> {group.items.length} item{group.items.length === 1 ? "" : "s"}
                                     </p>

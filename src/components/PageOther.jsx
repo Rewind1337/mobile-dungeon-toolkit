@@ -41,7 +41,7 @@ const sets = itemsRef?.current?.ITEM_SETS ?? []
 
             <div
                 id="page-other"
-                className="page flex-row w-100"
+                className="page card flex-row w-100"
                 style={{
                     flex: "1 1 0",
                     minHeight: 0,
