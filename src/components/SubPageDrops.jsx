@@ -215,6 +215,7 @@ function ItemCatalogueCard({ item, set }) {
             )}
 
             <PerkList perks={item.fixedPerks} label="Fixed perks" />
+            {set && <PerkList perks={set.setBonus} label="Set bonuses" />}
         </article>
     )
 }
@@ -254,6 +255,53 @@ function SetCatalogueCard({ set, pieces }) {
     )
 }
 
+
+function ItemOverview({ items, itemsRef, sets }) {
+    const bySlot = Object.entries(itemsRef ?? {})
+        .filter(([, value]) => Array.isArray(value))
+        .map(([slot, value]) => ({ slot, count: value.length }))
+    const withLocation = items.filter(item => (
+        Array.isArray(item.dropLocation) ? item.dropLocation.length > 0 : Boolean(item.dropLocation)
+    )).length
+    const withoutLocation = items.length - withLocation
+
+    return (
+        <section className="catalogue-overview card">
+            <h3 className="catalogue-overview-title header">Item Overview</h3>
+            <div className="catalogue-overview-stats">
+                <div className="catalogue-overview-stat card">
+                    <span className="text">Total items</span>
+                    <span className="header-big">{items.length}</span>
+                </div>
+                <div className="catalogue-overview-stat card">
+                    <span className="text">Item sets</span>
+                    <span className="header-big">{sets.length}</span>
+                </div>
+                <div className="catalogue-overview-stat card">
+                    <span className="text">Items with a location</span>
+                    <span className="header-big">{withLocation}</span>
+                </div>
+                <div className="catalogue-overview-stat card">
+                    <span className="text">Items without a location</span>
+                    <span className="header-big">{withoutLocation}</span>
+                </div>
+            </div>
+            <div className="catalogue-overview-slots">
+                <h4 className="catalogue-section-label text">Items by slot</h4>
+                <div className="catalogue-overview-slot-list">
+                    {bySlot.map(({ slot, count }) => (
+                        <div className="catalogue-overview-slot card" key={slot}>
+                            <span className="text">{humanize(slot)}</span>
+                            <span className="header">{count}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <p className="catalogue-muted text">This overview reflects the current item database. It does not infer missing drop locations.</p>
+        </section>
+    )
+}
+
 function SubPageDrops({ itemsRef, setsRef }) {
     const [view, setView] = useState("items")
     const [search, setSearch] = useState("")
@@ -269,7 +317,10 @@ function SubPageDrops({ itemsRef, setsRef }) {
             return items.map(item => ({
                 ...item,
                 slotLabel: SLOT_NAMES[item.slot] ?? slotKey,
-                setLabel: item.set ? (setsRef ?? []).find(set => set.id === item.set)?.name ?? String(item.set) : ""
+                setLabel: item.set ? (setsRef ?? []).find(set => set.id === item.set)?.name ?? String(item.set) : "",
+                setBonusLabels: item.set
+                    ? ((setsRef ?? []).find(set => set.id === item.set)?.setBonus ?? []).map(getPerkLabel)
+                    : []
             }))
         })
     }, [itemsRef, setsRef])
@@ -303,7 +354,8 @@ function SubPageDrops({ itemsRef, setsRef }) {
             ...getLocations(item),
             humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity"),
             ...getEffectStatuses(item).map(status => status.name),
-            ...(item.fixedPerks ?? []).map(getPerkLabel)
+            ...(item.fixedPerks ?? []).map(getPerkLabel),
+            ...(item.setBonusLabels ?? [])
         ].join(" ").toLowerCase()
         const matchesSearch = !query || searchable.includes(query)
         const matchesSource = sourceFilter === "all" || sourceName === sourceFilter
@@ -422,6 +474,7 @@ function SubPageDrops({ itemsRef, setsRef }) {
                     }
                 </div>
             )}
+            <ItemOverview items={allItems} itemsRef={itemsRef} sets={setsRef ?? []} />
         </section>
     )
 }
