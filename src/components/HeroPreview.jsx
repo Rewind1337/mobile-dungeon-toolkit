@@ -293,6 +293,32 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
         })
     }
 
+
+    const handleExportSavedHero = () => {
+        if (!heroObj) return
+
+        const { saveId, heroSrc, elementSrc, ...exportableHero } = heroObj
+        const payload = {
+            format: "mobile-dungeon-toolkit-hero",
+            version: 1,
+            hero: exportableHero
+        }
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" })
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement("a")
+        const filename = heroObj.name
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-|-$/g, "") || "hero"
+
+        link.href = url
+        link.download = `${filename}.json`
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+        window.setTimeout(() => URL.revokeObjectURL(url), 0)
+    }
+
     const handleDeleteSavedHero = () => {
         if (!deleteSavedHero || !heroObj) return
         deleteSavedHero(heroObj)
@@ -417,6 +443,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
                     </div>
                     {(saveHero || deleteSavedHero) && <div className='flex-row'>
                         {saveHero && <Button text={"Save Hero"} onClick={handleSaveHero} color={0}/>}
+                        {deleteSavedHero && <Button text={"Export Hero"} onClick={handleExportSavedHero} color={0}/>}
                         {deleteSavedHero && <Button text={"Delete Saved Hero"} onClick={handleDeleteSavedHero} color={0}/>}
                     </div>}
                 </div>
