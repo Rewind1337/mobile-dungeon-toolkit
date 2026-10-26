@@ -27,7 +27,7 @@ function SubPageTitans() {
             <div className='card w-25'>
                 <div className='header-big'>Select Titan</div>
                 <div ref={listRef} className="list titan-list flex-col" style={{ maxHeight: listHeight }}>
-                    {TITANS.map(titan => <Titan {...titan} elementSrc={elementSprites[titan.id]} setSelectedTitan={setSelectedTitan} />)}
+                    {TITANS.map((titan, titanIndex) => <Titan key={"titan-" + titanIndex} {...titan} elementSrc={elementSprites[titan.id]} setSelectedTitan={setSelectedTitan} />)}
                 </div>
             </div>
             <div className='card w-100'>{selectedTitan}</div>

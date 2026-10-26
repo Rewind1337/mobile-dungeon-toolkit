@@ -48,7 +48,7 @@ function SubPageChapters() {
             <div className='card w-66'>
                 <div className='header-big'>Select Chapter</div>
                 <div ref={listRef} className="list chapter-list flex-col" style={{ maxHeight: listHeight }}>
-                    {CHAPTERS.map(chapter => <Chapter {...chapter} setSelectedChapter={setSelectedChapter} />)}
+                    {CHAPTERS.map((chapter, chapterIndex) => <Chapter key={"chapter-" + chapterIndex} {...chapter} setSelectedChapter={setSelectedChapter} />)}
                 </div>
             </div>
             <div className='card w-100'>{selectedChapter}</div>

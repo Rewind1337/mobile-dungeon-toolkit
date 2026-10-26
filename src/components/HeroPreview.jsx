@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, ROLE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, PERK_DEFINITIONS, MASTERWORK_MUTATION_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
-import { heroSprites, iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites } from '../database/db_sprites.jsx'
+import { heroSprites, iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites, elementSprites } from '../database/db_sprites.jsx'
 
 import Button from './Button.jsx'
 import EmptyItem from './EmptyItem.jsx'
@@ -338,7 +338,13 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
                         }
                         <div className='flex-col hero'>
                             <div className={"hero card selected"} data-rarity={heroObj.rarity} data-element={heroObj.element}>
-                                <div className="hero-element"><img src={heroObj.elementSrc} draggable={false} /></div>
+                                <div className="hero-element">
+                                    <img
+                                        src={heroObj.elementSrc ?? elementSprites[heroObj.element]}
+                                        draggable={false}
+                                        alt=""
+                                    />
+                                </div>
                                 {heroObj.isStarred === true && <div className="hero-starred">
                                     <img src={iconSprites["is_starred"]} draggable={false} />
                                 </div>}

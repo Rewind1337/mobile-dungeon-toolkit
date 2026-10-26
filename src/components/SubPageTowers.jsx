@@ -66,7 +66,7 @@ function SubPageTowers({ heroesRef }) {
             <div className='card w-66'>
                 <div className='header-big'>Select Tower</div>
                 <div ref={listRef} className="list tower-list flex-col"  {...events} style={{ maxHeight: listHeight }}>
-                    {TOWERS.map(tower => <Tower {...tower} setSelectedTower={setSelectedTower} />)}
+                    {TOWERS.map((tower, towerIndex) => <Tower key={"tower-" + towerIndex} {...tower} setSelectedTower={setSelectedTower} />)}
                 </div>
             </div>
             <div className='card w-100'>
@@ -74,9 +74,6 @@ function SubPageTowers({ heroesRef }) {
                 <div className="list tower-stage-list flex-col"  {...events} style={{ maxHeight: listHeight }}>
                     {selectedTower} - {selectedStage}
                     <TowerStage id={0} towerId={0} setSelectedStage={setSelectedStage} heroesRef={heroesRef} />
-                    <TowerStage id={1} towerId={0} setSelectedStage={setSelectedStage} heroesRef={heroesRef} />
-                    <TowerStage id={2} towerId={0} setSelectedStage={setSelectedStage} heroesRef={heroesRef} />
-                    <TowerStage id={3} towerId={0} setSelectedStage={setSelectedStage} heroesRef={heroesRef} />
                 </div>
             </div>
         </>

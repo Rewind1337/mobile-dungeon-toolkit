@@ -25,7 +25,7 @@ function SubPageGuildBoss() {
             <div className='card w-25'>
                 <div className='header-big'>Select Guildboss</div>
                 <div ref={listRef} className="list guildboss-list flex-col" style={{ maxHeight: listHeight }}>
-                    {GUILD_BOSSES.map(boss => <GuildBoss {...boss} setSelectedGuildBoss={setSelectedGuildBoss} />)}
+                    {GUILD_BOSSES.map((guildboss, guildbossIndex) => <GuildBoss key={"guildboss-" + guildbossIndex} {...guildboss} setSelectedGuildBoss={setSelectedGuildBoss} />)}
                 </div>
             </div>
             <div className='card boss-preview w-100'>

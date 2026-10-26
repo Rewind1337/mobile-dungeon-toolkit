@@ -1,10 +1,11 @@
-import { useState } from "react"
-import Button from "./Button.jsx"
+import { lazy, Suspense, useState } from 'react'
+import Button from './Button.jsx'
 
-import SubPageGuildBoss from "./SubPageGuildBoss.jsx"
-import SubPageTitans from "./SubPageTitans.jsx"
-import SubPageTowers from "./SubPageTowers.jsx"
-import SubPageChapters from "./SubPageChapters.jsx"
+const SubPageGuildBoss = lazy(() => import('./SubPageGuildBoss.jsx'))
+const SubPageTitans = lazy(() => import('./SubPageTitans.jsx'))
+const SubPageTowers = lazy(() => import('./SubPageTowers.jsx'))
+const SubPageChapters = lazy(() => import('./SubPageChapters.jsx'))
+
 
 function PageSimulators({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
     const [pageContent, setPageContent] = useState(0)
@@ -26,11 +27,13 @@ function PageSimulators({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, ma
 
 
             <div id='page-simulators' className='page flex-row w-100'>
-                {pageContent === 0 && <SubPageChapters heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} itemsRef={itemsRef} savedItemsRef={savedItemsRef} />}
-                {pageContent === 1 && <SubPageTowers heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} itemsRef={itemsRef} savedItemsRef={savedItemsRef} />}
-                {pageContent === 2 && <SubPageTitans heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} itemsRef={itemsRef} savedItemsRef={savedItemsRef} />}
-                {pageContent === 3 && <SubPageGuildBoss heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} itemsRef={itemsRef} savedItemsRef={savedItemsRef} />}
-                {pageContent === 4 && <></>}
+                <Suspense fallback={<div className="card">Loading...</div>}>
+                    {pageContent === 0 && <SubPageChapters heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} itemsRef={itemsRef} savedItemsRef={savedItemsRef} />}
+                    {pageContent === 1 && <SubPageTowers heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} itemsRef={itemsRef} savedItemsRef={savedItemsRef} />}
+                    {pageContent === 2 && <SubPageTitans heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} itemsRef={itemsRef} savedItemsRef={savedItemsRef} />}
+                    {pageContent === 3 && <SubPageGuildBoss heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} itemsRef={itemsRef} savedItemsRef={savedItemsRef} />}
+                    {pageContent === 4 && <></>}
+                </Suspense>
             </div>
         </>
     )

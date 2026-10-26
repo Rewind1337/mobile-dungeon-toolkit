@@ -1,11 +1,11 @@
 import { useState, useRef, useLayoutEffect } from 'react';
-import { useDraggable } from 'react-use-draggable-scroll';
+import { useDraggable } from 'react-use-draggable-scroll-safe';
 import { CONSTANTS } from '../database/constants';
 
 export function useDynamicList(extraHeight = 0, enableDraggable = true) {
     const [listHeight, setListHeight] = useState(500);
     const listRef = useRef(null);
-    const { events } = useDraggable(listRef, { applyRubberBandEffect: false, active: enableDraggable && !!listRef.current });
+    const { events } = useDraggable(listRef, { applyRubberBandEffect: false, active: enableDraggable});
 
     useLayoutEffect(() => {
         function onResize() {

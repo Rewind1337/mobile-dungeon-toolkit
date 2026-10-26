@@ -28,8 +28,8 @@ function PageTeams({ savedHeroesRef, manualSaveFunction }) {
                     <>
                         <div ref={listRef} className='teams-list card flex-col w-50' style={{ maxHeight: listHeight }}>
                             <div className='header-big'>Your Teams</div>
-                            {teams.map((team) =>
-                                <div className="team card flex-col">
+                            {teams.map((team, teamIndex) =>
+                                <div className="team card flex-col" key={"team-" + teamIndex}>
                                     <div className="flex-row">
                                         <Button text={"Delete Team"} autoHeight color={5} onClick={() => { }} />
                                         <Button text={"Clear Team"} autoHeight color={4} onClick={() => { }} />
