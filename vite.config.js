@@ -13,6 +13,9 @@ export default defineConfig(({ command }) => ({
       open: false,
     }),
   ],
+  build: {
+    chunkSizeWarningLimit: 800, // kB
+  },
   // GitHub Pages hosts this project under /mobile-dungeon-toolkit/.
   // Keep local development at the root path.
   base: command === 'build' ? '/mobile-dungeon-toolkit/' : '/',
