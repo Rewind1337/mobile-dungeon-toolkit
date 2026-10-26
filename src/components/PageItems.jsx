@@ -59,13 +59,33 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
         if (!slotArray) return
 
         const existingItems = savedItemsRef.current[slotArray] ?? []
-        const savedItem = createSavedItemRecord(itemObj)
+        const existingSaveId = itemObj?.saveId
+        const existingIndex = existingItems.findIndex(item => item.saveId === existingSaveId)
 
-        // Replace the root object as well as the slot array so memoized lists see the update.
-        savedItemsRef.current = {
-            ...savedItemsRef.current,
-            [slotArray]: [...existingItems, savedItem]
+        if (existingSaveId != null && existingIndex !== -1) {
+            const updatedItem = {
+                ...itemObj,
+                id: existingItems[existingIndex].id,
+                saveId: existingSaveId,
+                baseItemId: itemObj.baseItemId ?? existingItems[existingIndex].baseItemId,
+                fixedPerks: (itemObj.fixedPerks ?? []).map(perk => ({ ...perk })),
+                perks: [...(itemObj.perks ?? [])],
+                perkValues: [...(itemObj.perkValues ?? [])],
+                fixedPerkValues: itemObj.fixedPerkValues ? [...itemObj.fixedPerkValues] : itemObj.fixedPerkValues
+            }
+            savedItemsRef.current = {
+                ...savedItemsRef.current,
+                [slotArray]: existingItems.map(item => item.saveId === existingSaveId ? updatedItem : item)
+            }
+        } else {
+            const savedItem = createSavedItemRecord(itemObj)
+            // Replace the root object as well as the slot array so memoized lists see the update.
+            savedItemsRef.current = {
+                ...savedItemsRef.current,
+                [slotArray]: [...existingItems, savedItem]
+            }
         }
+
         setSavedItemsRevision(revision => revision + 1)
 
         // A saved item should be present in the local save immediately, not only after a tab change.
