@@ -165,7 +165,7 @@ function StatusCard({ status }) {
                 }
                 <div className="status-catalogue-heading">
                     <h3 className="status-catalogue-name header">{humanize(status.name)}</h3>
-                    <span className={`status-catalogue-category status-catalogue-category-${category.toLowerCase()}`}>{category}</span>
+                    <span className={"status-catalogue-category text"}>{category}</span>
                 </div>
             </div>
             <p className="status-catalogue-description text">{description}</p>

@@ -650,22 +650,8 @@
 
 .status-catalogue-category {
   padding: 2px 7px;
-  border-radius: V.$border-radius-small;
-  background: rgba(0, 0, 0, 0.22);
   font-size: V.$font-size-xsmall;
   white-space: nowrap;
-}
-
-.status-catalogue-category-buff {
-  border: 1px solid rgba(100, 190, 120, 0.45);
-}
-
-.status-catalogue-category-debuff {
-  border: 1px solid rgba(210, 100, 100, 0.45);
-}
-
-.status-catalogue-category-special {
-  border: 1px solid rgba(120, 150, 210, 0.45);
 }
 
 .status-catalogue-description {
