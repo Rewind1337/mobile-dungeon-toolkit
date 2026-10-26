@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 
 import MDLogo from './sprites/logo.webp'
 import PlayaLogo from './sprites/playa_games_logo.webp'
+import Seagull from './sprites/seagull.webp'
 
 import NavBar from './components/NavBar.jsx'
 import Button from './components/Button.jsx'
@@ -58,7 +59,7 @@ const getPageFromPath = () => {
     pathname = pathname.slice(basePath.length) || '/';
   }
 
-  return ROUTE_TO_PAGE[normalizeRoute(pathname)] ?? 'splash';
+  return ROUTE_TO_PAGE[normalizeRoute(pathname)] ?? 'notFound';
 };
 
 const defaultState = {
@@ -153,13 +154,32 @@ function App() {
 
   return (
     <>
-      <NavBar switchTabTo={switchTabTo} />
+      {pageContent !== 'notFound' && <NavBar switchTabTo={switchTabTo} />}
 
       <Suspense fallback={
         <div className="page flex-row w-100">
             <div className="card">Loading...</div>
         </div>
       }>
+        {pageContent === 'notFound' &&
+          <main id="page-not-found" className="not-found-page">
+            <section className="not-found-card card">
+              <div className="header-big">Sorry</div>
+              <img className="not-found-seagull" src={Seagull} alt="A seagull" />
+              <div className="header">Looks like you've flown off course.</div>
+              <p className="text">We couldn't find the page you were looking for.</p>
+              <div className="not-found-links">
+                <Button text="Heroes" color={0} onMouseDown={() => switchTabTo('heroes')} />
+                <Button text="Items" color={1} onMouseDown={() => switchTabTo('items')} />
+                <Button text="Teams" color={2} onMouseDown={() => switchTabTo('teams')} />
+                <Button text="Home" color={3} onMouseDown={() => switchTabTo('splash')} />
+                <Button text="Simulators" color={4} onMouseDown={() => switchTabTo('simulator')} />
+                <Button text="Other Stuff" color={5} onMouseDown={() => switchTabTo('other')} />
+              </div>
+            </section>
+          </main>
+        }
+
         {pageContent === 'splash' &&
           <div id='page-splash' className='page flex-col w-100'>
             <div className='flex-row top'>
