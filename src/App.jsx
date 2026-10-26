@@ -109,6 +109,7 @@ function App() {
 
   // app related
   const [pageContent, setPageContent] = useState(getPageFromPath)
+  const [importStatus, setImportStatus] = useState("")
 
   const saveToLocalStorage = useCallback(() => {
     const saveState = {
@@ -157,9 +158,11 @@ function App() {
     <>
       {pageContent !== 'notFound' && <NavBar switchTabTo={switchTabTo} />}
 
+      {importStatus && <div className="text" role="status" aria-live="polite" style={{ padding: "4px 10px" }}>{importStatus}</div>}
+
       <Suspense fallback={
         <div className="page flex-row w-100">
-            <div className="card">Loading...</div>
+            <div className="card">{importStatus || "Loading..."}</div>
         </div>
       }>
         {pageContent === 'notFound' &&
@@ -264,9 +267,9 @@ function App() {
           </div >
         }
 
-        {pageContent === 'heroes' && <PageHeroes itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
+        {pageContent === 'heroes' && <PageHeroes itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} onImportStatusChange={setImportStatus} />}
 
-        {pageContent === 'items' && <PageItems itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
+        {pageContent === 'items' && <PageItems itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} onImportStatusChange={setImportStatus} />}
 
         {pageContent === 'teams' && <PageTeams itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
 
