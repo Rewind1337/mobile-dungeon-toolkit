@@ -49,7 +49,6 @@ function formatTalentEffects(effect) {
 function HeroCatalogueCard({ hero }) {
     const rarity = getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? "Unknown rarity"
     const attribute = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? "Unknown attribute"
-    const element = getEnumNameById(ELEMENT_DEFINITIONS, Number(hero.element)) ?? "Unknown element"
     const role = getEnumNameById(ROLE_DEFINITIONS, Number(hero.role)) ?? "Unknown role"
 
     const skills = Array.isArray(hero.skills) ? hero.skills : []
