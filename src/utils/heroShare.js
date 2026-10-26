@@ -20,16 +20,16 @@ function fromBase64Url(value) {
 function compactItem(item) {
     if (!item) return null
 
+    // Item identity, name, unique-effect description, rarityEffect, base attributes,
+    // and set metadata come from the receiving toolkit's item database.
+    // Only serialize the configured values that can differ between builds.
     const compact = {}
+    const baseId = item.baseItemId ?? item.id
+    if (baseId !== undefined) compact.i = baseId
+    if (item.slot !== undefined) compact.s = item.slot
+
     const fields = {
-        i: "id",
-        s: "slot",
-        n: "name",
         r: "rarity",
-        a: "attributeRequirement",
-        m: "mainAttribute",
-        u: "unique",
-        t: "set",
         p: "perks",
         v: "perkValues",
         l: "level",
@@ -40,16 +40,27 @@ function compactItem(item) {
     }
 
     for (const [shortKey, field] of Object.entries(fields)) {
-        if (field === "id") {
-            const baseId = item.baseItemId ?? item.id
-            if (baseId !== undefined) compact.i = baseId
-        } else if (item[field] !== undefined) {
-            compact[shortKey] = item[field]
+        const value = item[field]
+        if (value === undefined) continue
+
+        if (shortKey === "b" && (!Array.isArray(value) || value.length === 0 || value.every(entry => Number(entry) === 0))) {
+            continue
         }
+
+        if (shortKey === "x" && value && typeof value === "object" && !Array.isArray(value)) {
+            const activeMutations = Object.fromEntries(
+                Object.entries(value).filter(([, mutationValue]) => mutationValue !== null && mutationValue !== undefined)
+            )
+            if (Object.keys(activeMutations).length > 0) compact.x = activeMutations
+            continue
+        }
+
+        compact[shortKey] = value
     }
 
-    if (Array.isArray(item.fixedPerks)) {
-        compact.f = item.fixedPerks.map(perk => [perk?.id ?? -1, Number(perk?.value ?? 0)])
+    if (Array.isArray(item.fixedPerks) && item.fixedPerks.length > 0) {
+        // The fixed perk IDs are part of the base item template; only their configured values are needed.
+        compact.f = item.fixedPerks.map(perk => Number(perk?.value ?? 0))
     }
 
     return compact
@@ -60,6 +71,7 @@ function expandItem(compact, allItems) {
 
     const template = allItems.find(item => item.id === compact.i || item.baseItemId === compact.i)
     const item = template ? { ...template } : {}
+    // Keep reading older v1 links that serialized the full item metadata.
     const fields = {
         i: "id",
         s: "slot",
@@ -83,11 +95,17 @@ function expandItem(compact, allItems) {
     }
 
     if (Array.isArray(compact.f)) {
-        item.fixedPerks = compact.f.map(([id, value], index) => ({
-            ...(template?.fixedPerks?.[index] ?? {}),
-            id,
-            value
-        }))
+        item.fixedPerks = compact.f.map((encodedPerk, index) => {
+            // Older links store [perkId, value]; compact links store only the value.
+            const legacyPair = Array.isArray(encodedPerk)
+            const id = legacyPair ? encodedPerk[0] : (template?.fixedPerks?.[index]?.id ?? -1)
+            const value = legacyPair ? encodedPerk[1] : encodedPerk
+            return {
+                ...(template?.fixedPerks?.[index] ?? {}),
+                id,
+                value
+            }
+        })
     }
 
     return item
