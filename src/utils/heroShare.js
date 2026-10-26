@@ -40,7 +40,12 @@ function compactItem(item) {
     }
 
     for (const [shortKey, field] of Object.entries(fields)) {
-        if (item[field] !== undefined) compact[shortKey] = item[field]
+        if (field === "id") {
+            const baseId = item.baseItemId ?? item.id
+            if (baseId !== undefined) compact.i = baseId
+        } else if (item[field] !== undefined) {
+            compact[shortKey] = item[field]
+        }
     }
 
     if (Array.isArray(item.fixedPerks)) {
@@ -53,7 +58,7 @@ function compactItem(item) {
 function expandItem(compact, allItems) {
     if (!compact) return null
 
-    const template = allItems.find(item => item.id === compact.i)
+    const template = allItems.find(item => item.id === compact.i || item.baseItemId === compact.i)
     const item = template ? { ...template } : {}
     const fields = {
         i: "id",
@@ -88,7 +93,19 @@ function expandItem(compact, allItems) {
     return item
 }
 
-export function createHeroShareToken(hero) {
+function getAllItems(baseItems) {
+    return Object.values(baseItems ?? {}).flat().filter(Boolean)
+}
+
+function makeShareUrl(queryKey, token, route) {
+    const baseUrl = import.meta.env.BASE_URL
+    const basePath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`
+    const url = new URL(`${basePath}${route}/`, window.location.origin)
+    url.searchParams.set(queryKey, token)
+    return url.toString()
+}
+
+export function createHeroShareToken(hero, { includeItems = true } = {}) {
     const talentKeys = Object.keys(hero.talents ?? {})
         .filter(key => key !== "" && Number.isInteger(Number(key)))
         .sort((a, b) => Number(a) - Number(b))
@@ -110,38 +127,70 @@ export function createHeroShareToken(hero) {
         t: talentMask
     }
 
-    if (Array.isArray(hero.items) && hero.items.some(Boolean)) {
-        payload.e = hero.items.map(compactItem)
+    if (includeItems && Array.isArray(hero.items) && hero.items.some(Boolean)) {
+        payload.e = hero.items.filter(Boolean).map(compactItem)
     }
 
     return toBase64Url(JSON.stringify(payload))
 }
 
-export function decodeHeroShareInput(input) {
+export function createItemShareToken(item) {
+    if (!item || item.slot === undefined || item.slot === null) {
+        throw new Error("Select a valid item before exporting it.")
+    }
+    return toBase64Url(JSON.stringify({
+        v: SHARE_FORMAT_VERSION,
+        k: "item",
+        i: compactItem(item)
+    }))
+}
+
+export function createItemsShareToken(items) {
+    const equippedItems = (items ?? []).filter(Boolean)
+    if (equippedItems.length === 0) throw new Error("This hero has no equipped items to export.")
+    return toBase64Url(JSON.stringify({
+        v: SHARE_FORMAT_VERSION,
+        k: "items",
+        a: equippedItems.map(compactItem)
+    }))
+}
+
+function decodeInput(input, queryKey) {
     const trimmed = String(input ?? "").trim()
-    if (!trimmed) throw new Error("Paste a hero share link or its encoded data.")
+    if (!trimmed) throw new Error("Paste a share link or its encoded data.")
 
     let token = trimmed
-    if (trimmed.startsWith("http://") || trimmed.startsWith("https://") || trimmed.startsWith("/") || trimmed.startsWith("./") || trimmed.startsWith("heroes/") || trimmed.includes("hero=")) {
+    if (
+        trimmed.startsWith("http://") ||
+        trimmed.startsWith("https://") ||
+        trimmed.startsWith("/") ||
+        trimmed.startsWith("./") ||
+        trimmed.startsWith("heroes/") ||
+        trimmed.startsWith("items/") ||
+        trimmed.includes(`${queryKey}=`)
+    ) {
         let url
         try {
             url = new URL(trimmed, window.location.origin)
         } catch {
-            throw new Error("That does not look like a valid hero share link.")
+            throw new Error("That does not look like a valid share link.")
         }
-        token = url.searchParams.get("hero") ?? ""
-        if (!token) throw new Error("That link does not contain hero share data.")
+        token = url.searchParams.get(queryKey) ?? ""
+        if (!token) throw new Error(`That link does not contain ${queryKey} share data.`)
     }
 
-    let payload
     try {
-        payload = JSON.parse(fromBase64Url(token))
+        return JSON.parse(fromBase64Url(token))
     } catch {
-        throw new Error("That does not look like a valid hero share link.")
+        throw new Error("That does not look like a valid share link.")
     }
+}
 
+export function decodeHeroShareInput(input) {
+    const payload = decodeInput(input, "hero")
     if (
         payload?.v !== SHARE_FORMAT_VERSION ||
+        (payload.k !== undefined && payload.k !== "hero") ||
         typeof payload.i !== "string" ||
         !Number.isInteger(payload.l) ||
         !Array.isArray(payload.s) ||
@@ -153,8 +202,50 @@ export function decodeHeroShareInput(input) {
     ) {
         throw new Error("This hero link is invalid or uses an unsupported format version.")
     }
-
     return payload
+}
+
+export function decodeItemShareInput(input) {
+    const payload = decodeInput(input, "item")
+    if (
+        payload?.v !== SHARE_FORMAT_VERSION ||
+        payload.k !== "item" ||
+        !payload.i ||
+        typeof payload.i !== "object" ||
+        !Number.isInteger(payload.i.s)
+    ) {
+        throw new Error("This item link is invalid or uses an unsupported format version.")
+    }
+    return payload
+}
+
+export function decodeItemsShareInput(input) {
+    const payload = decodeInput(input, "items")
+    if (
+        payload?.v !== SHARE_FORMAT_VERSION ||
+        payload.k !== "items" ||
+        !Array.isArray(payload.a) ||
+        payload.a.some(item => !item || !Number.isInteger(item.s))
+    ) {
+        throw new Error("This equipped-items link is invalid or uses an unsupported format version.")
+    }
+    return payload
+}
+
+export function restoreSharedItem(payload, baseItems) {
+    return expandItem(payload.i, getAllItems(baseItems))
+}
+
+export function restoreSharedItems(payload, baseItems) {
+    const allItems = getAllItems(baseItems)
+    const restored = []
+    for (const compact of payload.a ?? []) {
+        const item = expandItem(compact, allItems)
+        if (item && Number.isInteger(Number(item.slot)) && Number(item.slot) >= 0) {
+            restored[Number(item.slot)] = item
+        }
+    }
+    return restored
 }
 
 export function restoreSharedHero(payload, baseHeroes, baseItems) {
@@ -177,8 +268,16 @@ export function restoreSharedHero(payload, baseHeroes, baseItems) {
         }
     }
 
-    const allItems = Object.values(baseItems ?? {}).flat()
-    const hero = {
+    const allItems = getAllItems(baseItems)
+    const restoredItems = []
+    for (const [index, compact] of (payload.e ?? []).entries()) {
+        const item = expandItem(compact, allItems)
+        if (!item) continue
+        const slot = Number.isInteger(Number(item.slot)) ? Number(item.slot) : index
+        if (slot >= 0) restoredItems[slot] = item
+    }
+
+    return {
         ...baseHero,
         talents,
         level: payload.l,
@@ -188,10 +287,6 @@ export function restoreSharedHero(payload, baseHeroes, baseItems) {
             defence: payload.s[2],
             agility: payload.s[3]
         },
-        items: Array.isArray(payload.e)
-            ? payload.e.map(item => expandItem(item, allItems))
-            : []
+        items: restoredItems
     }
-
-    return hero
 }
