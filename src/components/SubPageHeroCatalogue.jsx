@@ -129,11 +129,14 @@ function SubPageHeroCatalogue({ heroesRef }) {
     const [elementFilter, setElementFilter] = useState("all")
     const [roleFilter, setRoleFilter] = useState("all")
 
-    const heroes = Array.isArray(heroesRef) ? heroesRef : []
-    const catalogueHeroes = useMemo(() => heroes.filter(hero =>
-        Number(hero.rarity) >= RARITY_DEFINITIONS.UNCOMMON.id
-        && Number(hero.rarity) <= RARITY_DEFINITIONS.LEGENDARY.id
-    ), [heroes])
+    const catalogueHeroes = useMemo(() => {
+        const heroes = Array.isArray(heroesRef) ? heroesRef : []
+
+        return heroes.filter(hero =>
+            Number(hero.rarity) >= RARITY_DEFINITIONS.UNCOMMON.id
+            && Number(hero.rarity) <= RARITY_DEFINITIONS.LEGENDARY.id
+        )
+    }, [heroesRef])
 
     const filteredHeroes = useMemo(() => {
         const query = search.trim().toLowerCase()
