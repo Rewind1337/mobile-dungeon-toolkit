@@ -3,7 +3,31 @@
 
 .modal {
     z-index: 100;
-    position: absolute;
+    position: fixed;
+}
+
+// Centered dialogs are portaled to document.body so page columns/overflow cannot constrain them.
+.modal-center {
+    z-index: 101;
+    top: 50%;
+    left: 50%;
+    width: min(92vw, 680px);
+    max-width: calc(100vw - 24px);
+    max-height: calc(100vh - 32px);
+    overflow: auto;
+    box-sizing: border-box;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate(-50%, -47%) scale(0.98);
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0.2s;
+
+    &.visible {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translate(-50%, -50%) scale(1);
+    }
 }
 
 .modal-left {
@@ -59,6 +83,7 @@
 
 .modal-backdrop {
     z-index: 98;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
