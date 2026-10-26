@@ -212,7 +212,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
 
     return (
         <>
-            <Modal position="left" isVisible={importModalVisible} onClose={() => setImportModalVisible(false)}>
+            <Modal position="center" isVisible={importModalVisible} onClose={() => setImportModalVisible(false)}>
                 <div className="flex-col card w-100">
                     <div className="header">Import Hero</div>
                     <div className="text">Paste a hero share link below. You can also paste the encoded data by itself.</div>
