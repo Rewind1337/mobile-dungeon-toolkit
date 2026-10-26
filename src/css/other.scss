@@ -701,3 +701,12 @@
   gap: 2px;
   overflow-wrap: anywhere;
 }
+
+
+.catalogue-item-preview {
+  flex: 0 0 auto;
+}
+
+.catalogue-item-preview .item {
+  cursor: default;
+}
