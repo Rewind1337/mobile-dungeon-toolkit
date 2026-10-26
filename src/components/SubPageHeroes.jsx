@@ -11,6 +11,10 @@ import Hero from "./Hero.jsx"
 
 import "../css/other.scss"
 
+const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
+    rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
+)
+
 const humanize = value => String(value ?? "")
     .replaceAll("_", " ")
     .toLowerCase()
@@ -128,10 +132,14 @@ function SubPageHeroes({ heroesRef }) {
     const [roleFilter, setRoleFilter] = useState("all")
 
     const heroes = Array.isArray(heroesRef) ? heroesRef : []
+    const catalogueHeroes = useMemo(() => heroes.filter(hero =>
+        Number(hero.rarity) >= RARITY_DEFINITIONS.UNCOMMON.id
+        && Number(hero.rarity) <= RARITY_DEFINITIONS.LEGENDARY.id
+    ), [heroes])
 
     const filteredHeroes = useMemo(() => {
         const query = search.trim().toLowerCase()
-        return heroes.filter(hero => {
+        return catalogueHeroes.filter(hero => {
             const rarity = getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? ""
             const attribute = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? ""
             const element = getEnumNameById(ELEMENT_DEFINITIONS, Number(hero.element)) ?? ""
@@ -157,7 +165,7 @@ function SubPageHeroes({ heroesRef }) {
                 && (elementFilter === "all" || String(hero.element) === elementFilter)
                 && (roleFilter === "all" || String(hero.role) === roleFilter)
         }).sort((a, b) => String(a.name).localeCompare(String(b.name)))
-    }, [heroes, search, rarityFilter, attributeFilter, elementFilter, roleFilter])
+    }, [catalogueHeroes, search, rarityFilter, attributeFilter, elementFilter, roleFilter])
 
     const clearFilters = () => {
         setSearch("")
@@ -176,7 +184,7 @@ function SubPageHeroes({ heroesRef }) {
                         Search heroes, skills, talents, effects, attributes, rarity, element, role, and other stored hero data.
                     </p>
                 </div>
-                <p className="catalogue-result-count text">{filteredHeroes.length} of {heroes.length} heroes</p>
+                <p className="catalogue-result-count text">{filteredHeroes.length} of {catalogueHeroes.length} heroes</p>
             </header>
 
             <div className="hero-catalogue-filters">
@@ -194,7 +202,7 @@ function SubPageHeroes({ heroesRef }) {
                     <span className="catalogue-control-label text">Rarity</span>
                     <select aria-label="Filter by rarity" value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
                         <option value="all">All rarities</option>
-                        {Object.values(RARITY_DEFINITIONS).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
+                        {HERO_CATALOGUE_RARITIES.map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
                     </select>
                 </label>
                 <label className="catalogue-filter">
