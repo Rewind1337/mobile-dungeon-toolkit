@@ -5,6 +5,8 @@ import { CONSTANTS } from '../database/constants.jsx'
 import { heroSprites, iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites, elementSprites } from '../database/db_sprites.jsx'
 
 import Button from './Button.jsx'
+import Modal from './Modal.jsx'
+import { createHeroShareToken } from '../utils/heroShare.js'
 import EmptyItem from './EmptyItem.jsx'
 import Item from './Item.jsx'
 import TextCard from './TextCard.jsx'
@@ -151,6 +153,9 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
     const [showSkillsAndTalents, setShowSkillsAndTalents] = useState(false)
+    const [exportModalVisible, setExportModalVisible] = useState(false)
+    const [heroShareUrl, setHeroShareUrl] = useState("")
+    const [shareLinkCopied, setShareLinkCopied] = useState(false)
     const [selectedLevel, setSelectedLevel] = useState(1)
     const [mainStats, setMainStats] = useState({
         health: 1234,
@@ -297,29 +302,34 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
     const handleExportSavedHero = () => {
         if (!heroObj) return
 
-        const exportableHero = { ...heroObj }
-        delete exportableHero.saveId
-        delete exportableHero.heroSrc
-        delete exportableHero.elementSrc
-        const payload = {
-            format: "mobile-dungeon-toolkit-hero",
-            version: 1,
-            hero: exportableHero
-        }
-        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" })
-        const url = URL.createObjectURL(blob)
-        const link = document.createElement("a")
-        const filename = heroObj.name
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-|-$/g, "") || "hero"
+        const baseUrl = import.meta.env.BASE_URL
+        const basePath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`
+        const shareUrl = new URL(`${basePath}heroes/`, window.location.origin)
+        shareUrl.searchParams.set("hero", createHeroShareToken({
+            ...heroObj,
+            level: Math.max(1, Number(selectedLevel) || 1),
+            stats: {
+                health: Number(mainStats.health) || 0,
+                attack: Number(mainStats.attack) || 0,
+                defence: Number(mainStats.defence) || 0,
+                agility: Number(mainStats.agility) || 0
+            },
+            items: [...equippedItems]
+        }))
 
-        link.href = url
-        link.download = `${filename}.json`
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
-        window.setTimeout(() => URL.revokeObjectURL(url), 0)
+        setHeroShareUrl(shareUrl.toString())
+        setShareLinkCopied(false)
+        setExportModalVisible(true)
+    }
+
+    const handleCopyShareLink = async () => {
+        if (!heroShareUrl) return
+        try {
+            await navigator.clipboard.writeText(heroShareUrl)
+            setShareLinkCopied(true)
+        } catch {
+            window.alert("Copying was blocked by your browser. Select and copy the link manually.")
+        }
     }
 
     const handleDeleteSavedHero = () => {
@@ -341,6 +351,20 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
     } else {
         return (
             <div ref={listRef} className='hero-preview flex-col' style={{ maxHeight: listHeight }}>
+                <Modal position="left" isVisible={exportModalVisible} onClose={() => setExportModalVisible(false)}>
+                    <div className="flex-col card w-100">
+                        <div className="header">Export Hero</div>
+                        <div className="text">Share this link. Anyone with it can import this hero and its saved build details.</div>
+                        <textarea
+                            rows={4}
+                            value={heroShareUrl}
+                            readOnly
+                            onFocus={event => event.target.select()}
+                            aria-label="Hero share link"
+                        />
+                        <Button text={shareLinkCopied ? "Link Copied!" : "Copy Link"} color={0} onClick={handleCopyShareLink} />
+                    </div>
+                </Modal>
                 <div className='flex-row top-row'>
                     <div className='header pill flex-row'>
                         <img width={48} src={attributeSprites[heroObj.mainAttribute]}/>
