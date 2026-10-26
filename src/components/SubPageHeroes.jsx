@@ -6,7 +6,6 @@ import {
     ROLE_DEFINITIONS,
     getEnumNameById
 } from "../database/enums.jsx"
-import { attributeSprites, elementSprites, heroSprites, roleSprites } from "../database/db_sprites.jsx"
 import Button from "./Button.jsx"
 
 import "../css/other.scss"
