@@ -196,6 +196,10 @@ function ItemCatalogueCard({ item, set }) {
                     <p className="catalogue-item-meta text">
                         {humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity")} · {humanize(item.slotLabel ?? "Unknown slot")}
                     </p>
+                    <p className="catalogue-item-source text">Source: {humanize(getSourceName(item.dropSource))}</p>
+                    <p className="catalogue-item-location text">
+                        Drop location: {getLocations(item).filter(location => location !== "Unspecified location").join(", ") || "Unspecified"}
+                    </p>
                     {set && <p className="catalogue-item-set text">Set: {set.name}</p>}
                     {statuses.length > 0 && (
                         <div className="catalogue-statuses" aria-label="Statuses applied by weapon effect">
@@ -256,12 +260,17 @@ function SetCatalogueCard({ set, pieces }) {
 }
 
 
-function ItemOverview({ items, itemsRef, sets }) {
-    const bySlot = Object.entries(itemsRef ?? {})
-        .filter(([, value]) => Array.isArray(value))
-        .map(([slot, value]) => ({ slot, count: value.length }))
+function ItemOverview({ items, sets }) {
+    const slotCounts = items.reduce((counts, item) => {
+        const slot = item.slotLabel ?? "Unknown slot"
+        counts[slot] = (counts[slot] ?? 0) + 1
+        return counts
+    }, {})
+    const bySlot = Object.entries(slotCounts).sort(([a], [b]) => a.localeCompare(b))
     const withLocation = items.filter(item => (
-        Array.isArray(item.dropLocation) ? item.dropLocation.length > 0 : Boolean(item.dropLocation)
+        Array.isArray(item.dropLocation)
+            ? item.dropLocation.some(location => Boolean(String(location).trim()))
+            : Boolean(String(item.dropLocation ?? "").trim())
     )).length
     const withoutLocation = items.length - withLocation
 
@@ -289,7 +298,7 @@ function ItemOverview({ items, itemsRef, sets }) {
             <div className="catalogue-overview-slots">
                 <h4 className="catalogue-section-label text">Items by slot</h4>
                 <div className="catalogue-overview-slot-list">
-                    {bySlot.map(({ slot, count }) => (
+                    {bySlot.map(([slot, count]) => (
                         <div className="catalogue-overview-slot card" key={slot}>
                             <span className="text">{humanize(slot)}</span>
                             <span className="header">{count}</span>
@@ -383,21 +392,6 @@ function SubPageDrops({ itemsRef, setsRef }) {
         return matchesSearch && matchesSource && matchesLocation
     }), [setsRef, search, sourceFilter, locationFilter, allItems])
 
-    const groupedItems = useMemo(() => {
-        const groups = new Map()
-        filteredItems.forEach(item => {
-            const source = getSourceName(item.dropSource)
-            getLocations(item).forEach(location => {
-                const key = source + "::" + location
-                if (!groups.has(key)) groups.set(key, { source, location, items: [] })
-                groups.get(key).items.push(item)
-            })
-        })
-        return [...groups.values()]
-            .map(group => ({ ...group, items: [...group.items].sort((a, b) => a.name.localeCompare(b.name)) }))
-            .sort((a, b) => a.source.localeCompare(b.source) || a.location.localeCompare(b.location, undefined, { numeric: true }))
-    }, [filteredItems])
-
     const clearFilters = () => {
         setSearch("")
         setSourceFilter("all")
@@ -441,24 +435,17 @@ function SubPageDrops({ itemsRef, setsRef }) {
 
             {view === "items" && (
                 <div className="catalogue-results">
-                    {groupedItems.length === 0
+                    {filteredItems.length === 0
                         ? <p className="catalogue-empty card">No items match these filters.</p>
-                        : groupedItems.map(group => (
-                            <section className="catalogue-source-group card" key={group.source + "::" + group.location}>
-                                <header className="catalogue-group-header">
-                                    <h3 className="catalogue-group-title text">{group.location}</h3>
-                                    <p className="catalogue-group-meta">
-                                        {humanize(group.source)} <span aria-hidden="true">·</span> {group.items.length} item{group.items.length === 1 ? "" : "s"}
-                                    </p>
-                                </header>
-                                <div className="catalogue-item-grid">
-                                    {group.items.map(item => {
-                                        const set = item.set ? (setsRef ?? []).find(candidate => candidate.id === item.set) : null
-                                        return <ItemCatalogueCard key={item.id} item={item} set={set} />
-                                    })}
-                                </div>
-                            </section>
-                        ))
+                        : <div className="catalogue-item-grid">
+                            {filteredItems
+                                .slice()
+                                .sort((a, b) => a.name.localeCompare(b.name))
+                                .map(item => {
+                                    const set = item.set ? (setsRef ?? []).find(candidate => candidate.id === item.set) : null
+                                    return <ItemCatalogueCard key={item.id} item={item} set={set} />
+                                })}
+                        </div>
                     }
                 </div>
             )}
@@ -474,7 +461,7 @@ function SubPageDrops({ itemsRef, setsRef }) {
                     }
                 </div>
             )}
-            <ItemOverview items={allItems} itemsRef={itemsRef} sets={setsRef ?? []} />
+            <ItemOverview items={allItems} sets={setsRef ?? []} />
         </section>
     )
 }
