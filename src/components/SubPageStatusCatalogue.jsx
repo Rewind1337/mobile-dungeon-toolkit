@@ -1,0 +1,247 @@
+import { useMemo, useState } from "react"
+import { STATUS_EFFECT_DEFINITIONS } from "../database/enums.jsx"
+import { statusSprites } from "../database/db_sprites.jsx"
+
+const STATUS_DESCRIPTIONS = {
+    attack_up: "Increases Attack.",
+    defense_up: "Increases Defence.",
+    critical_chance_up: "Increases Critical Chance.",
+    critical_damage_up: "Increases Critical Damage.",
+    accuracy_up: "Increases Accuracy.",
+    resistance_up: "Increases Resistance.",
+    agility_up: "Increases Agility.",
+    critical_resistance: "Reduces the chance of receiving a critical hit.",
+    invincibility: "Prevents damage.",
+    immunity: "Prevents debuffs from being applied.",
+    recovery: "Restores HP over time.",
+    preservation: "Prevents HP from dropping below 1 while active.",
+    shroud: "Cannot be selected as the primary target, but can still be affected by area attacks.",
+    guard: "Takes a share of damage intended for the protected ally.",
+    shield: "Absorbs incoming damage. Can stack and is marked as non-removable.",
+    absorbing: "Restores HP based on damage dealt.",
+    blessed: "Increases healing received.",
+    attack_down: "Reduces Attack.",
+    defense_down: "Reduces Defence.",
+    critical_chance_down: "Reduces Critical Chance.",
+    accuracy_down: "Reduces Accuracy.",
+    resistance_down: "Reduces Resistance.",
+    agility_down: "Reduces Agility.",
+    blind: "Causes attacks to have a chance to miss.",
+    marked: "Causes the target to take increased damage.",
+    sick: "Prevents healing.",
+    cursed: "Prevents buffs from being applied.",
+    stunned: "Prevents actions.",
+    sleep: "Reduces AP regeneration.",
+    freeze: "Prevents cooldown reduction.",
+    petrified: "Makes the next hit received a guaranteed critical hit; consumed when triggered.",
+    burn: "Deals damage when the affected target is attacked.",
+    poison: "Deals damage over time at the start of a turn.",
+    bleeding: "Deals damage over time at the start of a turn, based on the caster's Attack.",
+    mute: "Restricts skills to the basic attack.",
+    bound: "Disables passive abilities.",
+    taunt: "Restricts targeting to the taunter and limits the affected unit to basic attacks.",
+    confused: "Causes the primary target to be ignored.",
+    cursed_flame: "Converts a portion of healing into damage.",
+    hellfire: "Special status that grants Hellfire Mode.",
+    hellfire_mode: "Increases Attack and Agility.",
+    frozen_heart: "Stores a revive HP bonus that can stack up to 5 times.",
+    heating_up: "Increases skill damage with stacks; above 3 stacks, the effect can apply Burn.",
+    mjoellnir: "Deals delayed damage: an initial hit followed by return damage.",
+    anubis_seal: "Triggers damage against the enemy team when its holder dies.",
+    soulmate: "Converts a portion of damage dealt into healing.",
+    sphinx_curse: "Applies a special target marker.",
+    styx: "Reduces maximum HP; stacks up to 3 times and is removed when Hades dies.",
+    burrow: "Stores a stack that enhances a skill.",
+    defense_drone: "Increases Defence per stack, up to 10 stacks.",
+    divine_shield: "Provides a special damage-resistance effect.",
+    ferryman: "Stacks to enhance the Cerberus skill.",
+    feral: "Each stack increases damage and Agility, up to 6 stacks.",
+    wildfire: "Each stack increases damage and Critical Damage, up to 20 stacks.",
+    fury: "Each stack increases Critical Chance; counterattacking consumes a stack.",
+    hivemind: "Each stack increases Agility, up to 6 stacks.",
+    hot_saw: "Primary attacks have a chance to inflict Burn.",
+    loa: "Each stack increases Resistance, up to 5 stacks.",
+    the_moon: "Attacks can inflict Blind; also grants a shield to the ally with the lowest HP.",
+    the_star: "Attacks can inflict Mute.",
+    the_sun: "Attacks can apply Marked.",
+    wind_up: "Each stack increases damage and Critical Damage, up to 6 stacks.",
+    war_forge: "Increases Attack and Defence and can stack with Attack Up and Defence Up.",
+    drumbeat: "Each stack increases Agility, up to 4 stacks.",
+    foresight: "Each stack grants damage resistance, up to 4 stacks.",
+    ap_resistance: "Prevents AP reduction.",
+    arachnid: "A stacking status that enhances a skill, up to 5 stacks.",
+    bloodrage: "A special status that enhances a skill.",
+    bunny: "Increases Agility and allows the bonus to affect skills.",
+    pain_fueled: "A stacking status that enhances a skill, up to 5 stacks.",
+    blood_transfusion: "Each stack increases maximum HP, up to 4 stacks.",
+    soul_harvest: "Each stack increases Critical Chance and Agility, up to 6 stacks.",
+    buzz_meter: "Each stack increases Attack, up to 4 stacks.",
+    biomass: "Each stack increases maximum HP, up to 5 stacks.",
+    ignited_ego: "Enhances a skill using maximum HP.",
+    life_after_death: "Can survive a lethal hit at low HP, gains a shield, then dies when the shield breaks or after its active turn.",
+    sludge: "When Burn is present, deals conditional damage and removes itself.",
+    detonator: "Builds stacks that cause secondary skills to deal exploding-stack true damage.",
+    courage: "Grants an extra turn when an enemy is killed.",
+    smoke: "Each stack increases Life Steal, up to 3 stacks.",
+    mana_shield: "Reduces damage taken.",
+    echo: "Deals delayed damage when the status duration ends.",
+    ionize: "Makes the next turn's hit a guaranteed critical hit.",
+    fracture: "Each stack increases Ultimate skill Critical Chance, up to 4 stacks.",
+    irradiate: "Reflects true damage and ignores shields.",
+    rift_step: "Increases Critical Chance.",
+    blacklist: "Applies a conditional debuff triggered by a primary attack or Ultimate.",
+    rooted: "Prevents gaining extra AP or extra turns.",
+    ash: "A stacking status that scales a death skill, up to 9 stacks.",
+    phoenix_feather: "Special Phoenix-related status; see its effect data for the exact trigger.",
+    luck: "Special status; see its effect data for the exact trigger.",
+    soul_core: "Special status; see its effect data for the exact trigger.",
+    tempered: "Special status; see its effect data for the exact trigger.",
+    soaked: "Special status; see its effect data for the exact trigger.",
+    spectral_shield: "Special shield status; see its effect data for the exact absorption rules.",
+    wither: "Special status; see its effect data for the exact effect.",
+    backup_drone: "Special drone status; see its effect data for the exact effect.",
+    reflect: "Reflects an effect or damage according to its status data.",
+    momentum: "Special status; see its effect data for the exact scaling.",
+    dawn: "Special status; see its effect data for the exact effect.",
+    zenith: "Special status; see its effect data for the exact effect.",
+    dusk: "Special status; see its effect data for the exact effect.",
+    tender: "Special status; see its effect data for the exact effect.",
+    sealed: "Special status; see its effect data for the exact restriction.",
+    lifeblood: "Special status; see its effect data for the exact effect.",
+    ghost_crew: "Special status; see its effect data for the exact effect.",
+    terror: "Special status; see its effect data for the exact effect.",
+    feast: "Special status; see its effect data for the exact effect.",
+    pin: "Special status; see its effect data for the exact effect.",
+    puppet: "Special status; see its effect data for the exact effect.",
+    buzzkill: "Special status; see its effect data for the exact effect.",
+    plagued: "Special status; see its effect data for the exact effect.",
+    encore: "Special status; see its effect data for the exact effect.",
+    contaminated: "Special status; see its effect data for the exact effect.",
+    cruelty: "Special status; see its effect data for the exact effect.",
+    portal: "Special status; see its effect data for the exact effect.",
+    critical_condition: "Special status; see its effect data for the exact effect.",
+    hellforge: "Special status; see its effect data for the exact effect.",
+    spotlight: "Special status; see its effect data for the exact effect.",
+    emission: "Special status; see its effect data for the exact effect.",
+    flare: "Special status; see its effect data for the exact effect.",
+    hollowing: "Special status; see its effect data for the exact effect.",
+    miasma: "Special status; see its effect data for the exact effect."
+}
+
+const humanize = value => String(value ?? "")
+    .replaceAll("_", " ")
+    .toLowerCase()
+    .replace(/\b\w/g, letter => letter.toUpperCase())
+
+function getCategory(status) {
+    if (status.id <= 16) return "Buff"
+    if (status.id <= 38) return "Debuff"
+    return "Special"
+}
+
+function getDetails(status) {
+    const details = []
+    if (status.value !== undefined) details.push(`Value: ${status.value}`)
+    if (status.per_stack !== undefined) details.push(`Per stack: ${status.per_stack}`)
+    if (status.max_stacks !== undefined) details.push(`Max stacks: ${status.max_stacks}`)
+    if (status.duration !== undefined) details.push(`Duration: ${status.duration} turn(s)`)
+    if (status.interval !== undefined) details.push(`Tick: ${humanize(status.interval)}`)
+    if (status.stat !== undefined) details.push(`Stat: ${humanize(status.stat)}`)
+    return details
+}
+
+function StatusCard({ status }) {
+    const category = getCategory(status)
+    const sprite = statusSprites[status.name] ?? statusSprites[status.name.replace("critical_resistance", "critical_resist")]
+    const description = STATUS_DESCRIPTIONS[status.name]
+        ?? `Special status effect (${humanize(status.effectType ?? "effect")}). Check its stored effect data for the exact behaviour.`
+
+    return (
+        <article className="status-catalogue-card card" data-category={category.toLowerCase()}>
+            <div className="status-catalogue-identity">
+                {sprite
+                    ? <img className="status-catalogue-icon" src={sprite} alt="" loading="lazy" draggable={false} />
+                    : <span className="status-catalogue-icon-fallback" aria-hidden="true">◆</span>
+                }
+                <div className="status-catalogue-heading">
+                    <h3 className="status-catalogue-name header">{humanize(status.name)}</h3>
+                    <span className={`status-catalogue-category status-catalogue-category-${category.toLowerCase()}`}>{category}</span>
+                </div>
+            </div>
+            <p className="status-catalogue-description text">{description}</p>
+            {getDetails(status).length > 0 && (
+                <ul className="status-catalogue-details">
+                    {getDetails(status).map(detail => <li className="text" key={detail}>{detail}</li>)}
+                </ul>
+            )}
+        </article>
+    )
+}
+
+function SubPageStatusCatalogue() {
+    const [search, setSearch] = useState("")
+    const [categoryFilter, setCategoryFilter] = useState("all")
+
+    const statuses = useMemo(() => Object.values(STATUS_EFFECT_DEFINITIONS)
+        .slice()
+        .sort((a, b) => a.id - b.id), [])
+
+    const filteredStatuses = useMemo(() => {
+        const query = search.trim().toLowerCase()
+        return statuses.filter(status => {
+            const category = getCategory(status)
+            const description = STATUS_DESCRIPTIONS[status.name] ?? humanize(status.effectType ?? "effect")
+            const searchable = `${status.name} ${description} ${status.effectType ?? ""} ${JSON.stringify(status)}`.toLowerCase()
+            return (!query || searchable.includes(query))
+                && (categoryFilter === "all" || category.toLowerCase() === categoryFilter)
+        })
+    }, [statuses, search, categoryFilter])
+
+    return (
+        <section className="status-catalogue">
+            <header className="catalogue-header">
+                <div className="catalogue-heading-copy">
+                    <h2 className="catalogue-title header-big">Status Effect Catalogue</h2>
+                    <p className="catalogue-description text">
+                        A searchable reference for the status effects currently defined in the project, including their recorded mechanics.
+                    </p>
+                </div>
+                <p className="catalogue-result-count text">{filteredStatuses.length} of {statuses.length} status effects</p>
+            </header>
+
+            <div className="status-catalogue-filters">
+                <label className="catalogue-search">
+                    <span className="catalogue-control-label text">Search status effects</span>
+                    <input
+                        className="selectable catalogue-input"
+                        aria-label="Search status effects"
+                        placeholder="Name, effect, stat, mechanic…"
+                        value={search}
+                        onChange={event => setSearch(event.target.value)}
+                    />
+                </label>
+                <label className="catalogue-filter">
+                    <span className="catalogue-control-label text">Category</span>
+                    <select aria-label="Filter by status category" value={categoryFilter} onChange={event => setCategoryFilter(event.target.value)}>
+                        <option value="all">All categories</option>
+                        <option value="buff">Buffs</option>
+                        <option value="debuff">Debuffs</option>
+                        <option value="special">Special effects</option>
+                    </select>
+                </label>
+                <div className="catalogue-filter-actions">
+                    <button type="button" className="status-catalogue-clear" onClick={() => { setSearch(""); setCategoryFilter("all") }}>Clear filters</button>
+                </div>
+            </div>
+
+            {filteredStatuses.length === 0
+                ? <p className="catalogue-empty card">No status effects match these filters.</p>
+                : <div className="status-catalogue-grid">
+                    {filteredStatuses.map(status => <StatusCard key={status.id} status={status} />)}
+                </div>
+            }
+        </section>
+    )
+}
+
+export default SubPageStatusCatalogue
