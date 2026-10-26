@@ -297,7 +297,10 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
     const handleExportSavedHero = () => {
         if (!heroObj) return
 
-        const { saveId, heroSrc, elementSrc, ...exportableHero } = heroObj
+        const exportableHero = { ...heroObj }
+        delete exportableHero.saveId
+        delete exportableHero.heroSrc
+        delete exportableHero.elementSrc
         const payload = {
             format: "mobile-dungeon-toolkit-hero",
             version: 1,
