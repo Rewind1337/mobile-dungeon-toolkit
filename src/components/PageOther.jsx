@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import Button from "./Button.jsx"
 import SubPageDrops from "./SubPageDrops.jsx"
 import SubPageHeroes from "./SubPageHeroes.jsx"
@@ -7,6 +8,7 @@ const EMPTY_ITEM_DATA = {}
 
 function PageOther({ itemsRef, heroesRef }) {
     const [activeTab, setActiveTab] = useState("drops")
+    const { listRef, events } = useDynamicList(0)
     const itemData = itemsRef?.current?.BASE_ITEMS ?? EMPTY_ITEM_DATA
     const sets = itemsRef?.current?.ITEM_SETS ?? []
     const heroes = heroesRef?.current ?? []
@@ -34,6 +36,8 @@ function PageOther({ itemsRef, heroesRef }) {
             <div
                 id="page-other"
                 className="page card w-100"
+                ref={listRef}
+                {...events}
                 style={{
                     display: "flex",
                     flexDirection: "column",
