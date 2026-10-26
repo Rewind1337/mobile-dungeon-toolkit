@@ -379,6 +379,7 @@ function SubPageItemCatalogue({ itemsRef, setsRef }) {
             item.name,
             item.id,
             item.slotLabel,
+            getAttributeRequirementLabel(item.attributeRequirement),
             item.setLabel,
             sourceName,
             ...getLocations(item),
@@ -413,6 +414,7 @@ function SubPageItemCatalogue({ itemsRef, setsRef }) {
             ...getSearchableValues(set),
             set.name,
             set.id,
+            getAttributeRequirementLabel(set.attributeRequirement),
             sourceName,
             ...locations,
             ...(set.setBonus ?? []).map(getPerkLabel),
@@ -471,7 +473,7 @@ function SubPageItemCatalogue({ itemsRef, setsRef }) {
                                 .slice()
                                 .sort((a, b) => a.name.localeCompare(b.name))
                                 .map(item => {
-                                    const set = item.set ? (setsRef ?? []).find(candidate => candidate.id === item.set) : null
+                                    const set = item.set ? setsById.get(item.set) ?? null : null
                                     return <ItemCatalogueCard key={item.id} item={item} set={set} />
                                 })}
                         </div>
