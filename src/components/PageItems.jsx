@@ -188,7 +188,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
 
     return (
         <>
-            <Modal position="left" isVisible={itemImportModalVisible} onClose={() => setItemImportModalVisible(false)}>
+            <Modal position="center" isVisible={itemImportModalVisible} onClose={() => setItemImportModalVisible(false)}>
                 <div className="flex-col card w-100">
                     <div className="header">Import Item</div>
                     <div className="text">Paste an item share link, an equipped-items link, or the encoded data itself.</div>
@@ -202,7 +202,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                     <Button text={"Import Item"} color={1} onClick={() => handleImportItemLink()} />
                 </div>
             </Modal>
-            <Modal position="left" isVisible={Boolean(itemShareUrl)} onClose={() => setItemShareUrl("")}>
+            <Modal position="center" isVisible={Boolean(itemShareUrl)} onClose={() => setItemShareUrl("")}>
                 <div className="flex-col card w-100">
                     <div className="header">Export Item</div>
                     <div className="text">Share this link to import this configured item into Saved Items.</div>
@@ -210,7 +210,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                     <Button text={itemShareLinkCopied ? "Link Copied!" : "Copy Item Link"} color={1} onClick={handleCopyItemLink} />
                 </div>
             </Modal>
-            <Modal position="left" isVisible={perkSelectionVisible} onClose={() => {
+            <Modal position="center" isVisible={perkSelectionVisible} onClose={() => {
                 setPendingPerkSelection(null)
                 setPerkSelectionVisible(false)
             }}>
