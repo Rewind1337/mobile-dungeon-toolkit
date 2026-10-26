@@ -164,12 +164,12 @@ function App() {
       }>
         {pageContent === 'notFound' &&
           <main id="page-not-found" className="not-found-page">
-            <section className="not-found-card card">
+            <section className="not-found-card card flex-col">
               <div className="header-big">Sorry</div>
-              <img className="not-found-seagull" src={Seagull} alt="A seagull" />
+              <img className="not-found-seagull margin-auto" src={Seagull} alt="A seagull" />
               <div className="header">Looks like you've flown off course.</div>
               <p className="text">We couldn't find the page you were looking for.</p>
-              <nav className="not-found-links" aria-label="Toolkit pages">
+              <nav className="not-found-links flex-row w-100" aria-label="Toolkit pages">
                 <a className="not-found-link" data-color="0" href={`${import.meta.env.BASE_URL}heroes/`}>Heroes</a>
                 <a className="not-found-link" data-color="1" href={`${import.meta.env.BASE_URL}items/`}>Items</a>
                 <a className="not-found-link" data-color="2" href={`${import.meta.env.BASE_URL}teams/`}>Teams</a>
