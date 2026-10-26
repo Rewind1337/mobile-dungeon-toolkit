@@ -181,6 +181,8 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
             const cleanUrl = window.location.pathname + (query ? `?${query}` : "") + window.location.hash
             window.history.replaceState({}, "", cleanUrl)
         })
+    // This effect intentionally handles a share token only once on initial page load.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const deleteSavedItem = (itemObj) => {
