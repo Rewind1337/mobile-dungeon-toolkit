@@ -424,8 +424,15 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
             <div ref={listRef} className='hero-preview flex-col' style={{ maxHeight: listHeight }}>
                 <Modal position="center" isVisible={exportModalVisible} onClose={() => setExportModalVisible(false)}>
                     <div className="flex-col card w-100">
-                        <div className="header">Export Hero</div>
-                        <div className="text">Share this link to import the hero, level, stats, and talents.</div>
+                        <div className="header-big margin-auto">Export Hero</div>
+                        <label className="flex-row text margin-auto export-items-checkbox-label">
+                            <input type="checkbox" checked={exportItemsOnHero} onChange={handleExportItemsToggle} />
+                            <div className='header'>Export items on hero</div>
+                        </label>
+                        <div className="text margin-auto">Share this link to import the hero, level, stats, and talents.</div>
+                        {exportItemsOnHero && <>
+                            <div className="text margin-auto">This hero link also includes the equipped items. The separate link below only imports the Items.</div>
+                        </>}
                         <textarea
                             rows={3}
                             value={heroShareUrl}
@@ -433,14 +440,13 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
                             onFocus={event => event.target.select()}
                             aria-label="Hero share link"
                         />
-                        <Button text={shareLinkCopied ? "Hero Link Copied!" : "Copy Hero Link"} color={0} onClick={handleCopyShareLink} />
-                        <label className="flex-row text" style={{ alignItems: "center" }}>
-                            <input type="checkbox" checked={exportItemsOnHero} onChange={handleExportItemsToggle} />
-                            Export items on hero
-                        </label>
+                        <div className="flex-row">
+                            <Button className="w-25" text={shareLinkCopied ? "Hero Link Copied!" : "Copy Hero Link"} color={"confirm"} onClick={handleCopyShareLink} />
+                            <Button className="w-25" text={"Close"} color={"cancel"} onClick={() => setExportModalVisible(false)} />
+                        </div>
                         {exportItemsOnHero && <>
-                            <div className="text">This hero link also includes the equipped items. The separate link below can import those items into Saved Items.</div>
-                            <div className="header">Equipped Items Link</div>
+                            <hr className='w-100'/>
+                            <div className="header-big margin-auto">Export Items only</div>
                             <textarea
                                 rows={3}
                                 value={equippedItemsShareUrl}
@@ -448,7 +454,11 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
                                 onFocus={event => event.target.select()}
                                 aria-label="Equipped items share link"
                             />
-                            <Button text={itemsShareLinkCopied ? "Items Link Copied!" : "Copy Items Link"} color={0} onClick={handleCopyItemsShareLink} />
+                            <div className="text margin-auto">This item link only includes the equipped items, not the hero. The first link above can import the hero as well.</div>
+                            <div className="flex-row">
+                                <Button className='w-25' text={itemsShareLinkCopied ? "Items Link Copied!" : "Copy Items Link"} color={"confirm"} onClick={handleCopyItemsShareLink} />
+                                <Button className="w-25" text={"Close"} color={"cancel"} onClick={() => setExportModalVisible(false)} />
+                            </div>
                         </>}
                     </div>
                 </Modal>

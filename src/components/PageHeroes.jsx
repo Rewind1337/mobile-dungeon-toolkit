@@ -214,24 +214,19 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
         <>
             <Modal position="center" isVisible={importModalVisible} onClose={() => setImportModalVisible(false)}>
                 <div className="flex-col card w-100">
-                    <div className="header">Import Hero</div>
-                    <div className="text">Paste a hero share link below. You can also paste the encoded data by itself.</div>
+                    <div className="header-big margin-auto">Import Hero</div>
+                    <div className="text margin-auto">Paste a hero share link below. You can also paste the encoded data by itself.</div>
                     <textarea
-                        rows={4}
+                        rows={3}
                         value={heroShareInput}
                         onChange={event => setHeroShareInput(event.target.value)}
                         placeholder="https://…/heroes/?hero=…"
                         aria-label="Hero share link"
                     />
-                    <Button text={"Import Hero"} color={0} onClick={handleImportHeroLink} />
-                    <div className="text">Or import a legacy JSON export:</div>
-                    <input
-                        ref={heroImportInputRef}
-                        type="file"
-                        accept=".json,application/json"
-                        aria-label="Choose a legacy hero JSON export"
-                        onChange={handleImportHeroFile}
-                    />
+                    <div className="flex-row">
+                        <Button className="w-25" text={"Import Hero"} color={"confirm"} onClick={handleImportHeroLink} />
+                        <Button className="w-25" text={"Cancel"} color={"cancel"} onClick={() => setImportModalVisible(false)} />
+                    </div>
                 </div>
             </Modal>
             <Modal position="left" isVisible={itemSelectionVisible} onClose={() => { setItemSelectionVisible(false); clearItemSelection(); }}>

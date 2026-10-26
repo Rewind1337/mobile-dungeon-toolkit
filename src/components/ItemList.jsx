@@ -57,15 +57,14 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
     }, [allItems, filters, itemType]);
 
     return (<>
-        <div className='header-big'>
-            <div className='flex-row'>
-                <ItemFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={(name) => setFilters((prev) => ({ ...prev, name }))} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} topOffset={filtersOffset} />
-            </div>
-            {headerText}</div>
+        <div className='flex-row'>
+            <ItemFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={(name) => setFilters((prev) => ({ ...prev, name }))} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} topOffset={filtersOffset} />
+        </div>
+        <div className='header-big'>{headerText}</div>
 
         <div className='list item-list flex-row' ref={listRef} {...events} style={(filtersAdvanced ? { maxHeight: (listHeight - 189)} : { maxHeight: listHeight })}>
             {filteredItems.length === 0 ? (
-                <div className="text">No items match the selected filters</div>
+                <div className="text-big margin-auto">No items match the selected filters</div>
             ) : (
                 filteredItems.map((itemObj) => (
                     <Item

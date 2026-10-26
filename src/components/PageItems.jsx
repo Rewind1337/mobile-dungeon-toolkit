@@ -190,31 +190,37 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
         <>
             <Modal position="center" isVisible={itemImportModalVisible} onClose={() => setItemImportModalVisible(false)}>
                 <div className="flex-col card w-100">
-                    <div className="header">Import Item</div>
-                    <div className="text">Paste an item share link, an equipped-items link, or the encoded data itself.</div>
+                    <div className="header-big margin-auto">Import Item</div>
+                    <div className="text margin-auto">Paste an item share link, an equipped-items link, or the encoded data itself.</div>
                     <textarea
-                        rows={4}
+                        rows={3}
                         value={itemShareInput}
                         onChange={event => setItemShareInput(event.target.value)}
                         placeholder="https://…/items/?item=…"
                         aria-label="Item share link"
                     />
-                    <Button text={"Import Item"} color={1} onClick={() => handleImportItemLink()} />
+                    <div className="flex-row">
+                        <Button className="w-25" text={"Import Item"} color={"confirm"} onClick={() => handleImportItemLink()} />
+                        <Button className="w-25" text={"Cancel"} color={"cancel"} onClick={() => setItemImportModalVisible(false)} />
+                    </div>
                 </div>
             </Modal>
             <Modal position="center" isVisible={Boolean(itemShareUrl)} onClose={() => setItemShareUrl("")}>
                 <div className="flex-col card w-100">
-                    <div className="header">Export Item</div>
-                    <div className="text">Share this link to import this configured item into Saved Items.</div>
-                    <textarea rows={4} value={itemShareUrl} readOnly onFocus={event => event.target.select()} aria-label="Item share link" />
-                    <Button text={itemShareLinkCopied ? "Link Copied!" : "Copy Item Link"} color={1} onClick={handleCopyItemLink} />
+                    <div className="header-big margin-auto">Export Item</div>
+                    <div className="text margin-auto">Share this link to import this configured item into Saved Items.</div>
+                    <textarea rows={3} value={itemShareUrl} readOnly onFocus={event => event.target.select()} aria-label="Item share link" />
+                    <div className="flex-row">
+                        <Button className="w-25" text={itemShareLinkCopied ? "Link Copied!" : "Copy Item Link"} color={"confirm"} onClick={handleCopyItemLink} />
+                        <Button className="w-25" text={"Close"} color={"cancel"} onClick={() => setItemShareUrl("")} />
+                    </div>
                 </div>
             </Modal>
             <Modal position="center" isVisible={perkSelectionVisible} onClose={() => {
                 setPendingPerkSelection(null)
                 setPerkSelectionVisible(false)
             }}>
-                <div className='header-big'>Select Perk</div>
+                <div className='flex-row header-big'>Select Perk</div>
                 <div className="list perk-list flex-row flex-wrap">
                     {possiblePerks.map(perk => (
                         <ItemPerk
