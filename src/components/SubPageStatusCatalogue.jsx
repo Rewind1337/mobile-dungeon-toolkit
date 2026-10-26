@@ -133,10 +133,92 @@ const humanize = value => String(value ?? "")
     .toLowerCase()
     .replace(/\b\w/g, letter => letter.toUpperCase())
 
+// These are conservative classifications based on the recorded status mechanics.
+// Leave entries out when the data does not make the affected side clear.
+const SPECIAL_STATUS_POLARITY = {
+    hellfire: "Buff",
+    hellfire_mode: "Buff",
+    frozen_heart: "Buff",
+    heating_up: "Buff",
+    mjoellnir: "Debuff",
+    anubis_seal: "Buff",
+    soulmate: "Buff",
+    sphinx_curse: "Debuff",
+    styx: "Debuff",
+    burrow: "Buff",
+    defense_drone: "Buff",
+    divine_shield: "Buff",
+    ferryman: "Buff",
+    wildfire: "Buff",
+    fury: "Buff",
+    hivemind: "Buff",
+    hot_saw: "Buff",
+    loa: "Buff",
+    the_moon: "Buff",
+    the_star: "Buff",
+    the_sun: "Buff",
+    wind_up: "Buff",
+    war_forge: "Buff",
+    drumbeat: "Buff",
+    foresight: "Buff",
+    ap_resistance: "Buff",
+    arachnid: "Buff",
+    bloodrage: "Buff",
+    bunny: "Buff",
+    pain_fueled: "Buff",
+    blood_transfusion: "Buff",
+    soul_harvest: "Buff",
+    buzz_meter: "Buff",
+    biomass: "Buff",
+    ignited_ego: "Buff",
+    life_after_death: "Buff",
+    detonator: "Buff",
+    courage: "Buff",
+    smoke: "Buff",
+    mana_shield: "Buff",
+    fracture: "Buff",
+    irradiate: "Buff",
+    rift_step: "Buff",
+    blacklist: "Debuff",
+    rooted: "Debuff",
+    ash: "Buff",
+    phoenix_feather: "Buff",
+    luck: "Buff",
+    soul_core: "Buff",
+    tempered: "Buff",
+    soaked: "Buff",
+    spectral_shield: "Buff",
+    wither: "Debuff",
+    backup_drone: "Buff",
+    reflect: "Buff",
+    momentum: "Buff",
+    dawn: "Buff",
+    zenith: "Buff",
+    dusk: "Buff",
+    tender: "Debuff",
+    sealed: "Debuff",
+    lifeblood: "Debuff",
+    ghost_crew: "Buff",
+    terror: "Debuff",
+    feast: "Debuff",
+    pin: "Debuff",
+    puppet: "Debuff",
+    buzzkill: "Buff",
+    plagued: "Debuff",
+    encore: "Buff",
+    contaminated: "Debuff",
+    cruelty: "Debuff",
+    portal: "Buff",
+    critical_condition: "Debuff",
+    hellforge: "Buff",
+    spotlight: "Debuff",
+}
+
 function getCategory(status) {
     if (status.id <= 16) return "Buff"
     if (status.id <= 38) return "Debuff"
-    return "Special"
+    const polarity = SPECIAL_STATUS_POLARITY[status.name]
+    return polarity ? `Special ${polarity}` : "Special"
 }
 
 function getDetails(status) {
@@ -147,6 +229,8 @@ function getDetails(status) {
     if (status.duration !== undefined) details.push(`Duration: ${status.duration} turn(s)`)
     if (status.interval !== undefined) details.push(`Tick: ${humanize(status.interval)}`)
     if (status.stat !== undefined) details.push(`Stat: ${humanize(status.stat)}`)
+    details.push(`Mitigatable: ${status.mitigatable === undefined ? "Not specified" : status.mitigatable ? "Yes" : "No"}`)
+    details.push(`Removable: ${status.removable === undefined ? "Not specified" : status.removable ? "Yes" : "No"}`)
     return details
 }
 
@@ -193,7 +277,8 @@ function SubPageStatusCatalogue() {
             const description = STATUS_DESCRIPTIONS[status.name] ?? humanize(status.effectType ?? "effect")
             const searchable = `${status.name} ${description} ${status.effectType ?? ""} ${JSON.stringify(status)}`.toLowerCase()
             return (!query || searchable.includes(query))
-                && (categoryFilter === "all" || category.toLowerCase() === categoryFilter)
+                && (categoryFilter === "all"
+                    || (categoryFilter === "special" ? category.startsWith("Special") : category.toLowerCase() === categoryFilter))
         })
     }, [statuses, search, categoryFilter])
 
@@ -226,7 +311,7 @@ function SubPageStatusCatalogue() {
                         <option value="all">All categories</option>
                         <option value="buff">Buffs</option>
                         <option value="debuff">Debuffs</option>
-                        <option value="special">Special effects</option>
+                        <option value="special">Special effects (including inferred buffs/debuffs)</option>
                     </select>
                 </label>
                 <div className="catalogue-filter-actions">
