@@ -1,7 +1,6 @@
 import { PERK_DEFINITIONS } from "../database/enums.jsx"
 
-const SHARE_FORMAT_VERSION = 3
-const SUPPORTED_SHARE_FORMAT_VERSIONS = new Set([1, 2, SHARE_FORMAT_VERSION])
+const SHARE_FORMAT_VERSION = 1
 const PERK_NAME_TO_ID = Object.fromEntries(
     Object.entries(PERK_DEFINITIONS).map(([name, definition]) => [name, definition.id])
 )
@@ -222,7 +221,7 @@ function decodeInput(input, queryKey) {
 export function decodeHeroShareInput(input) {
     const payload = decodeInput(input, "hero")
     if (
-        !SUPPORTED_SHARE_FORMAT_VERSIONS.has(payload?.v) ||
+        payload?.v !== SHARE_FORMAT_VERSION ||
         (payload.k !== undefined && payload.k !== "hero") ||
         typeof payload.i !== "string" ||
         !Number.isInteger(payload.l) ||
@@ -241,7 +240,7 @@ export function decodeHeroShareInput(input) {
 export function decodeItemShareInput(input) {
     const payload = decodeInput(input, "item")
     if (
-        !SUPPORTED_SHARE_FORMAT_VERSIONS.has(payload?.v) ||
+        payload?.v !== SHARE_FORMAT_VERSION ||
         payload.k !== "item" ||
         !payload.i ||
         typeof payload.i !== "object" ||
@@ -255,7 +254,7 @@ export function decodeItemShareInput(input) {
 export function decodeItemsShareInput(input) {
     const payload = decodeInput(input, "items")
     if (
-        !SUPPORTED_SHARE_FORMAT_VERSIONS.has(payload?.v) ||
+        payload?.v !== SHARE_FORMAT_VERSION ||
         payload.k !== "items" ||
         !Array.isArray(payload.a) ||
         payload.a.some(item => !item || !Number.isInteger(item.s))
