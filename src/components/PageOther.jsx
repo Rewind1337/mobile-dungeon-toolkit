@@ -11,7 +11,7 @@ import "../css/hero.scss"
 const EMPTY_ITEM_DATA = {}
 
 function PageOther({ itemsRef, heroesRef }) {
-    const [activeTab, setActiveTab] = useState("drops")
+    const [activeTab, setActiveTab] = useState("item-catalogue")
     const { listRef, events } = useDynamicList(0)
     const itemData = itemsRef?.current?.BASE_ITEMS ?? EMPTY_ITEM_DATA
     const sets = itemsRef?.current?.ITEM_SETS ?? []
@@ -32,9 +32,9 @@ function PageOther({ itemsRef, heroesRef }) {
         >
             <div className="sub-nav-bar flex-row" style={{ flex: "0 0 auto" }}>
                 <div className="pagination flex-row card w-100">
-                    <Button text="Item Catalogue" color={5} active={activeTab === "drops"} onClick={() => setActiveTab("drops")} />
-                    <Button text="Hero Catalogue" color={5} active={activeTab === "heroes"} onClick={() => setActiveTab("heroes")} />
-                    <Button text="Status Catalogue" color={5} active={activeTab === "statuses"} onClick={() => setActiveTab("statuses")} />
+                    <Button text="Item Catalogue" color={5} active={activeTab === "item-catalogue"} onClick={() => setActiveTab("item-catalogue")} />
+                    <Button text="Hero Catalogue" color={5} active={activeTab === "hero-catalogue"} onClick={() => setActiveTab("hero-catalogue")} />
+                    <Button text="Status Catalogue" color={5} active={activeTab === "status-catalogue"} onClick={() => setActiveTab("status-catalogue")} />
                 </div>
             </div>
 
@@ -55,13 +55,13 @@ function PageOther({ itemsRef, heroesRef }) {
                     alignContent: "start"
                 }}
             >
-                {activeTab === "drops" && (
+                {activeTab === "item-catalogue" && (
                     <SubPageItemCatalogue itemsRef={itemData} setsRef={sets} />
                 )}
-                {activeTab === "heroes" && (
+                {activeTab === "hero-catalogue" && (
                     <SubPageHeroCatalogue heroesRef={heroes} />
                 )}
-                {activeTab === "statuses" && <SubPageStatusCatalogue />}
+                {activeTab === "status-catalogue" && <SubPageStatusCatalogue />}
             </div>
         </div>
     )
