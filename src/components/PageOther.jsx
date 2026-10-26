@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import Button from "./Button.jsx"
 import SubPageItemCatalogue from "./SubPageItemCatalogue.jsx"
