@@ -8,7 +8,7 @@ import ValkyreSrc from '../sprites/heroes/valkyre.webp';
 import JackOLanternSrc from '../sprites/heroes/jack_o_lantern.webp';
 import HeadlessHorsemanSrc from '../sprites/heroes/headless_horseman.webp';
 import ShroomEmperorSrc from '../sprites/heroes/shroom_emperor.webp';
-import UndeadDragonSrc from '../sprites/heroes/undead_dragon.png';
+import UndeadDragonSrc from '../sprites/heroes/undead_dragon.webp';
 import DraculaSrc from '../sprites/heroes/dracula.webp';
 import MonkSrc from '../sprites/heroes/monk.webp';
 import SirenSrc from '../sprites/heroes/siren.webp';
@@ -45,7 +45,7 @@ import OdinSrc from '../sprites/heroes/odin.webp';
 import MuzenSrc from '../sprites/heroes/muzen.webp';
 import SleipnirSrc from '../sprites/heroes/sleipnir.webp';
 import MurdermachineSrc from '../sprites/heroes/murdermachine.webp';
-import DrillbertSrc from '../sprites/heroes/drillbert.png';
+import DrillbertSrc from '../sprites/heroes/drillbert.webp';
 import ArmadraxSrc from '../sprites/heroes/armadrax.webp';
 import BeholderSrc from '../sprites/heroes/beholder.webp';
 import CorneliusPrimeSrc from '../sprites/heroes/cornelius_prime.webp';
@@ -55,30 +55,30 @@ import HadesSrc from '../sprites/heroes/hades.webp';
 import LuciferSrc from '../sprites/heroes/lucifer.webp';
 
 // 03.04. added
-import HighPriestAureusSrc from '../sprites/heroes/high_priest_aureus.png'
-import RatKingSrc from '../sprites/heroes/rat_king.png'
-import TechRexSrc from '../sprites/heroes/tech_rex.png'
-import TheronDawnbreakerSrc from '../sprites/heroes/theron_dawnbreaker.png'
-import RaSrc from '../sprites/heroes/ra.png'
-import MarySrc from '../sprites/heroes/mary.png'
-import CapnHOllowSrc from '../sprites/heroes/capn_h_ollow.png'
-import ItzalaSrc from '../sprites/heroes/itzala.png'
-import CountessMortanaSrc from '../sprites/heroes/countess_mortana.png'
-import VyperSrc from '../sprites/heroes/vyper.png'
+import HighPriestAureusSrc from '../sprites/heroes/high_priest_aureus.webp'
+import RatKingSrc from '../sprites/heroes/rat_king.webp'
+import TechRexSrc from '../sprites/heroes/tech_rex.webp'
+import TheronDawnbreakerSrc from '../sprites/heroes/theron_dawnbreaker.webp'
+import RaSrc from '../sprites/heroes/ra.webp'
+import MarySrc from '../sprites/heroes/mary.webp'
+import CapnHOllowSrc from '../sprites/heroes/capn_h_ollow.webp'
+import ItzalaSrc from '../sprites/heroes/itzala.webp'
+import CountessMortanaSrc from '../sprites/heroes/countess_mortana.webp'
+import VyperSrc from '../sprites/heroes/vyper.webp'
 
 // 31.08. added
-import ElkfreddySrc from '../sprites/heroes/elkfreddy.png'
-import ApolloSrc from '../sprites/heroes/apollo.png'
-import OozkarSrc from '../sprites/heroes/oozkar.png'
-import CrueltySrc from '../sprites/heroes/cruelty.png'
-import SaphiraSrc from '../sprites/heroes/saphira.png'
-import CatrinaSrc from '../sprites/heroes/catrina.png'
-import LorettaSrc from '../sprites/heroes/loretta.png'
-import PrinceBelzarSrc from '../sprites/heroes/prince_belzar.png'
+import ElkfreddySrc from '../sprites/heroes/elkfreddy.webp'
+import ApolloSrc from '../sprites/heroes/apollo.webp'
+import OozkarSrc from '../sprites/heroes/oozkar.webp'
+import CrueltySrc from '../sprites/heroes/cruelty.webp'
+import SaphiraSrc from '../sprites/heroes/saphira.webp'
+import CatrinaSrc from '../sprites/heroes/catrina.webp'
+import LorettaSrc from '../sprites/heroes/loretta.webp'
+import PrinceBelzarSrc from '../sprites/heroes/prince_belzar.webp'
 
 // 10.09. added
-import AeternaSrc from '../sprites/heroes/aeterna.png'
-import HizumiExeSrc from '../sprites/heroes/hizumi_exe.png'
+import AeternaSrc from '../sprites/heroes/aeterna.webp'
+import HizumiExeSrc from '../sprites/heroes/hizumi_exe.webp'
 
 // EPICS
 import AliceSrc from '../sprites/heroes/alice.webp';
@@ -137,7 +137,7 @@ import BonnieBulletSrc from '../sprites/heroes/bonnie_bullet.webp';
 import YaotlSrc from '../sprites/heroes/yaotl.webp';
 import BlackSkullWarriorSrc from '../sprites/heroes/black_skull_warrior.webp';
 import CyntrixSrc from '../sprites/heroes/cyntrix.webp';
-import WoolinatorSrc from '../sprites/heroes/woolinator.png';
+import WoolinatorSrc from '../sprites/heroes/woolinator.webp';
 import AtomicSeagullSrc from '../sprites/heroes/atomic_seagull.webp';
 import WarBardSrc from '../sprites/heroes/war_bard.webp';
 import RamgorSrc from '../sprites/heroes/ramgor.webp';
@@ -147,34 +147,34 @@ import NeanderthalSrc from '../sprites/heroes/neanderthal.webp';
 import JotunnSrc from '../sprites/heroes/jotunn.webp';
 
 // 03.04. added
-import WineSlimeSrc from '../sprites/heroes/wine_slime.png'
-import RapunzelSrc from '../sprites/heroes/rapunzel.png'
-import KinetraSrc from '../sprites/heroes/kinetra.png'
-import CrumblySrc from '../sprites/heroes/crumbly.png'
-import ButcherSrc from '../sprites/heroes/butcher.png'
-import VenaSrc from '../sprites/heroes/vena.png'
-import JellicaSrc from '../sprites/heroes/jellica.png'
-import CoatlSrc from '../sprites/heroes/coatl.png'
-import CheerySrc from '../sprites/heroes/cheery.png'
-import HektorSrc from '../sprites/heroes/hektor.png'
+import WineSlimeSrc from '../sprites/heroes/wine_slime.webp'
+import RapunzelSrc from '../sprites/heroes/rapunzel.webp'
+import KinetraSrc from '../sprites/heroes/kinetra.webp'
+import CrumblySrc from '../sprites/heroes/crumbly.webp'
+import ButcherSrc from '../sprites/heroes/butcher.webp'
+import VenaSrc from '../sprites/heroes/vena.webp'
+import JellicaSrc from '../sprites/heroes/jellica.webp'
+import CoatlSrc from '../sprites/heroes/coatl.webp'
+import CheerySrc from '../sprites/heroes/cheery.webp'
+import HektorSrc from '../sprites/heroes/hektor.webp'
 
 // 31.08. added
-import KitsuneSrc from '../sprites/heroes/kitsune.png'
-import DraugrSrc from '../sprites/heroes/draugr.png'
-import VanHelsingSrc from '../sprites/heroes/van_helsing.png'
-import SnatchkinSrc from '../sprites/heroes/snatchkin.png'
-import DominiqueSrc from '../sprites/heroes/dominique.png'
-import SulfurokSrc from '../sprites/heroes/sulfurok.png'
-import PrincessTrixieSrc from '../sprites/heroes/princess_trixie.png'
-import ChroniaSrc from '../sprites/heroes/chronia.png'
+import KitsuneSrc from '../sprites/heroes/kitsune.webp'
+import DraugrSrc from '../sprites/heroes/draugr.webp'
+import VanHelsingSrc from '../sprites/heroes/van_helsing.webp'
+import SnatchkinSrc from '../sprites/heroes/snatchkin.webp'
+import DominiqueSrc from '../sprites/heroes/dominique.webp'
+import SulfurokSrc from '../sprites/heroes/sulfurok.webp'
+import PrincessTrixieSrc from '../sprites/heroes/princess_trixie.webp'
+import ChroniaSrc from '../sprites/heroes/chronia.webp'
 
 // 10.09. added
-import ClockmasterSrc from '../sprites/heroes/clockmaster.png'
-import CybackerSrc from '../sprites/heroes/cybacker.png'
+import ClockmasterSrc from '../sprites/heroes/clockmaster.webp'
+import CybackerSrc from '../sprites/heroes/cybacker.webp'
 
 // 24.10. added
-import RodentRangersSrc from '../sprites/heroes/rodent_rangers.png'
-import NautorSrc from '../sprites/heroes/nautor.png'
+import RodentRangersSrc from '../sprites/heroes/rodent_rangers.webp'
+import NautorSrc from '../sprites/heroes/nautor.webp'
 
 // RARES
 import BagHeadSrc from '../sprites/heroes/bag_head.webp';
@@ -219,19 +219,19 @@ import ClawMachineSrc from '../sprites/heroes/claw_machine.webp';
 import CooklinSrc from '../sprites/heroes/cooklin.webp';
 import LightFlySrc from '../sprites/heroes/light_fly.webp';
 import EarthwormSrc from '../sprites/heroes/earthworm.webp';
-import TortureDummySrc from '../sprites/heroes/torture_dummy.png';
+import TortureDummySrc from '../sprites/heroes/torture_dummy.webp';
 import MoleTamerSrc from '../sprites/heroes/mole_tamer.webp';
 import TurboHareSrc from '../sprites/heroes/turbo_hare.webp';
 import ManBatSrc from '../sprites/heroes/man_bat.webp';
-import ParticleReaverSrc from '../sprites/heroes/particle_reaver.png';
+import ParticleReaverSrc from '../sprites/heroes/particle_reaver.webp';
 
 // 02.09. added (missed)
-import AsudemSrc from '../sprites/heroes/asudem.png'
+import AsudemSrc from '../sprites/heroes/asudem.webp'
 import PiperSrc from '../sprites/heroes/piper.webp'
 
 // 24.10. added
-import MarianaSrc from '../sprites/heroes/mariana.png'
-import BobbybotSrc from '../sprites/heroes/bobbybot.png'
+import MarianaSrc from '../sprites/heroes/mariana.webp'
+import BobbybotSrc from '../sprites/heroes/bobbybot.webp'
 
 // UNCOMMONS
 import GhoulSrc from '../sprites/heroes/ghoul.webp';
@@ -274,33 +274,33 @@ import DummySrc from '../sprites/heroes/dummy.webp';
 import HermitCrabSrc from '../sprites/heroes/hermit_crab.webp';
 import HermitCrabGreenSrc from '../sprites/heroes/hermit_crab_green.webp';
 import HermitCrabRedSrc from '../sprites/heroes/hermit_crab_red.webp';
-import GargoyleGreenSrc from '../sprites/heroes/gargoyle_green.png';
-import GargoyleRedSrc from '../sprites/heroes/gargoyle_red.png';
-import GlompfRedSrc from '../sprites/heroes/glompf_red.png';
-import GlompfBlueSrc from '../sprites/heroes/glompf_blue.png';
-import SnakeStripedSrc from '../sprites/heroes/snake_striped.png';
-import SnakeGreenSrc from '../sprites/heroes/snake_green.png';
+import GargoyleGreenSrc from '../sprites/heroes/gargoyle_green.webp';
+import GargoyleRedSrc from '../sprites/heroes/gargoyle_red.webp';
+import GlompfRedSrc from '../sprites/heroes/glompf_red.webp';
+import GlompfBlueSrc from '../sprites/heroes/glompf_blue.webp';
+import SnakeStripedSrc from '../sprites/heroes/snake_striped.webp';
+import SnakeGreenSrc from '../sprites/heroes/snake_green.webp';
 import CrabSrc from '../sprites/heroes/crab.webp';
-import CrabGreenSrc from '../sprites/heroes/crab_green.png';
+import CrabGreenSrc from '../sprites/heroes/crab_green.webp';
 import CrabRedSrc from '../sprites/heroes/crab_red.webp';
-import ScorpionBlueSrc from '../sprites/heroes/scorpion_blue.png';
-import CockatriceBlueSrc from '../sprites/heroes/cockatrice_blue.png';
-import SkeletonBlueSrc from '../sprites/heroes/skeleton_blue.png';
-import SkeletonRedSrc from '../sprites/heroes/skeleton_red.png';
-import VultureBrownSrc from '../sprites/heroes/vulture_brown.png';
-import VultureBlueSrc from '../sprites/heroes/vulture_blue.png';
-import RatBlackSrc from '../sprites/heroes/rat_black.png';
-import RatRedSrc from '../sprites/heroes/rat_red.png';
-import GhostRedSrc from '../sprites/heroes/ghost_red.png';
-import GhostGreenSrc from '../sprites/heroes/ghost_green.png';
-import SlimeRedSrc from '../sprites/heroes/slime_red.png';
-import SlimeGreenSrc from '../sprites/heroes/slime_green.png';
-import SheepBlackSrc from '../sprites/heroes/sheep_black.png';
-import SheepBrownSrc from '../sprites/heroes/sheep_brown.png';
-import ScarabRedSrc from '../sprites/heroes/scarab_red.png';
-import ScarabGreenSrc from '../sprites/heroes/scarab_green.png';
+import ScorpionBlueSrc from '../sprites/heroes/scorpion_blue.webp';
+import CockatriceBlueSrc from '../sprites/heroes/cockatrice_blue.webp';
+import SkeletonBlueSrc from '../sprites/heroes/skeleton_blue.webp';
+import SkeletonRedSrc from '../sprites/heroes/skeleton_red.webp';
+import VultureBrownSrc from '../sprites/heroes/vulture_brown.webp';
+import VultureBlueSrc from '../sprites/heroes/vulture_blue.webp';
+import RatBlackSrc from '../sprites/heroes/rat_black.webp';
+import RatRedSrc from '../sprites/heroes/rat_red.webp';
+import GhostRedSrc from '../sprites/heroes/ghost_red.webp';
+import GhostGreenSrc from '../sprites/heroes/ghost_green.webp';
+import SlimeRedSrc from '../sprites/heroes/slime_red.webp';
+import SlimeGreenSrc from '../sprites/heroes/slime_green.webp';
+import SheepBlackSrc from '../sprites/heroes/sheep_black.webp';
+import SheepBrownSrc from '../sprites/heroes/sheep_brown.webp';
+import ScarabRedSrc from '../sprites/heroes/scarab_red.webp';
+import ScarabGreenSrc from '../sprites/heroes/scarab_green.webp';
 
-import NullSrc from '../sprites/null.png';
+import NullSrc from '../sprites/null.webp';
 
 export const heroSprites = {
     null: NullSrc,
@@ -606,160 +606,160 @@ export const heroSprites = {
     scarab_green: ScarabGreenSrc,
 };
 
-import PumpkinScytheSrc from '../sprites/weapons/unique/pumpkin_scythe.png';
-import HydrasBiteSrc from '../sprites/weapons/unique/hydras_bite.png';
-import VampiresStakeSrc from '../sprites/weapons/unique/vampires_stake.png';
-import LightAxeSrc from '../sprites/weapons/unique/light_axe.png';
-import SkyPiercerSrc from '../sprites/weapons/unique/sky_piercer.png';
-import VoidPiercerLanceSrc from '../sprites/weapons/unique/void_piercer_lance.png';
-import LightSwordSrc from '../sprites/weapons/unique/light_sword.png';
-import VoidSplitterSrc from '../sprites/weapons/unique/void_splitter.png';
-import SunSplitterSrc from '../sprites/weapons/unique/sun_splitter.png';
-import RustBinderSrc from '../sprites/weapons/unique/rust_binder.png';
-import MagmaEdgeSrc from '../sprites/weapons/unique/magma_edge.png';
-import FrostBinderSrc from '../sprites/weapons/unique/frost_binder.png';
-import RottenMaulSrc from '../sprites/weapons/unique/rotten_maul.png';
-import HookHammerSrc from '../sprites/weapons/unique/hook_hammer.png';
-import DrillSlammerSrc from '../sprites/weapons/unique/drill_slammer.png';
-import TitansMaulSrc from '../sprites/weapons/unique/titans_maul.png';
-import EarthBreakerSrc from '../sprites/weapons/unique/earth_breaker.png';
-import ProblemSolverSrc from '../sprites/weapons/unique/problem_solver.png';
-import ArcaneCodexSrc from '../sprites/weapons/unique/arcane_codex.png';
-import LastOathSrc from '../sprites/weapons/unique/last_oath.png';
-import GodsVowSrc from '../sprites/weapons/unique/gods_vow.png';
-import TomeOfEternalFrostSrc from '../sprites/weapons/unique/tome_of_eternal_frost.png';
-import PestBringerSrc from '../sprites/weapons/unique/pest_bringer.png';
-import EmbryonicCatalystSrc from '../sprites/weapons/unique/embryonic_catalyst.png';
-import IcicleSrc from '../sprites/weapons/unique/icicle.png';
-import RainbowStaffSrc from '../sprites/weapons/unique/rainbow_staff.png';
-import ArcanePulseSrc from '../sprites/weapons/unique/arcane_pulse.png';
-import MiasmaStaffSrc from '../sprites/weapons/unique/miasma_staff.png';
-import FireStarterSrc from '../sprites/weapons/unique/fire_starter.png';
-import LifeCatalystSrc from '../sprites/weapons/unique/life_catalyst.png';
-import BasilisksEyeSrc from '../sprites/weapons/unique/basilisks_eye.png';
-import SeedOfRotSrc from '../sprites/weapons/unique/seed_of_rot.png';
-import SoulCatalystSrc from '../sprites/weapons/unique/soul_catalyst.png';
-import BlasterSrc from '../sprites/weapons/unique/blaster.png';
-import BoomstickSrc from '../sprites/weapons/unique/boomstick.png';
-import WolfClawsSrc from '../sprites/weapons/unique/wolf_claws.png';
-import CorkscrewKnuckleSrc from '../sprites/weapons/unique/corkscrew_knuckle.png';
-import ShadowFangsSrc from '../sprites/weapons/unique/shadow_fangs.png';
-import VortexDancerSrc from '../sprites/weapons/unique/vortex_dancer.png';
-import ShadowSpikesSrc from '../sprites/weapons/unique/shadow_spikes.png';
-import BruteForceSrc from '../sprites/weapons/unique/brute_force.png';
-import BoneBowSrc from '../sprites/weapons/unique/bone_bow.png';
-import SoulStabberSrc from '../sprites/weapons/unique/soul_stabber.png';
-import WhisperBladeSrc from '../sprites/weapons/unique/whisper_blade.png';
-import NeedlePointSrc from '../sprites/weapons/unique/needle_point.png';
-import StarfireBallistaSrc from '../sprites/weapons/unique/starfire_ballista.png';
-import BlackFeatherBowSrc from '../sprites/weapons/unique/black_feather_bow.png';
-import HarmonySrc from '../sprites/weapons/unique/harmony.png';
-import ChopocalypseSrc from '../sprites/weapons/unique/chopocalypse.png';
-import SingularitySrc from '../sprites/weapons/unique/singularity.png';
-import ResearchLogSrc from '../sprites/weapons/unique/research_log.png';
-import EquilibriumSrc from '../sprites/weapons/unique/equilibrium.png';
-import InsanityCatalystSrc from '../sprites/weapons/unique/insanity_catalyst.png';
-import DualitySrc from '../sprites/weapons/unique/duality.png';
-import StarfallSrc from '../sprites/weapons/unique/starfall.png';
-import ClawtastropheSrc from '../sprites/weapons/unique/clawtastrophe.png';
-import TwilightSrc from '../sprites/weapons/unique/twilight.png';
-import GravelBusterSrc from '../sprites/weapons/unique/gravel_buster.png';
-import BiasedWheelSrc from '../sprites/weapons/unique/biased_wheel.png';
-import DiceOfDoomSrc from '../sprites/weapons/unique/dice_of_doom.png';
-import SingularityTomeSrc from '../sprites/weapons/unique/singularity_tome.png';
-import DoomRodSrc from '../sprites/weapons/unique/doom_rod.png';
-import LavaCatalystSrc from '../sprites/weapons/unique/lava_catalyst.png';
-import TuskFangSrc from '../sprites/weapons/unique/tusk_fang.png';
-import RiftPiercerSrc from '../sprites/weapons/unique/rift_piercer.png';
-import RelicfangDaggerSrc from '../sprites/weapons/unique/relicfang_dagger.png';
+import PumpkinScytheSrc from '../sprites/weapons/unique/pumpkin_scythe.webp';
+import HydrasBiteSrc from '../sprites/weapons/unique/hydras_bite.webp';
+import VampiresStakeSrc from '../sprites/weapons/unique/vampires_stake.webp';
+import LightAxeSrc from '../sprites/weapons/unique/light_axe.webp';
+import SkyPiercerSrc from '../sprites/weapons/unique/sky_piercer.webp';
+import VoidPiercerLanceSrc from '../sprites/weapons/unique/void_piercer_lance.webp';
+import LightSwordSrc from '../sprites/weapons/unique/light_sword.webp';
+import VoidSplitterSrc from '../sprites/weapons/unique/void_splitter.webp';
+import SunSplitterSrc from '../sprites/weapons/unique/sun_splitter.webp';
+import RustBinderSrc from '../sprites/weapons/unique/rust_binder.webp';
+import MagmaEdgeSrc from '../sprites/weapons/unique/magma_edge.webp';
+import FrostBinderSrc from '../sprites/weapons/unique/frost_binder.webp';
+import RottenMaulSrc from '../sprites/weapons/unique/rotten_maul.webp';
+import HookHammerSrc from '../sprites/weapons/unique/hook_hammer.webp';
+import DrillSlammerSrc from '../sprites/weapons/unique/drill_slammer.webp';
+import TitansMaulSrc from '../sprites/weapons/unique/titans_maul.webp';
+import EarthBreakerSrc from '../sprites/weapons/unique/earth_breaker.webp';
+import ProblemSolverSrc from '../sprites/weapons/unique/problem_solver.webp';
+import ArcaneCodexSrc from '../sprites/weapons/unique/arcane_codex.webp';
+import LastOathSrc from '../sprites/weapons/unique/last_oath.webp';
+import GodsVowSrc from '../sprites/weapons/unique/gods_vow.webp';
+import TomeOfEternalFrostSrc from '../sprites/weapons/unique/tome_of_eternal_frost.webp';
+import PestBringerSrc from '../sprites/weapons/unique/pest_bringer.webp';
+import EmbryonicCatalystSrc from '../sprites/weapons/unique/embryonic_catalyst.webp';
+import IcicleSrc from '../sprites/weapons/unique/icicle.webp';
+import RainbowStaffSrc from '../sprites/weapons/unique/rainbow_staff.webp';
+import ArcanePulseSrc from '../sprites/weapons/unique/arcane_pulse.webp';
+import MiasmaStaffSrc from '../sprites/weapons/unique/miasma_staff.webp';
+import FireStarterSrc from '../sprites/weapons/unique/fire_starter.webp';
+import LifeCatalystSrc from '../sprites/weapons/unique/life_catalyst.webp';
+import BasilisksEyeSrc from '../sprites/weapons/unique/basilisks_eye.webp';
+import SeedOfRotSrc from '../sprites/weapons/unique/seed_of_rot.webp';
+import SoulCatalystSrc from '../sprites/weapons/unique/soul_catalyst.webp';
+import BlasterSrc from '../sprites/weapons/unique/blaster.webp';
+import BoomstickSrc from '../sprites/weapons/unique/boomstick.webp';
+import WolfClawsSrc from '../sprites/weapons/unique/wolf_claws.webp';
+import CorkscrewKnuckleSrc from '../sprites/weapons/unique/corkscrew_knuckle.webp';
+import ShadowFangsSrc from '../sprites/weapons/unique/shadow_fangs.webp';
+import VortexDancerSrc from '../sprites/weapons/unique/vortex_dancer.webp';
+import ShadowSpikesSrc from '../sprites/weapons/unique/shadow_spikes.webp';
+import BruteForceSrc from '../sprites/weapons/unique/brute_force.webp';
+import BoneBowSrc from '../sprites/weapons/unique/bone_bow.webp';
+import SoulStabberSrc from '../sprites/weapons/unique/soul_stabber.webp';
+import WhisperBladeSrc from '../sprites/weapons/unique/whisper_blade.webp';
+import NeedlePointSrc from '../sprites/weapons/unique/needle_point.webp';
+import StarfireBallistaSrc from '../sprites/weapons/unique/starfire_ballista.webp';
+import BlackFeatherBowSrc from '../sprites/weapons/unique/black_feather_bow.webp';
+import HarmonySrc from '../sprites/weapons/unique/harmony.webp';
+import ChopocalypseSrc from '../sprites/weapons/unique/chopocalypse.webp';
+import SingularitySrc from '../sprites/weapons/unique/singularity.webp';
+import ResearchLogSrc from '../sprites/weapons/unique/research_log.webp';
+import EquilibriumSrc from '../sprites/weapons/unique/equilibrium.webp';
+import InsanityCatalystSrc from '../sprites/weapons/unique/insanity_catalyst.webp';
+import DualitySrc from '../sprites/weapons/unique/duality.webp';
+import StarfallSrc from '../sprites/weapons/unique/starfall.webp';
+import ClawtastropheSrc from '../sprites/weapons/unique/clawtastrophe.webp';
+import TwilightSrc from '../sprites/weapons/unique/twilight.webp';
+import GravelBusterSrc from '../sprites/weapons/unique/gravel_buster.webp';
+import BiasedWheelSrc from '../sprites/weapons/unique/biased_wheel.webp';
+import DiceOfDoomSrc from '../sprites/weapons/unique/dice_of_doom.webp';
+import SingularityTomeSrc from '../sprites/weapons/unique/singularity_tome.webp';
+import DoomRodSrc from '../sprites/weapons/unique/doom_rod.webp';
+import LavaCatalystSrc from '../sprites/weapons/unique/lava_catalyst.webp';
+import TuskFangSrc from '../sprites/weapons/unique/tusk_fang.webp';
+import RiftPiercerSrc from '../sprites/weapons/unique/rift_piercer.webp';
+import RelicfangDaggerSrc from '../sprites/weapons/unique/relicfang_dagger.webp';
 
-import DownholeHelmetSrc from '../sprites/helmets/sets/downhole.png';
-import DownholeArmorSrc from '../sprites/armors/sets/downhole.png';
-import ThornHelmetSrc from '../sprites/helmets/sets/thorn.png';
-import ThornArmorSrc from '../sprites/armors/sets/thorn.png';
-import BreakerHelmetSrc from '../sprites/helmets/sets/breaker.png';
-import BreakerArmorSrc from '../sprites/armors/sets/breaker.png';
-import BreakerRingSrc from '../sprites/rings/sets/breaker.png';
-import BreakerNecklaceSrc from '../sprites/necklaces/sets/breaker.png';
-import GoliathHelmetSrc from '../sprites/helmets/sets/goliath.png';
-import GoliathArmorSrc from '../sprites/armors/sets/goliath.png';
-import GoliathRingSrc from '../sprites/rings/sets/goliath.png';
-import GoliathNecklaceSrc from '../sprites/necklaces/sets/goliath.png';
-import TitanHelmetSrc from '../sprites/helmets/sets/titan.png';
-import TitanArmorSrc from '../sprites/armors/sets/titan.png';
-import TitanRingSrc from '../sprites/rings/sets/titan.png';
-import TitanNecklaceSrc from '../sprites/necklaces/sets/titan.png';
-import RingmasterHelmetSrc from '../sprites/helmets/sets/ringmaster.png';
-import RingmasterArmorSrc from '../sprites/armors/sets/ringmaster.png';
-import NovaHelmetSrc from '../sprites/helmets/sets/nova.png';
-import NovaArmorSrc from '../sprites/armors/sets/nova.png';
-import NovaRingSrc from '../sprites/rings/sets/nova.png';
-import NovaNecklaceSrc from '../sprites/necklaces/sets/nova.png';
-import VanguardHelmetSrc from '../sprites/helmets/sets/vanguard.png';
-import VanguardArmorSrc from '../sprites/armors/sets/vanguard.png';
-import VanguardRingSrc from '../sprites/rings/sets/vanguard.png';
-import VanguardNecklaceSrc from '../sprites/necklaces/sets/vanguard.png';
+import DownholeHelmetSrc from '../sprites/helmets/sets/downhole.webp';
+import DownholeArmorSrc from '../sprites/armors/sets/downhole.webp';
+import ThornHelmetSrc from '../sprites/helmets/sets/thorn.webp';
+import ThornArmorSrc from '../sprites/armors/sets/thorn.webp';
+import BreakerHelmetSrc from '../sprites/helmets/sets/breaker.webp';
+import BreakerArmorSrc from '../sprites/armors/sets/breaker.webp';
+import BreakerRingSrc from '../sprites/rings/sets/breaker.webp';
+import BreakerNecklaceSrc from '../sprites/necklaces/sets/breaker.webp';
+import GoliathHelmetSrc from '../sprites/helmets/sets/goliath.webp';
+import GoliathArmorSrc from '../sprites/armors/sets/goliath.webp';
+import GoliathRingSrc from '../sprites/rings/sets/goliath.webp';
+import GoliathNecklaceSrc from '../sprites/necklaces/sets/goliath.webp';
+import TitanHelmetSrc from '../sprites/helmets/sets/titan.webp';
+import TitanArmorSrc from '../sprites/armors/sets/titan.webp';
+import TitanRingSrc from '../sprites/rings/sets/titan.webp';
+import TitanNecklaceSrc from '../sprites/necklaces/sets/titan.webp';
+import RingmasterHelmetSrc from '../sprites/helmets/sets/ringmaster.webp';
+import RingmasterArmorSrc from '../sprites/armors/sets/ringmaster.webp';
+import NovaHelmetSrc from '../sprites/helmets/sets/nova.webp';
+import NovaArmorSrc from '../sprites/armors/sets/nova.webp';
+import NovaRingSrc from '../sprites/rings/sets/nova.webp';
+import NovaNecklaceSrc from '../sprites/necklaces/sets/nova.webp';
+import VanguardHelmetSrc from '../sprites/helmets/sets/vanguard.webp';
+import VanguardArmorSrc from '../sprites/armors/sets/vanguard.webp';
+import VanguardRingSrc from '../sprites/rings/sets/vanguard.webp';
+import VanguardNecklaceSrc from '../sprites/necklaces/sets/vanguard.webp';
 
-import CyberHelmetSrc from '../sprites/helmets/sets/cyber.png';
-import CyberArmorSrc from '../sprites/armors/sets/cyber.png';
-import PumpkinHelmetSrc from '../sprites/helmets/sets/pumpkin.png';
-import PumpkinArmorSrc from '../sprites/armors/sets/pumpkin.png';
-import WarlockHelmetSrc from '../sprites/helmets/sets/warlock.png';
-import WarlockArmorSrc from '../sprites/armors/sets/warlock.png';
-import WarlockRingSrc from '../sprites/rings/sets/warlock.png';
-import WarlockNecklaceSrc from '../sprites/necklaces/sets/warlock.png';
-import WardenHelmetSrc from '../sprites/helmets/sets/warden.png';
-import WardenArmorSrc from '../sprites/armors/sets/warden.png';
-import WardenRingSrc from '../sprites/rings/sets/warden.png';
-import WardenNecklaceSrc from '../sprites/necklaces/sets/warden.png';
-import SaintHelmetSrc from '../sprites/helmets/sets/saint.png';
-import SaintArmorSrc from '../sprites/armors/sets/saint.png';
-import SaintRingSrc from '../sprites/rings/sets/saint.png';
-import SaintNecklaceSrc from '../sprites/necklaces/sets/saint.png';
-import LabHelmetSrc from '../sprites/helmets/sets/lab.png';
-import LabArmorSrc from '../sprites/armors/sets/lab.png';
-import ElementorHelmetSrc from '../sprites/helmets/sets/elementor.png';
-import ElementorArmorSrc from '../sprites/armors/sets/elementor.png';
-import ElementorRingSrc from '../sprites/rings/sets/elementor.png';
-import ElementorNecklaceSrc from '../sprites/necklaces/sets/elementor.png';
-import GeneralHelmetSrc from '../sprites/helmets/sets/general.png';
-// import GeneralArmorSrc from '../sprites/armors/sets/general.png';
-import GeneralRingSrc from '../sprites/rings/sets/general.png';
-import GeneralNecklaceSrc from '../sprites/necklaces/sets/general.png';
+import CyberHelmetSrc from '../sprites/helmets/sets/cyber.webp';
+import CyberArmorSrc from '../sprites/armors/sets/cyber.webp';
+import PumpkinHelmetSrc from '../sprites/helmets/sets/pumpkin.webp';
+import PumpkinArmorSrc from '../sprites/armors/sets/pumpkin.webp';
+import WarlockHelmetSrc from '../sprites/helmets/sets/warlock.webp';
+import WarlockArmorSrc from '../sprites/armors/sets/warlock.webp';
+import WarlockRingSrc from '../sprites/rings/sets/warlock.webp';
+import WarlockNecklaceSrc from '../sprites/necklaces/sets/warlock.webp';
+import WardenHelmetSrc from '../sprites/helmets/sets/warden.webp';
+import WardenArmorSrc from '../sprites/armors/sets/warden.webp';
+import WardenRingSrc from '../sprites/rings/sets/warden.webp';
+import WardenNecklaceSrc from '../sprites/necklaces/sets/warden.webp';
+import SaintHelmetSrc from '../sprites/helmets/sets/saint.webp';
+import SaintArmorSrc from '../sprites/armors/sets/saint.webp';
+import SaintRingSrc from '../sprites/rings/sets/saint.webp';
+import SaintNecklaceSrc from '../sprites/necklaces/sets/saint.webp';
+import LabHelmetSrc from '../sprites/helmets/sets/lab.webp';
+import LabArmorSrc from '../sprites/armors/sets/lab.webp';
+import ElementorHelmetSrc from '../sprites/helmets/sets/elementor.webp';
+import ElementorArmorSrc from '../sprites/armors/sets/elementor.webp';
+import ElementorRingSrc from '../sprites/rings/sets/elementor.webp';
+import ElementorNecklaceSrc from '../sprites/necklaces/sets/elementor.webp';
+import GeneralHelmetSrc from '../sprites/helmets/sets/general.webp';
+// import GeneralArmorSrc from '../sprites/armors/sets/general.webp';
+import GeneralRingSrc from '../sprites/rings/sets/general.webp';
+import GeneralNecklaceSrc from '../sprites/necklaces/sets/general.webp';
 
-import DragonboneHelmetSrc from '../sprites/helmets/sets/dragonbone.png';
-import DragonboneArmorSrc from '../sprites/armors/sets/dragonbone.png';
-import BurntHelmetSrc from '../sprites/helmets/sets/burnt.png';
-import BurntArmorSrc from '../sprites/armors/sets/burnt.png';
-import JesterHelmetSrc from '../sprites/helmets/sets/jester.png';
-import JesterArmorSrc from '../sprites/armors/sets/jester.png';
-import JesterRingSrc from '../sprites/rings/sets/jester.png';
-import JesterNecklaceSrc from '../sprites/necklaces/sets/jester.png';
-import HunterHelmetSrc from '../sprites/helmets/sets/hunter.png';
-import HunterArmorSrc from '../sprites/armors/sets/hunter.png';
-import HunterRingSrc from '../sprites/rings/sets/hunter.png';
-import HunterNecklaceSrc from '../sprites/necklaces/sets/hunter.png';
-import SpecterHelmetSrc from '../sprites/helmets/sets/specter.png';
-import SpecterArmorSrc from '../sprites/armors/sets/specter.png';
-import SpecterRingSrc from '../sprites/rings/sets/specter.png';
-import SpecterNecklaceSrc from '../sprites/necklaces/sets/specter.png';
-import EclipseHelmetSrc from '../sprites/helmets/sets/eclipse.png';
-import EclipseArmorSrc from '../sprites/armors/sets/eclipse.png';
-import EclipseRingSrc from '../sprites/rings/sets/eclipse.png';
-import EclipseNecklaceSrc from '../sprites/necklaces/sets/eclipse.png';
-import LeonidasHelmetSrc from '../sprites/helmets/sets/leonidas.png';
-import LeonidasArmorSrc from '../sprites/armors/sets/leonidas.png';
-import ShogunHelmetSrc from '../sprites/helmets/sets/shogun.png';
-import ShogunArmorSrc from '../sprites/armors/sets/shogun.png';
-import ShogunRingSrc from '../sprites/rings/sets/shogun.png';
-import ShogunNecklaceSrc from '../sprites/necklaces/sets/shogun.png';
+import DragonboneHelmetSrc from '../sprites/helmets/sets/dragonbone.webp';
+import DragonboneArmorSrc from '../sprites/armors/sets/dragonbone.webp';
+import BurntHelmetSrc from '../sprites/helmets/sets/burnt.webp';
+import BurntArmorSrc from '../sprites/armors/sets/burnt.webp';
+import JesterHelmetSrc from '../sprites/helmets/sets/jester.webp';
+import JesterArmorSrc from '../sprites/armors/sets/jester.webp';
+import JesterRingSrc from '../sprites/rings/sets/jester.webp';
+import JesterNecklaceSrc from '../sprites/necklaces/sets/jester.webp';
+import HunterHelmetSrc from '../sprites/helmets/sets/hunter.webp';
+import HunterArmorSrc from '../sprites/armors/sets/hunter.webp';
+import HunterRingSrc from '../sprites/rings/sets/hunter.webp';
+import HunterNecklaceSrc from '../sprites/necklaces/sets/hunter.webp';
+import SpecterHelmetSrc from '../sprites/helmets/sets/specter.webp';
+import SpecterArmorSrc from '../sprites/armors/sets/specter.webp';
+import SpecterRingSrc from '../sprites/rings/sets/specter.webp';
+import SpecterNecklaceSrc from '../sprites/necklaces/sets/specter.webp';
+import EclipseHelmetSrc from '../sprites/helmets/sets/eclipse.webp';
+import EclipseArmorSrc from '../sprites/armors/sets/eclipse.webp';
+import EclipseRingSrc from '../sprites/rings/sets/eclipse.webp';
+import EclipseNecklaceSrc from '../sprites/necklaces/sets/eclipse.webp';
+import LeonidasHelmetSrc from '../sprites/helmets/sets/leonidas.webp';
+import LeonidasArmorSrc from '../sprites/armors/sets/leonidas.webp';
+import ShogunHelmetSrc from '../sprites/helmets/sets/shogun.webp';
+import ShogunArmorSrc from '../sprites/armors/sets/shogun.webp';
+import ShogunRingSrc from '../sprites/rings/sets/shogun.webp';
+import ShogunNecklaceSrc from '../sprites/necklaces/sets/shogun.webp';
 
-import CelestialRingSrc from '../sprites/rings/sets/celestial.png';
-import CelestialNecklaceSrc from '../sprites/necklaces/sets/celestial.png';
-import WeaverRingSrc from '../sprites/rings/sets/weaver.png';
-import WeaverNecklaceSrc from '../sprites/necklaces/sets/weaver.png';
-import MysticRingSrc from '../sprites/rings/sets/mystic.png';
-import MysticNecklaceSrc from '../sprites/necklaces/sets/mystic.png';
+import CelestialRingSrc from '../sprites/rings/sets/celestial.webp';
+import CelestialNecklaceSrc from '../sprites/necklaces/sets/celestial.webp';
+import WeaverRingSrc from '../sprites/rings/sets/weaver.webp';
+import WeaverNecklaceSrc from '../sprites/necklaces/sets/weaver.webp';
+import MysticRingSrc from '../sprites/rings/sets/mystic.webp';
+import MysticNecklaceSrc from '../sprites/necklaces/sets/mystic.webp';
 
 export const itemSprites = {
     null: NullSrc,
@@ -920,15 +920,15 @@ export const itemSprites = {
     mystic_necklace: MysticNecklaceSrc,
 }
 
-import TwoSetSrc from '../sprites/buttons/twoset.png'
-import FourSetSrc from '../sprites/buttons/fourset.png'
-import HelmetsSrc from '../sprites/buttons/helmets.png'
-import ArmorsSrc from '../sprites/buttons/armors.png'
-import RingsSrc from '../sprites/buttons/rings.png'
-import NecklacesSrc from '../sprites/buttons/necklaces.png'
-import UniqueSrc from '../sprites/buttons/unique.png'
-import WeaponsSrc from '../sprites/buttons/weapons.png'
-import RareHeroSrc from '../sprites/buttons/rare_hero.png'
+import TwoSetSrc from '../sprites/buttons/twoset.webp'
+import FourSetSrc from '../sprites/buttons/fourset.webp'
+import HelmetsSrc from '../sprites/buttons/helmets.webp'
+import ArmorsSrc from '../sprites/buttons/armors.webp'
+import RingsSrc from '../sprites/buttons/rings.webp'
+import NecklacesSrc from '../sprites/buttons/necklaces.webp'
+import UniqueSrc from '../sprites/buttons/unique.webp'
+import WeaponsSrc from '../sprites/buttons/weapons.webp'
+import RareHeroSrc from '../sprites/buttons/rare_hero.webp'
 
 export const iconSprites = {
     twoset: TwoSetSrc,
@@ -942,13 +942,13 @@ export const iconSprites = {
     is_starred: RareHeroSrc,
 }
 
-import LightElementSrc from '../sprites/elements/light.png';
-import ShadowElementSrc from '../sprites/elements/shadow.png';
-import FireElementSrc from '../sprites/elements/fire.png';
-import WaterElementSrc from '../sprites/elements/water.png';
-import NatureElementSrc from '../sprites/elements/nature.png';
-import VoidElementSrc from '../sprites/elements/void.png';
-import SkyElementSrc from '../sprites/elements/sky.png';
+import LightElementSrc from '../sprites/elements/light.webp';
+import ShadowElementSrc from '../sprites/elements/shadow.webp';
+import FireElementSrc from '../sprites/elements/fire.webp';
+import WaterElementSrc from '../sprites/elements/water.webp';
+import NatureElementSrc from '../sprites/elements/nature.webp';
+import VoidElementSrc from '../sprites/elements/void.webp';
+import SkyElementSrc from '../sprites/elements/sky.webp';
 
 export const elementSprites = {
     0: FireElementSrc,
@@ -960,25 +960,25 @@ export const elementSprites = {
     6: SkyElementSrc,
 }
 
-import AgilityColorSrc from '../sprites/stats/agility.png'
-import StrengthColorSrc from '../sprites/stats/strength.png'
-import HealthColorSrc from '../sprites/stats/health.png'
-import DefenseColorSrc from '../sprites/stats/defense.png'
+import AgilityColorSrc from '../sprites/stats/agility.webp'
+import StrengthColorSrc from '../sprites/stats/strength.webp'
+import HealthColorSrc from '../sprites/stats/health.webp'
+import DefenseColorSrc from '../sprites/stats/defense.webp'
 
-import AccuracySrc from '../sprites/perks/accuracy.png'
-import APDamageReductionSrc from '../sprites/perks/ap_damage_reduction.png'
-import AOEDamageReductionSrc from '../sprites/perks/aoe_damage_reduction.png'
-import BossDamageSrc from '../sprites/perks/boss_damage.png'
-import BossDamageReductionSrc from '../sprites/perks/boss_damage_reduction.png'
-import CritChanceSrc from '../sprites/perks/crit_chance.png'
-import CritDamageSrc from '../sprites/perks/crit_damage.png'
-import CritDamageReductionSrc from '../sprites/perks/crit_damage_reduction.png'
-import CritResistanceSrc from '../sprites/perks/crit_resistance.png'
-import HealingEfficiencySrc from '../sprites/perks/healing_efficiency.png'
-import HealingReceivedSrc from '../sprites/perks/healing_received.png'
-import LifeStealSrc from '../sprites/perks/life_steal.png'
-import ResistanceSrc from '../sprites/perks/resistance.png'
-import QuestionmarkSrc from '../sprites/questionmark.png'
+import AccuracySrc from '../sprites/perks/accuracy.webp'
+import APDamageReductionSrc from '../sprites/perks/ap_damage_reduction.webp'
+import AOEDamageReductionSrc from '../sprites/perks/aoe_damage_reduction.webp'
+import BossDamageSrc from '../sprites/perks/boss_damage.webp'
+import BossDamageReductionSrc from '../sprites/perks/boss_damage_reduction.webp'
+import CritChanceSrc from '../sprites/perks/crit_chance.webp'
+import CritDamageSrc from '../sprites/perks/crit_damage.webp'
+import CritDamageReductionSrc from '../sprites/perks/crit_damage_reduction.webp'
+import CritResistanceSrc from '../sprites/perks/crit_resistance.webp'
+import HealingEfficiencySrc from '../sprites/perks/healing_efficiency.webp'
+import HealingReceivedSrc from '../sprites/perks/healing_received.webp'
+import LifeStealSrc from '../sprites/perks/life_steal.webp'
+import ResistanceSrc from '../sprites/perks/resistance.webp'
+import QuestionmarkSrc from '../sprites/questionmark.webp'
 
 export const perkSprites = {
     NOTHING: QuestionmarkSrc,
@@ -1016,9 +1016,9 @@ export const perkSprites = {
 }
 
 import { ImCross } from "react-icons/im";
-import StrengthSrc from '../sprites/attributes/strength.png'
-import AgilitySrc from '../sprites/attributes/agility.png'
-import IntelligenceSrc from '../sprites/attributes/intelligence.png'
+import StrengthSrc from '../sprites/attributes/strength.webp'
+import AgilitySrc from '../sprites/attributes/agility.webp'
+import IntelligenceSrc from '../sprites/attributes/intelligence.webp'
 
 export const attributeSprites = {
     0: <ImCross />,
@@ -1027,10 +1027,10 @@ export const attributeSprites = {
     3: IntelligenceSrc,
 }
 
-import OffensiveSrc from '../sprites/roles/offensive.png'
-import DefensiveSrc from '../sprites/roles/defensive.png'
-import ControlSrc from '../sprites/roles/control.png'
-import SupportSrc from '../sprites/roles/support.png'
+import OffensiveSrc from '../sprites/roles/offensive.webp'
+import DefensiveSrc from '../sprites/roles/defensive.webp'
+import ControlSrc from '../sprites/roles/control.webp'
+import SupportSrc from '../sprites/roles/support.webp'
 
 export const roleSprites = {
     0: OffensiveSrc,
@@ -1041,12 +1041,12 @@ export const roleSprites = {
 
 import { FaCircle } from "react-icons/fa";
 
-import ElementorSrc from '../sprites/simulation/elementor.png'
-import EquinoxSrc from '../sprites/simulation/equinox.png'
-import StarBreakerSrc from '../sprites/simulation/star_breaker.png'
-import LunarSeekerSrc from '../sprites/simulation/lunar_seeker.png'
-import SunSeekerSrc from '../sprites/simulation/sun_seeker.png'
-import StarHeraldSrc from '../sprites/simulation/star_herald.png'
+import ElementorSrc from '../sprites/simulation/elementor.webp'
+import EquinoxSrc from '../sprites/simulation/equinox.webp'
+import StarBreakerSrc from '../sprites/simulation/star_breaker.webp'
+import LunarSeekerSrc from '../sprites/simulation/lunar_seeker.webp'
+import SunSeekerSrc from '../sprites/simulation/sun_seeker.webp'
+import StarHeraldSrc from '../sprites/simulation/star_herald.webp'
 
 export const guildBossSprites = {
     elementor: ElementorSrc,
@@ -1060,8 +1060,8 @@ export const guildBossSprites = {
 import { FaSortNumericDown } from "react-icons/fa";
 import { FaSortNumericDownAlt } from "react-icons/fa";
 
-import ExpandSrc from '../sprites/expand.png'
-import CollapseSrc from '../sprites/collapse.png'
+import ExpandSrc from '../sprites/expand.webp'
+import CollapseSrc from '../sprites/collapse.webp'
 
 export const filterSprites = {
     0: <ImCross />,
@@ -1101,138 +1101,138 @@ export const filterSprites = {
     54: CollapseSrc,
 }
 
-import Absorb from '../sprites/status/absorb.png'
-import AccuracyDown from '../sprites/status/accuracy_down.png'
-import AccuracyUp from '../sprites/status/accuracy_up.png'
-import AgilityDown from '../sprites/status/agility_down.png'
-import AgilityUp from '../sprites/status/agility_up.png'
-import AnubisSeal from '../sprites/status/anubis_seal.png'
-import APResistance from '../sprites/status/ap_resistance.png'
-import Arachnid from '../sprites/status/arachnid.png'
-import Ash from '../sprites/status/ash.png'
-import AttackDown from '../sprites/status/attack_down.png'
-import AttackUp from '../sprites/status/attack_up.png'
-import Biomass from '../sprites/status/biomass.png'
-import Blacklist from '../sprites/status/blacklist.png'
-import Bleeding from '../sprites/status/bleeding.png'
-import Blessed from '../sprites/status/blessed.png'
-import Blind from '../sprites/status/blind.png'
-import BloodTransfusion from '../sprites/status/blood_transfusion.png'
-import Bloodrage from '../sprites/status/bloodrage.png'
-import Bound from '../sprites/status/bound.png'
-import Bunny from '../sprites/status/bunny.png'
-import Burn from '../sprites/status/burn.png'
-import Burrow from '../sprites/status/burrow.png'
-import BuzzMeter from '../sprites/status/buzz_meter.png'
-import Confused from '../sprites/status/confused.png'
-import Courage from '../sprites/status/courage.png'
-import CritChanceDown from '../sprites/status/crit_chance_down.png'
-import CritChanceUp from '../sprites/status/crit_chance_up.png'
-import CritDamageUp from '../sprites/status/crit_damage_up.png'
-import CritResist from '../sprites/status/crit_resist.png'
-import CursedFlame from '../sprites/status/cursed_flame.png'
-import Cursed from '../sprites/status/cursed.png'
-import DefenseDown from '../sprites/status/defense_down.png'
-import DefenseDrone from '../sprites/status/defense_drone.png'
-import DefenseUp from '../sprites/status/defense_up.png'
-import Detonator from '../sprites/status/detonator.png'
-import DivineShield from '../sprites/status/divine_shield.png'
-import Drumbeat from '../sprites/status/drumbeat.png'
-import Feral from '../sprites/status/feral.png'
-import Ferryman from '../sprites/status/ferryman.png'
-import Foresight from '../sprites/status/foresight.png'
-import Fracture from '../sprites/status/fracture.png'
-import Freeze from '../sprites/status/freeze.png'
-import FrozenHeart from '../sprites/status/frozen_heart.png'
-import Fury from '../sprites/status/fury.png'
-import Guard from '../sprites/status/guard.png'
-import HeatingUp from '../sprites/status/heating_up.png'
-import HellfireMode from '../sprites/status/hellfire_mode.png'
-import Hellfire from '../sprites/status/hellfire.png'
-import Hivemind from '../sprites/status/hivemind.png'
-import HotSaw from '../sprites/status/hot_saw.png'
-import IgnitedEgo from '../sprites/status/ignited_ego.png'
-import Ionize from '../sprites/status/ionize.png'
-import Irradiate from '../sprites/status/irradiate.png'
-import Immunity from '../sprites/status/immunity.png'
-import Invincibility from '../sprites/status/invincibility.png'
-import LifeAfterDeath from '../sprites/status/life_after_death.png'
-import Loa from '../sprites/status/loa.png'
-import Luck from '../sprites/status/luck.png'
-import ManaShield from '../sprites/status/mana_shield.png'
-import Marked from '../sprites/status/marked.png'
-import Mjoellnir from '../sprites/status/mjoellnir.png'
-import Mute from '../sprites/status/mute.png'
-import PainFueled from '../sprites/status/pain_fueled.png'
-import Petrified from '../sprites/status/petrified.png'
-import PhoenixFeather from '../sprites/status/phoenix_feather.png'
-import Poison from '../sprites/status/poison.png'
-import Preservation from '../sprites/status/preservation.png'
-import Recovery from '../sprites/status/recovery.png'
-import ResistanceDown from '../sprites/status/resistance_down.png'
-import ResistanceUp from '../sprites/status/resistance_up.png'
-import RiftStep from '../sprites/status/rift_step.png'
-import Rooted from '../sprites/status/rooted.png'
-import Shield from '../sprites/status/shield.png'
-import Shroud from '../sprites/status/shroud.png'
-import Sick from '../sprites/status/sick.png'
-import Sleep from '../sprites/status/sleep.png'
-import Sludge from '../sprites/status/sludge.png'
-import Smoke from '../sprites/status/smoke.png'
-import SoulHarvest from '../sprites/status/soul_harvest.png'
-import SoulCore from '../sprites/status/soul_core.png'
-import Soulmate from '../sprites/status/soulmate.png'
-import SphinxCurse from '../sprites/status/sphinx_curse.png'
-import Stunned from '../sprites/status/stunned.png'
-import Styx from '../sprites/status/styx.png'
-import Taunt from '../sprites/status/taunt.png'
-import Tempered from '../sprites/status/tempered.png'
-import TheMoon from '../sprites/status/the_moon.png'
-import TheStar from '../sprites/status/the_star.png'
-import TheSun from '../sprites/status/the_sun.png'
-import WarForge from '../sprites/status/war_forge.png'
-import WindUp from '../sprites/status/wind_up.png'
+import Absorb from '../sprites/status/absorb.webp'
+import AccuracyDown from '../sprites/status/accuracy_down.webp'
+import AccuracyUp from '../sprites/status/accuracy_up.webp'
+import AgilityDown from '../sprites/status/agility_down.webp'
+import AgilityUp from '../sprites/status/agility_up.webp'
+import AnubisSeal from '../sprites/status/anubis_seal.webp'
+import APResistance from '../sprites/status/ap_resistance.webp'
+import Arachnid from '../sprites/status/arachnid.webp'
+import Ash from '../sprites/status/ash.webp'
+import AttackDown from '../sprites/status/attack_down.webp'
+import AttackUp from '../sprites/status/attack_up.webp'
+import Biomass from '../sprites/status/biomass.webp'
+import Blacklist from '../sprites/status/blacklist.webp'
+import Bleeding from '../sprites/status/bleeding.webp'
+import Blessed from '../sprites/status/blessed.webp'
+import Blind from '../sprites/status/blind.webp'
+import BloodTransfusion from '../sprites/status/blood_transfusion.webp'
+import Bloodrage from '../sprites/status/bloodrage.webp'
+import Bound from '../sprites/status/bound.webp'
+import Bunny from '../sprites/status/bunny.webp'
+import Burn from '../sprites/status/burn.webp'
+import Burrow from '../sprites/status/burrow.webp'
+import BuzzMeter from '../sprites/status/buzz_meter.webp'
+import Confused from '../sprites/status/confused.webp'
+import Courage from '../sprites/status/courage.webp'
+import CritChanceDown from '../sprites/status/crit_chance_down.webp'
+import CritChanceUp from '../sprites/status/crit_chance_up.webp'
+import CritDamageUp from '../sprites/status/crit_damage_up.webp'
+import CritResist from '../sprites/status/crit_resist.webp'
+import CursedFlame from '../sprites/status/cursed_flame.webp'
+import Cursed from '../sprites/status/cursed.webp'
+import DefenseDown from '../sprites/status/defense_down.webp'
+import DefenseDrone from '../sprites/status/defense_drone.webp'
+import DefenseUp from '../sprites/status/defense_up.webp'
+import Detonator from '../sprites/status/detonator.webp'
+import DivineShield from '../sprites/status/divine_shield.webp'
+import Drumbeat from '../sprites/status/drumbeat.webp'
+import Feral from '../sprites/status/feral.webp'
+import Ferryman from '../sprites/status/ferryman.webp'
+import Foresight from '../sprites/status/foresight.webp'
+import Fracture from '../sprites/status/fracture.webp'
+import Freeze from '../sprites/status/freeze.webp'
+import FrozenHeart from '../sprites/status/frozen_heart.webp'
+import Fury from '../sprites/status/fury.webp'
+import Guard from '../sprites/status/guard.webp'
+import HeatingUp from '../sprites/status/heating_up.webp'
+import HellfireMode from '../sprites/status/hellfire_mode.webp'
+import Hellfire from '../sprites/status/hellfire.webp'
+import Hivemind from '../sprites/status/hivemind.webp'
+import HotSaw from '../sprites/status/hot_saw.webp'
+import IgnitedEgo from '../sprites/status/ignited_ego.webp'
+import Ionize from '../sprites/status/ionize.webp'
+import Irradiate from '../sprites/status/irradiate.webp'
+import Immunity from '../sprites/status/immunity.webp'
+import Invincibility from '../sprites/status/invincibility.webp'
+import LifeAfterDeath from '../sprites/status/life_after_death.webp'
+import Loa from '../sprites/status/loa.webp'
+import Luck from '../sprites/status/luck.webp'
+import ManaShield from '../sprites/status/mana_shield.webp'
+import Marked from '../sprites/status/marked.webp'
+import Mjoellnir from '../sprites/status/mjoellnir.webp'
+import Mute from '../sprites/status/mute.webp'
+import PainFueled from '../sprites/status/pain_fueled.webp'
+import Petrified from '../sprites/status/petrified.webp'
+import PhoenixFeather from '../sprites/status/phoenix_feather.webp'
+import Poison from '../sprites/status/poison.webp'
+import Preservation from '../sprites/status/preservation.webp'
+import Recovery from '../sprites/status/recovery.webp'
+import ResistanceDown from '../sprites/status/resistance_down.webp'
+import ResistanceUp from '../sprites/status/resistance_up.webp'
+import RiftStep from '../sprites/status/rift_step.webp'
+import Rooted from '../sprites/status/rooted.webp'
+import Shield from '../sprites/status/shield.webp'
+import Shroud from '../sprites/status/shroud.webp'
+import Sick from '../sprites/status/sick.webp'
+import Sleep from '../sprites/status/sleep.webp'
+import Sludge from '../sprites/status/sludge.webp'
+import Smoke from '../sprites/status/smoke.webp'
+import SoulHarvest from '../sprites/status/soul_harvest.webp'
+import SoulCore from '../sprites/status/soul_core.webp'
+import Soulmate from '../sprites/status/soulmate.webp'
+import SphinxCurse from '../sprites/status/sphinx_curse.webp'
+import Stunned from '../sprites/status/stunned.webp'
+import Styx from '../sprites/status/styx.webp'
+import Taunt from '../sprites/status/taunt.webp'
+import Tempered from '../sprites/status/tempered.webp'
+import TheMoon from '../sprites/status/the_moon.webp'
+import TheStar from '../sprites/status/the_star.webp'
+import TheSun from '../sprites/status/the_sun.webp'
+import WarForge from '../sprites/status/war_forge.webp'
+import WindUp from '../sprites/status/wind_up.webp'
 
-import Soaked from '../sprites/status/soaked.png'
-import SpectralShield from '../sprites/status/spectral_shield.png'
-import Wither from '../sprites/status/wither.png'
-import BackupDrone from '../sprites/status/backup_drone.png'
-import Reflect from '../sprites/status/reflect.png'
-import Momentum from '../sprites/status/momentum.png'
-import Dawn from '../sprites/status/dawn.png'
-import Zenith from '../sprites/status/zenith.png'
-import Dusk from '../sprites/status/dusk.png'
-import Tender from '../sprites/status/tender.png'
-import Sealed from '../sprites/status/sealed.png'
-import Lifeblood from '../sprites/status/lifeblood.png'
-import GhostCrew from '../sprites/status/ghost_crew.png'
-import Terror from '../sprites/status/terror.png'
-import Feast from '../sprites/status/feast.png'
-import Pin from '../sprites/status/pin.png'
-import Puppet from '../sprites/status/puppet.png'
-import Buzzkill from '../sprites/status/buzzkill.png'
-import Plagued from '../sprites/status/plagued.png'
-import Encore from '../sprites/status/encore.png'
-import Contaminated from '../sprites/status/contaminated.png'
-import Cruelty from '../sprites/status/cruelty.png'
-import Portal from '../sprites/status/portal.png'
-import CriticalCondition from '../sprites/status/critical_condition.png'
-import Hellforge from '../sprites/status/hellforge.png'
-import Spotlight from '../sprites/status/spotlight.png'
+import Soaked from '../sprites/status/soaked.webp'
+import SpectralShield from '../sprites/status/spectral_shield.webp'
+import Wither from '../sprites/status/wither.webp'
+import BackupDrone from '../sprites/status/backup_drone.webp'
+import Reflect from '../sprites/status/reflect.webp'
+import Momentum from '../sprites/status/momentum.webp'
+import Dawn from '../sprites/status/dawn.webp'
+import Zenith from '../sprites/status/zenith.webp'
+import Dusk from '../sprites/status/dusk.webp'
+import Tender from '../sprites/status/tender.webp'
+import Sealed from '../sprites/status/sealed.webp'
+import Lifeblood from '../sprites/status/lifeblood.webp'
+import GhostCrew from '../sprites/status/ghost_crew.webp'
+import Terror from '../sprites/status/terror.webp'
+import Feast from '../sprites/status/feast.webp'
+import Pin from '../sprites/status/pin.webp'
+import Puppet from '../sprites/status/puppet.webp'
+import Buzzkill from '../sprites/status/buzzkill.webp'
+import Plagued from '../sprites/status/plagued.webp'
+import Encore from '../sprites/status/encore.webp'
+import Contaminated from '../sprites/status/contaminated.webp'
+import Cruelty from '../sprites/status/cruelty.webp'
+import Portal from '../sprites/status/portal.webp'
+import CriticalCondition from '../sprites/status/critical_condition.webp'
+import Hellforge from '../sprites/status/hellforge.webp'
+import Spotlight from '../sprites/status/spotlight.webp'
 
 // Titans
-import Wildfire from '../sprites/status/wildfire.png'
+import Wildfire from '../sprites/status/wildfire.webp'
 
 // Equinox
-import Emission from '../sprites/status/emission.png'
-import Flare from '../sprites/status/flare.png'
+import Emission from '../sprites/status/emission.webp'
+import Flare from '../sprites/status/flare.webp'
 
 // Star Breaker & Weapon
-import Echo from '../sprites/status/echo.png'
+import Echo from '../sprites/status/echo.webp'
 
 // Shadow World
-import Hollowing from '../sprites/status/hollowing.png'
-import Miasma from '../sprites/status/miasma.png'
+import Hollowing from '../sprites/status/hollowing.webp'
+import Miasma from '../sprites/status/miasma.webp'
 
 export const statusSprites = {
     absorb: Absorb,

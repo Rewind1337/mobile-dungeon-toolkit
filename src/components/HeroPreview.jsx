@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, ROLE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, PERK_DEFINITIONS, MASTERWORK_MUTATION_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
-import { iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites } from '../database/db_sprites.jsx'
+import { heroSprites, iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites } from '../database/db_sprites.jsx'
 
 import Button from './Button.jsx'
 import EmptyItem from './EmptyItem.jsx'
@@ -343,7 +343,12 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
                                     <img src={iconSprites["is_starred"]} draggable={false} />
                                 </div>}
                                 <div className="flex-col">
-                                    <div className="hero-sprite"><img className="hero-sprite-img" src={heroObj.heroSrc} draggable={false} /></div>
+                                    <div className="hero-sprite">
+                                        <img className="hero-sprite-img"
+                                            src={heroObj.heroSrc ?? heroSprites[heroObj.id] ?? heroSprites["null"]}
+                                            draggable={false}
+                                        />
+                                    </div>
                                     <div className="input-wrapper">
                                         <input type='number' className='' value={selectedLevel} onChange={e => setSelectedLevel(e.target.value)} />
                                     </div>

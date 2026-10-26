@@ -47,7 +47,7 @@ body {
 
 body::after {
   content: "";
-  background: url("/src/sprites/seagull.png");
+  background: url("/src/sprites/seagull.webp");
   opacity: 0.33;
   mix-blend-mode: multiply;
   position: absolute;
@@ -438,71 +438,71 @@ body::after {
   cursor: pointer;
 
   &[data-id="0"] {
-    background-image: url('../sprites/simulation/maerwynn.png');
+    background-image: url('../sprites/simulation/maerwynn.webp');
   }
 
   &[data-id="1"] {
-    background-image: url('../sprites/simulation/black_forest.png');
+    background-image: url('../sprites/simulation/black_forest.webp');
   }
 
   &[data-id="2"] {
-    background-image: url('../sprites/simulation/gnarogrim.png');
+    background-image: url('../sprites/simulation/gnarogrim.webp');
   }
 
   &[data-id="3"] {
-    background-image: url('../sprites/simulation/stumble_steppe.png');
+    background-image: url('../sprites/simulation/stumble_steppe.webp');
   }
 
   &[data-id="4"] {
-    background-image: url('../sprites/simulation/split_canyon.png');
+    background-image: url('../sprites/simulation/split_canyon.webp');
   }
 
   &[data-id="5"] {
-    background-image: url('../sprites/simulation/sunburn_desert.png');
+    background-image: url('../sprites/simulation/sunburn_desert.webp');
   }
 
   &[data-id="6"] {
-    background-image: url('../sprites/simulation/skull_island.png');
+    background-image: url('../sprites/simulation/skull_island.webp');
   }
 
   &[data-id="7"] {
-    background-image: url('../sprites/simulation/sprawling_jungle.png');
+    background-image: url('../sprites/simulation/sprawling_jungle.webp');
   }
 
   &[data-id="8"] {
-    background-image: url('../sprites/simulation/mojo_mangroves.png');
+    background-image: url('../sprites/simulation/mojo_mangroves.webp');
   }
 
   &[data-id="9"] {
-    background-image: url('../sprites/simulation/northrunt.png');
+    background-image: url('../sprites/simulation/northrunt.webp');
   }
 
   &[data-id="10"] {
-    background-image: url('../sprites/simulation/shadowrock_mountain.png');
+    background-image: url('../sprites/simulation/shadowrock_mountain.webp');
   }
 
   &[data-id="11"] {
-    background-image: url('../sprites/simulation/plains_of_ozkorr.png');
+    background-image: url('../sprites/simulation/plains_of_ozkorr.webp');
   }
 
   &[data-id="12"] {
-    background-image: url('../sprites/simulation/nevermoor.png');
+    background-image: url('../sprites/simulation/nevermoor.webp');
   }
 
   &[data-id="13"] {
-    background-image: url('../sprites/simulation/rotten_lands.png');
+    background-image: url('../sprites/simulation/rotten_lands.webp');
   }
 
   &[data-id="14"] {
-    background-image: url('../sprites/simulation/busted_lands.png');
+    background-image: url('../sprites/simulation/busted_lands.webp');
   }
 
   &[data-id="15"] {
-    background-image: url('../sprites/simulation/tusk_mountain.png');
+    background-image: url('../sprites/simulation/tusk_mountain.webp');
   }
 
   &[data-id="16"] {
-    background-image: url('../sprites/simulation/magmaron.png');
+    background-image: url('../sprites/simulation/magmaron.webp');
   }
 }
 
@@ -548,27 +548,27 @@ body::after {
   }
 
   &[data-id="0"] {
-    background-image: url('../sprites/simulation/titan_fire.png');
+    background-image: url('../sprites/simulation/titan_fire.webp');
     background-position: 50% 30%;
   }
 
   &[data-id="1"] {
-    background-image: url('../sprites/simulation/titan_water.png');
+    background-image: url('../sprites/simulation/titan_water.webp');
     background-position: 50% 25%;
   }
 
   &[data-id="2"] {
-    background-image: url('../sprites/simulation/titan_nature.png');
+    background-image: url('../sprites/simulation/titan_nature.webp');
     background-position: 50% 30%;
   }
 
   &[data-id="3"] {
-    background-image: url('../sprites/simulation/titan_light.png');
+    background-image: url('../sprites/simulation/titan_light.webp');
     background-position: 50% 45%;
   }
 
   &[data-id="4"] {
-    background-image: url('../sprites/simulation/titan_shadow.png');
+    background-image: url('../sprites/simulation/titan_shadow.webp');
     background-position: 50% 40%;
   }
 }
@@ -588,42 +588,42 @@ body::after {
   }
 
   &[data-id="0"] {
-    background-image: url('../sprites/simulation/tower_lighthouse.jpg');
+    background-image: url('../sprites/simulation/tower_lighthouse.webp');
     background-position: 50% 25%;
   }
 
   &[data-id="1"] {
-    background-image: url('../sprites/simulation/tower_abandoned_tower.jpg');
+    background-image: url('../sprites/simulation/tower_abandoned_tower.webp');
     background-position: 50% 30%;
   }
 
   &[data-id="2"] {
-    background-image: url('../sprites/simulation/tower_obelisk.jpg');
+    background-image: url('../sprites/simulation/tower_obelisk.webp');
     background-position: 50% 30%;
   }
 
   &[data-id="3"] {
-    background-image: url('../sprites/simulation/tower_serpents_steeple.jpg');
+    background-image: url('../sprites/simulation/tower_serpents_steeple.webp');
     background-position: 50% 30%;
   }
 
   &[data-id="4"] {
-    background-image: url('../sprites/simulation/tower_peppermint_pillar.jpg');
+    background-image: url('../sprites/simulation/tower_peppermint_pillar.webp');
     background-position: 50% 40%;
   }
 
   &[data-id="5"] {
-    background-image: url('../sprites/simulation/tower_yggdrasil.jpg');
+    background-image: url('../sprites/simulation/tower_yggdrasil.webp');
     background-position: 50% 25%;
   }
 
   &[data-id="6"] {
-    background-image: url('../sprites/simulation/tower_decayed_cocoon.jpg');
+    background-image: url('../sprites/simulation/tower_decayed_cocoon.webp');
     background-position: 50% 30%;
   }
 
   &[data-id="7"] {
-    background-image: url('../sprites/simulation/tower_crystal_bore.jpg');
+    background-image: url('../sprites/simulation/tower_crystal_bore.webp');
     background-position: 50% 25%;
   }
 }
@@ -680,17 +680,17 @@ body::after {
   }
 
   &[data-id="0"] {
-    background-image: url('../sprites/simulation/elementor.png');
+    background-image: url('../sprites/simulation/elementor.webp');
     background-position: 50% 30%;
   }
 
   &[data-id="1"] {
-    background-image: url('../sprites/simulation/equinox.png');
+    background-image: url('../sprites/simulation/equinox.webp');
     background-position: 50% 15%;
   }
 
   &[data-id="2"] {
-    background-image: url('../sprites/simulation/star_breaker.png');
+    background-image: url('../sprites/simulation/star_breaker.webp');
     background-position: 50% 30%;
   }
 }
@@ -838,36 +838,37 @@ a {
     }
 
     &.heroes {
-      background-image: url('../sprites/splash/heroes.png');
+      background-image: url('../sprites/splash/heroes.webp');
       background-position: 50% 15%;
     }
 
     &.items {
-      background-image: url('../sprites/splash/items.png');
+      background-image: url('../sprites/splash/items.webp');
       background-position: 50% 75%;
     }
 
     &.teams {
-      background-image: url('../sprites/splash/teams.png');
+      background-image: url('../sprites/splash/teams.webp');
       background-position: 50% 65%;
     }
 
     &.chapters {
-      background-image: url('../sprites/splash/chapters.png');
+      background-image: url('../sprites/splash/chapters.webp');
       background-position: 50% 50%;
     }
 
     &.titans {
-      background-image: url('../sprites/splash/titans.png');
+      background-image: url('../sprites/splash/titans.webp');
       background-position: 50% 25%;
     }
 
     &.towers {
-      //background-image: url('../sprites/splash/towers.png');
+      background-image: url('../sprites/simulation/tower_crystal_bore.webp');
+      background-position: 70% 0%;
     }
 
     &.guildbosses {
-      background-image: url('../sprites/splash/guildbosses.png');
+      background-image: url('../sprites/splash/guildbosses.webp');
       background-position: 50% 10%;
     }
   }

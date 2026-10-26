@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import MDLogo from './sprites/logo.webp'
-import PlayaLogo from './sprites/playa_games_logo.png'
+import PlayaLogo from './sprites/playa_games_logo.webp'
 
 import NavBar from './components/NavBar.jsx'
 import Button from './components/Button.jsx'
@@ -76,38 +76,29 @@ function App() {
   // app related
   const [pageContent, setPageContent] = useState(initialState.pageContent)
 
-  const saveToLocalStorage = () => {
-    let saveState = {}
-    Object.keys(defaultState).forEach(key => {
-      if (key == "savedHeroesRef") {
-        let refData = eval(key).current; // Access state variable by name
-        saveState[key] = refData
-      } else if (key == "savedItemsRef") {
-        let refData = eval(key).current; // Access state variable by name
-        saveState[key] = {};
-        Object.keys(refData).forEach(key2 => {
-          saveState[key][key2] = [];
-          let typedArray = refData[key2]
-          saveState[key][key2] = typedArray;
-        })
-      } else {
-        saveState[key] = eval(key) // Access state variable by name
-      }
-    })
+  const saveToLocalStorage = useCallback(() => {
+    const saveState = {
+        pageContent,
+        savedHeroesRef: savedHeroesRef.current,
+        savedItemsRef: {
+            ...savedItemsRef.current
+        }
+    };
 
-    saveState = btoa(JSON.stringify(saveState))
+    const encodedState = btoa(JSON.stringify(saveState));
 
     try {
-      localStorage.setItem('mobileDungeonToolkitData', saveState)
-      console.log('Successfully saved to LocalStorage');
+        localStorage.setItem('mobileDungeonToolkitData', encodedState);
+        console.log('Successfully saved to LocalStorage');
     } catch (error) {
-      console.error('Failed to save to LocalStorage; ', error)
+        console.error('Failed to save to LocalStorage; ', error);
     }
-  }
+  }, [pageContent]);
+
 
   useEffect(() => {
-    saveToLocalStorage()
-  }, [pageContent]);
+    saveToLocalStorage();
+  }, [saveToLocalStorage]);
 
   const switchTabTo = (page) => {
     setPageContent(page)
