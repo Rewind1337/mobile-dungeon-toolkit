@@ -44,7 +44,7 @@ function PageTeams({ savedHeroesRef, manualSaveFunction }) {
                             </div>
                         </div>
                         <div className='card w-50'>
-                            <HeroList savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current}/>
+                            <HeroList savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} setSelectedHeroId={() => {console.log("click")}}/>
                         </div>
                     </>
                 }

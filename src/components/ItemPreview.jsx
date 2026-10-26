@@ -410,10 +410,10 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
                 }
 
                 {(saveItem || onEquipItem || deleteSavedItem || onExportItem) && <div className='flex-row'>
-                    {saveItem && <Button text={"Save Item"} onClick={handleSaveItem} color={1} />}
+                    {saveItem && <Button text={"Save Item"} onClick={handleSaveItem} color={"confirm"} />}
                     {onEquipItem && <Button text={"Equip Item"} onClick={handleEquipItem} color={1} />}
                     {onExportItem && <Button text={"Export Item"} onClick={() => onExportItem(getConfiguredItem())} color={1} />}
-                    {deleteSavedItem && <Button text={"Delete Item"} onClick={handleDeleteSavedItem} color={1} />}
+                    {deleteSavedItem && <Button text={"Delete Saved Item"} onClick={handleDeleteSavedItem} color={"cancel"} />}
                 </div>}
             </div>
         </div>

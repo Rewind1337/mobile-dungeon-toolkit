@@ -566,9 +566,9 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
                         </div>
                     </div>
                     {(saveHero || deleteSavedHero) && <div className='flex-row'>
-                        {saveHero && <Button text={"Save Hero"} onClick={handleSaveHero} color={0}/>}
+                        {saveHero && <Button text={"Save Hero"} onClick={handleSaveHero} color={"confirm"}/>}
                         {deleteSavedHero && <Button text={"Export Hero"} onClick={handleExportSavedHero} color={0}/>}
-                        {deleteSavedHero && <Button text={"Delete Saved Hero"} onClick={handleDeleteSavedHero} color={0}/>}
+                        {deleteSavedHero && <Button text={"Delete Saved Hero"} onClick={handleDeleteSavedHero} color={"cancel"}/>}
                     </div>}
                 </div>
             </div >
