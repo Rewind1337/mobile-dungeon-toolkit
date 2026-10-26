@@ -93,11 +93,11 @@ function PerkList({ perks, label = "Perks" }) {
     })
 
     return (
-        <section className="catalogue-perks">
+        <section className="catalogue-perks card">
             <h4 className="catalogue-section-label text">{label}</h4>
             {visiblePerks.length === 0
                 ? <p className="catalogue-muted">None recorded</p>
-                : <ul className="catalogue-perk-list">
+                : <ul className="catalogue-perk-list flex-row">
                     {visiblePerks.map((perk, index) => {
                         const key = getPerkKey(perk)
                         return (
@@ -182,32 +182,41 @@ function ItemCatalogueCard({ item, set }) {
                 <img className="catalogue-item-image" src={item.itemSrc} alt="" draggable={false} />
                 <div className="catalogue-item-heading">
                     <h3 className="catalogue-item-name header">{item.name}</h3>
-                    {unique && <span className="catalogue-unique-label text">Unique Item</span>} 
                     <div className="catalogue-item-meta-row">
+                        {unique && <span className="text">Unique ·</span>} 
                         <p className="catalogue-item-meta text">
                             {humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity")} · {humanize(item.slotLabel ?? "Unknown slot")}
                         </p>
-                        {set && <p className="catalogue-item-set text">Set: {set.name}</p>}
+                        {set && <p className="catalogue-item-set text">· Set: {set.name}</p>}
                     </div>
                     <div className="catalogue-item-source-row text">
                         <p className="catalogue-item-source">Source: {humanize(getSourceName(item.dropSource))}</p>
                         <p className="catalogue-item-location">
-                            Drop location: {getLocations(item).filter(location => location !== "Unspecified location").join(", ") || "Unspecified"}
+                            · Boosted: {getLocations(item).filter(location => location !== "Unspecified location").join(", ") || "Unspecified"}
                         </p>
                     </div>
-                    {statuses.length > 0 && (
-                        <div className="catalogue-statuses" aria-label="Statuses applied by weapon effect">
-                            {statuses.map(status => (
-                                <img className="catalogue-status-icon" key={status.key} src={status.sprite} alt={status.name} title={status.name} draggable={false} />
-                            ))}
-                        </div>
-                    )}
                 </div>
             </div>
 
             {effectDescription && (
                 <section className="catalogue-effect card">
-                    <h4 className="catalogue-section-label text">Unique effect</h4>
+                    <h4 className="catalogue-section-label text flex-row">
+                        {statuses.length > 0 && (
+                            <div className="catalogue-statuses" aria-label="Statuses applied by weapon effect">
+                                {statuses.map(status => (
+                                    <img className="catalogue-status-icon" key={status.key} src={status.sprite} alt={status.name} title={status.name} draggable={false} />
+                                ))}
+                            </div>
+                        )}
+                        <div className="text">Unique Effect</div>
+                        {statuses.length > 0 && (
+                            <div className="catalogue-statuses" aria-label="Statuses applied by weapon effect">
+                                {statuses.map(status => (
+                                    <img className="catalogue-status-icon" key={status.key} src={status.sprite} alt={status.name} title={status.name} draggable={false} />
+                                ))}
+                            </div>
+                        )}
+                        </h4>
                     <p className="catalogue-effect-description text">{effectDescription}</p>
                 </section>
             )}

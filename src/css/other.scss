@@ -198,19 +198,6 @@
   line-height: 1.2;
 }
 
-.catalogue-unique-label {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  padding: 2px 7px;
-  border: 1px solid rgba(255, 190, 70, 0.65);
-  border-radius: V.$border-radius-small;
-  background: rgba(120, 70, 0, 0.28);
-  font-size: V.$font-size-xsmall;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
 .catalogue-item-meta,
 .catalogue-item-set {
   flex: 1 1 100%;
@@ -242,18 +229,24 @@
   margin: 0;
   font-size: V.$font-size-button;
   font-weight: 700;
+  align-self: center;
+
+  > * {
+    align-self: center;
+  }
 }
 
 .catalogue-effect-description {
   white-space: normal;
-  line-height: 1.45;
+  text-align: center;
 }
 
 .catalogue-perk-list,
 .catalogue-piece-list {
   display: flex;
   flex-wrap: wrap;
-  align-items: stretch;
+  align-items: center;
+  justify-content: center;
   gap: V.$gap-small;
   list-style: none;
   margin: 0;
@@ -425,7 +418,7 @@
 .catalogue-overview-slot {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   gap: V.$gap-small;
   min-width: 0;
   padding: V.$padding-card;
@@ -691,7 +684,6 @@
 
 .hero-catalogue-portrait {
   flex: 0 0 auto;
-  width: 92px;
   display: flex;
   align-items: flex-start;
   justify-content: center;

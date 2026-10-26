@@ -72,7 +72,7 @@ function HeroCatalogueCard({ hero }) {
             </header>
 
             {skills.length > 0 && (
-                <section className="hero-catalogue-section">
+                <section className="hero-catalogue-section card">
                     <h4 className="catalogue-section-label text">Skills ({skills.length})</h4>
                     <div className="hero-catalogue-skills">
                         {skills.map((skill, index) => (
@@ -98,7 +98,7 @@ function HeroCatalogueCard({ hero }) {
             )}
 
             {talents.length > 0 && (
-                <section className="hero-catalogue-section">
+                <section className="hero-catalogue-section card">
                     <h4 className="catalogue-section-label text">Talents ({talents.length})</h4>
                     <div className="hero-catalogue-talents">
                         {talents.map(([key, talent]) => (
