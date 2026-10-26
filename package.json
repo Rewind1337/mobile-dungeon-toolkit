@@ -1,7 +1,7 @@
 {
   "name": "mobile-dungeon-toolkit",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "homepage": "https://rewind1337.github.io/mobile-dungeon-toolkit",
   "scripts": {

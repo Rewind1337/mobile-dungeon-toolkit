@@ -1,57 +1,16 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
-import ItemList from "./ItemList.jsx"
-import ItemPreview from "./ItemPreview.jsx"
+import { useState } from "react"
 import HeroList from "./HeroList.jsx"
-import HeroPreview from "./HeroPreview.jsx"
 import Button from "./Button.jsx"
-import EmptyHero from "./EmptyHero.jsx"
-import Hero from "./Hero.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 
-function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
-    const { listHeight, listRef, events } = useDynamicList(165, true);
+function PageTeams({ savedHeroesRef, manualSaveFunction }) {
+    const { listHeight, listRef } = useDynamicList(165, true);
     const [pageContent, setPageContent] = useState(0)
-    const [selectedSavedHeroId, setSelectedSavedHeroId] = useState(null)
-    const [selectedSavedItemId, setSelectedSavedItemId] = useState({ slot: null, id: null })
-    const [teams, setTeams] = useState([{ id: 0, name: "Default Team", heroes: Array(5).fill({ id: -1 }) }, { id: 1, name: "Team A", heroes: Array(5).fill({ id: -1 }) }, { id: 2, name: "Team B", heroes: Array(5).fill({ id: -1 }) }])
-    const [teamIndex, setTeamIndex] = useState(null)
-    const [heroIndex, setHeroIndex] = useState(null)
-
-
-    const handleTeamHeroClick = (teamIndex, heroIndex) => {
-        setTeamIndex(teamIndex)
-        setHeroIndex(heroIndex);
-    }
-
-    const handleSavedHeroClick = () => {
-        if (selectedSavedHeroId === null || heroIndex === null) return;
-
-        let hero = savedHeroesRef.current[selectedSavedHeroId];
-        if (!hero) return;
-
-        if (teams[teamIndex]?.heroes) {
-            const heroes = teams[teamIndex].heroes || [];
-            for (let i = 0; i < heroes.length; i++) {
-                if (heroes[i]?.id === selectedSavedHeroId) return;
-            }
-        }
-
-        setTeams(prev => {
-            const newTeams = [...prev];
-            const team = { ...newTeams[teamIndex] };
-            const heroes = team.heroes || [];
-            team.heroes = [...heroes];
-            team.heroes[heroIndex] = hero;
-            newTeams[teamIndex] = team;
-            return newTeams;
-        });
-    };
-
-    useEffect(() => {
-        if (selectedSavedHeroId !== null && heroIndex !== null) {
-            handleSavedHeroClick();
-        }
-    }, [selectedSavedHeroId])
+    const [teams, ] = useState([
+        { id: 0, name: "Default Team", heroes: Array(5).fill({ id: -1 }) },
+        { id: 1, name: "Team A", heroes: Array(5).fill({ id: -1 }) },
+        { id: 2, name: "Team B", heroes: Array(5).fill({ id: -1 }) }
+    ])
 
     return (
         <>
@@ -69,7 +28,7 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                     <>
                         <div ref={listRef} className='teams-list card flex-col w-50' style={{ maxHeight: listHeight }}>
                             <div className='header-big'>Your Teams</div>
-                            {teams.map((team, teamIndex) =>
+                            {teams.map((team) =>
                                 <div className="team card flex-col">
                                     <div className="flex-row">
                                         <Button text={"Delete Team"} autoHeight color={5} onClick={() => { }} />
@@ -77,11 +36,7 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                                         <div className="header-big">{team.name}</div>
                                     </div>
                                     <div className="flex-row">
-                                        {team.heroes[0].id === -1 ? <EmptyHero onClick={() => { handleTeamHeroClick(teamIndex, 0) }} /> : <Hero heroObj={team.heroes[0]} key={teamIndex + "-" + 0} level={1} onClick={() => { handleTeamHeroClick(teamIndex, 0) }} />}
-                                        {team.heroes[1].id === -1 ? <EmptyHero onClick={() => { handleTeamHeroClick(teamIndex, 1) }} /> : <Hero heroObj={team.heroes[1]} key={teamIndex + "-" + 1} level={1} onClick={() => { handleTeamHeroClick(teamIndex, 1) }} />}
-                                        {team.heroes[2].id === -1 ? <EmptyHero onClick={() => { handleTeamHeroClick(teamIndex, 2) }} /> : <Hero heroObj={team.heroes[2]} key={teamIndex + "-" + 2} level={1} onClick={() => { handleTeamHeroClick(teamIndex, 2) }} />}
-                                        {team.heroes[3].id === -1 ? <EmptyHero onClick={() => { handleTeamHeroClick(teamIndex, 3) }} /> : <Hero heroObj={team.heroes[3]} key={teamIndex + "-" + 3} level={1} onClick={() => { handleTeamHeroClick(teamIndex, 3) }} />}
-                                        {team.heroes[4].id === -1 ? <EmptyHero onClick={() => { handleTeamHeroClick(teamIndex, 4) }} /> : <Hero heroObj={team.heroes[4]} key={teamIndex + "-" + 4} level={1} onClick={() => { handleTeamHeroClick(teamIndex, 4) }} />}
+
                                     </div>
                                 </div>)}
                             <div className="team team-new card flex-row">
@@ -89,7 +44,7 @@ function PageTeams({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualS
                             </div>
                         </div>
                         <div className='card w-50'>
-                            <HeroList savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} setSelectedHeroId={setSelectedSavedHeroId} />
+                            <HeroList savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current}/>
                         </div>
                     </>
                 }

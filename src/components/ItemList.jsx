@@ -4,11 +4,10 @@ import { useDynamicList } from '../hooks/useDynamicList.jsx'
 import '../css/item.scss'
 
 import Item from './Item.jsx'
-import Button from './Button.jsx'
 import { filterSprites } from '../database/db_sprites.jsx'
 import ItemFilters from './ItemFilters.jsx'
 
-function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, itemType = null, setSelectedItemId, setsRef }) {
+function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, itemType = null, setSelectedItemId }) {
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
     const [filters, setFilters] = useState({
         set: null,

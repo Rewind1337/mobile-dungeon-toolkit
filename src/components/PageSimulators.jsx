@@ -1,8 +1,6 @@
 import { useState } from "react"
 import Button from "./Button.jsx"
 
-import { elementSprites } from "../database/db_sprites.jsx"
-import Hero from "./Hero.jsx"
 import SubPageGuildBoss from "./SubPageGuildBoss.jsx"
 import SubPageTitans from "./SubPageTitans.jsx"
 import SubPageTowers from "./SubPageTowers.jsx"

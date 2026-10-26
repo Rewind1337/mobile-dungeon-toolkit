@@ -5,8 +5,6 @@ import HeroList from "./HeroList.jsx"
 import HeroPreview from "./HeroPreview.jsx"
 import Button from "./Button.jsx"
 import Modal from "./Modal.jsx"
-import { POSSIBLE_PERKS } from "../database/enums.jsx"
-import { createSavedItemRecord } from "../database/ids.jsx"
 
 function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
     const [pageContent, setPageContent] = useState(0)
@@ -24,7 +22,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
 
     useEffect(() => {
         setEquippedItems(Array.isArray(activeHero?.items) ? [...activeHero.items] : [])
-    }, [pageContent, selectedHeroId, selectedSavedHeroId])
+    }, [pageContent, selectedHeroId, selectedSavedHeroId, activeHero?.items])
 
     const clearHeroSelection = () => { setSelectedHeroId(null) }
 

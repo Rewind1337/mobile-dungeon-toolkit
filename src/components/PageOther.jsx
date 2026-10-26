@@ -2,10 +2,12 @@ import { useMemo, useState } from "react"
 import Button from "./Button.jsx"
 import SubPageDrops from "./SubPageDrops.jsx"
 
+const EMPTY_ITEM_DATA = {}
+
 function PageOther({ itemsRef }) {
     const [activeTab, setActiveTab] = useState("drops")
-    const itemData = itemsRef?.current?.BASE_ITEMS ?? {}
-    const sets = itemsRef?.current?.ITEM_SETS ?? []
+    const itemData = itemsRef?.current?.BASE_ITEMS ?? EMPTY_ITEM_DATA
+const sets = itemsRef?.current?.ITEM_SETS ?? []
 
     const overview = useMemo(() => {
         const items = Object.values(itemData).flatMap(value => Array.isArray(value) ? value : [])

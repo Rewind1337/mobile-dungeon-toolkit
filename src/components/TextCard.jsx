@@ -1,7 +1,4 @@
-import { memo, useState } from 'react'
-import Button from './Button.jsx'
-
-function TextCard({ text, prefix, suffix, title, onClick, className, children }) {
+function TextCard({ text, prefix, suffix, title, className, children }) {
     return (
         <div className={'text-card flex-col ' + className} title={title}>
             <div className='flex-row w-100'>

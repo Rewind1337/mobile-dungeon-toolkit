@@ -7,7 +7,7 @@ import { POSSIBLE_PERKS } from "../database/enums.jsx"
 import { createSavedItemRecord } from "../database/ids.jsx"
 import Modal from "./Modal.jsx"
 
-function PageItems({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
+function PageItems({ itemsRef, savedItemsRef, manualSaveFunction }) {
     const [pageContent, setPageContent] = useState(0)
     const [selectedItemId, setSelectedItemId] = useState({ slot: null, id: null })
     const [selectedSavedItemId, setSelectedSavedItemId] = useState({ slot: null, id: null })

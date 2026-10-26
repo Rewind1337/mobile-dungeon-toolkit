@@ -56,7 +56,7 @@ function TowerStage({ id, towerId, setSelectedStage, heroesRef }) {
     </div>
 }
 
-function SubPageTowers({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef }) {
+function SubPageTowers({ heroesRef }) {
     const { listHeight, listRef, events } = useDynamicList(0, true);
     const [selectedTower, setSelectedTower] = useState(null);
     const [selectedStage, setSelectedStage] = useState(null);

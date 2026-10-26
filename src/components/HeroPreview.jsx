@@ -192,7 +192,15 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
             defence: heroObj?.stats?.defence ?? 1234,
             agility: heroObj?.stats?.agility ?? 1234
         })
-    }, [selectedHeroId, heroObj?.id, heroObj?.saveId])
+    }, [selectedHeroId,
+        heroObj?.id,
+        heroObj?.saveId,
+        heroObj?.level,
+        heroObj?.stats?.health,
+        heroObj?.stats?.attack,
+        heroObj?.stats?.defence,
+        heroObj?.stats?.agility]
+    )
 
     const renderHeroSkills = () => {
         return heroObj.skills.map((skill, index) => (
@@ -223,7 +231,8 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
         </div>
     }
 
-    // unused atm, using renderSkillStatusEffects instead
+    // unused atm, using renderSkillStatusEffects instead on each skill
+    /*
     const renderAllHeroStatusEffects = () => {
         let statusEffectSprites = []
         for (let i = 0; i < heroObj.skills.length; i++) { // each skill
@@ -240,6 +249,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
             {statusEffectSprites.map(src => <img width={48} src={src}/>)}
         </div>
     }
+    */
 
     const renderHeroTalents = () => {
         let talents = []
@@ -327,7 +337,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
                             </div>
                         }
                         <div className='flex-col hero'>
-                            <div className={"hero card selected"} data-rarity={heroObj.rarity} data-element={heroObj.element} onClick={() => { onClick() }} >
+                            <div className={"hero card selected"} data-rarity={heroObj.rarity} data-element={heroObj.element}>
                                 <div className="hero-element"><img src={heroObj.elementSrc} draggable={false} /></div>
                                 {heroObj.isStarred === true && <div className="hero-starred">
                                     <img src={iconSprites["is_starred"]} draggable={false} />

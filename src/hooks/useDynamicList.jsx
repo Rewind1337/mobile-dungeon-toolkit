@@ -7,17 +7,17 @@ export function useDynamicList(extraHeight = 0, enableDraggable = true) {
     const listRef = useRef(null);
     const { events } = useDraggable(listRef, { applyRubberBandEffect: false, active: enableDraggable && !!listRef.current });
 
-    function onResize() {
-        let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5;
-        if (window.matchMedia('(max-width: 900px)').matches) {
-            newHeight = window.innerHeight - (CONSTANTS.listHeightMobile + (listRef.current?.offsetTop || 0)) + extraHeight;
-        } else {
-            newHeight = window.innerHeight - (CONSTANTS.listHeightDefault + (listRef.current?.offsetTop || 0)) + extraHeight;
-        }
-        setListHeight(newHeight);
-    }
-
     useLayoutEffect(() => {
+        function onResize() {
+            let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5;
+            if (window.matchMedia('(max-width: 900px)').matches) {
+                newHeight = window.innerHeight - (CONSTANTS.listHeightMobile + (listRef.current?.offsetTop || 0)) + extraHeight;
+            } else {
+                newHeight = window.innerHeight - (CONSTANTS.listHeightDefault + (listRef.current?.offsetTop || 0)) + extraHeight;
+            }
+            setListHeight(newHeight);
+        }
+
         window.addEventListener('resize', onResize);
         onResize();
         return () => window.removeEventListener('resize', onResize);

@@ -39,7 +39,7 @@ function Chapter({ id, name, setSelectedChapter }) {
     </div>
 }
 
-function SubPageChapters({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef }) {
+function SubPageChapters() {
     const { listHeight, listRef } = useDynamicList(0, true);
     const [selectedChapter, setSelectedChapter] = useState(null);
 

@@ -18,7 +18,7 @@ function Titan({ id, name, elementSrc, setSelectedTitan }) {
     </div>
 }
 
-function SubPageTitans({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef }) {
+function SubPageTitans() {
     const { listHeight, listRef } = useDynamicList(0, true);
     const [selectedTitan, setSelectedTitan] = useState(null);
 

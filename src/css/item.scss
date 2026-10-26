@@ -37,6 +37,7 @@
   flex-grow: 1;
   justify-content: space-between;
   align-items: center;
+  flex-basis: 49%;
 
   .text {
     text-align: center;
@@ -45,8 +46,8 @@
   }
 
   .perk-name {
-    flex-basis: 10%;
-    min-width: 100px;
+    flex-basis: 20%;
+    min-width: 200px;
   }
 
   input.text {
@@ -69,7 +70,7 @@
 
   .perk-not-changeable, button {
     flex-basis: 20%;
-    min-width: 100px;
+    min-width: 200px;
   }
 }
 

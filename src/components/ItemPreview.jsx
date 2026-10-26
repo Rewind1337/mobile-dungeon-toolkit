@@ -9,13 +9,38 @@ import ItemPerk from './ItemPerk.jsx'
 
 import '../css/item.scss'
 
+const SLOT_INDEX_TO_NAME_MAP = {
+    0: "WEAPONS",
+    1: "HELMETS",
+    2: "ARMORS",
+    3: "NECKLACES",
+    4: "RINGS"
+}
+
+function hasSetBonusOrUniqueEffect(item) {
+    return (
+        (item?.unique !== undefined && item?.unique !== null && item.unique !== 0) ||
+        (item?.set !== undefined && item?.set !== null && item.set !== -1)
+    )
+}
+
+function makePerkSlots(item, rarity) {
+    const count = getItemPerkCount(rarity, hasSetBonusOrUniqueEffect(item))
+    const existingPerks = Array.isArray(item?.perks) ? item.perks : []
+    const existingValues = Array.isArray(item?.perkValues) ? item.perkValues : []
+
+    return {
+        perks: Array.from({ length: count }, (_, index) => existingPerks[index] || "NOTHING"),
+        values: Array.from({ length: count }, (_, index) => Number(existingValues[index] ?? 0))
+    }
+}
+
 function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, onEquipItem, setsRef }) {
     const MAIN_STAT_PERK_KEYS = {
         attack: { flat: "ATTACK_FLAT", percent: "ATTACK_PERCENT" },
         defence: { flat: "DEFENCE_FLAT", percent: "DEFENCE_PERCENT" },
         agility: { flat: "AGILITY_FLAT", percent: "AGILITY_PERCENT" }
     }
-    const slotIndexToNameMap = { 0: "WEAPONS", 1: "HELMETS", 2: "ARMORS", 3: "NECKLACES", 4: "RINGS" }
     const [itemObj, setItemObj] = useState(null)
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
@@ -50,22 +75,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
         return () => window.removeEventListener('resize', onResize)
     }, [])
 
-    const hasSetBonusOrUniqueEffect = (item) => (
-        (item?.unique !== undefined && item?.unique !== null && item.unique !== 0) ||
-        (item?.set !== undefined && item?.set !== null && item.set !== -1)
-    )
-
     const getPerkKey = (perk) => Object.keys(PERK_DEFINITIONS).find(key => PERK_DEFINITIONS[key].id === perk.id) ?? "NOTHING"
-
-    const makePerkSlots = (item, rarity) => {
-        const count = getItemPerkCount(rarity, hasSetBonusOrUniqueEffect(item))
-        const existingPerks = Array.isArray(item?.perks) ? item.perks : []
-        const existingValues = Array.isArray(item?.perkValues) ? item.perkValues : []
-        return {
-            perks: Array.from({ length: count }, (_, index) => existingPerks[index] || "NOTHING"),
-            values: Array.from({ length: count }, (_, index) => Number(existingValues[index] ?? 0))
-        }
-    }
 
     useEffect(() => {
         if (selectedItemId.slot === null || selectedItemId.id === null) {
@@ -73,7 +83,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
             return
         }
 
-        const slotName = slotIndexToNameMap[selectedItemId.slot]
+        const slotName = SLOT_INDEX_TO_NAME_MAP[selectedItemId.slot]
         const selectedItem = slotName ? itemsRef[slotName]?.find(item => item.id === selectedItemId.id) : null
         if (!selectedItem) {
             setItemObj(null)
