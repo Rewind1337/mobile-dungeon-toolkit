@@ -93,6 +93,8 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                 window.history.replaceState({}, "", cleanUrl)
             }
         }, 0)
+    // This effect intentionally handles a share token only once on initial page load.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const clearHeroSelection = () => { setSelectedHeroId(null) }
