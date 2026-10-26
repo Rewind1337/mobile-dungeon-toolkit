@@ -6,11 +6,16 @@ import ItemPerk from "./ItemPerk.jsx"
 import { POSSIBLE_PERKS } from "../database/enums.jsx"
 import { createSavedItemRecord } from "../database/ids.jsx"
 import Modal from "./Modal.jsx"
+import { createItemShareToken, decodeItemShareInput, decodeItemsShareInput, restoreSharedItem, restoreSharedItems } from "../utils/heroShare.js"
 
-function PageItems({ itemsRef, savedItemsRef, manualSaveFunction }) {
+function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
     const [pageContent, setPageContent] = useState(0)
     const [selectedItemId, setSelectedItemId] = useState({ slot: null, id: null })
     const [selectedSavedItemId, setSelectedSavedItemId] = useState({ slot: null, id: null })
+    const [itemImportModalVisible, setItemImportModalVisible] = useState(false)
+    const [itemShareInput, setItemShareInput] = useState("")
+    const [itemShareUrl, setItemShareUrl] = useState("")
+    const [itemShareLinkCopied, setItemShareLinkCopied] = useState(false)
 
     const [perkSelectionVisible, setPerkSelectionVisible] = useState(false)
     const [possiblePerks, setPossiblePerks] = useState([])
@@ -67,6 +72,97 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction }) {
         if (manualSaveFunction) manualSaveFunction()
     }
 
+    const buildItemShareUrl = (item) => {
+        const baseUrl = import.meta.env.BASE_URL
+        const basePath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`
+        const url = new URL(`${basePath}items/`, window.location.origin)
+        url.searchParams.set("item", createItemShareToken(item))
+        return url.toString()
+    }
+
+    const handleExportItem = (item) => {
+        try {
+            setItemShareUrl(buildItemShareUrl(item))
+            setItemShareLinkCopied(false)
+        } catch (error) {
+            window.alert(error.message || "Could not export this item.")
+        }
+    }
+
+    const handleCopyItemLink = async () => {
+        if (!itemShareUrl) return
+        try {
+            await navigator.clipboard.writeText(itemShareUrl)
+            setItemShareLinkCopied(true)
+        } catch {
+            window.alert("Copying was blocked by your browser. Select and copy the link manually.")
+        }
+    }
+
+    const saveImportedItems = (items) => {
+        const nextSavedItems = { ...savedItemsRef.current }
+        for (const item of items) {
+            if (!item) continue
+            const slotArray = slotIndexToNameMap[Number(item.slot)]
+            if (!slotArray) continue
+            nextSavedItems[slotArray] = [...(nextSavedItems[slotArray] ?? []), createSavedItemRecord(item)]
+        }
+        savedItemsRef.current = nextSavedItems
+        setSavedItemsRevision(revision => revision + 1)
+        if (manualSaveFunction) manualSaveFunction()
+    }
+
+    const handleImportItemLink = async (input = itemShareInput, forcedType = null) => {
+        if (!String(input ?? "").trim()) {
+            window.alert("Paste an item share link or its encoded data.")
+            return
+        }
+        if (onImportStatusChange) onImportStatusChange("Importing Item...")
+        await new Promise(resolve => window.setTimeout(resolve, 0))
+        try {
+            const baseItems = itemsRef.current.BASE_ITEMS
+            if (forcedType === "items") {
+                const payload = decodeItemsShareInput(input)
+                const restoredItems = restoreSharedItems(payload, baseItems)
+                saveImportedItems(restoredItems)
+            } else if (forcedType === "item") {
+                const payload = decodeItemShareInput(input)
+                saveImportedItems([restoreSharedItem(payload, baseItems)])
+            } else {
+                try {
+                    const payload = decodeItemsShareInput(input)
+                    saveImportedItems(restoreSharedItems(payload, baseItems))
+                } catch {
+                    const payload = decodeItemShareInput(input)
+                    saveImportedItems([restoreSharedItem(payload, baseItems)])
+                }
+            }
+            setItemImportModalVisible(false)
+            setItemShareInput("")
+        } catch (error) {
+            window.alert(error.message || "Could not import this item.")
+        } finally {
+            if (onImportStatusChange) onImportStatusChange("")
+        }
+    }
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search)
+        const itemToken = params.get("item")
+        const itemsToken = params.get("items")
+        if (!itemToken && !itemsToken) return
+
+        const token = itemsToken ?? itemToken
+        const type = itemsToken ? "items" : "item"
+        handleImportItemLink(token, type).finally(() => {
+            params.delete("item")
+            params.delete("items")
+            const query = params.toString()
+            const cleanUrl = window.location.pathname + (query ? `?${query}` : "") + window.location.hash
+            window.history.replaceState({}, "", cleanUrl)
+        })
+    }, [])
+
     const deleteSavedItem = (itemObj) => {
         const slotArray = slotIndexToNameMap[itemObj?.slot]
         if (!slotArray || !itemObj) return
@@ -92,6 +188,28 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction }) {
 
     return (
         <>
+            <Modal position="left" isVisible={itemImportModalVisible} onClose={() => setItemImportModalVisible(false)}>
+                <div className="flex-col card w-100">
+                    <div className="header">Import Item</div>
+                    <div className="text">Paste an item share link, an equipped-items link, or the encoded data itself.</div>
+                    <textarea
+                        rows={4}
+                        value={itemShareInput}
+                        onChange={event => setItemShareInput(event.target.value)}
+                        placeholder="https://…/items/?item=…"
+                        aria-label="Item share link"
+                    />
+                    <Button text={"Import Item"} color={1} onClick={() => handleImportItemLink()} />
+                </div>
+            </Modal>
+            <Modal position="left" isVisible={Boolean(itemShareUrl)} onClose={() => setItemShareUrl("")}>
+                <div className="flex-col card w-100">
+                    <div className="header">Export Item</div>
+                    <div className="text">Share this link to import this configured item into Saved Items.</div>
+                    <textarea rows={4} value={itemShareUrl} readOnly onFocus={event => event.target.select()} aria-label="Item share link" />
+                    <Button text={itemShareLinkCopied ? "Link Copied!" : "Copy Item Link"} color={1} onClick={handleCopyItemLink} />
+                </div>
+            </Modal>
             <Modal position="left" isVisible={perkSelectionVisible} onClose={() => {
                 setPendingPerkSelection(null)
                 setPerkSelectionVisible(false)
@@ -115,6 +233,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction }) {
                 <div className="pagination flex-row card w-100">
                     <Button text={"All Items"} color={1} onClick={() => { setPageContent(0) }} />
                     <Button text={"Your Saved Items"} color={1} onClick={() => { setPageContent(1) }} />
+                    <Button text={"Import Item"} color={1} onClick={() => setItemImportModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">
                     <Button text={"Manual Save"} color={5} onClick={() => { manualSaveFunction() }} />
@@ -140,6 +259,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction }) {
                                 selectedItemId={selectedItemId}
                                 onPerkClick={handlePerkClick}
                                 saveItem={saveItem}
+                                onExportItem={handleExportItem}
                             />
                         </div>
                     </>
@@ -164,6 +284,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction }) {
                                 onPerkClick={handlePerkClick}
                                 saveItem={saveItem}
                                 deleteSavedItem={deleteSavedItem}
+                                onExportItem={handleExportItem}
                             />
                         </div>
                     </>
