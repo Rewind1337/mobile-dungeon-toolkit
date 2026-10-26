@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import Button from "./Button.jsx"
-import SubPageDrops from "./SubPageDrops.jsx"
-import SubPageHeroes from "./SubPageHeroes.jsx"
+import SubPageItemCatalogue from "./SubPageItemCatalogue.jsx"
+import SubPageHeroCatalogue from "./SubPageHeroCatalogue.jsx"
 
 import "../css/other.scss"
 import "../css/hero.scss"
@@ -54,10 +54,10 @@ function PageOther({ itemsRef, heroesRef }) {
                 }}
             >
                 {activeTab === "drops" && (
-                    <SubPageDrops itemsRef={itemData} setsRef={sets} />
+                    <SubPageItemCatalogue itemsRef={itemData} setsRef={sets} />
                 )}
                 {activeTab === "heroes" && (
-                    <SubPageHeroes heroesRef={heroes} />
+                    <SubPageHeroCatalogue heroesRef={heroes} />
                 )}
             </div>
         </div>
