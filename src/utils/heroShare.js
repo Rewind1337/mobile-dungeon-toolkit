@@ -42,6 +42,8 @@ function compactItem(item) {
     for (const [shortKey, field] of Object.entries(fields)) {
         const value = item[field]
         if (value === undefined) continue
+        if (shortKey === "w" && Number(value) === 0) continue
+        if (shortKey === "d" && value === false) continue
 
         if (shortKey === "b" && (!Array.isArray(value) || value.length === 0 || value.every(entry => Number(entry) === 0))) {
             continue
