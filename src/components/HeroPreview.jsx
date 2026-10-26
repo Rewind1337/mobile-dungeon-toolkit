@@ -491,17 +491,21 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
                                 <div className="hero-element">
                                     <img
                                         src={heroObj.elementSrc ?? elementSprites[heroObj.element]}
+                                        loading="eager"
+                                        decoding="async"
                                         draggable={false}
                                         alt=""
                                     />
                                 </div>
                                 {heroObj.isStarred === true && <div className="hero-starred">
-                                    <img src={iconSprites["is_starred"]} draggable={false} />
+                                    <img src={iconSprites["is_starred"]} loading="eager" decoding="async" draggable={false} />
                                 </div>}
                                 <div className="flex-col">
                                     <div className="hero-sprite">
                                         <img className="hero-sprite-img"
                                             src={heroObj.heroSrc ?? heroSprites[heroObj.id] ?? heroSprites["null"]}
+                                            loading="eager"
+                                            decoding="async"
                                             draggable={false}
                                         />
                                     </div>
@@ -530,7 +534,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
                         ].map(slot => {
                             const item = equippedItems[slot.id]
                             return item
-                                ? <Item key={slot.id} itemObj={item} level={item.level ?? 1} onClick={() => onItemClick(slot.id)} />
+                                ? <Item key={slot.id} itemObj={item} level={item.level ?? 1} loading="eager" onClick={() => onItemClick(slot.id)} />
                                 : <EmptyItem key={slot.id} onClick={() => onItemClick(slot.id)} />
                         })}
                     </div>
