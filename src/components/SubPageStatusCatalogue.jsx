@@ -278,7 +278,9 @@ function SubPageStatusCatalogue() {
             const searchable = `${status.name} ${description} ${status.effectType ?? ""} ${JSON.stringify(status)}`.toLowerCase()
             return (!query || searchable.includes(query))
                 && (categoryFilter === "all"
-                    || (categoryFilter === "special" ? category.startsWith("Special") : category.toLowerCase() === categoryFilter))
+                    || (categoryFilter === "special"
+                        ? category.startsWith("Special")
+                        : category.toLowerCase().endsWith(categoryFilter)))
         })
     }, [statuses, search, categoryFilter])
 
