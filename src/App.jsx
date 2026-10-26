@@ -170,12 +170,12 @@ function App() {
               <div className="header">Looks like you've flown off course.</div>
               <p className="text">We couldn't find the page you were looking for.</p>
               <nav className="not-found-links flex-row w-100" aria-label="Toolkit pages">
-                <a className="not-found-link" data-color="0" href={`${import.meta.env.BASE_URL}heroes/`}>Heroes</a>
-                <a className="not-found-link" data-color="1" href={`${import.meta.env.BASE_URL}items/`}>Items</a>
-                <a className="not-found-link" data-color="2" href={`${import.meta.env.BASE_URL}teams/`}>Teams</a>
-                <a className="not-found-link" data-color="3" href={import.meta.env.BASE_URL}>Home</a>
-                <a className="not-found-link" data-color="4" href={`${import.meta.env.BASE_URL}simulators/`}>Simulators</a>
-                <a className="not-found-link" data-color="5" href={`${import.meta.env.BASE_URL}other/`}>Other Stuff</a>
+                <Button className="not-found-link" text="Heroes" color={0} onClick={() => switchTabTo('heroes')} />
+                <Button className="not-found-link" text="Items" color={1} onClick={() => switchTabTo('items')} />
+                <Button className="not-found-link" text="Teams" color={2} onClick={() => switchTabTo('teams')} />
+                <Button className="not-found-link" text="Home" color={3} onClick={() => switchTabTo('splash')} />
+                <Button className="not-found-link" text="Simulators" color={4} onClick={() => switchTabTo('simulator')} />
+                <Button className="not-found-link" text="Other Stuff" color={5} onClick={() => switchTabTo('other')} />
               </nav>
             </section>
           </main>
