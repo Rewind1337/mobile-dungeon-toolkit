@@ -35,13 +35,14 @@ function add_weapon(name, fixedPerks, unique, rarity, attributeRequirement, main
         throw new Error(`Duplicate stable weapon ID "${id}". Give this weapon a distinct name/key.`)
     }
     unique = (unique != undefined ? unique : UNIQUE_WEAPON_DEFINITIONS.NOTHING)
+    const isUnique = Boolean(unique)
     let perkAmount = getItemPerkCount(rarity, Boolean(unique))
     let perks = Array(perkAmount).fill("NOTHING")
     BASE_ITEMS.WEAPONS.push({
-        id: id, slot: EQUIPMENT_SLOT_DEFINITIONS.WEAPON.id, name: name, fixedPerks: fixedPerks, unique: unique, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
+        id: id, slot: EQUIPMENT_SLOT_DEFINITIONS.WEAPON.id, name: name, fixedPerks: fixedPerks, unique: unique, isUnique: isUnique, rarity: rarity, attributeRequirement: attributeRequirement, mainAttribute: mainAttribute,
         itemSrc: (itemSprites[normalizedName] !== undefined ? itemSprites[normalizedName] : itemSprites["null"]),
-        iconSrc: (unique ? iconSprites["unique"] : null),
-        iconType: (unique ? "unique" : "null"),
+        iconSrc: (isUnique ? iconSprites["unique"] : null),
+        iconType: (isUnique ? "unique" : "null"),
         perks: perks,
         dropSource: dropSource,
         dropLocation: dropLocation

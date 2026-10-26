@@ -404,8 +404,8 @@ export const UNIQUE_WEAPON_DEFINITIONS = {
     RUST_BINDER: { id: 111, description: "Critical Hits have a $e chance to inflinct Bleeding on the target for 2 turns.", rarityEffect: [1.36, 1.45, 1.54, 1.63] },
     MAGMA_EDGE: { id: 112, description: "+$e damage on targets with Burn.", rarityEffect: [1.05, 1.06, 1.08, 1.10] },
     ROTTEN_MAUL: { id: 113, description: "Ultimate Skill has a $e chance to grant self 20% extra AP.", rarityEffect: [1.32, 1.40, 1.48, 1.56] },
-    HOOK_HAMMER: { id: 114, description: "Increases Defense by $e in turn 1 and every 2 turns.", rarityEffect: [1.05, 1.06, 1.08, 1.10] },
-    TITANS_MAUL: { id: 115, description: "Primary Skill deals $e Defense as true damage to 2 adjancent targets.", rarityEffect: [1.08, 1.10, 1.12, 1.14] },
+    HOOK_HAMMER: { id: 114, description: "Increases Defence by $e in turn 1 and every 2 turns.", rarityEffect: [1.05, 1.06, 1.08, 1.10] },
+    TITANS_MAUL: { id: 115, description: "Primary Skill deals $e Defence as true damage to 2 adjacent targets.", rarityEffect: [1.08, 1.10, 1.12, 1.14] },
     EARTH_BREAKER: { id: 116, description: "Primary Skill has a $e chance to inflinct AGI Down on target for 2 turns.", rarityEffect: [1.24, 1.30, 1.36, 1.42] },
     PROBLEM_SOLVER: { id: 117, description: "+$e Critical Damage on targets with Bleeding.", rarityEffect: [1.12, 1.15, 1.18, 1.21] },
     HARMONY: { id: 118, description: "All inflicted debuffs that cause damage over time have a $e chance to last 1 extra turn.", rarityEffect: [1.40, 1.50, 1.60, 1.70] },
@@ -418,7 +418,7 @@ export const UNIQUE_WEAPON_DEFINITIONS = {
     EMBRYONIC_CATALYST: { id: 200, description: "Cast Buffs (except Invincibility & Preservation) have a $e chance to last 1 extra turn.", rarityEffect: [1.30, 1.36, 1.43, 1.50] },
     PEST_BRINGER: { id: 201, description: "Primary Skill has a $e chance to inflinct Poison on target for 2 turns.", rarityEffect: [1.30, 1.36, 1.43, 1.50] },
     MIASMA_STAFF: { id: 202, description: "Deals $e extra true damage in turn 1 and every 3 turns.", rarityEffect: [1.08, 1.10, 1.12, 1.14] },
-    FIRE_STARTER: { id: 203, description: "Primary Skill deals $e Attack as true damage to 1 adjancent target.", rarityEffect: [1.11, 1.15, 1.19, 1.23] },
+    FIRE_STARTER: { id: 203, description: "Primary Skill deals $e Attack as true damage to 1 adjacent target.", rarityEffect: [1.11, 1.15, 1.19, 1.23] },
     ICILE: { id: 204, description: "+$e Critical Chance on targets with Freeze", rarityEffect: [1.16, 1.20, 1.24, 1.28] },
     LIFE_CATALYST: { id: 205, description: "Critical hits heal all allies by $e of damage dealt.", rarityEffect: [1.05, 1.06, 1.08, 1.10] },
     ARCANE_CODEX: { id: 206, description: "Ultimate Skill has a $e chance to grant self AGI Up for 2 turns.", rarityEffect: [1.36, 1.45, 1.54, 1.63] },
@@ -436,6 +436,7 @@ export const UNIQUE_WEAPON_DEFINITIONS = {
     DUALITY: { id: 218, description: "Ultimate Skill heals the ally with the lowest HP by $e of total damage dealt.", rarityEffect: [1.08, 1.10, 1.12, 1.14] },
     DOOM_ROD: { id: 219, description: "Ultimate Skill has a $e chance to inflict Bound on target for 1 turn.", rarityEffect: [1.12, 1.15, 1.18, 1.21] },
     SINGULARITY_TOME: { id: 220, description: "Increases Splash Damage by $e.", rarityEffect: [1.05, 1.06, 1.08, 1.10] },
+    LAVA_CATALYST: { id: 221, description: "Increases Splash Damage by $e.", rarityEffect: [1.05, 1.06, 1.08, 1.10] },
 
     // AGILITY
     BLASTER: { id: 300, description: "Critical hits heal self by $e of damage dealt.", rarityEffect: [1.07, 1.10, 1.13, 1.16] },
@@ -458,6 +459,7 @@ export const UNIQUE_WEAPON_DEFINITIONS = {
     TWILIGHT: { id: 317, description: "Critical hits have a $e chance to dispel 1 Buff from the target.", rarityEffect: [1.40, 1.50, 1.60, 1.70] },
     DICE_OF_DOOM: { id: 318, description: "Buffs (except Invincibility & Preservation) have a $e chance to extend their Duration by 1 round.", rarityEffect: [1.30, 1.36, 1.43, 1.50] },
     TUSK_FANG: { id: 319, description: "Ultimate Skill has a $e chance to grant the Caster ATK Up for 2 turns.", rarityEffect: [1.40, 1.50, 1.60, 1.70] },
+    RIFT_PIERCER: { id: 320, description: "Primary Skill has a $e chance to ignore Shields.", rarityEffect: [1.24, 1.30, 1.36, 1.42] },
 }
 
 // redundant

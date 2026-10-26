@@ -40,6 +40,12 @@ const PAGE_TO_ROUTE = {
   other: '/other/',
 };
 
+const OTHER_TAB_TO_ROUTE = {
+  'item-catalogue': '/other/item-catalogue/',
+  'hero-catalogue': '/other/hero-catalogue/',
+  'status-catalogue': '/other/status-catalogue/',
+};
+
 const normalizeRoute = (route) => {
   while (route.length > 1 && route.endsWith('/')) {
     route = route.slice(0, -1);
@@ -51,16 +57,31 @@ const ROUTE_TO_PAGE = Object.fromEntries(
   Object.entries(PAGE_TO_ROUTE).map(([page, route]) => [normalizeRoute(route), page])
 );
 
-const getPageFromPath = () => {
+const getPathWithoutBase = () => {
   const baseUrl = import.meta.env.BASE_URL;
   const basePath = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
   let pathname = window.location.pathname;
 
-  if (basePath && pathname.startsWith(basePath)) {
+  if (basePath && (pathname === basePath || pathname.startsWith(`${basePath}/`))) {
     pathname = pathname.slice(basePath.length) || '/';
   }
 
-  return ROUTE_TO_PAGE[normalizeRoute(pathname)] ?? 'notFound';
+  return normalizeRoute(pathname);
+};
+
+const getPageFromPath = () => {
+  const pathname = getPathWithoutBase();
+
+  // Catalogue subroutes are views within the existing "Other" page.
+  if (pathname.startsWith('/other/')) return 'other';
+
+  return ROUTE_TO_PAGE[pathname] ?? 'notFound';
+};
+
+const getOtherTabFromPath = () => {
+  const pathname = getPathWithoutBase();
+  return Object.entries(OTHER_TAB_TO_ROUTE).find(([, route]) => normalizeRoute(route) === pathname)?.[0]
+    ?? 'item-catalogue';
 };
 
 const defaultState = {
@@ -109,6 +130,7 @@ function App() {
 
   // app related
   const [pageContent, setPageContent] = useState(getPageFromPath)
+  const [activeOtherTab, setActiveOtherTab] = useState(getOtherTabFromPath)
   const [importStatus, setImportStatus] = useState("")
 
   const saveToLocalStorage = useCallback(() => {
@@ -132,7 +154,10 @@ function App() {
 
 
   useEffect(() => {
-    const handlePopState = () => setPageContent(getPageFromPath());
+    const handlePopState = () => {
+      setPageContent(getPageFromPath());
+      setActiveOtherTab(getOtherTabFromPath());
+    };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
@@ -151,7 +176,23 @@ function App() {
       window.history.pushState({}, '', destination);
     }
 
+    if (page === 'other') setActiveOtherTab('item-catalogue');
     setPageContent(page);
+  };
+
+  const switchOtherCatalogueTo = (tab) => {
+    const route = OTHER_TAB_TO_ROUTE[tab];
+    if (!route) return;
+
+    const baseUrl = import.meta.env.BASE_URL;
+    const destination = `${baseUrl}${route.slice(1)}`;
+
+    if (window.location.pathname !== destination) {
+      window.history.pushState({}, '', destination);
+    }
+
+    setActiveOtherTab(tab);
+    setPageContent('other');
   }
 
   return (
@@ -275,7 +316,14 @@ function App() {
 
         {pageContent === 'simulator' && <PageSimulators itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
 
-        {pageContent === 'other' && <PageOther itemsRef={itemsRef} />}
+        {pageContent === 'other' && (
+          <PageOther
+            itemsRef={itemsRef}
+            heroesRef={heroesRef}
+            activeTab={activeOtherTab}
+            onTabChange={switchOtherCatalogueTo}
+          />
+        )}
 
       </Suspense>
     </>
