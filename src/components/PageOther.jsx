@@ -3,6 +3,7 @@ import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import Button from "./Button.jsx"
 import SubPageItemCatalogue from "./SubPageItemCatalogue.jsx"
 import SubPageHeroCatalogue from "./SubPageHeroCatalogue.jsx"
+import SubPageStatusCatalogue from "./SubPageStatusCatalogue.jsx"
 
 import "../css/other.scss"
 import "../css/hero.scss"
@@ -33,6 +34,7 @@ function PageOther({ itemsRef, heroesRef }) {
                 <div className="pagination flex-row card w-100">
                     <Button text="Item Catalogue" color={5} active={activeTab === "drops"} onClick={() => setActiveTab("drops")} />
                     <Button text="Hero Catalogue" color={5} active={activeTab === "heroes"} onClick={() => setActiveTab("heroes")} />
+                    <Button text="Status Catalogue" color={5} active={activeTab === "statuses"} onClick={() => setActiveTab("statuses")} />
                 </div>
             </div>
 
