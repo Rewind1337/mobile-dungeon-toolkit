@@ -100,7 +100,7 @@ export function createHeroShareToken(hero) {
     const payload = {
         v: SHARE_FORMAT_VERSION,
         i: hero.id,
-        l: Number(hero.level) || 1,
+        l: Math.max(1, Math.trunc(Number(hero.level) || 1)),
         s: [
             Number(hero.stats?.health) || 0,
             Number(hero.stats?.attack) || 0,
