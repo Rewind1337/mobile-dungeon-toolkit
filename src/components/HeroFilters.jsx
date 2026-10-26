@@ -1,4 +1,4 @@
-import { memo, useState } from 'react'
+import { memo } from 'react'
 import Button from './Button.jsx'
 import { ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, ATTRIBUTE_DEFINITIONS, RARITY_DEFINITIONS} from '../database/enums.jsx'
 
@@ -38,8 +38,7 @@ function HeroRarityFilters({ toggleFilter, filters, filterSprites }) {
     </div>)
 }
 
-function HeroFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, clearFilters, filters, filterSprites }) {
-    const [sortOrder, setSortOrder] = useState(0) // 0 ascending, 1 descending, unused
+function HeroFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, clearFilters, filters, filterSprites, sortOrder, onToggleSort }) {
 
     if (!advanced) {
         return (
@@ -50,7 +49,7 @@ function HeroFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, cl
                 <div className="name-search-filter">
                     <input className="selectable" type="text" aria-label="Search heroes by name" placeholder="Search heroes..." value={filters.name} onChange={(event) => setSearch(event.target.value)} />
                 </div>
-                <Button className='filters-sort-button' round onClick={() => setSortOrder(sortOrder => !sortOrder)} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
+                <Button className='filters-sort-button' round onClick={onToggleSort} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
             </div>
         )
     } else {

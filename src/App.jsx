@@ -17,20 +17,9 @@ const PageSimulators = lazy(() => import('./components/PageSimulators.jsx'))
 const PageTeams = lazy(() => import('./components/PageTeams.jsx'))
 const PageOther = lazy(() => import('./components/PageOther.jsx'))
 
-import { heroSprites, itemSprites, iconSprites, elementSprites, roleSprites, attributeSprites, statusSprites } from './database/db_sprites.jsx'
-import { usePreloadImages } from './hooks/usePreloadImages.jsx'
 
 const BASE_HEROES = init_hero_db()
 const BASE_ITEMS = init_item_db()
-const PRELOAD_IMAGE_SOURCES = [
-  ...Object.values(heroSprites),
-  ...Object.values(itemSprites),
-  ...Object.values(iconSprites),
-  ...Object.values(elementSprites),
-  ...Object.values(roleSprites),
-  ...Object.values(attributeSprites),
-  ...Object.values(statusSprites),
-]
 const PAGE_TO_ROUTE = {
   splash: '/',
   heroes: '/heroes/',
@@ -84,7 +73,7 @@ const getOtherTabFromPath = () => {
     ?? 'item-catalogue';
 };
 
-const defaultState = {
+const createDefaultState = () => ({
   pageContent: 'splash',
   savedHeroesRef: [],
   savedItemsRef: {
@@ -95,31 +84,49 @@ const defaultState = {
     RINGS: [],
     OTHER: []
   },
-};
+});
+
+const isRecord = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 
 const loadInitialState = () => {
-  const savedState = localStorage.getItem('mobileDungeonToolkitData');
+  try {
+    const savedState = window.localStorage.getItem('mobileDungeonToolkitData');
+    if (!savedState) return createDefaultState();
 
-  if (savedState) {
-    try {
-      let newState = JSON.parse(JSON.stringify(defaultState))
-      const parsedState = JSON.parse(atob(savedState));
-      for (let key in parsedState) {
-        newState[key] = parsedState[key];
-      }
-      console.log('Successfully loaded Save from LocalStorage!');
-      return newState
-    } catch (error) {
-      console.error('Failed to load / parse the save from LocalStorage; ', error);
+    const parsedState = JSON.parse(atob(savedState));
+    if (!isRecord(parsedState)) {
+      throw new Error('Saved data must be an object.');
     }
-  } else {
-    console.log('No previous save found, loading default');
-    return defaultState
+
+    const defaults = createDefaultState();
+    const savedItems = isRecord(parsedState.savedItemsRef) ? parsedState.savedItemsRef : {};
+    const savedItemsRef = Object.fromEntries(
+      Object.keys(defaults.savedItemsRef).map(slot => [
+        slot,
+        Array.isArray(savedItems[slot])
+          ? savedItems[slot].filter(isRecord)
+          : defaults.savedItemsRef[slot]
+      ])
+    );
+
+    const state = {
+      ...defaults,
+      pageContent: typeof parsedState.pageContent === 'string' ? parsedState.pageContent : defaults.pageContent,
+      savedHeroesRef: Array.isArray(parsedState.savedHeroesRef)
+        ? parsedState.savedHeroesRef.filter(isRecord)
+        : defaults.savedHeroesRef,
+      savedItemsRef
+    };
+
+    console.log('Successfully loaded Save from LocalStorage!');
+    return state;
+  } catch (error) {
+    console.error('Failed to load / parse the save from LocalStorage; loading defaults instead.', error);
+    return createDefaultState();
   }
 };
 
 function App() {
-  usePreloadImages(PRELOAD_IMAGE_SOURCES);
   const [initialState] = useState(loadInitialState)
 
   const heroesRef = useRef(BASE_HEROES)

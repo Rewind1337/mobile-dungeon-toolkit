@@ -9,12 +9,14 @@ function Hero({ heroObj, selected, level, onClick }) {
             <div className="hero-element">
                 <img
                     src={heroObj.elementSrc ?? elementSprites[heroObj.element]}
+                    loading="lazy"
+                    decoding="async"
                     draggable={false}
                     alt=""
                 />
             </div>
             {heroObj.isStarred === true && <div className="hero-starred">
-                <img src={iconSprites["is_starred"]} draggable={false} />
+                <img src={iconSprites["is_starred"]} loading="lazy" decoding="async" draggable={false} />
             </div>}
             <div className="flex-col">
                 <div className="hero-sprite">
@@ -22,6 +24,8 @@ function Hero({ heroObj, selected, level, onClick }) {
                         className="hero-sprite-img"
                         draggable={false}
                         src={heroObj.heroSrc ?? heroSprites[heroObj.id] ?? heroSprites["null"]}
+                        loading="lazy"
+                        decoding="async"
                         alt=""
                     />
                 </div>

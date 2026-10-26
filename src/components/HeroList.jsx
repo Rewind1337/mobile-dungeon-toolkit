@@ -18,6 +18,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
         name: ""
     });
     const [filtersAdvanced, setFiltersAdvanced] = useState(false)
+    const [sortOrder, setSortOrder] = useState(0) // 0 alphabetical, 1 reverse alphabetical
 
     const toggleFilter = (type, value) => {
         setFilters((prev) => ({
@@ -31,21 +32,24 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
     };
 
     const filteredHeroes = useMemo(() => {
-        return heroesRef.filter((heroObj) => {
-            return (
-                (filters.element === null || heroObj.element === filters.element) &&
-                (filters.role === null || heroObj.role === filters.role) &&
-                (filters.mainAttribute === null || heroObj.mainAttribute === filters.mainAttribute) &&
-                (filters.rarity === null || heroObj.rarity === filters.rarity) &&
-                (filters.isStarred === null || heroObj.isStarred === filters.isStarred) &&
-                heroObj.name.toLowerCase().includes(filters.name.trim().toLowerCase())
-            );
+        const result = heroesRef.filter((heroObj) => (
+            (filters.element === null || heroObj.element === filters.element) &&
+            (filters.role === null || heroObj.role === filters.role) &&
+            (filters.mainAttribute === null || heroObj.mainAttribute === filters.mainAttribute) &&
+            (filters.rarity === null || heroObj.rarity === filters.rarity) &&
+            (filters.isStarred === null || heroObj.isStarred === filters.isStarred) &&
+            heroObj.name.toLowerCase().includes(filters.name.trim().toLowerCase())
+        ));
+
+        return result.sort((a, b) => {
+            const comparison = a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
+            return sortOrder === 0 ? comparison : -comparison;
         });
-    }, [heroesRef, filters]);
+    }, [heroesRef, filters, sortOrder]);
 
     return (<>
         <div className='flex-row'>
-            <HeroFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={(name) => setFilters((prev) => ({ ...prev, name }))} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} />
+            <HeroFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={(name) => setFilters((prev) => ({ ...prev, name }))} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} sortOrder={sortOrder} onToggleSort={() => setSortOrder(order => order === 0 ? 1 : 0)} />
         </div>
         <div className='header-big'>{headerText}</div>
         <div className='list hero-list flex-row' ref={listRef} {...events} style={(filtersAdvanced ? { maxHeight: (listHeight - 189)} : { maxHeight: listHeight })}>

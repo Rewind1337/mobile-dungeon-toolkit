@@ -18,6 +18,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
         name: "",
     });
     const [filtersAdvanced, setFiltersAdvanced] = useState(false)
+    const [sortOrder, setSortOrder] = useState(0) // 0 alphabetical, 1 reverse alphabetical
 
     const allItems = useMemo(() => {
         return [
@@ -53,12 +54,16 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
 
             return matchesItemType && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity && matchesName;
         });
-        return result;
-    }, [allItems, filters, itemType]);
+
+        return result.sort((a, b) => {
+            const comparison = a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
+            return sortOrder === 0 ? comparison : -comparison;
+        });
+    }, [allItems, filters, itemType, sortOrder]);
 
     return (<>
         <div className='flex-row'>
-            <ItemFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={(name) => setFilters((prev) => ({ ...prev, name }))} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} topOffset={filtersOffset} />
+            <ItemFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={(name) => setFilters((prev) => ({ ...prev, name }))} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} topOffset={filtersOffset} sortOrder={sortOrder} onToggleSort={() => setSortOrder(order => order === 0 ? 1 : 0)} />
         </div>
         <div className='header-big'>{headerText}</div>
 
