@@ -98,6 +98,22 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
     const clearHeroSelection = () => { setSelectedHeroId(null) }
 
     const saveHero = (heroObj) => {
+        const existingSaveId = heroObj?.saveId
+        const existingIndex = savedHeroesRef.current.findIndex(hero => hero.saveId === existingSaveId)
+
+        if (existingIndex !== -1) {
+            savedHeroesRef.current = savedHeroesRef.current.map(hero => (
+                hero.saveId === existingSaveId
+                    ? { ...hero, ...heroObj, saveId: existingSaveId, items: [...(heroObj.items ?? [])] }
+                    : hero
+            ))
+            setSavedHeroesRevision(revision => revision + 1)
+            setSelectedSavedHeroId(existingSaveId)
+            setPageContent(1)
+            if (manualSaveFunction) manualSaveFunction()
+            return
+        }
+
         const nextSaveId = Math.max(
             -1,
             ...savedHeroesRef.current
@@ -112,6 +128,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
         savedHeroesRef.current = [...savedHeroesRef.current, savedHero]
         setSavedHeroesRevision(revision => revision + 1)
         clearHeroSelection()
+        if (manualSaveFunction) manualSaveFunction()
     }
 
     const deleteSavedHero = (heroObj) => {
@@ -236,7 +253,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                             <HeroList savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} setSelectedHeroId={setSelectedSavedHeroId} />
                         </div>
                         <div className='card w-50' style={{ display: (selectedSavedHeroId === null) ? "none" : "block" }}>
-                            <HeroPreview heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} deleteSavedHero={deleteSavedHero} onItemClick={handleItemClick} equippedItems={equippedItems} setsRef={itemsRef.current.ITEM_SETS} />
+                            <HeroPreview heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} saveHero={saveHero} deleteSavedHero={deleteSavedHero} onItemClick={handleItemClick} equippedItems={equippedItems} setsRef={itemsRef.current.ITEM_SETS} />
                         </div>
                     </>
                 }
