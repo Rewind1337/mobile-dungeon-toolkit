@@ -1,8 +1,9 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import '../css/modal.scss'; // Assuming you have or will create a modal-specific stylesheet
 
 function Modal({ isVisible, onClose, position = 'left', children }) {
-    return (
+    return createPortal(
         <>
             <div
                 className={`modal modal-backdrop${isVisible ? ' visible' : ''}`}
@@ -16,7 +17,8 @@ function Modal({ isVisible, onClose, position = 'left', children }) {
             >
                 {children}
             </div>
-        </>
+        </>,
+        document.body
     );
 }
 
