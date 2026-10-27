@@ -13,7 +13,7 @@ function HeroElementFilters({ toggleFilter, filters, filterSprites }) {
         <Button className='filters-element-button' round onClick={() => toggleFilter('element', ELEMENT_DEFINITIONS.NATURE.id)} imgAsText text={filterSprites[3]} active={filters.element === ELEMENT_DEFINITIONS.NATURE.id} />
         <Button className='filters-element-button' round onClick={() => toggleFilter('element', ELEMENT_DEFINITIONS.LIGHT.id)} imgAsText text={filterSprites[4]} active={filters.element === ELEMENT_DEFINITIONS.LIGHT.id} />
         <Button className='filters-element-button' round onClick={() => toggleFilter('element', ELEMENT_DEFINITIONS.SHADOW.id)} imgAsText text={filterSprites[5]} active={filters.element === ELEMENT_DEFINITIONS.SHADOW.id} />
-        <MobileFilterSelect label="Element" value={filters.element} onChange={event => toggleFilter('element', event.target.value === '' ? filters.element : Number(event.target.value))} options={[{value: ELEMENT_DEFINITIONS.FIRE.id, label: 'Fire'}, {value: ELEMENT_DEFINITIONS.WATER.id, label: 'Water'}, {value: ELEMENT_DEFINITIONS.NATURE.id, label: 'Nature'}, {value: ELEMENT_DEFINITIONS.LIGHT.id, label: 'Light'}, {value: ELEMENT_DEFINITIONS.SHADOW.id, label: 'Shadow'}]} />
+        <MobileFilterSelect label="Element" value={filters.element} onChange={event => toggleFilter('element', event.target.value === '' ? null : Number(event.target.value))} options={[{value: ELEMENT_DEFINITIONS.FIRE.id, label: 'Fire'}, {value: ELEMENT_DEFINITIONS.WATER.id, label: 'Water'}, {value: ELEMENT_DEFINITIONS.NATURE.id, label: 'Nature'}, {value: ELEMENT_DEFINITIONS.LIGHT.id, label: 'Light'}, {value: ELEMENT_DEFINITIONS.SHADOW.id, label: 'Shadow'}]} />
     </div>)
 }
 
@@ -23,7 +23,7 @@ function HeroRoleFilters({ toggleFilter, filters, filterSprites }) {
         <Button className='filters-role-button' round onClick={() => toggleFilter('role', ROLE_DEFINITIONS.DEFENSIVE.id)} imgAsText text={filterSprites[11]} active={filters.role === ROLE_DEFINITIONS.DEFENSIVE.id} />
         <Button className='filters-role-button' round onClick={() => toggleFilter('role', ROLE_DEFINITIONS.CONTROL.id)} imgAsText text={filterSprites[12]} active={filters.role === ROLE_DEFINITIONS.CONTROL.id} />
         <Button className='filters-role-button' round onClick={() => toggleFilter('role', ROLE_DEFINITIONS.SUPPORT.id)} imgAsText text={filterSprites[13]} active={filters.role === ROLE_DEFINITIONS.SUPPORT.id} />
-        <MobileFilterSelect label="Role" value={filters.role} onChange={event => toggleFilter('role', event.target.value === '' ? filters.role : Number(event.target.value))} options={Object.values(ROLE_DEFINITIONS).map(option => ({value: option.id, label: option.name[0] + option.name.slice(1).toLowerCase()}))} />
+        <MobileFilterSelect label="Role" value={filters.role} onChange={event => toggleFilter('role', event.target.value === '' ? null : Number(event.target.value))} options={Object.values(ROLE_DEFINITIONS).map(option => ({value: option.id, label: option.name[0] + option.name.slice(1).toLowerCase()}))} />
     </div>)
 }
 
@@ -32,7 +32,7 @@ function HeroAttributeFilters({ toggleFilter, filters, filterSprites }) {
         <Button className='filters-attribute-button' round onClick={() => toggleFilter('mainAttribute', ATTRIBUTE_DEFINITIONS.STRENGTH.id)} imgAsText text={filterSprites[20]} active={filters.mainAttribute === ATTRIBUTE_DEFINITIONS.STRENGTH.id} />
         <Button className='filters-attribute-button' round onClick={() => toggleFilter('mainAttribute', ATTRIBUTE_DEFINITIONS.DEXTERITY.id)} imgAsText text={filterSprites[21]} active={filters.mainAttribute === ATTRIBUTE_DEFINITIONS.DEXTERITY.id} />
         <Button className='filters-attribute-button' round onClick={() => toggleFilter('mainAttribute', ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id)} imgAsText text={filterSprites[22]} active={filters.mainAttribute === ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id} />
-        <MobileFilterSelect label="Attribute" value={filters.mainAttribute} onChange={event => toggleFilter('mainAttribute', event.target.value === '' ? filters.mainAttribute : Number(event.target.value))} options={[{value: ATTRIBUTE_DEFINITIONS.STRENGTH.id, label: 'Strength'}, {value: ATTRIBUTE_DEFINITIONS.DEXTERITY.id, label: 'Dexterity'}, {value: ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id, label: 'Intelligence'}]} />
+        <MobileFilterSelect label="Attribute" value={filters.mainAttribute} onChange={event => toggleFilter('mainAttribute', event.target.value === '' ? null : Number(event.target.value))} options={[{value: ATTRIBUTE_DEFINITIONS.STRENGTH.id, label: 'Strength'}, {value: ATTRIBUTE_DEFINITIONS.DEXTERITY.id, label: 'Dexterity'}, {value: ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id, label: 'Intelligence'}]} />
     </div>)
 }
 
@@ -42,7 +42,7 @@ function HeroRarityFilters({ toggleFilter, filters, filterSprites }) {
         <Button className='filters-rarity-button' round color={"rare"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.RARE.id)} text={filterSprites[32]} active={filters.rarity === RARITY_DEFINITIONS.RARE.id} />
         <Button className='filters-rarity-button' round color={"epic"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.EPIC.id)} text={filterSprites[33]} active={filters.rarity === RARITY_DEFINITIONS.EPIC.id} />
         <Button className='filters-rarity-button' round color={"legendary"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.LEGENDARY.id)} text={filterSprites[34]} active={filters.rarity === RARITY_DEFINITIONS.LEGENDARY.id} />
-        <MobileFilterSelect label="Rarity" value={filters.rarity} onChange={event => toggleFilter('rarity', event.target.value === '' ? filters.rarity : Number(event.target.value))} options={[{value: RARITY_DEFINITIONS.UNCOMMON.id, label: 'Uncommon'}, {value: RARITY_DEFINITIONS.RARE.id, label: 'Rare'}, {value: RARITY_DEFINITIONS.EPIC.id, label: 'Epic'}, {value: RARITY_DEFINITIONS.LEGENDARY.id, label: 'Legendary'}]} />
+        <MobileFilterSelect label="Rarity" value={filters.rarity} onChange={event => toggleFilter('rarity', event.target.value === '' ? null : Number(event.target.value))} options={[{value: RARITY_DEFINITIONS.UNCOMMON.id, label: 'Uncommon'}, {value: RARITY_DEFINITIONS.RARE.id, label: 'Rare'}, {value: RARITY_DEFINITIONS.EPIC.id, label: 'Epic'}, {value: RARITY_DEFINITIONS.LEGENDARY.id, label: 'Legendary'}]} />
     </div>)
 }
 
