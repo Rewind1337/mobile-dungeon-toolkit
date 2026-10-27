@@ -73,7 +73,7 @@ function PageOther({ itemsRef, heroesRef, activeTab = "overview", onTabChange })
     return <div id="page-other-layout">
         <div className="sub-nav-bar flex-row" style={{ flex: "0 0 auto" }}>
             <div className="pagination flex-row card w-100">
-                {activeTab !== "overview" && TABS.map(([id, label]) => <Button key={id} text={label} color={5} active={id === "item-catalogue" ? activeTab === "item-catalogue" || activeTab === "set-catalogue" : activeTab === id} onClick={() => setActiveTab(id)} />)}
+                {TABS.map(([id, label]) => <Button key={id} text={label} color={5} active={id === "item-catalogue" ? activeTab === "item-catalogue" || activeTab === "set-catalogue" : activeTab === id} onClick={() => setActiveTab(id)} />)}
             </div>
         </div>
         <div id="page-other" className="page card w-100" ref={listRef} {...events} style={{ display:"flex", flexDirection:"column", alignItems:"stretch", flex:"1 1 0", minHeight:0, minWidth:0, overflowY:"auto", overflowX:"hidden", alignContent:"start" }}>
