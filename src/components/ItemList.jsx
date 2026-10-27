@@ -7,7 +7,7 @@ import Item from './Item.jsx'
 import { filterSprites } from '../database/db_sprites.jsx'
 import ItemFilters from './ItemFilters.jsx'
 import BackToTopButton from './BackToTopButton.jsx'
-import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
+import { ATTRIBUTE_DEFINITIONS, DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
 
 function getSearchableValues(value, seen = new Set()) {
     if (value === null || value === undefined) return []
@@ -63,7 +63,9 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
             const searchable = [...getSearchableValues(itemObj), itemObj.name,
                 getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? '',
                 getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? '',
-                getEnumNameById(RARITY_DEFINITIONS, Number(itemObj.rarity)) ?? '', set?.name ?? '',
+                getEnumNameById(RARITY_DEFINITIONS, Number(itemObj.rarity)) ?? '',
+                getEnumNameById(DROP_SOURCE_DEFINITIONS, Number(itemObj.dropSource)) ?? '',
+                itemObj.dropLocation ?? '', set?.name ?? '',
                 ...Object.entries(PERK_DEFINITIONS).flatMap(([key, perk]) => ([...(itemObj.fixedPerks ?? []), ...(itemObj.perks ?? [])].some(value => value && typeof value === 'object' ? value.id === perk.id : String(value).toUpperCase().replace(/\s/g, '_') === key || String(value) === String(perk.id)) ? [key, perk.name] : [])
             ].join(' ').toLowerCase()
             const searchQuery = filters.name.trim().toLowerCase()
