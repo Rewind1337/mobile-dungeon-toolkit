@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react"
 import { STATUS_EFFECT_DEFINITIONS } from "../database/enums.jsx"
 import { statusSprites } from "../database/db_sprites.jsx"
+import CheckmarkSprite from "../sprites/checkmark.webp"
+import CrossSprite from "../sprites/cross.webp"
 import Button from "./Button.jsx"
 
 const STATUS_DESCRIPTIONS = {
@@ -262,8 +264,8 @@ function StatusCard({ status }) {
             </div>
             <p className="status-catalogue-description text">{description}</p>
             <div className="status-polarity-row" aria-label="Status effect properties">
-                <span className="status-polarity" title={status.mitigatable === false ? "Not mitigatable" : "Mitigatable"}><span aria-hidden="true">{status.mitigatable === false ? "✕" : "✓"}</span><span className="text">Mitigatable</span></span>
-                <span className="status-polarity" title={status.removable === false ? "Not removable" : "Removable"}><span aria-hidden="true">{status.removable === false ? "✕" : "✓"}</span><span className="text">Removable</span></span>
+                <span className="status-polarity" title={status.mitigatable === false ? "Not mitigatable" : "Mitigatable"}><img className="status-polarity-icon" src={status.mitigatable === false ? CrossSprite : CheckmarkSprite} alt={status.mitigatable === false ? "No" : "Yes"} /><span className="text">Mitigatable</span></span>
+                <span className="status-polarity" title={status.removable === false ? "Not removable" : "Removable"}><img className="status-polarity-icon" src={status.removable === false ? CrossSprite : CheckmarkSprite} alt={status.removable === false ? "No" : "Yes"} /><span className="text">Removable</span></span>
             </div>
             {getDetails(status).length > 0 && (
                 <ul className="status-catalogue-details">
