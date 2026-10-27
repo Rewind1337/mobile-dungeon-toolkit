@@ -560,17 +560,6 @@
     justify-content: flex-end;
   }
 
-  // Sticky filters can collapse inside the scrolling Other panel on narrow screens.
-  .hero-catalogue-filters {
-    position: relative;
-    top: auto;
-    align-self: stretch;
-    flex: 0 0 auto;
-    height: auto;
-    min-height: min-content;
-    grid-auto-rows: minmax(min-content, auto);
-  }
-
   .catalogue-overview-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

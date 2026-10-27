@@ -194,6 +194,7 @@ body::after {
   }
 
   @include M.media-query-max(V.$bp-mobile, ()) {
+    padding: 3px;
     border-radius: 0;
   }
 }
