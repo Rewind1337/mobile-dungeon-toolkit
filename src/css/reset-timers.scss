@@ -1,0 +1,40 @@
+@use './_variables.scss' as V;
+@use './mixins.scss' as M;
+
+.reset-timers-row {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: V.$gap;
+  width: 100%;
+  padding: V.$gap-small V.$gap;
+}
+
+.reset-timer {
+  display: flex;
+  flex: 1 1 220px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: V.$gap;
+  max-width: 520px;
+  min-width: 0;
+  padding: V.$gap-small V.$gap;
+}
+
+.reset-timer-label {
+  font-weight: 700;
+}
+
+.reset-timer-countdown {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@include M.media-query-max(V.$bp-small) {
+  .reset-timer {
+    flex-basis: 100%;
+    max-width: none;
+  }
+}
