@@ -419,19 +419,21 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", onViewChange 
 
     return (
         <section className="item-catalogue">
-            <header className="catalogue-header">
-                <div className="catalogue-heading-copy">
-                    <div className="catalogue-title header-big">{view === "sets" ? "Set Catalogue" : "Item Catalogue"}</div>
-                    <p className="catalogue-description text">
-                        Search item names, unique-effect descriptions, fixed perks, set bonuses, rarity, source, location, and other stored item data.
-                    </p>
-                </div>
-            </header>
-
             <nav className="catalogue-view-switch" aria-label="Catalogue view">
                 <Button text="Item Catalogue" color={5} active={view === "items"} onClick={() => changeView("items")} />
                 <Button text="Set Catalogue" color={5} active={view === "sets"} onClick={() => changeView("sets")} />
             </nav>
+
+            <header className="catalogue-header">
+                <div className="catalogue-heading-copy">
+                    <div className="catalogue-title header-big">{view === "sets" ? "Set Catalogue" : "Item Catalogue"}</div>
+                    <p className="catalogue-description text">
+                        {view === "sets"
+                            ? "Browse item sets, their required attributes, drop locations, set pieces, and set bonuses."
+                            : "Search item names, unique-effect descriptions, fixed perks, rarity, drop source, location, and other stored item data."}
+                    </p>
+                </div>
+            </header>
 
             <CatalogueFilters
                 search={search}
