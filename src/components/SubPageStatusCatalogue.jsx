@@ -264,8 +264,8 @@ function StatusCard({ status }) {
             </div>
             <p className="status-catalogue-description text">{description}</p>
             <div className="status-polarity-row" aria-label="Status effect properties">
-                <span className="status-polarity" title={status.mitigatable === false ? "Not mitigatable" : "Mitigatable"}><img className="status-polarity-icon" src={status.mitigatable === false ? CrossSprite : CheckmarkSprite} alt={status.mitigatable === false ? "No" : "Yes"} /><span className="text">Mitigatable</span></span>
-                <span className="status-polarity" title={status.removable === false ? "Not removable" : "Removable"}><img className="status-polarity-icon" src={status.removable === false ? CrossSprite : CheckmarkSprite} alt={status.removable === false ? "No" : "Yes"} /><span className="text">Removable</span></span>
+                <span className="status-polarity" title={status.mitigatable === false ? "Not mitigatable" : "Mitigatable"}><img className={`status-polarity-icon${status.mitigatable === false ? " is-negative" : ""}`} src={status.mitigatable === false ? CrossSprite : CheckmarkSprite} alt={status.mitigatable === false ? "No" : "Yes"} /><span className="text">Mitigatable</span></span>
+                <span className="status-polarity" title={status.removable === false ? "Not removable" : "Removable"}><img className={`status-polarity-icon${status.removable === false ? " is-negative" : ""}`} src={status.removable === false ? CrossSprite : CheckmarkSprite} alt={status.removable === false ? "No" : "Yes"} /><span className="text">Removable</span></span>
             </div>
             {getDetails(status).length > 0 && (
                 <ul className="status-catalogue-details">
@@ -330,7 +330,7 @@ function SubPageStatusCatalogue() {
                     </select>
                 </label>
                 <div className="catalogue-filter-actions">
-                    <Button className="status-catalogue-clear" text="Clear filters" color={5} onClick={() => { setSearch(""); setCategoryFilter("all") }} />
+                    <Button className="status-catalogue-clear" text="Clear filters" color={"cancel"} onClick={() => { setSearch(""); setCategoryFilter("all") }} />
                 </div>
             </div>
 
