@@ -6,7 +6,16 @@ import '../css/hero.scss'
 import Hero from './Hero.jsx'
 import { filterSprites } from '../database/db_sprites.jsx'
 import HeroFilters from './HeroFilters.jsx';
+import BackToTopButton from './BackToTopButton.jsx';
+import { STATUS_EFFECT_DEFINITIONS } from '../database/enums.jsx';
 
+function getSearchableValues(value, seen = new Set()) {
+    if (value === null || value === undefined) return []
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return [String(value)]
+    if (typeof value !== 'object' || seen.has(value)) return []
+    seen.add(value)
+    return Object.entries(value).flatMap(([key, child]) => [key, ...getSearchableValues(child, seen)])
+}
 function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId }) {
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
     const [filters, setFilters] = useState({
@@ -38,7 +47,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
             (filters.mainAttribute === null || heroObj.mainAttribute === filters.mainAttribute) &&
             (filters.rarity === null || heroObj.rarity === filters.rarity) &&
             (filters.isStarred === null || heroObj.isStarred === filters.isStarred) &&
-            heroObj.name.toLowerCase().includes(filters.name.trim().toLowerCase())
+            (!filters.name.trim() || [...getSearchableValues(heroObj), ...Object.keys(STATUS_EFFECT_DEFINITIONS), ...Object.values(STATUS_EFFECT_DEFINITIONS).map(status => status.name), heroObj.isStarred ? 'starred' : 'not starred'].join(' ').toLowerCase().includes(filters.name.trim().toLowerCase()))
         ));
 
         return result.sort((a, b) => {
@@ -67,6 +76,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
                 ))
             )}
         </div>
+        <BackToTopButton scrollRef={listRef} />
     </>
     )
 }
