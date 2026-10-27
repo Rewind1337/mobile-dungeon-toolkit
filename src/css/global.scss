@@ -999,6 +999,7 @@ input[type="number"] {
   .filters .name-search-filter { order: 1; flex-basis: calc(100% - 60px); }
   .filters .filters-group-elements, .filters .filters-group-slots { order: 2; }
   .filters .filters-group-roles, .filters .filters-group-special { order: 3; }
+  #page-heroes .filters .filters-group-special {display: none;}
   .filters .filters-group-attributes, .filters .filters-group-rarities { flex: 1 1 calc(50% - 6px); order: 4; }
 }
 @include M.media-query(V.$bp-mobile) {

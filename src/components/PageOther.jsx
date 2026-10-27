@@ -12,9 +12,9 @@ import { ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS } from "../da
 
 const EMPTY_ITEM_DATA = {}
 const TABS = [
+    ["hero-catalogue", "Hero Catalogue"],
     ["item-catalogue", "Items & Sets"],
     ["perk-catalogue", "Perk Catalogue"],
-    ["hero-catalogue", "Hero Catalogue"],
     ["skills-talents-catalogue", "Skills & Talents"],
     ["status-catalogue", "Status Catalogue"],
 ]
