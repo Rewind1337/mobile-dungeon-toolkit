@@ -259,13 +259,13 @@ function StatusCard({ status }) {
                 }
                 <div className="status-catalogue-heading">
                     <h3 className="status-catalogue-name header">{humanize(status.name)}</h3>
-                    <span className={`catalogue-chip status-catalogue-category status-category-${category.toLowerCase().replaceAll(" ", "-")}`}>{category}</span>
+                    <span className={`catalogue-chip text status-catalogue-category status-category-${category.toLowerCase().replaceAll(" ", "-")}`}>{category}</span>
                 </div>
             </div>
             <p className="status-catalogue-description text">{description}</p>
             <div className="status-polarity-row" aria-label="Status effect properties">
-                <span className="catalogue-chip status-polarity" title={status.mitigatable === false ? "Not mitigatable" : "Mitigatable"}><img className={`status-polarity-icon${status.mitigatable === false ? " is-negative" : ""}`} src={status.mitigatable === false ? CrossSprite : CheckmarkSprite} alt={status.mitigatable === false ? "No" : "Yes"} /><span>Mitigatable</span></span>
-                <span className="catalogue-chip status-polarity" title={status.removable === false ? "Not removable" : "Removable"}><img className={`status-polarity-icon${status.removable === false ? " is-negative" : ""}`} src={status.removable === false ? CrossSprite : CheckmarkSprite} alt={status.removable === false ? "No" : "Yes"} /><span>Removable</span></span>
+                <span className={`catalogue-chip text status-polarity ${status.mitigatable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.mitigatable === false ? "Not mitigatable" : "Mitigatable"}><img className={`status-polarity-icon${status.mitigatable === false ? " is-negative" : ""}`} src={status.mitigatable === false ? CrossSprite : CheckmarkSprite} alt={status.mitigatable === false ? "No" : "Yes"} /><span>Mitigatable</span></span>
+                <span className={`catalogue-chip text status-polarity ${status.removable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.removable === false ? "Not removable" : "Removable"}><img className={`status-polarity-icon${status.removable === false ? " is-negative" : ""}`} src={status.removable === false ? CrossSprite : CheckmarkSprite} alt={status.removable === false ? "No" : "Yes"} /><span>Removable</span></span>
             </div>
             {getDetails(status).length > 0 && (
                 <ul className="status-catalogue-details">
