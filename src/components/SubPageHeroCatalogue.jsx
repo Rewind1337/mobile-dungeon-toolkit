@@ -227,7 +227,7 @@ function SubPageHeroCatalogue({ heroesRef }) {
                     </select>
                 </label>
                 <div className="catalogue-filter-actions">
-                    <Button text="Clear filters" color={5} onClick={clearFilters} />
+                    <Button text="Clear filters" color={"cancel"} onClick={clearFilters} />
                 </div>
             </div>
 
