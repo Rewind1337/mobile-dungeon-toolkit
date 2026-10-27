@@ -2,7 +2,9 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { CONSTANTS } from '../database/constants.jsx'
 import { DEFAULT_MASTERWORK_MUTATIONS, MASTERWORK_MUTATION_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, getEnumNameById, getItemPerkCount, getMaxMasterworkLevel } from '../database/enums.jsx'
-import { attributeSprites, iconSprites } from '../database/db_sprites.jsx'
+import { attributeSprites, iconSprites, filterSprites } from '../database/db_sprites.jsx'
+import ExpandSrc from '../sprites/expand.webp'
+import CrossSrc from '../sprites/cross.png'
 
 import Button from './Button.jsx'
 import ItemPerk from './ItemPerk.jsx'
@@ -35,7 +37,7 @@ function makePerkSlots(item, rarity) {
     }
 }
 
-function ItemPreview({ isFullWidth = false, onToggleFullWidth, itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, onEquipItem, onExportItem, setsRef }) {
+function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, onEquipItem, onExportItem, setsRef }) {
     const MAIN_STAT_PERK_KEYS = {
         attack: { flat: "ATTACK_FLAT", percent: "ATTACK_PERCENT" },
         defence: { flat: "DEFENCE_FLAT", percent: "DEFENCE_PERCENT" },
@@ -219,7 +221,10 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, itemsRef, selecte
 
     return (
         <div ref={listRef} className='item-preview flex-col' style={{ maxHeight: listHeight }}>
-            <div className='preview-top-row flex-row'><Button className='preview-back-button preview-action-chip catalogue-chip' prefix={isFullWidth ? '☷' : '⤢'} title={isFullWidth ? 'Show item list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} /></div>
+            <div className='preview-top-row flex-row'>
+                <Button className='preview-back-button preview-action-chip catalogue-chip' prefix={<img className="preview-direction-icon" src={ExpandSrc} alt="" style={{ transform: isFullWidth ? 'rotate(-90deg)' : 'rotate(90deg)' }} />} title={isFullWidth ? 'Show item list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} />
+                <Button className='preview-close-button preview-action-chip catalogue-chip' prefix={<img className="preview-close-icon" src={CrossSrc} alt="" />} title='Deselect this item and close the preview' text='Deselect Item' onClick={onClosePreview} color='cancel' />
+            </div>
             <div className='item-preview-metadata'>
                 <span className='catalogue-chip text item-preview-slot'>
                     {iconSprites[String(SLOT_INDEX_TO_NAME_MAP[itemObj.slot] ?? '').toLowerCase()] && <img className='catalogue-chip-icon' src={iconSprites[String(SLOT_INDEX_TO_NAME_MAP[itemObj.slot] ?? '').toLowerCase()]} alt='' />}
