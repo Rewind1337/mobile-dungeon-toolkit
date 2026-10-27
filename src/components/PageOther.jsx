@@ -6,6 +6,7 @@ import SubPageHeroCatalogue from "./SubPageHeroCatalogue.jsx"
 import SubPageStatusCatalogue from "./SubPageStatusCatalogue.jsx"
 import SubPageSkillsTalentsCatalogue from "./SubPageSkillsTalentsCatalogue.jsx"
 import SubPagePerkCatalogue from "./SubPagePerkCatalogue.jsx"
+import BackToTopButton from "./BackToTopButton.jsx"
 import "../css/other.scss"
 import "../css/hero.scss"
 import { ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS } from "../database/enums.jsx"
@@ -85,6 +86,7 @@ function PageOther({ itemsRef, heroesRef, activeTab = "overview", onTabChange })
             {activeTab === "skills-talents-catalogue" && <SubPageSkillsTalentsCatalogue heroes={heroes} />}
             {activeTab === "status-catalogue" && <SubPageStatusCatalogue />}
         </div>
+        <BackToTopButton scrollRef={listRef} />
     </div>
 }
 export default PageOther
