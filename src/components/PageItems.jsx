@@ -9,7 +9,7 @@ import Modal from "./Modal.jsx"
 import { createItemShareToken, decodeItemShareInput, decodeItemsShareInput, restoreSharedItem, restoreSharedItems } from "../utils/heroShare.js"
 
 function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
-    const [pageContent, setPageContent] = useState(0)
+    const [pageContent, setPageContent] = useState(0)\n    useEffect(() => { setPreviewFullWidth(false) }, [pageContent])
     const [previewFullWidth, setPreviewFullWidth] = useState(false)
     const [selectedItemId, setSelectedItemId] = useState({ slot: null, id: null })
     const [selectedSavedItemId, setSelectedSavedItemId] = useState({ slot: null, id: null })
