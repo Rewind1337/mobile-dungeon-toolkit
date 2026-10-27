@@ -9,21 +9,46 @@ const stringify = value => {
 
 function SkillCard({ hero, skill }) {
     return <article className="hero-catalogue-skill card">
-        <div className="hero-catalogue-skill-heading"><h3 className="header">{skill.name || "Unnamed skill"}</h3><span className="text">{hero.name}</span></div>
-        <div className="catalogue-meta-row text">
-            {skill.level != null && <span>Level {skill.level}</span>}
-            {skill.cooldown != null && <span>Cooldown: {skill.cooldown}</span>}
+        <div className="hero-catalogue-skill-heading">
+            <h3 className="header">{skill.name || "Unnamed skill"}</h3>
+            <span className="text">{hero.name}</span>
         </div>
+        {skill.cooldown != null && <div className="catalogue-meta-row text"><span>Cooldown: {skill.cooldown}</span></div>}
         {skill.description && <p className="text">{skill.description}</p>}
         {skill.effect != null && <details className="hero-catalogue-details"><summary>Effect data</summary><pre className="hero-catalogue-code">{stringify(skill.effect)}</pre></details>}
     </article>
 }
 
+function getTalentPosition(talentId) {
+    const id = String(talentId)
+    const row = Number(id[0])
+    const side = id.endsWith("0") ? "Center" : id.endsWith("1") ? "Left" : "Right"
+    return `Row #${row} - ${side}`
+}
+
+const humanizeKey = key => String(key).replaceAll("_", " ").replace(/\b\w/g, letter => letter.toUpperCase())
+
+function TalentEffect({ effect }) {
+    const entries = (Array.isArray(effect) ? effect : [effect]).flatMap(value => {
+        if (value && typeof value === "object" && !Array.isArray(value)) return Object.entries(value)
+        return [["Effect", value]]
+    })
+    return <dl className="talent-effect-list">
+        {entries.map(([key, value], index) => <div className="talent-effect-entry" key={key + "-" + index}>
+            <dt className="text">{humanizeKey(key)}</dt>
+            <dd className="text">{typeof value === "object" && value !== null ? stringify(value) : String(value)}</dd>
+        </div>)}
+    </dl>
+}
+
 function TalentCard({ hero, talent, talentId }) {
     return <article className="hero-catalogue-talent card">
-        <div className="hero-catalogue-skill-heading"><h3 className="header">{talent.name || "Unnamed talent"}</h3><span className="text">{hero.name}</span></div>
-        <div className="catalogue-meta-row text"><span>Talent {talentId}</span>{talent.active != null && <span>{talent.active ? "Active" : "Passive"}</span>}</div>
-        {talent.effect != null && <pre className="hero-catalogue-code">{stringify(talent.effect)}</pre>}
+        <div className="hero-catalogue-skill-heading">
+            <h3 className="header">{talent.name || "Unnamed talent"}</h3>
+            <span className="text">{hero.name}</span>
+        </div>
+        <div className="catalogue-meta-row text"><span>{getTalentPosition(talentId)}</span>{talent.active != null && <span>{talent.active ? "Active" : "Passive"}</span>}</div>
+        {talent.effect != null && <TalentEffect effect={talent.effect} />}
     </article>
 }
 
