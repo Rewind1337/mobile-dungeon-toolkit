@@ -219,7 +219,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, itemsRef, selecte
 
     return (
         <div ref={listRef} className='item-preview flex-col' style={{ maxHeight: listHeight }}>
-            <div className='preview-top-row flex-row'><Button title={isFullWidth ? 'Show item list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} /></div>
+            <div className='preview-top-row flex-row'><Button className='preview-back-button' title={isFullWidth ? 'Show item list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} /></div>
             <div className='header-big'>{itemObj.name}</div>
             <div className='flex-col'>
                 <div className='flex-row'>
