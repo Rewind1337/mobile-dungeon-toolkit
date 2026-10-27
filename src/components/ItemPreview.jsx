@@ -225,7 +225,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, itemsRef, selecte
                     {iconSprites[String(SLOT_INDEX_TO_NAME_MAP[itemObj.slot] ?? '').toLowerCase()] && <img className='catalogue-chip-icon' src={iconSprites[String(SLOT_INDEX_TO_NAME_MAP[itemObj.slot] ?? '').toLowerCase()]} alt='' />}
                     {getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? SLOT_INDEX_TO_NAME_MAP[itemObj.slot] ?? 'Unknown slot'}
                 </span>
-                <h2 className='catalogue-chip text header item-preview-name' data-rarity={selectedRarity}>{itemObj.name}</h2>
+                <div className='catalogue-chip text header item-preview-name' data-rarity={selectedRarity}>{itemObj.name}</div>
                 <span className={'catalogue-chip text item-preview-attribute ' + (Number(itemObj.attributeRequirement) === 1 ? 'catalogue-chip-attribute-strength' : Number(itemObj.attributeRequirement) === 2 ? 'catalogue-chip-attribute-dexterity' : Number(itemObj.attributeRequirement) === 3 ? 'catalogue-chip-attribute-intelligence' : '')}>
                     {attributeSprites[Number(itemObj.attributeRequirement)] && <img className='catalogue-chip-icon' src={attributeSprites[Number(itemObj.attributeRequirement)]} alt='' />}
                     {getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? 'Attribute not specified'}
