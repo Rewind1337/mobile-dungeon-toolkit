@@ -73,7 +73,9 @@ const getPageFromPath = () => {
   // Catalogue subroutes are views within the existing Info page. Keep short root-level aliases working too.
   if (pathname === '/info' || pathname.startsWith('/info/') || pathname === '/other' || pathname.startsWith('/other/')
       || pathname === '/hero-catalogue' || pathname.startsWith('/hero-catalogue/')
-      || pathname === '/resources-catalogue' || pathname.startsWith('/resources-catalogue/')) return 'info';
+      || pathname === '/resources-catalogue' || pathname.startsWith('/resources-catalogue/')
+      || pathname === '/skills-catalogue' || pathname.startsWith('/skills-catalogue/')
+      || pathname === '/talents-catalogue' || pathname.startsWith('/talents-catalogue/')) return 'info';
 
   return ROUTE_TO_PAGE[pathname] ?? 'notFound';
 };
@@ -87,7 +89,9 @@ const getInfoTabFromPath = () => {
     '/hero-catalogue/banners': 'hero-banners-catalogue',
     '/info/skills-talents-catalogue': 'skills-catalogue',
     '/info/skills-catalogue': 'skills-catalogue',
+    '/skills-catalogue': 'skills-catalogue',
     '/info/talents-catalogue': 'talents-catalogue',
+    '/talents-catalogue': 'talents-catalogue',
     '/info/resources-catalogue': 'resources-catalogue',
     '/resources-catalogue': 'resources-catalogue',
     '/resources-catalogue/resources': 'resources-catalogue',
