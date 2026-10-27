@@ -149,7 +149,7 @@ function formatStatValue(value) {
     return Number.isInteger(rounded) ? String(rounded) : String(rounded)
 }
 
-function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onItemClick, equippedItems = [], setsRef = [] }) {
+function HeroPreview({ isFullWidth = false, onToggleFullWidth, heroesRef, selectedHeroId, saveHero, deleteSavedHero, onItemClick, equippedItems = [], setsRef = [] }) {
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
     const [showSkillsAndTalents, setShowSkillsAndTalents] = useState(false)
@@ -422,6 +422,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
     } else {
         return (
             <div ref={listRef} className='hero-preview flex-col' style={{ maxHeight: listHeight }}>
+                <div className='preview-top-row flex-row'><Button title={isFullWidth ? 'Show hero list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} /></div>
                 <Modal position="center" isVisible={exportModalVisible} onClose={() => setExportModalVisible(false)}>
                     <div className="flex-col card w-100">
                         <div className="header-big margin-auto">Export Hero</div>
