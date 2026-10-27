@@ -6,8 +6,17 @@ import '../css/item.scss'
 import Item from './Item.jsx'
 import { filterSprites } from '../database/db_sprites.jsx'
 import ItemFilters from './ItemFilters.jsx'
+import BackToTopButton from './BackToTopButton.jsx'
+import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
 
-function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, itemType = null, setSelectedItemId }) {
+function getSearchableValues(value, seen = new Set()) {
+    if (value === null || value === undefined) return []
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return [String(value)]
+    if (typeof value !== 'object' || seen.has(value)) return []
+    seen.add(value)
+    return Object.entries(value).flatMap(([key, child]) => [key, ...getSearchableValues(child, seen)])
+}
+function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, setsRef = [], itemType = null, setSelectedItemId }) {
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
     const [filters, setFilters] = useState({
         set: null,
@@ -50,7 +59,14 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
             const matchesSlot = filters.slot === null || itemObj.slot === filters.slot;
             const matchesAttribute = filters.attributeRequirement === null || itemObj.attributeRequirement === filters.attributeRequirement;
             const matchesRarity = filters.rarity === null || itemObj.rarity === filters.rarity;
-            const matchesName = itemObj.name.toLowerCase().includes(filters.name.trim().toLowerCase());
+            const set = (setsRef ?? []).find(setEntry => setEntry.id === itemObj.set)
+            const searchable = [...getSearchableValues(itemObj), itemObj.name,
+                getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? '',
+                getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? '',
+                getEnumNameById(RARITY_DEFINITIONS, Number(itemObj.rarity)) ?? '', set?.name ?? '',
+                ...Object.entries(PERK_DEFINITIONS).flatMap(([key, perk]) => (itemObj.fixedPerks ?? []).some(value => value.id === perk.id) ? [key, perk.name] : [])
+            ].join(' ').toLowerCase()
+            const matchesName = !filters.name.trim() || searchable.includes(filters.name.trim().toLowerCase());
 
             return matchesItemType && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity && matchesName;
         });
@@ -59,7 +75,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
             const comparison = a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
             return sortOrder === 0 ? comparison : -comparison;
         });
-    }, [allItems, filters, itemType, sortOrder]);
+    }, [allItems, filters, itemType, sortOrder, setsRef]);
 
     return (<>
         <div className='flex-row'>
@@ -81,6 +97,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                 ))
             )}
         </div>
+        <BackToTopButton scrollRef={listRef} />
     </>
     )
 }
