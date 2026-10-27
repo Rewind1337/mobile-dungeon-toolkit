@@ -8,6 +8,7 @@ import {
 } from "../database/enums.jsx"
 import Button from "./Button.jsx"
 import Hero from "./Hero.jsx"
+import { attributeSprites, roleSprites } from "../database/db_sprites.jsx"
 
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
     rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
@@ -65,11 +66,17 @@ function HeroCatalogueCard({ hero }) {
                     <Hero heroObj={hero} selected={false} level={null} onClick={() => {}} />
                 </div>
                 <div className="hero-catalogue-heading">
-                    <h3 className="hero-catalogue-name header" data-rarity={hero.rarity}>{hero.name}</h3>
+                    <h3 className="hero-catalogue-name catalogue-chip header text" data-rarity={hero.rarity}>{hero.name}</h3>
                     <div className="hero-catalogue-meta-row">
-                        <span className="catalogue-chip catalogue-chip-rarity" data-rarity={hero.rarity}>{humanize(rarity)}</span>
-                        <span className={`catalogue-chip catalogue-chip-attribute catalogue-chip-attribute-${String(attribute).toLowerCase()}`}>{humanize(attribute)}</span>
-                        <span className={`catalogue-chip catalogue-chip-role catalogue-chip-role-${String(role).toLowerCase()}`}>{humanize(role)}</span>
+                        <span className="catalogue-chip catalogue-chip-rarity text" data-rarity={hero.rarity}>{humanize(rarity)}</span>
+                        <span className={`catalogue-chip catalogue-chip-attribute catalogue-chip-attribute-${String(attribute).toLowerCase()} text`}>
+                            {typeof attributeSprites[Number(hero.mainAttribute)] === "string" && <img className="catalogue-chip-icon" src={attributeSprites[Number(hero.mainAttribute)]} alt="" />}
+                            {humanize(attribute)}
+                        </span>
+                        <span className={`catalogue-chip catalogue-chip-role catalogue-chip-role-${String(role).toLowerCase()} text`}>
+                            <img className="catalogue-chip-icon" src={roleSprites[Number(hero.role)]} alt="" />
+                            {humanize(role)}
+                        </span>
                     </div>
                     {hero.variant && <p className="hero-catalogue-variant text">Variant: {hero.variant}</p>}
                 </div>
