@@ -1107,6 +1107,7 @@ input[type="number"] {
 .item-preview-metadata { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: V.$gap-small; min-width: 0; }
 .item-preview-name { text-align: center; }
 .item-preview-slot, .item-preview-attribute { flex: 0 1 auto; }
+.item-preview-metadata .catalogue-chip { flex-shrink: 1; }
 .preview-top-row .preview-action-chip { display: inline-flex; flex: 0 1 auto; align-items: center; justify-content: center; gap: V.$gap-small; min-width: 0; min-height: 24px; padding: 3px 7px; border: 1px solid rgba(255,255,255,.14); border-radius: V.$border-radius-small; background: rgba(0,0,0,.2); box-shadow: none; }
 .preview-top-row .preview-action-chip .icon-left { display: inline-flex; flex: 0 0 auto; align-items: center; }
 .preview-top-row .preview-action-chip .text { white-space: normal; }
