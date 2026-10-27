@@ -3,6 +3,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, ROLE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, PERK_DEFINITIONS, MASTERWORK_MUTATION_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
 import { heroSprites, iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites, elementSprites } from '../database/db_sprites.jsx'
+import ExpandSrc from '../sprites/expand.webp'
+import CrossSrc from '../sprites/cross.png'
 
 import Button from './Button.jsx'
 import Modal from './Modal.jsx'
@@ -494,8 +496,8 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
         return (
             <div ref={listRef} className='hero-preview flex-col' style={{ maxHeight: listHeight }}>
                 <div className='preview-top-row flex-row'>
-                    <Button className='preview-back-button preview-action-chip catalogue-chip' prefix={isFullWidth ? '☷' : '⤢'} title={isFullWidth ? 'Show hero list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} />
-                    <Button className='preview-close-button preview-action-chip catalogue-chip' prefix='×' title='Deselect this hero and close the preview' text='Deselect Hero' onClick={onClosePreview} color='cancel' />
+                    <Button className='preview-back-button preview-action-chip catalogue-chip' prefix={<img className="preview-direction-icon" src={ExpandSrc} alt="" style={{ transform: isFullWidth ? 'rotate(-90deg)' : 'rotate(90deg)' }} />} title={isFullWidth ? 'Show hero list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} />
+                    <Button className='preview-close-button preview-action-chip catalogue-chip' prefix={<img className="preview-close-icon" src={CrossSrc} alt="" />} title='Deselect this hero and close the preview' text='Deselect Hero' onClick={onClosePreview} color='cancel' />
                 </div>
                 <Modal position="center" isVisible={exportModalVisible} onClose={() => setExportModalVisible(false)}>
                     <div className="flex-col card w-100">
