@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react"
 
 import { ATTRIBUTE_DEFINITIONS, DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
-import { perkSprites, statusSprites } from "../database/db_sprites.jsx"
+import { attributeSprites, iconSprites, perkSprites, statusSprites } from "../database/db_sprites.jsx"
 import Button from "./Button.jsx"
 import Item from "./Item.jsx"
 
@@ -17,6 +17,8 @@ const RARITY_NAMES = Object.fromEntries(
 const PERK_NAMES = Object.fromEntries(
     Object.entries(PERK_DEFINITIONS).map(([key, perk]) => [key, perk.name ?? key])
 )
+const SLOT_ICON_KEYS = { WEAPON: "weapons", HELMET: "helmets", ARMOR: "armors", NECKLACE: "necklaces", RING: "rings" }
+const ATTRIBUTE_ICON_KEYS = { strength: 1, dexterity: 2, intelligence: 3 }
 
 const humanize = value => String(value ?? "")
     .replaceAll("_", " ")
@@ -214,8 +216,14 @@ function ItemCatalogueCard({ item, set }) {
                     <h3 className="catalogue-item-name catalogue-chip catalogue-chip-name header text">{item.name}</h3>
                     <div className="catalogue-item-meta-row">
                         <div className="catalogue-item-meta text">
-                            <span className="catalogue-chip text">{humanize(item.slotLabel ?? "Unknown slot")}</span>
-                            <span className={`catalogue-chip text catalogue-chip-attribute ${getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("strength") ? "catalogue-chip-attribute-strength" : getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("dexterity") ? "catalogue-chip-attribute-dexterity" : getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("intelligence") ? "catalogue-chip-attribute-intelligence" : ""}`}>Attribute: {getAttributeRequirementLabel(item.attributeRequirement)}</span>
+                            <span className="catalogue-chip text">
+                                {iconSprites[SLOT_ICON_KEYS[String(item.slotLabel ?? "").toUpperCase()]] && <img className="catalogue-chip-icon" src={iconSprites[SLOT_ICON_KEYS[String(item.slotLabel ?? "").toUpperCase()]]} alt="" />}
+                                {humanize(item.slotLabel ?? "Unknown slot")}
+                            </span>
+                            <span className={`catalogue-chip text catalogue-chip-attribute ${getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("strength") ? "catalogue-chip-attribute-strength" : getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("dexterity") ? "catalogue-chip-attribute-dexterity" : getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("intelligence") ? "catalogue-chip-attribute-intelligence" : ""}`}>
+                                {attributeSprites[ATTRIBUTE_ICON_KEYS[getAttributeRequirementLabel(item.attributeRequirement).toLowerCase()]] && <img className="catalogue-chip-icon" src={attributeSprites[ATTRIBUTE_ICON_KEYS[getAttributeRequirementLabel(item.attributeRequirement).toLowerCase()]]} alt="" />}
+                                Attribute: {getAttributeRequirementLabel(item.attributeRequirement)}
+                            </span>
                         </div>
                         {set && <p className="catalogue-item-set catalogue-chip text">Set: {set.name}</p>}
                     </div>
@@ -254,7 +262,10 @@ function SetCatalogueCard({ set, pieces }) {
         <article className="catalogue-set-card card">
             <header className="catalogue-set-header">
                 <h3 className="catalogue-set-name catalogue-chip catalogue-chip-name header text">{set.name}</h3>
-                <p className={`catalogue-set-requirement catalogue-chip text catalogue-chip-attribute ${getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("strength") ? "catalogue-chip-attribute-strength" : getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("dexterity") ? "catalogue-chip-attribute-dexterity" : getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("intelligence") ? "catalogue-chip-attribute-intelligence" : ""}`}>Required attribute: {getAttributeRequirementLabel(set.attributeRequirement)}</p>
+                <p className={`catalogue-set-requirement catalogue-chip text catalogue-chip-attribute ${getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("strength") ? "catalogue-chip-attribute-strength" : getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("dexterity") ? "catalogue-chip-attribute-dexterity" : getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("intelligence") ? "catalogue-chip-attribute-intelligence" : ""}`}>
+                    {attributeSprites[ATTRIBUTE_ICON_KEYS[getAttributeRequirementLabel(set.attributeRequirement).toLowerCase()]] && <img className="catalogue-chip-icon" src={attributeSprites[ATTRIBUTE_ICON_KEYS[getAttributeRequirementLabel(set.attributeRequirement).toLowerCase()]]} alt="" />}
+                    Required attribute: {getAttributeRequirementLabel(set.attributeRequirement)}
+                </p>
                 <div className="catalogue-set-meta flex-row justify-center text">
                     <span className="catalogue-chip text">{getDropSourceLabel(set.dropSource, locations)}</span>
                 </div>
