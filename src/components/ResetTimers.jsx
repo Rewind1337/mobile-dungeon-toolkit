@@ -10,12 +10,15 @@ function getNextDailyReset(now = new Date()) {
 
 function formatRemaining(milliseconds) {
     const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000))
-    const days = Math.floor(totalSeconds / 86400)
-    const hours = Math.floor((totalSeconds % 86400) / 3600)
-    const minutes = Math.floor((totalSeconds % 3600) / 60)
-    const seconds = totalSeconds % 60
-    const clock = [hours, minutes, seconds].map(value => String(value).padStart(2, "0")).join(":")
-    return days > 0 ? `${days}d ${clock}` : clock
+    const units = [
+        ["day", Math.floor(totalSeconds / 86400)],
+        ["hour", Math.floor((totalSeconds % 86400) / 3600)],
+        ["minute", Math.floor((totalSeconds % 3600) / 60)],
+        ["second", totalSeconds % 60],
+    ]
+    return units
+        .map(([unit, value]) => `${value} ${unit}${value === 1 ? "" : "s"}`)
+        .join(", ")
 }
 
 function ResetTimers() {
