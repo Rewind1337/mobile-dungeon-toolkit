@@ -17,9 +17,9 @@ function MobileFilterSelect({ label, value, onChange, options }) {
 
 function ItemSetUniqueFilters({ toggleFilter, filters, filterSprites }) {
     return (<div className='filter-group filters-group-special flex-row'>
-        <Button className='filters-special-button' round onClick={() => toggleFilter('unique', 'unique')} imgAsText text={filterSprites[42]} active={filters.unique === 'unique'} />
-        <Button className='filters-special-button' round onClick={() => toggleFilter('set', 'twoset')} imgAsText text={filterSprites[40]} active={filters.set === 'twoset'} />
-        <Button className='filters-special-button' round onClick={() => toggleFilter('set', 'fourset')} imgAsText text={filterSprites[41]} active={filters.set === 'fourset'} />
+        <Button title="Unique items" className='filters-special-button' round onClick={() => toggleFilter('unique', 'unique')} imgAsText text={filterSprites[42]} active={filters.unique === 'unique'} />
+        <Button title="Items with 2-piece sets" className='filters-special-button' round onClick={() => toggleFilter('set', 'twoset')} imgAsText text={filterSprites[40]} active={filters.set === 'twoset'} />
+        <Button title="Items with 4-piece sets" className='filters-special-button' round onClick={() => toggleFilter('set', 'fourset')} imgAsText text={filterSprites[41]} active={filters.set === 'fourset'} />
         <div className="mobile-filter-specials flex-row justify-between">
             <MobileFilterSelect label="Unique" value={filters.unique} onChange={event => toggleFilter('unique', event.target.value === '' ? null : event.target.value)} options={[{value: 'unique', label: 'Unique'}]} />
             <MobileFilterSelect label="Set" value={filters.set} onChange={event => toggleFilter('set', event.target.value === '' ? null : event.target.value)} options={[{value: 'twoset', label: '2-piece set'}, {value: 'fourset', label: '4-piece set'}]} /></div>
@@ -28,20 +28,20 @@ function ItemSetUniqueFilters({ toggleFilter, filters, filterSprites }) {
 
 function ItemSlotFilters({ toggleFilter, filters, filterSprites }) {
     return (<div className='filter-group filters-group-slots flex-row'>
-        <Button className='filters-slot-button' round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.WEAPON.id)} imgAsText text={filterSprites[43]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.WEAPON.id} />
-        <Button className='filters-slot-button' round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.HELMET.id)} imgAsText text={filterSprites[44]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.HELMET.id} />
-        <Button className='filters-slot-button' round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.ARMOR.id)} imgAsText text={filterSprites[45]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.ARMOR.id} />
-        <Button className='filters-slot-button' round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.RING.id)} imgAsText text={filterSprites[46]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.RING.id} />
-        <Button className='filters-slot-button' round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.NECKLACE.id)} imgAsText text={filterSprites[47]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.NECKLACE.id} />
+        <Button title="Weapon" className='filters-slot-button' round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.WEAPON.id)} imgAsText text={filterSprites[43]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.WEAPON.id} />
+        <Button title="Helmet" className='filters-slot-button' round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.HELMET.id)} imgAsText text={filterSprites[44]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.HELMET.id} />
+        <Button title="Armor" className='filters-slot-button' round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.ARMOR.id)} imgAsText text={filterSprites[45]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.ARMOR.id} />
+        <Button title="Ring" className='filters-slot-button' round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.RING.id)} imgAsText text={filterSprites[46]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.RING.id} />
+        <Button title="Necklace" className='filters-slot-button' round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.NECKLACE.id)} imgAsText text={filterSprites[47]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.NECKLACE.id} />
         <MobileFilterSelect label="Slot" value={filters.slot} onChange={event => toggleFilter('slot', event.target.value === '' ? null : Number(event.target.value))} options={Object.values(EQUIPMENT_SLOT_DEFINITIONS).filter(option => option.id !== EQUIPMENT_SLOT_DEFINITIONS.OTHER.id).map(option => ({value: option.id, label: option.name[0] + option.name.slice(1).toLowerCase()}))} />
     </div>)
 }
 
 function ItemAttributeFilters({ toggleFilter, filters, filterSprites }) {
     return (<div className='filter-group filters-group-attributes flex-row'>
-        <Button className='filters-attribute-button' round onClick={() => toggleFilter('attributeRequirement', ATTRIBUTE_DEFINITIONS.STRENGTH.id)} imgAsText text={filterSprites[20]} active={filters.attributeRequirement === ATTRIBUTE_DEFINITIONS.STRENGTH.id} />
-        <Button className='filters-attribute-button' round onClick={() => toggleFilter('attributeRequirement', ATTRIBUTE_DEFINITIONS.DEXTERITY.id)} imgAsText text={filterSprites[21]} active={filters.attributeRequirement === ATTRIBUTE_DEFINITIONS.DEXTERITY.id} />
-        <Button className='filters-attribute-button' round onClick={() => toggleFilter('attributeRequirement', ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id)} imgAsText text={filterSprites[22]} active={filters.attributeRequirement === ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id} />
+        <Button title="Strength requirement" className='filters-attribute-button' round onClick={() => toggleFilter('attributeRequirement', ATTRIBUTE_DEFINITIONS.STRENGTH.id)} imgAsText text={filterSprites[20]} active={filters.attributeRequirement === ATTRIBUTE_DEFINITIONS.STRENGTH.id} />
+        <Button title="Dexterity requirement" className='filters-attribute-button' round onClick={() => toggleFilter('attributeRequirement', ATTRIBUTE_DEFINITIONS.DEXTERITY.id)} imgAsText text={filterSprites[21]} active={filters.attributeRequirement === ATTRIBUTE_DEFINITIONS.DEXTERITY.id} />
+        <Button title="Intelligence requirement" className='filters-attribute-button' round onClick={() => toggleFilter('attributeRequirement', ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id)} imgAsText text={filterSprites[22]} active={filters.attributeRequirement === ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id} />
         <MobileFilterSelect label="Attribute" value={filters.attributeRequirement} onChange={event => toggleFilter('attributeRequirement', event.target.value === '' ? null : Number(event.target.value))} options={[{value: ATTRIBUTE_DEFINITIONS.STRENGTH.id, label: 'Strength'}, {value: ATTRIBUTE_DEFINITIONS.DEXTERITY.id, label: 'Dexterity'}, {value: ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id, label: 'Intelligence'}]} />
     </div>)
 }
