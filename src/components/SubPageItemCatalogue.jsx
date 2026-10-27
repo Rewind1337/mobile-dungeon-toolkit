@@ -273,8 +273,9 @@ function SetCatalogueCard({ set, pieces }) {
 }
 
 
-function SubPageItemCatalogue({ itemsRef, setsRef, initialView = "items" }) {
+function SubPageItemCatalogue({ itemsRef, setsRef, initialView = "items", onViewChange }) {
     const [view, setView] = useState(initialView)
+    const changeView = nextView => { setView(nextView); onViewChange?.(nextView) }
     const [search, setSearch] = useState("")
     const [sourceFilter, setSourceFilter] = useState("all")
     const [slotFilter, setSlotFilter] = useState("all")
@@ -394,8 +395,8 @@ function SubPageItemCatalogue({ itemsRef, setsRef, initialView = "items" }) {
             </header>
 
             <nav className="catalogue-view-switch" aria-label="Catalogue view">
-                <Button text="Items" color={5} active={view === "items"} onClick={() => setView("items")} />
-                <Button text="Set Overview" color={5} active={view === "sets"} onClick={() => setView("sets")} />
+                <Button text="Items" color={5} active={view === "items"} onClick={() => changeView("items")} />
+                <Button text="Set Overview" color={5} active={view === "sets"} onClick={() => changeView("sets")} />
             </nav>
 
             <CatalogueFilters
