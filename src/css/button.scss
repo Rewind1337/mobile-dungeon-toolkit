@@ -162,6 +162,14 @@ button {
     }
   }
 
+  &[data-color="6"]:not(.disabled) {
+    background: V.$button-seven-gradient;
+    &:hover {
+      background: V.$button-seven-gradient-hover;
+      &:active { background: V.$button-seven-gradient-click; }
+    }
+  }
+
   &[data-color="confirm"]:not(.disabled) {
     background: V.$button-confirm-gradient;
 
@@ -251,6 +259,12 @@ button {
     &:hover:active {
       background-color: rgb(63, 63, 63);
     }
+  }
+
+  &.nav-home-button {
+    justify-content: center;
+    padding: 4px 10px;
+    img { display: block; height: 35px; max-width: 100%; object-fit: contain; }
   }
 
   .icon-left,
