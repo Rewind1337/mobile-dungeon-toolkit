@@ -26,7 +26,7 @@ function Stat({ label, value }) {
     return <div className="catalogue-overview-stat card"><span className="text">{label}</span><span className="header-big">{value}</span></div>
 }
 
-function InfoOverview{ items, sets, heroes }) {
+function InfoOverview({ items, sets, heroes }) {
     const itemCount = Array.isArray(items) ? items.length : Object.values(items).reduce((total, list) => total + (Array.isArray(list) ? list.length : 0), 0)
     const heroCountBy = (key, definitions) => heroes.reduce((counts, hero) => {
         const value = Object.values(definitions).find(entry => entry.id === Number(hero[key]))
@@ -60,7 +60,7 @@ function InfoOverview{ items, sets, heroes }) {
     </section>
 }
 
-function PageInfos{ itemsRef, heroesRef, activeTab = "overview", onTabChange }) {
+function PageInfos({ itemsRef, heroesRef, activeTab = "overview", onTabChange }) {
     const setActiveTab = tab => onTabChange?.(tab)
     const { listRef, events } = useDynamicList(0)
     const itemData = itemsRef?.current?.BASE_ITEMS ?? EMPTY_ITEM_DATA
