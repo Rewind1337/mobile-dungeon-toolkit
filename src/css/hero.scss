@@ -356,7 +356,7 @@
 }
 
 
-@media (max-width: 900px) {
+@include M.media-query-max(V.$bp-mobile, ()) {
   .hero-preview .calculated-stats-heading small { font-size:.75em; }
   .hero-preview .base-stats:not(.calculated-stats) { flex-direction:column; align-items:stretch; }
   .hero-preview .base-stats:not(.calculated-stats) > .card { width:100%; min-width:0; justify-content:flex-start; gap:8px; }
