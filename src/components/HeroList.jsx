@@ -46,7 +46,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
             (filters.mainAttribute === null || heroObj.mainAttribute === filters.mainAttribute) &&
             (filters.rarity === null || heroObj.rarity === filters.rarity) &&
             (filters.isStarred === null || heroObj.isStarred === filters.isStarred) &&
-            (!filters.name.trim() || [...getSearchableValues(heroObj), heroObj.isStarred ? 'starred' : 'not starred'].join(' ').toLowerCase().includes(filters.name.trim().toLowerCase()))
+            (!filters.name.trim() || (filters.name.trim().toLowerCase() === 'starred' ? heroObj.isStarred === true : filters.name.trim().toLowerCase() === 'not starred' ? heroObj.isStarred === false : getSearchableValues(heroObj).join(' ').toLowerCase().includes(filters.name.trim().toLowerCase())))
         ));
 
         return result.sort((a, b) => {
