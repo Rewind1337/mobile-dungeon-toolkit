@@ -43,7 +43,16 @@ function getSetLocations(set, pieces) {
 function getSourceName(source) {
     if (source === null || source === undefined || source === "") return "Unspecified source"
     const name = getEnumNameById(DROP_SOURCE_DEFINITIONS, Number(source)) ?? String(source)
-    return name.toLowerCase() === "everywhere" ? "Any Dungeon" : name
+    return name.toLowerCase() === "everywhere" ? "Any Dungeon" : humanize(name)
+}
+
+function getDropSourceLabel(source, locations) {
+    const locationNames = (locations ?? []).filter(location => location && location !== "Unspecified location")
+    const locationLabel = locationNames.length > 0 ? locationNames.join(", ") : "Unspecified"
+    const sourceName = getSourceName(source)
+    if (sourceName.toLowerCase().includes("guild hunt")) return `Drop Source: ${locationLabel} (GH)`
+    if (locationNames.length > 0) return `Drop Source: ${locationLabel}`
+    return "Drop Source: Unspecified"
 }
 
 function getAttributeRequirementLabel(value) {
@@ -202,7 +211,7 @@ function ItemCatalogueCard({ item, set }) {
                     <Item itemObj={item} selected={false} level={null} />
                 </div>
                 <div className="catalogue-item-heading">
-                    <h3 className="catalogue-item-name header">{item.name}</h3>
+                    <h3 className="catalogue-item-name catalogue-chip catalogue-chip-name header" data-rarity={item.rarity}>{item.name}</h3>
                     <div className="catalogue-item-meta-row">
                         <div className="catalogue-item-meta text">
                             <span className="catalogue-chip catalogue-chip-rarity" data-rarity={item.rarity}>{humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity")}</span>
@@ -212,10 +221,7 @@ function ItemCatalogueCard({ item, set }) {
                         {set && <p className="catalogue-item-set text">· Set: {set.name}</p>}
                     </div>
                     <div className="catalogue-item-source-row text">
-                        <p className="catalogue-item-source"><span className="catalogue-chip">Drop source: {humanize(getSourceName(item.dropSource))}</span></p>
-                        <p className="catalogue-item-location">
-                            <span className="catalogue-chip">Location: {getLocations(item).filter(location => location !== "Unspecified location").join(", ") || "Unspecified"}</span>
-                        </p>
+                        <p className="catalogue-item-source"><span className="catalogue-chip">{getDropSourceLabel(item.dropSource, getLocations(item))}</span></p>
                     </div>
                 </div>
             </div>
@@ -248,11 +254,10 @@ function SetCatalogueCard({ set, pieces }) {
     return (
         <article className="catalogue-set-card card">
             <header className="catalogue-set-header">
-                <h3 className="catalogue-set-name flex-row header">{set.name}</h3>
-                <p className="catalogue-set-requirement text">Required attribute: {getAttributeRequirementLabel(set.attributeRequirement)}</p>
+                <h3 className="catalogue-set-name catalogue-chip catalogue-chip-name header">{set.name}</h3>
+                <p className={`catalogue-set-requirement catalogue-chip catalogue-chip-attribute ${getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("strength") ? "catalogue-chip-attribute-strength" : getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("dexterity") ? "catalogue-chip-attribute-dexterity" : getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("intelligence") ? "catalogue-chip-attribute-intelligence" : ""}`}>Required attribute: {getAttributeRequirementLabel(set.attributeRequirement)}</p>
                 <div className="catalogue-set-meta flex-row justify-center text">
-                    <span>{humanize(getSourceName(set.dropSource))}</span>
-                    {locations.length > 0 && <p className="catalogue-set-locations text">Locations: {locations.join(", ")}</p>}
+                    <span className="catalogue-chip">{getDropSourceLabel(set.dropSource, locations)}</span>
                 </div>
             </header>
 
