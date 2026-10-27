@@ -1,0 +1,52 @@
+import { useMemo, useState } from "react"
+import Button from "./Button.jsx"
+
+const stringify = value => {
+    if (value == null) return ""
+    if (typeof value === "string") return value
+    try { return JSON.stringify(value, null, 2) } catch { return String(value) }
+}
+const humanize = value => String(value ?? "").replaceAll("_", " ").replace(/\b\w/g, letter => letter.toUpperCase())
+
+function SkillCard({ hero, skill }) {
+    return <article className="hero-catalogue-skill card">
+        <div className="hero-catalogue-skill-heading"><h3 className="header">{skill.name || "Unnamed skill"}</h3><span className="text">{hero.name}</span></div>
+        <div className="catalogue-meta-row text">
+            {skill.level != null && <span>Level {skill.level}</span>}
+            {skill.cooldown != null && <span>Cooldown: {skill.cooldown}</span>}
+        </div>
+        {skill.description && <p className="text">{skill.description}</p>}
+        {skill.effect != null && <details className="hero-catalogue-details"><summary>Effect data</summary><pre className="hero-catalogue-code">{stringify(skill.effect)}</pre></details>}
+    </article>
+}
+
+function TalentCard({ hero, talent, talentId }) {
+    return <article className="hero-catalogue-talent card">
+        <div className="hero-catalogue-skill-heading"><h3 className="header">{talent.name || "Unnamed talent"}</h3><span className="text">{hero.name}</span></div>
+        <div className="catalogue-meta-row text"><span>Talent {talentId}</span>{talent.active != null && <span>{talent.active ? "Active" : "Passive"}</span>}</div>
+        {talent.effect != null && <pre className="hero-catalogue-code">{stringify(talent.effect)}</pre>}
+    </article>
+}
+
+function SubPageSkillsTalentsCatalogue({ heroes = [] }) {
+    const [view, setView] = useState("skills")
+    const [search, setSearch] = useState("")
+    const entries = useMemo(() => {
+        if (view === "skills") return heroes.flatMap(hero => (Array.isArray(hero.skills) ? hero.skills : []).map((skill, index) => ({ hero, skill, key: hero.id + "-skill-" + index })))
+        return heroes.flatMap(hero => Object.entries(hero.talents && typeof hero.talents === "object" ? hero.talents : {}).map(([id, talent]) => ({ hero, talent, id, key: hero.id + "-talent-" + id })))
+    }, [heroes, view])
+    const filtered = entries.filter(entry => {
+        const value = view === "skills" ? entry.skill : entry.talent
+        return (entry.hero.name + " " + stringify(value) + " " + (entry.id ?? "")).toLowerCase().includes(search.trim().toLowerCase())
+    })
+    return <section className="hero-catalogue">
+        <header className="catalogue-header"><div className="catalogue-heading-copy"><h2 className="catalogue-title header-big">Skills &amp; Talents Catalogue</h2><p className="catalogue-description text">Every skill and talent entry currently present in the hero database, with its source hero. Repeated names are intentionally listed separately.</p></div><p className="catalogue-result-count text">{filtered.length} {view === "skills" ? "skills" : "talent entries"}</p></header>
+        <nav className="catalogue-view-switch" aria-label="Skills and talents view">
+            <Button text="Skills" color={5} active={view === "skills"} onClick={() => setView("skills")} />
+            <Button text="Talents" color={5} active={view === "talents"} onClick={() => setView("talents")} />
+        </nav>
+        <label className="catalogue-search"><span className="catalogue-control-label text">Search {view}</span><input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} placeholder="Name, hero, effect…" /></label>
+        {filtered.length === 0 ? <p className="catalogue-empty card">No {view} match this search.</p> : <div className="hero-catalogue-grid">{filtered.map(entry => view === "skills" ? <SkillCard key={entry.key} hero={entry.hero} skill={entry.skill} /> : <TalentCard key={entry.key} hero={entry.hero} talent={entry.talent} talentId={entry.id} />)}</div>}
+    </section>
+}
+export default SubPageSkillsTalentsCatalogue
