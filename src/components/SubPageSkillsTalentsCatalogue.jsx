@@ -41,13 +41,16 @@ function TalentEffect({ effect }) {
     </dl>
 }
 
-function TalentCard({ hero, talent, talentId }) {
+function TalentCard({ talent, sources }) {
     return <article className="hero-catalogue-talent card">
         <div className="hero-catalogue-skill-heading">
             <div className="header">{talent.name || "Unnamed talent"}</div>
-            <span className="text">{hero.name}</span>
         </div>
-        <div className="catalogue-meta-row text"><span>{getTalentPosition(talentId)}</span></div>
+        <div className="talent-source-list" aria-label="Heroes with this talent">
+            {sources.map(({ hero, id }) => <span className="catalogue-chip talent-source-chip" key={hero.id + "-" + id}>
+                {hero.name} · {getTalentPosition(id)}
+            </span>)}
+        </div>
         {talent.effect != null && <TalentEffect effect={talent.effect} />}
     </article>
 }
@@ -56,12 +59,26 @@ function SubPageSkillsTalentsCatalogue({ heroes = [] }) {
     const [view, setView] = useState("skills")
     const [search, setSearch] = useState("")
     const entries = useMemo(() => {
-        if (view === "skills") return heroes.flatMap(hero => (Array.isArray(hero.skills) ? hero.skills : []).map((skill, index) => ({ hero, skill, key: hero.id + "-skill-" + index })))
-        return heroes.flatMap(hero => Object.entries(hero.talents && typeof hero.talents === "object" ? hero.talents : {}).map(([id, talent]) => ({ hero, talent, id, key: hero.id + "-talent-" + id })))
+        if (view === "skills") {
+            return heroes.flatMap(hero => (Array.isArray(hero.skills) ? hero.skills : []).map((skill, index) => ({
+                hero, skill, key: hero.id + "-skill-" + index
+            })))
+        }
+        const groupedTalents = new Map()
+        heroes.forEach(hero => {
+            Object.entries(hero.talents && typeof hero.talents === "object" ? hero.talents : {}).forEach(([id, talent]) => {
+                // Group by name and effect, not position: talent positions can differ between heroes.
+                const groupKey = JSON.stringify([talent?.name ?? "", talent?.effect ?? null])
+                if (!groupedTalents.has(groupKey)) groupedTalents.set(groupKey, { talent, key: "talent-" + groupKey, sources: [] })
+                groupedTalents.get(groupKey).sources.push({ hero, id })
+            })
+        })
+        return [...groupedTalents.values()]
     }, [heroes, view])
     const filtered = entries.filter(entry => {
         const value = view === "skills" ? entry.skill : entry.talent
-        return (entry.hero.name + " " + stringify(value) + " " + (entry.id ?? "")).toLowerCase().includes(search.trim().toLowerCase())
+        const sourceText = view === "skills" ? entry.hero.name : entry.sources.map(({ hero, id }) => hero.name + " " + getTalentPosition(id)).join(" ")
+        return (sourceText + " " + stringify(value) + " " + (entry.id ?? "")).toLowerCase().includes(search.trim().toLowerCase())
     })
     return <section className="hero-catalogue">
         <header className="catalogue-header"><div className="catalogue-heading-copy"><h2 className="catalogue-title header-big">Skills &amp; Talents Catalogue</h2><p className="catalogue-description text">Every skill and talent entry currently present in the hero database, with its source hero. Repeated names are intentionally listed separately.</p></div></header>
@@ -70,7 +87,7 @@ function SubPageSkillsTalentsCatalogue({ heroes = [] }) {
             <Button text="Talent Catalogue" color={5} active={view === "talents"} onClick={() => setView("talents")} />
         </nav>
         <label className="catalogue-search skills-talents-catalogue-filters card"><span className="catalogue-control-label text">Search {view} ({filtered.length} of {entries.length} {view === "skills" ? "skills" : "talent entries"})</span><input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} placeholder="Name, hero, effect…" /></label>
-        {filtered.length === 0 ? <p className="catalogue-empty card">No {view} match this search.</p> : <div className="hero-catalogue-grid">{filtered.map(entry => view === "skills" ? <SkillCard key={entry.key} hero={entry.hero} skill={entry.skill} /> : <TalentCard key={entry.key} hero={entry.hero} talent={entry.talent} talentId={entry.id} />)}</div>}
+        {filtered.length === 0 ? <p className="catalogue-empty card">No {view} match this search.</p> : <div className="hero-catalogue-grid">{filtered.map(entry => view === "skills" ? <SkillCard key={entry.key} hero={entry.hero} skill={entry.skill} /> : <TalentCard key={entry.key} talent={entry.talent} sources={entry.sources} />)}</div>}
     </section>
 }
 export default SubPageSkillsTalentsCatalogue
