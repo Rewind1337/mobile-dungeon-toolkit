@@ -1,44 +1,43 @@
 import { useMemo, useState } from "react"
-import Button from "./Button.jsx"
+import { PERK_DEFINITIONS, POSSIBLE_PERKS } from "../database/enums.jsx"
+import "../css/other.scss"
 
-const humanize = value => String(value ?? "").replaceAll("_", " ").replace(/\b\w/g, letter => letter.toUpperCase())
-const toLabel = value => {
-    if (typeof value === "string") return humanize(value)
-    if (value && typeof value === "object") return value.name ?? value.label ?? Object.entries(value).map(([key, val]) => `${humanize(key)}: ${String(val)}`).join(" · ")
-    return String(value ?? "")
-}
-function PerkCard({ entry }) {
-    return <article className="catalogue-item-card card">
-        <h3 className="header">{entry.name}</h3>
-        <p className="text">{entry.source}</p>
-        {entry.detail && <p className="catalogue-muted text">{entry.detail}</p>}
-    </article>
-}
-function SubPagePerkCatalogue({ items = [], sets = [] }) {
+const perkLabel = key => PERK_DEFINITIONS[key]?.name ?? key.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())
+
+function SubPagePerkCatalogue() {
     const [search, setSearch] = useState("")
-    const [kind, setKind] = useState("all")
     const entries = useMemo(() => {
-        const result = []
-        for (const item of items) {
-            for (const [type, list] of [["Fixed perk", item.fixedPerks], ["Perk", item.perks]]) {
-                if (!Array.isArray(list)) continue
-                list.forEach((perk, index) => result.push({ key: `item-${item.id}-${type}-${index}`, name: toLabel(perk), source: item.name ?? `Item ${item.id}`, detail: type, kind: "item" }))
+        const slotsByPerk = new Map()
+        for (const [slot, perkKeys] of Object.entries(POSSIBLE_PERKS)) {
+            for (const key of perkKeys) {
+                if (!slotsByPerk.has(key)) slotsByPerk.set(key, new Set())
+                slotsByPerk.get(key).add(slot)
             }
         }
-        for (const set of sets) {
-            ;(Array.isArray(set.setBonus) ? set.setBonus : []).forEach((perk, index) => result.push({ key: `set-${set.id}-${index}`, name: toLabel(perk), source: set.name ?? `Set ${set.id}`, detail: "Set bonus", kind: "set" }))
-        }
-        return result
-    }, [items, sets])
-    const filtered = entries.filter(entry => (kind === "all" || entry.kind === kind) && `${entry.name} ${entry.source} ${entry.detail}`.toLowerCase().includes(search.trim().toLowerCase()))
-    return <section className="item-catalogue">
-        <header className="catalogue-header"><div className="catalogue-heading-copy"><h2 className="catalogue-title header-big">Perk Catalogue</h2><p className="catalogue-description text">Search perks attached to items and set bonuses. Each occurrence is shown with its source, including repeated perks.</p></div><p className="catalogue-result-count text">{filtered.length} of {entries.length} perk entries</p></header>
-        <div className="catalogue-filters">
-            <label className="catalogue-search"><span className="catalogue-control-label text">Search perks</span><input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} placeholder="Perk, item, set…" /></label>
-            <label className="catalogue-filter"><span className="catalogue-control-label text">Source type</span><select value={kind} onChange={event => setKind(event.target.value)}><option value="all">All sources</option><option value="item">Items</option><option value="set">Sets</option></select></label>
-            <div className="catalogue-filter-actions"><Button text="Clear filters" color={5} onClick={() => { setSearch(""); setKind("all") }} /></div>
+        return [...slotsByPerk.entries()]
+            .map(([key, slots]) => ({ key, name: perkLabel(key), slots: [...slots] }))
+            .sort((a, b) => a.name.localeCompare(b.name))
+    }, [])
+    const filtered = entries.filter(entry => `${entry.name} ${entry.slots.join(" ")}`.toLowerCase().includes(search.trim().toLowerCase()))
+    return <section className="perk-catalogue">
+        <header className="catalogue-header">
+            <div className="catalogue-heading-copy">
+                <h2 className="catalogue-title header-big">Perk Catalogue</h2>
+                <p className="catalogue-description text">Each perk is listed once, alongside the equipment slots it can roll on.</p>
+            </div>
+            <p className="catalogue-result-count text">{filtered.length} of {entries.length} perks</p>
+        </header>
+        <label className="catalogue-search">
+            <span className="catalogue-control-label text">Search perks</span>
+            <input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} placeholder="Search perks or equipment slots…" />
+        </label>
+        <div className="perk-catalogue-list">
+            {filtered.map(entry => <article className="perk-catalogue-row card" key={entry.key}>
+                <span className="header">{entry.name}</span>
+                <span className="text perk-catalogue-slots">{entry.slots.map(slot => slot.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())).join(" · ")}</span>
+            </article>)}
+            {filtered.length === 0 && <p className="catalogue-empty card">No perks match this search.</p>}
         </div>
-        {filtered.length === 0 ? <p className="catalogue-empty card">No perks match these filters.</p> : <div className="catalogue-item-grid">{filtered.map(entry => <PerkCard key={entry.key} entry={entry} />)}</div>}
     </section>
 }
 export default SubPagePerkCatalogue
