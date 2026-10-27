@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 import { PERK_DEFINITIONS, POSSIBLE_PERKS } from "../database/enums.jsx"
-import { perkSprites } from "../database/db_sprites.jsx"
+import { iconSprites, perkSprites } from "../database/db_sprites.jsx"
 import "../css/other.scss"
 
 const perkLabel = key => PERK_DEFINITIONS[key]?.name ?? key.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())
@@ -35,7 +35,13 @@ function SubPagePerkCatalogue() {
             {filtered.map(entry => <article className="perk-catalogue-row card" key={entry.key}>
                 {perkSprites[entry.key] && <img className="perk-catalogue-icon" src={perkSprites[entry.key]} alt="" loading="lazy" draggable={false} />}
                 <span className="header perk-catalogue-name">{entry.name}</span>
-                <div className="perk-catalogue-slots">{entry.slots.map(slot => <span className="catalogue-chip text" key={slot}>{slot.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())}</span>)}</div>
+                <div className="perk-catalogue-slots">{entry.slots.map(slot => {
+                    const slotKey = slot.toLowerCase()
+                    return <span className="catalogue-chip text" key={slot}>
+                        {iconSprites[slotKey] && <img className="catalogue-chip-icon" src={iconSprites[slotKey]} alt="" />}
+                        {slot.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())}
+                    </span>
+                })}</div>
             </article>)}
             {filtered.length === 0 && <p className="catalogue-empty card">No perks match this search.</p>}
         </div>
