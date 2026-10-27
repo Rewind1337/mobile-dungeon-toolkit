@@ -1008,3 +1008,7 @@ input[type="number"] {
   .filters .name-search-filter { flex: 1 1 140px; min-width: 110px; }
   .filters .flex-wrapper { display: none; }
 }
+
+.preview-top-row { display: flex; justify-content: flex-end; width: 100%; margin-bottom: 6px; }
+#page-items.preview-full-width-active .item-list-pane, #page-heroes.preview-full-width-active .hero-list-pane { display: none !important; }
+#page-items.preview-full-width-active .item-preview-pane, #page-heroes.preview-full-width-active .hero-preview-pane { width: 100% !important; flex: 1 1 100%; max-width: 100%; }
