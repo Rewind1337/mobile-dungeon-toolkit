@@ -525,7 +525,7 @@
 
 /* Responsive layouts */
 
-@media (min-width: 1500px) {
+@include M.media-query(V.$bp-wide) {
   .catalogue-item-grid,
   .catalogue-set-grid,
   .hero-catalogue-grid {
@@ -533,7 +533,7 @@
   }
 }
 
-@media (max-width: 1200px) {
+@include M.media-query-max(V.$bp-tablet) {
   .catalogue-filters,
   .hero-catalogue-filters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -553,7 +553,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@include M.media-query-max(V.$bp-mobile) {
   .item-catalogue,
   .hero-catalogue {
     padding: 0;
@@ -720,6 +720,10 @@
 
 .status-polarity-row { display:flex; flex-wrap:wrap; gap:V.$gap-small V.$gap; }
 .status-polarity { display:inline-flex; align-items:center; gap:5px; font-size:V.$font-size-xsmall; }
-.status-polarity > span:first-child { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; font-weight:700; background:rgba(0,0,0,.25); }
-.status-polarity[title^="Not"] > span:first-child { color:#ff8a8a; }
-.status-polarity:not([title^="Not"]) > span:first-child { color:#a9f0a7; }
+.status-polarity-icon { display:block; flex:0 0 20px; width:20px; height:20px; object-fit:contain; }
+
+.perk-catalogue { display:flex; flex-direction:column; gap:V.$gap; width:100%; min-width:0; padding:V.$padding-card; }
+.perk-catalogue-list { display:flex; flex-direction:column; gap:V.$gap-small; min-width:0; }
+.perk-catalogue-row { display:grid; grid-template-columns:minmax(180px, 1fr) minmax(0, 2fr); align-items:center; gap:V.$gap; padding:V.$padding-card; min-width:0; }
+.perk-catalogue-slots { overflow-wrap:anywhere; }
+@include M.media-query-max(V.$bp-mobile) { .perk-catalogue { padding:0; } .perk-catalogue-row { grid-template-columns:minmax(0,1fr); gap:V.$gap-small; } }
