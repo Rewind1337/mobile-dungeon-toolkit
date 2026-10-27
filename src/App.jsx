@@ -31,8 +31,8 @@ const PAGE_TO_ROUTE = {
 
 const OTHER_TAB_TO_ROUTE = {
   overview: '/other/',
-  'item-catalogue': '/other/item-catalogue/',
-  'set-catalogue': '/other/set-catalogue/',
+  'item-catalogue': '/other/items-sets/items/',
+  'set-catalogue': '/other/items-sets/sets/',
   'perk-catalogue': '/other/perk-catalogue/',
   'hero-catalogue': '/other/hero-catalogue/',
   'status-catalogue': '/other/status-catalogue/',
