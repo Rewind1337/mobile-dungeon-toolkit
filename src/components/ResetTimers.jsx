@@ -16,7 +16,10 @@ function formatRemaining(milliseconds) {
         ["minute", Math.floor((totalSeconds % 3600) / 60)],
         ["second", totalSeconds % 60],
     ]
-    return units
+    const readableUnits = units.filter(([unit, value]) => value > 0)
+    if (readableUnits.length === 0) return "0 seconds"
+
+    return readableUnits
         .map(([unit, value]) => `${value} ${unit}${value === 1 ? "" : "s"}`)
         .join(", ")
 }
