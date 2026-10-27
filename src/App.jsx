@@ -6,6 +6,7 @@ import Seagull from './sprites/seagull.webp'
 
 import NavBar from './components/NavBar.jsx'
 import Button from './components/Button.jsx'
+import ResetTimers from './components/ResetTimers.jsx'
 import './css/not-found.scss'
 
 import { init_hero_db } from './database/db_heroes.jsx'
@@ -35,6 +36,7 @@ const INFO_TAB_TO_ROUTE = {
   'set-catalogue': '/info/item-catalogue/sets/',
   'perk-catalogue': '/info/perk-catalogue/',
   'hero-catalogue': '/info/hero-catalogue/',
+  'hero-banners-catalogue': '/info/hero-catalogue/banners/',
   'status-catalogue': '/info/status-catalogue/',
   'skills-talents-catalogue': '/info/skills-talents-catalogue/',
 };
@@ -208,6 +210,7 @@ function App() {
   return (
     <>
       {pageContent !== 'notFound' && <NavBar switchTabTo={switchTabTo} />}
+      {pageContent === 'splash' && <ResetTimers />}
 
       {importStatus && <div className="text" role="status" aria-live="polite" style={{ padding: "4px 10px" }}>{importStatus}</div>}
 
