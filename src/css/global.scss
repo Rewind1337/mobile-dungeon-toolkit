@@ -1045,6 +1045,7 @@ input[type="number"] {
   .filters .filters-group-roles,
   .filters .filters-group-special { order: 3; }
   #page-heroes .filters .filters-group-special { display: none; }
+  #page-heroes .filters .starred-filter-control { display: flex; flex: 1 1 100%; order: 3; }
   .filters .filters-group-attributes,
   .filters .filters-group-rarities { flex: 1 1 calc(50% - 6px); order: 4; }
   .filters .filter-group { flex: 1 1 100%; }
@@ -1103,14 +1104,19 @@ input[type="number"] {
 .catalogue-chip-icon { display: block; flex: 0 0 auto; width: 16px; height: 16px; object-fit: contain; }
 .hero-metadata { display: flex; flex-wrap: wrap; align-items: center; gap: V.$gap-small; min-width: 0; }
 .hero-metadata-name,
-.item-preview-name { max-width: 100%; min-height: 24px; align-self: center; font-size: V.$font-size-small; font-family: V.$font-family-stats; font-weight: 700; line-height: 1.2; overflow-wrap: anywhere; }
-.item-preview-metadata { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: V.$gap-small; min-width: 0; }
-.item-preview-name { text-align: center; }
+.item-preview-name { max-width: 100%; min-height: 30px; align-self: center; padding: 5px 10px; font-size: V.$font-size-button; font-family: V.$font-family-stats; font-weight: 700; line-height: 1.2; overflow-wrap: anywhere; }
+.item-preview-metadata { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: space-between; gap: V.$gap-small; min-width: 0; }
+.item-preview-name { flex: 1 1 0; width: auto; text-align: center; justify-content: center; }
 .item-preview-slot, .item-preview-attribute { flex: 0 1 auto; }
 .item-preview-metadata .catalogue-chip { flex-shrink: 1; }
 .preview-top-row .preview-action-chip { display: inline-flex; flex: 0 1 auto; align-items: center; justify-content: center; gap: V.$gap-small; min-width: 0; min-height: 24px; padding: 3px 7px; border: 1px solid rgba(255,255,255,.14); border-radius: V.$border-radius-small; background: rgba(0,0,0,.2); box-shadow: none; }
 .preview-top-row .preview-action-chip .icon-left { display: inline-flex; flex: 0 0 auto; align-items: center; }
+.preview-top-row .preview-action-chip .icon-left img { display: block; width: 24px; height: 24px; object-fit: contain; }
 .preview-top-row .preview-action-chip .text { white-space: normal; }
+.preview-top-row .preview-close-icon { display: block; width: 18px; height: 18px; object-fit: contain; }
+.starred-filter-control { display: flex; flex-direction: column; gap: 4px; min-width: 130px; }
+.starred-filter-control > span { font-size: V.$font-size-small; opacity: .85; }
+.starred-filter-control select { width: 100%; min-width: 0; min-height: 38px; font-family: V.$font-family-stats; }
 .hero-metadata-name[data-rarity="1"], .item-preview-name[data-rarity="1"] { color: #73d17c; border-color: rgba(80, 190, 100, 0.7); }
 .hero-metadata-name[data-rarity="2"], .item-preview-name[data-rarity="2"] { color: #83b5ff; border-color: rgba(80, 145, 245, 0.75); }
 .hero-metadata-name[data-rarity="3"], .item-preview-name[data-rarity="3"] { color: #d3a0ff; border-color: rgba(180, 95, 235, 0.75); }
@@ -1118,4 +1124,13 @@ input[type="number"] {
 
 @include M.media-query-max(V.$bp-mobile, ()) {
   .catalogue-chip { border-radius: 0; }
+  .hero-preview .hero-metadata > .hero-metadata-name,
+  .item-preview-name {
+    order: -1;
+    flex: 1 1 100%;
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+  }
+  .item-preview-metadata { justify-content: space-between; }
 }
