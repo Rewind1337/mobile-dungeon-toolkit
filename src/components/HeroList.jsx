@@ -7,6 +7,7 @@ import Hero from './Hero.jsx'
 import { filterSprites } from '../database/db_sprites.jsx'
 import HeroFilters from './HeroFilters.jsx';
 import BackToTopButton from './BackToTopButton.jsx';
+import { ATTRIBUTE_DEFINITIONS, ELEMENT_DEFINITIONS, RARITY_DEFINITIONS, ROLE_DEFINITIONS, getEnumNameById } from '../database/enums.jsx';
 
 function getSearchableValues(value, seen = new Set()) {
     if (value === null || value === undefined) return []
@@ -46,7 +47,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
             (filters.mainAttribute === null || heroObj.mainAttribute === filters.mainAttribute) &&
             (filters.rarity === null || heroObj.rarity === filters.rarity) &&
             (filters.isStarred === null || heroObj.isStarred === filters.isStarred) &&
-            (!filters.name.trim() || (filters.name.trim().toLowerCase() === 'starred' ? heroObj.isStarred === true : filters.name.trim().toLowerCase() === 'not starred' ? heroObj.isStarred === false : getSearchableValues(heroObj).join(' ').toLowerCase().includes(filters.name.trim().toLowerCase())))
+            (!filters.name.trim() || (filters.name.trim().toLowerCase() === 'starred' ? heroObj.isStarred === true : filters.name.trim().toLowerCase() === 'not starred' ? heroObj.isStarred === false : [...getSearchableValues(heroObj), getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(heroObj.mainAttribute)) ?? '', getEnumNameById(ELEMENT_DEFINITIONS, Number(heroObj.element)) ?? '', getEnumNameById(RARITY_DEFINITIONS, Number(heroObj.rarity)) ?? '', getEnumNameById(ROLE_DEFINITIONS, Number(heroObj.role)) ?? ''].join(' ').toLowerCase().includes(filters.name.trim().toLowerCase())))
         ));
 
         return result.sort((a, b) => {
