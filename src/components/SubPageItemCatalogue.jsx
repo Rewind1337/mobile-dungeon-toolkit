@@ -159,7 +159,7 @@ function CatalogueFilters({
     clearFilters
 }) {
     return (
-        <div className="catalogue-filters card">
+        <div className={`catalogue-filters card${view === "sets" ? " is-set-view" : ""}`}>
             <label className="catalogue-search">
                 <span className="catalogue-control-label text">Search {view === "sets" ? "sets" : "items"} ({resultCount} of {totalCount} {view === "sets" ? "sets" : "items"})</span>
                 <input
