@@ -395,8 +395,8 @@ function SubPageItemCatalogue({ itemsRef, setsRef, initialView = "items", onView
             </header>
 
             <nav className="catalogue-view-switch" aria-label="Catalogue view">
-                <Button text="Item Catalogue" color={5} active={view === "items"} onClick={() => setView("items")} />
-                <Button text="Set Catalogue" color={5} active={view === "sets"} onClick={() => setView("sets")} />
+                <Button text="Item Catalogue" color={5} active={view === "items"} onClick={() => changeView("items")} />
+                <Button text="Set Catalogue" color={5} active={view === "sets"} onClick={() => changeView("sets")} />
             </nav>
 
             <CatalogueFilters
