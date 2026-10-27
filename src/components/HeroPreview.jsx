@@ -494,8 +494,8 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
         return (
             <div ref={listRef} className='hero-preview flex-col' style={{ maxHeight: listHeight }}>
                 <div className='preview-top-row flex-row'>
-                    <Button className='preview-back-button' title={isFullWidth ? 'Show hero list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} />
-                    <Button className='preview-close-button' title='Deselect this hero and close the preview' text='Deselect Hero' onClick={onClosePreview} color='cancel' />
+                    <Button className='preview-back-button preview-action-chip catalogue-chip' prefix={isFullWidth ? '☷' : '⤢'} title={isFullWidth ? 'Show hero list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} />
+                    <Button className='preview-close-button preview-action-chip catalogue-chip' prefix='×' title='Deselect this hero and close the preview' text='Deselect Hero' onClick={onClosePreview} color='cancel' />
                 </div>
                 <Modal position="center" isVisible={exportModalVisible} onClose={() => setExportModalVisible(false)}>
                     <div className="flex-col card w-100">
@@ -538,13 +538,13 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                     </div>
                 </Modal>
                 <div className='flex-row top-row hero-metadata'>
-                    <div className='header flex-row hero-metadata-attribute'>
+                    <div className='catalogue-chip text hero-metadata-attribute'>
+                        {typeof attributeSprites[heroObj.mainAttribute] === 'string' && <img className='catalogue-chip-icon' src={attributeSprites[heroObj.mainAttribute]} alt='' />}
                         {getEnumNameById(ATTRIBUTE_DEFINITIONS, heroObj.mainAttribute)}
-                        <img width={48} src={attributeSprites[heroObj.mainAttribute]}/>
                     </div>
-                    <div className='header-big hero-metadata-name'>{heroObj.variant ? heroObj.variant + " - " : ""}{heroObj.name}</div>
-                    <div className='header flex-row hero-metadata-role'>
-                        <img width={48} src={roleSprites[heroObj.role]}/>
+                    <div className='catalogue-chip text header hero-metadata-name'>{heroObj.variant ? heroObj.variant + " - " : ""}{heroObj.name}</div>
+                    <div className='catalogue-chip text hero-metadata-role'>
+                        <img className='catalogue-chip-icon' src={roleSprites[heroObj.role]} alt='' />
                         {getEnumNameById(ROLE_DEFINITIONS, heroObj.role)}
                     </div>
                 </div>
