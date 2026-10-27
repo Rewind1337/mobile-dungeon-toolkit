@@ -68,7 +68,7 @@ function HeroCatalogueCard({ hero }) {
                     <h3 className="hero-catalogue-name header" data-rarity={hero.rarity}>{hero.name}</h3>
                     <div className="hero-catalogue-meta-row">
                         <span className="catalogue-chip catalogue-chip-rarity" data-rarity={hero.rarity}>{humanize(rarity)}</span>
-                        <span className="catalogue-chip">{humanize(attribute)}</span>
+                        <span className={`catalogue-chip catalogue-chip-attribute catalogue-chip-attribute-${String(attribute).toLowerCase()}`}>{humanize(attribute)}</span>
                         <span className="catalogue-chip">{humanize(role)}</span>
                     </div>
                     {hero.variant && <p className="hero-catalogue-variant text">Variant: {hero.variant}</p>}
