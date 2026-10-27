@@ -143,12 +143,14 @@ function CatalogueFilters({
     allSources,
     allLocations,
     view,
+    resultCount,
+    totalCount,
     clearFilters
 }) {
     return (
         <div className="catalogue-filters card">
             <label className="catalogue-search">
-                <span className="catalogue-control-label text">Search all item data</span>
+                <span className="catalogue-control-label text">Search {view === "sets" ? "sets" : "items"} ({resultCount} of {totalCount} {view === "sets" ? "sets" : "items"})</span>
                 <input
                     className="selectable catalogue-input"
                     aria-label="Search item catalogue"
@@ -411,6 +413,8 @@ function SubPageItemCatalogue({ itemsRef, setsRef, initialView = "items", onView
                 allSources={allSources}
                 allLocations={allLocations}
                 view={view}
+                resultCount={view === "sets" ? filteredSets.length : filteredItems.length}
+                totalCount={view === "sets" ? (setsRef ?? []).length : allItems.length}
                 clearFilters={clearFilters}
             />
 
