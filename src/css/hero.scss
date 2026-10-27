@@ -344,28 +344,6 @@
     height: 85px;
     flex-basis: 60px;
   }
-  #page-heroes .filters .filter-group > button { display: none; }
-  #page-heroes .filters .mobile-filter-control { display: flex; }
-  #page-heroes .filters .filter-group {
-    width: auto;
-    margin: 0;
-    flex: 1 1 140px;
-    min-width: 0;
-  }
-  #page-heroes .filters .mobile-filter-control {
-    width: 100%;
-    min-width: 0;
-    flex-direction: column;
-    gap: 3px;
-    text-align: left;
-    font-size: 11px;
-  }
-  #page-heroes .filters .mobile-filter-control select {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    font: inherit;
-  }
   .hero-preview .flex-col.hero {
     margin-top: 8px;
   }
