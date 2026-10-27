@@ -75,9 +75,14 @@ function HeroFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, cl
                 <div className='flex-wrapper' />
                 <HeroAttributeFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <div className='flex-wrapper' />
-                <div className='filter-group filters-group-special flex-row'>
-                    <Button title="Show starred heroes only" round onClick={() => toggleFilter('isStarred', true)} imgAsText text={filterSprites[50]} active={filters.isStarred === true} />
-                </div>
+                <label className="filter-group filters-group-special starred-filter-control">
+                    <span>Starred</span>
+                    <select aria-label="Filter heroes by starred status" value={filters.isStarred === null ? "" : String(filters.isStarred)} onChange={event => toggleFilter('isStarred', event.target.value === "" ? null : event.target.value === "true")}>
+                        <option value="">All</option>
+                        <option value="true">Starred</option>
+                        <option value="false">Not Starred</option>
+                    </select>
+                </label>
                 <div className='flex-wrapper' />
                 <HeroRarityFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
             </div>
