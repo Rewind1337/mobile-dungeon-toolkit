@@ -205,7 +205,7 @@ function ItemCatalogueCard({ item, set }) {
                     <h3 className="catalogue-item-name header">{item.name}</h3>
                     <div className="catalogue-item-meta-row">
                         <div className="catalogue-item-meta text">
-                            <span className="catalogue-chip catalogue-chip-rarity">{humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity")}</span>
+                            <span className="catalogue-chip catalogue-chip-rarity" data-rarity={item.rarity}>{humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity")}</span>
                             <span className="catalogue-chip">{humanize(item.slotLabel ?? "Unknown slot")}</span>
                             <span className="catalogue-chip">Attribute: {getAttributeRequirementLabel(item.attributeRequirement)}</span>
                         </div>
