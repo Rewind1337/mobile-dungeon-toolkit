@@ -20,15 +20,23 @@ export function useDynamicList(extraHeight = 0, enableDraggable = true) {
 
         window.addEventListener('resize', onResize);
         onResize();
+
         const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(onResize);
-        let parent = listRef.current?.parentElement;
-        while (parent) {
-            observer?.observe(parent);
-            parent = parent.parentElement;
+        const list = listRef.current;
+        if (list) {
+            observer?.observe(list);
+            if (list.parentElement) observer?.observe(list.parentElement);
+            let sibling = list.previousElementSibling;
+            while (sibling) {
+                observer?.observe(sibling);
+                sibling = sibling.previousElementSibling;
+            }
         }
-        const mutationObserver = typeof MutationObserver === 'undefined' ? null : new MutationObserver(onResize);
-        if (listRef.current?.parentElement) mutationObserver?.observe(listRef.current.parentElement, { attributes: true, childList: true, subtree: true, attributeFilter: ['class', 'style'] });
-        return () => { window.removeEventListener('resize', onResize); observer?.disconnect(); mutationObserver?.disconnect(); };
+
+        return () => {
+            window.removeEventListener('resize', onResize);
+            observer?.disconnect();
+        };
     }, [extraHeight]);
 
     return { listHeight, listRef, events: enableDraggable ? events : {} };
