@@ -2,7 +2,7 @@ import { useMemo, useState } from "react"
 import { STATUS_EFFECT_DEFINITIONS } from "../database/enums.jsx"
 import { statusSprites } from "../database/db_sprites.jsx"
 import CheckmarkSprite from "../sprites/checkmark.webp"
-import CrossSprite from "../sprites/cross.svg"
+import CrossSprite from "../sprites/cross.png"
 import Button from "./Button.jsx"
 
 const STATUS_DESCRIPTIONS = {
