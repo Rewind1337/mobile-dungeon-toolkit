@@ -8,7 +8,8 @@ import Modal from "./Modal.jsx"
 import { decodeHeroShareInput, restoreSharedHero } from "../utils/heroShare.js"
 
 function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
-    const [pageContent, setPageContent] = useState(0)\n    useEffect(() => { setPreviewFullWidth(false) }, [pageContent])
+    const [pageContent, setPageContent] = useState(0)
+    useEffect(() => { setPreviewFullWidth(false) }, [pageContent])
     const [previewFullWidth, setPreviewFullWidth] = useState(false)
     const [importModalVisible, setImportModalVisible] = useState(false)
     const [heroShareInput, setHeroShareInput] = useState("")
