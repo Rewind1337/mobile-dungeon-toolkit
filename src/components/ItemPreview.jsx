@@ -35,7 +35,7 @@ function makePerkSlots(item, rarity) {
     }
 }
 
-function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, onEquipItem, onExportItem, setsRef }) {
+function ItemPreview({ isFullWidth = false, onToggleFullWidth, itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, onEquipItem, onExportItem, setsRef }) {
     const MAIN_STAT_PERK_KEYS = {
         attack: { flat: "ATTACK_FLAT", percent: "ATTACK_PERCENT" },
         defence: { flat: "DEFENCE_FLAT", percent: "DEFENCE_PERCENT" },
@@ -219,6 +219,7 @@ function ItemPreview({ itemsRef, selectedItemId, onPerkClick, saveItem, deleteSa
 
     return (
         <div ref={listRef} className='item-preview flex-col' style={{ maxHeight: listHeight }}>
+            <div className='preview-top-row flex-row'><Button title={isFullWidth ? 'Show item list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} /></div>
             <div className='header-big'>{itemObj.name}</div>
             <div className='flex-col'>
                 <div className='flex-row'>
