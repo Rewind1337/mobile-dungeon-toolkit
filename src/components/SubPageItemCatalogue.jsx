@@ -387,7 +387,16 @@ function SubPageItemCatalogue({ itemsRef, setsRef, initialView = "items", onView
             sourceName,
             ...locations,
             ...(set.setBonus ?? []).flatMap(perk => [getPerkLabel(perk), getPerkKey(perk)]),
-            ...pieces.map(item => item.name)
+            ...pieces.flatMap(item => [
+                ...getSearchableValues(item),
+                item.name,
+                getAttributeRequirementLabel(item.attributeRequirement),
+                humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity"),
+                getSourceName(item.dropSource),
+                ...getLocations(item),
+                ...(item.fixedPerks ?? []).flatMap(perk => [getPerkLabel(perk), getPerkKey(perk)]),
+                ...getEffectStatuses(item).map(status => status.name)
+            ])
         ].join(" ").toLowerCase()
         const matchesSearch = !query || searchable.includes(query)
         const matchesSource = sourceFilter === "all" || sourceName === sourceFilter
