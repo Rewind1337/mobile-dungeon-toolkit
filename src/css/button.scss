@@ -44,19 +44,13 @@ button {
       inset: 0 auto 0 0;
       width: var(--data-percent, 0%);
       pointer-events: none;
-      background:
-        repeating-linear-gradient(
-          0deg,
-          transparent 0 7px,
-          rgba(0, 0, 0, 0.10) 7px 9px
-        ),
-        repeating-linear-gradient(
-          90deg,
-          rgba(0, 0, 0, 0.12) 0 2px,
-          transparent 2px 9px
-        ),
-        rgba(255, 255, 255, 0.33);
-      background-position: 0 0, 0 0, 0 0;
+      background: repeating-linear-gradient(
+        100deg,
+        transparent 0 12px,
+        rgba(255, 255, 255, 0.07) 12px 14px,
+        transparent 14px 26px
+      );
+      background-position: 0 0;
       animation: buttonPatternDrift 20s linear infinite;
       transition: width 0.25s linear;
       z-index: 0;
@@ -267,16 +261,12 @@ button {
 }
 
 @keyframes buttonPatternDrift {
-  0% {
-    background-position: 0 0, 0 0, 0 0;
+  from {
+    background-position: 0 0;
   }
 
-  50% {
-    background-position: 0 18px, 12px 0, 0 0;
-  }
-
-  100% {
-    background-position: 0 36px, 24px 0, 0 0;
+  to {
+    background-position: 26px 0;
   }
 }
 .back-to-top-button {
