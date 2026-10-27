@@ -13,7 +13,7 @@ function SkillCard({ hero, skill, skillIndex }) {
         <div className="skill-catalogue-heading">
             <span className="catalogue-chip text skill-catalogue-name">{skill.name || "Unnamed skill"}</span>
             <div className="skill-catalogue-meta">
-                <span className="catalogue-chip text skill-catalogue-hero">{hero.name}</span>
+                <span className="catalogue-chip catalogue-chip-rarity text skill-catalogue-hero" data-rarity={hero.rarity}>{hero.name}</span>
                 <span className="catalogue-chip text skill-catalogue-type">{skillType}</span>
                 {skill.cooldown != null && <span className="catalogue-chip text skill-catalogue-cooldown">Cooldown: {skill.cooldown} Turns</span>}
             </div>
@@ -48,7 +48,7 @@ function TalentEffect({ effect }) {
 function TalentCard({ talent, sources }) {
     return <article className="hero-catalogue-talent card">
         <div className="hero-catalogue-skill-heading">
-            <div className="header">{talent.name || "Unnamed talent"}</div>
+            <div className="catalogue-chip text talent-catalogue-name">{talent.name || "Unnamed talent"}</div>
         </div>
         <div className="talent-source-list" aria-label="Heroes with this talent">
             {sources.map(({ hero, id }) => <div className="talent-source-entry" key={hero.id + "-" + id}>
