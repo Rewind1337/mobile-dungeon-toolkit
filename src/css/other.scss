@@ -75,7 +75,7 @@
 .catalogue-chip-attribute-dexterity {
   border-color: rgba(83, 190, 105, 0.65);
 }
- .catalogue-chip-attribute-intelligence {
+.catalogue-chip-attribute-intelligence {
   border-color: rgba(178, 112, 220, 0.95);
   box-shadow: inset 0 0 0 1px rgba(66, 190, 183, 0.2);
 }
@@ -136,8 +136,11 @@
   padding: V.$padding-card;
 }
 
- .catalogue-filters {
-  grid-template-columns: minmax(260px, 2fr) repeat(4, minmax(145px, 1fr)) minmax(0, 1fr);
+.catalogue-filters {
+  grid-template-columns: minmax(260px, 2fr) repeat(3, minmax(145px, 1fr)) minmax(0, 1fr);
+}
+.catalogue-filters.is-set-view {
+  grid-template-columns: minmax(260px, 2fr) repeat(2, minmax(145px, 1fr)) minmax(0, 1fr);
 }
 
 .hero-catalogue-filters {
@@ -539,15 +542,14 @@
 .hero-metadata-name[data-rarity="1"] { color: #73d17c; border-color: rgba(80, 190, 100, 0.7); }
 .hero-metadata-name[data-rarity="2"] { color: #83b5ff; border-color: rgba(80, 145, 245, 0.75); }
 .hero-metadata-name[data-rarity="3"] { color: #d3a0ff; border-color: rgba(180, 95, 235, 0.75); }
-.hero-metadata-name[data-rarity="4"] { color: #ffc56e; border-color: rgba(235, 165, 55, 0.8); }
-.hero-metadata-name { min-height: 24px; align-self: center; }
+
 
 .hero-catalogue-meta-row,
 .hero-metadata {
   display: flex; flex-wrap: wrap; align-items: center; gap: V.$gap-small; min-width: 0;
 }
 .catalogue-chip-icon { display:block; flex:0 0 auto; width:16px; height:16px; object-fit:contain; }
-.hero-metadata-name { max-width:100%; min-height:24px; overflow-wrap:anywhere; }
+.hero-metadata-name { max-width:100%; min-height:24px; align-self:center; overflow-wrap:anywhere; }
 .item-preview-metadata { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:V.$gap-small; min-width:0; }
 .item-preview-name { min-height:24px; align-self:center; text-align:center; overflow-wrap:anywhere; }
 .item-preview-slot, .item-preview-attribute { flex:0 1 auto; }
@@ -595,7 +597,7 @@
   gap: V.$gap-small;
   min-width: 0;
 }
- .skill-catalogue-name { justify-content: center; text-align: center; font-size: 22px;}
+.skill-catalogue-name { justify-content: center; text-align: center; font-size: 22px;}
 .skill-catalogue-hero[data-rarity="1"] { border-color: rgba(80, 190, 100, 0.7); }
 .skill-catalogue-hero[data-rarity="2"] { border-color: rgba(80, 145, 245, 0.75); }
 .skill-catalogue-hero[data-rarity="3"] { border-color: rgba(180, 95, 235, 0.75); }
@@ -685,7 +687,7 @@
   overflow-wrap: anywhere;
 }
 
- .perk-catalogue { display:flex; flex-direction:column; gap:V.$gap; width:100%; min-width:0; padding:V.$padding-card; }
+.perk-catalogue { display:flex; flex-direction:column; gap:V.$gap; width:100%; min-width:0; padding:V.$padding-card; }
 .perk-catalogue-list { display:grid; grid-template-columns:minmax(0,1fr); align-items:start; gap:V.$gap-small; min-width:0; }
 .perk-catalogue-row { display:flex; flex-direction:column; align-items:stretch; gap:V.$gap-small; padding:V.$padding-card; min-width:0; }
 .perk-catalogue-heading { display:flex; align-items:center; gap:V.$gap-small; min-width:0; }
@@ -843,6 +845,7 @@
   .catalogue-filters, .hero-catalogue-filters, .status-catalogue-filters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  .catalogue-filters.is-set-view { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .catalogue-search, .hero-catalogue-filters .catalogue-search, .status-catalogue-filters .catalogue-search {
     grid-column: 1 / -1;
   }
@@ -857,6 +860,7 @@
   .item-catalogue, .hero-catalogue, .status-catalogue, .perk-catalogue { padding: 0; }
   .catalogue-item-grid, .catalogue-set-grid, .hero-catalogue-grid { grid-template-columns: minmax(0, 1fr); }
   .catalogue-filters, .hero-catalogue-filters, .status-catalogue-filters { grid-template-columns: minmax(0, 1fr); }
+  .catalogue-filters.is-set-view { grid-template-columns: minmax(0, 1fr); }
   .catalogue-search, .hero-catalogue-filters .catalogue-search, .status-catalogue-filters .catalogue-search { grid-column: auto; }
   .catalogue-filter-actions { justify-content: flex-start; }
   .catalogue-result-count { flex-basis: 100%; text-align: left; }
