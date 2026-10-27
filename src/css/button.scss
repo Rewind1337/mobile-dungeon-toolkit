@@ -264,7 +264,7 @@ button {
   &.nav-home-button {
     justify-content: center;
     padding: 4px 10px;
-    img { display: block; height: 35px; max-width: 100%; object-fit: contain; }
+    img { display: block; height: 42px; max-width: 100%; object-fit: contain; z-index: 1;}
   }
 
   .icon-left,

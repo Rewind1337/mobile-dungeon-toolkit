@@ -33,12 +33,12 @@ function ResetTimers() {
     return (
         <section className="reset-timers-row" aria-label="Reset timers">
             <div className="reset-timer card">
-                <span className="reset-timer-label text">Daily Reset</span>
-                <span className="reset-timer-countdown header">{formatRemaining(dailyReset.getTime() - now)}</span>
+                <span className="reset-timer-label header">Daily Reset</span>
+                <span className="reset-timer-countdown text-big">{formatRemaining(dailyReset.getTime() - now)}</span>
             </div>
             <div className="reset-timer card">
-                <span className="reset-timer-label text">Weekly Reset</span>
-                <span className="reset-timer-countdown header">{formatRemaining(weeklyReset.getTime() - now)}</span>
+                <span className="reset-timer-label header">Weekly Reset</span>
+                <span className="reset-timer-countdown text-big">{formatRemaining(weeklyReset.getTime() - now)}</span>
             </div>
         </section>
     )
