@@ -10,8 +10,7 @@
   gap: V.$gap-small;
 
   @include M.media-query-max(V.$bp-mobile, ()) {
-    gap: 0;
-    padding: 1px;
+    padding: 0;
   }
 }
 
@@ -192,6 +191,10 @@
       height: 100%;
       scale: 1.2;
     }
+
+    @include M.media-query-max(V.$bp-mobile, ()) {
+      border-radius: 0;
+    }
   }
 
   .hero-starred {
@@ -213,6 +216,10 @@
       height: 100%;
       scale: 1.1;
     }
+
+    @include M.media-query-max(V.$bp-mobile, ()) {
+      border-radius: 0;
+    }
   }
 
   .hero-sprite {
@@ -224,6 +231,7 @@
 
     @include M.media-query-max(V.$bp-mobile, ()) {
       width: 60px;
+      border-radius: 0;
     }
   }
   
@@ -289,3 +297,62 @@
 .export-items-checkbox-label > *{
   align-self: center;
 }
+/* Responsive filters, metadata, and consistent hero sprite bounds */
+
+.hero .hero-sprite {
+  width: V.$hero-sprite-width;
+  height: V.$hero-sprite-height;
+  flex: 0 0 V.$hero-sprite-width;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.hero .hero-sprite-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+.hero-preview .top-row.hero-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: V.$gap-small;
+}
+.hero-preview .hero-metadata > .header,
+.hero-preview .hero-metadata > .header-big {
+  min-width: 0;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1 1 0;
+}
+.hero-preview .hero-metadata > .hero-metadata-name { flex: 1 1; }
+.hero-preview .hero-metadata img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex: 0 0;
+}
+@media (max-width: 900px) {
+  .hero-list .hero-sprite, .hero .hero-sprite {
+    width: 60px;
+    height: 85px;
+    flex-basis: 60px;
+  }
+  .hero-preview .flex-col.hero {
+    margin-top: 8px;
+  }
+  .hero-preview .hero-metadata > .hero-metadata-name {
+    order: -1;
+    flex-basis: 100%;
+  }
+  .hero-preview .hero-metadata img { width: 32px; height: 32px; }
+}
+
+
+@media (max-width: 900px) { .hero-preview .calculated-stats-heading { margin-top:8px; text-align:left; font-size:20px; } .hero-preview .calculated-stats-heading small { font-size:.75em; cursor:help; } .hero-preview .calculated-stats { flex-direction:column; align-items:stretch; } .hero-preview .calculated-stats .calculated-stat { width:100%; min-width:0; justify-content:flex-start; gap:8px; } .hero-preview .details { flex-direction:column; } .hero-preview .details > .flex-col { width:100%; min-width:0; } .hero-preview .hero-stat { min-width:0; gap:6px; } }

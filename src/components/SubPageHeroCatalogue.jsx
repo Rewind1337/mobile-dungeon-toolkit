@@ -188,7 +188,7 @@ function SubPageHeroCatalogue({ heroesRef }) {
                 <p className="catalogue-result-count text">{filteredHeroes.length} of {catalogueHeroes.length} heroes</p>
             </header>
 
-            <div className="hero-catalogue-filters">
+            <div className="hero-catalogue-filters card">
                 <label className="catalogue-search">
                     <span className="catalogue-control-label text">Search all hero data</span>
                     <input

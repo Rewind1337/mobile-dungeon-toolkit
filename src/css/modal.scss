@@ -4,6 +4,16 @@
 .modal {
     z-index: 100;
     position: fixed;
+
+    .item-perk.card.flex-row {
+        flex-basis: 49%;
+    }
+
+    .modal-footer {
+        display: flex;
+        justify-content: center;
+        margin-top: 8px;
+    }
 }
 
 // Centered dialogs are portaled to document.body so page columns/overflow cannot constrain them.

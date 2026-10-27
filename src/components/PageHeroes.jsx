@@ -9,6 +9,7 @@ import { decodeHeroShareInput, restoreSharedHero } from "../utils/heroShare.js"
 
 function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
     const [pageContent, setPageContent] = useState(0)
+    const [previewFullWidth, setPreviewFullWidth] = useState(false)
     const [importModalVisible, setImportModalVisible] = useState(false)
     const [heroShareInput, setHeroShareInput] = useState("")
     // Ref changes do not trigger renders, so this revision refreshes memoized hero lists after saved-hero changes.
@@ -238,24 +239,24 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                 </div>
             </div>
 
-            <div id='page-heroes' className='page flex-row w-100'>
+            <div id='page-heroes' className={'page flex-row w-100 ' + (previewFullWidth ? 'preview-full-width-active' : '')}>
                 {pageContent === 0 &&
                     <>
-                        <div className='card w-50' style={{ width: (selectedHeroId === null) ? "300%" : "50%" }}>
+                        <div className='card w-50 hero-list-pane' style={{ width: (selectedHeroId === null) ? "300%" : "50%" }}>
                             <HeroList headerText={"All Heroes"} heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} setSelectedHeroId={setSelectedHeroId} />
                         </div>
-                        <div className='card w-50' style={{ display: (selectedHeroId === null) ? "none" : "block" }}>
-                            <HeroPreview heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} saveHero={saveHero} onItemClick={handleItemClick} equippedItems={equippedItems} setsRef={itemsRef.current.ITEM_SETS} />
+                        <div className='card w-50 hero-preview-pane' style={{ display: (selectedHeroId === null) ? "none" : "block" }}>
+                            <HeroPreview isFullWidth={previewFullWidth} onToggleFullWidth={() => setPreviewFullWidth(value => !value)} heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} saveHero={saveHero} onItemClick={handleItemClick} equippedItems={equippedItems} setsRef={itemsRef.current.ITEM_SETS} />
                         </div>
                     </>
                 }
                 {pageContent === 1 &&
                     <>
-                        <div className='card w-50' style={{ width: (selectedSavedHeroId === null) ? "300%" : "50%" }}>
+                        <div className='card w-50 hero-list-pane' style={{ width: (selectedSavedHeroId === null) ? "300%" : "50%" }}>
                             <HeroList savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} setSelectedHeroId={setSelectedSavedHeroId} />
                         </div>
-                        <div className='card w-50' style={{ display: (selectedSavedHeroId === null) ? "none" : "block" }}>
-                            <HeroPreview heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} saveHero={saveHero} deleteSavedHero={deleteSavedHero} onItemClick={handleItemClick} equippedItems={equippedItems} setsRef={itemsRef.current.ITEM_SETS} />
+                        <div className='card w-50 hero-preview-pane' style={{ display: (selectedSavedHeroId === null) ? "none" : "block" }}>
+                            <HeroPreview isFullWidth={previewFullWidth} onToggleFullWidth={() => setPreviewFullWidth(value => !value)} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} saveHero={saveHero} deleteSavedHero={deleteSavedHero} onItemClick={handleItemClick} equippedItems={equippedItems} setsRef={itemsRef.current.ITEM_SETS} />
                         </div>
                     </>
                 }

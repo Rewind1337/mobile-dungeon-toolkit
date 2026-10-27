@@ -1,9 +1,24 @@
 @use './_variables.scss' as V;
+@use './mixins.scss' as M;
 
 /*
  * The shared .card, .header, .text, .flex-row and related utility classes
  * live in global.scss. Keep this file focused on catalogue-specific layout.
  */
+
+#page-other-layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  gap: 10px;
+    @include M.media-query-max(V.$bp-mobile, ()) {
+      gap: 0;
+    }
+}
+
 
 /* Shared catalogue layout */
 
@@ -69,13 +84,19 @@
 }
 
 .catalogue-filters,
-.hero-catalogue-filters {
+.hero-catalogue-filters,
+.status-catalogue-filters {
+  position: sticky;
+  top: V.$gap-small;
+  z-index: 100;
   display: grid;
   gap: V.$gap;
   align-items: end;
   padding: V.$padding-card;
-  border-radius: V.$border-radius;
-  background: rgba(0, 0, 0, 0.2);
+
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    top: 0;
+  }
 }
 
 .catalogue-filters {
@@ -97,7 +118,7 @@
 
 .catalogue-control-label {
   padding-inline: 2px;
-  font-size: V.$font-size-xsmall;
+  font-size: V.$font-size-small;
   opacity: 0.85;
 }
 
@@ -530,7 +551,7 @@
   }
 
   .catalogue-filter-actions {
-    justify-content: flex-start;
+    justify-content: flex-end;
   }
 
   .catalogue-overview-stats {
@@ -587,9 +608,6 @@
   grid-template-columns: minmax(260px, 2fr) minmax(180px, 1fr) auto;
   align-items: end;
   gap: V.$gap;
-  padding: V.$padding-card;
-  border-radius: V.$border-radius;
-  background: rgba(0, 0, 0, 0.2);
 }
 
 .status-catalogue-grid {
