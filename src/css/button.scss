@@ -15,6 +15,8 @@ button {
   font-weight: 500;
   cursor: pointer;
   overflow: hidden;
+  position: relative;
+  isolation: isolate;
   transform: translate(0, 0);
   transition: V.$transition-button;
   z-index: 5;
@@ -37,22 +39,34 @@ button {
     }
 
     &::before {
-      content: "░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░";
-      color: rgba(0, 0, 0, 0.2);
-      font-size: 80px;
-      text-transform: uppercase;
-      display: flex;
-      justify-content: end;
-      align-items: center;
+      content: "";
       position: absolute;
-      top: 0;
-      left: 0;
-      height: 250%;
+      inset: 0 auto 0 0;
       width: var(--data-percent, 0%);
-      animation: marginWobble 20s ease infinite;
-      background: rgba(255, 255, 255, 0.33);
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0 7px,
+          rgba(0, 0, 0, 0.10) 7px 9px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0.12) 0 2px,
+          transparent 2px 9px
+        ),
+        rgba(255, 255, 255, 0.33);
+      background-position: 0 0, 0 0, 0 0;
+      animation: buttonPatternDrift 20s linear infinite;
       transition: width 0.25s linear;
-      z-index: -1;
+      z-index: 0;
+    }
+
+    > .icon-left,
+    > .text,
+    > .icon-right {
+      position: relative;
+      z-index: 1;
     }
 
     &.pressed {
@@ -68,6 +82,8 @@ button {
         background: rgba(255, 255, 255, 0.1);
         border-radius: 100%;
         transition: width 3s ease-out, height 3s ease-out;
+        z-index: 2;
+        pointer-events: none;
       }
 
       &:active:after {
@@ -250,15 +266,17 @@ button {
   }
 }
 
-@keyframes marginWobble {
-
-  0%,
-  100% {
-    margin-top: -45px;
+@keyframes buttonPatternDrift {
+  0% {
+    background-position: 0 0, 0 0, 0 0;
   }
 
   50% {
-    margin-top: -25px;
+    background-position: 0 18px, 12px 0, 0 0;
+  }
+
+  100% {
+    background-position: 0 36px, 24px 0, 0 0;
   }
 }
 .back-to-top-button {
