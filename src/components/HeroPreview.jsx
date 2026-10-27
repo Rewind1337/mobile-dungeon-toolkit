@@ -538,12 +538,12 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                     </div>
                 </Modal>
                 <div className='flex-row top-row hero-metadata'>
-                    <div className='catalogue-chip text hero-metadata-attribute'>
+                    <div className={'catalogue-chip text hero-metadata-attribute catalogue-chip-attribute-' + String(getEnumNameById(ATTRIBUTE_DEFINITIONS, heroObj.mainAttribute) ?? '').toLowerCase()}>
                         {typeof attributeSprites[heroObj.mainAttribute] === 'string' && <img className='catalogue-chip-icon' src={attributeSprites[heroObj.mainAttribute]} alt='' />}
                         {getEnumNameById(ATTRIBUTE_DEFINITIONS, heroObj.mainAttribute)}
                     </div>
-                    <div className='catalogue-chip text header hero-metadata-name'>{heroObj.variant ? heroObj.variant + " - " : ""}{heroObj.name}</div>
-                    <div className='catalogue-chip text hero-metadata-role'>
+                    <div className='catalogue-chip text header hero-metadata-name' data-rarity={heroObj.rarity}>{heroObj.variant ? heroObj.variant + " - " : ""}{heroObj.name}</div>
+                    <div className={'catalogue-chip text hero-metadata-role catalogue-chip-role-' + String(getEnumNameById(ROLE_DEFINITIONS, heroObj.role) ?? '').toLowerCase()}>
                         <img className='catalogue-chip-icon' src={roleSprites[heroObj.role]} alt='' />
                         {getEnumNameById(ROLE_DEFINITIONS, heroObj.role)}
                     </div>
