@@ -273,57 +273,6 @@ function SetCatalogueCard({ set, pieces }) {
 }
 
 
-function ItemOverview({ items, sets }) {
-    const slotCounts = items.reduce((counts, item) => {
-        const slot = item.slotLabel ?? "Unknown slot"
-        counts[slot] = (counts[slot] ?? 0) + 1
-        return counts
-    }, {})
-    const bySlot = Object.entries(slotCounts).sort(([a], [b]) => a.localeCompare(b))
-    const withLocation = items.filter(item => (
-        Array.isArray(item.dropLocation)
-            ? item.dropLocation.some(location => Boolean(String(location).trim()))
-            : Boolean(String(item.dropLocation ?? "").trim())
-    )).length
-    const withoutLocation = items.length - withLocation
-
-    return (
-        <section className="catalogue-overview card">
-            <h3 className="catalogue-overview-title header">Item Overview</h3>
-            <div className="catalogue-overview-stats">
-                <div className="catalogue-overview-stat card">
-                    <span className="text">Total items</span>
-                    <span className="header-big">{items.length}</span>
-                </div>
-                <div className="catalogue-overview-stat card">
-                    <span className="text">Item sets</span>
-                    <span className="header-big">{sets.length}</span>
-                </div>
-                <div className="catalogue-overview-stat card">
-                    <span className="text">Items with a location</span>
-                    <span className="header-big">{withLocation}</span>
-                </div>
-                <div className="catalogue-overview-stat card">
-                    <span className="text">Items without a location</span>
-                    <span className="header-big">{withoutLocation}</span>
-                </div>
-            </div>
-            <div className="catalogue-overview-slots">
-                <h4 className="catalogue-section-label text">Items by slot</h4>
-                <div className="catalogue-overview-slot-list">
-                    {bySlot.map(([slot, count]) => (
-                        <div className="catalogue-overview-slot card" key={slot}>
-                            <span className="text">{humanize(slot)}</span>
-                            <span className="header">{count}</span>
-                        </div>
-                    ))}
-                </div>
-            </div>
-            <p className="catalogue-muted text">This overview reflects the current item database. It does not infer missing drop locations.</p>
-        </section>
-    )
-}
-
 function SubPageItemCatalogue({ itemsRef, setsRef, initialView = "items" }) {
     const [view, setView] = useState(initialView)
     const [search, setSearch] = useState("")
@@ -491,7 +440,6 @@ function SubPageItemCatalogue({ itemsRef, setsRef, initialView = "items" }) {
                     }
                 </div>
             )}
-            <ItemOverview items={allItems} sets={setsRef ?? []} />
         </section>
     )
 }
