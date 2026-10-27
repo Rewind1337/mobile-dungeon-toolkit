@@ -15,11 +15,12 @@ import { ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS } from "../da
 const EMPTY_ITEM_DATA = {}
 const TABS = [
     ["hero-catalogue", "Hero Catalogue"],
-    ["resources-catalogue", "Resources"],
     ["item-catalogue", "Items & Sets"],
     ["perk-catalogue", "Perk Catalogue"],
-    ["skills-talents-catalogue", "Skills & Talents"],
+    ["skills-catalogue", "Skills"],
+    ["talents-catalogue", "Talents"],
     ["status-catalogue", "Status Catalogue"],
+    ["resources-catalogue", "Resources"],
 ]
 
 const humanize = value => String(value ?? "").replaceAll("_", " ").replace(/\b\w/g, letter => letter.toUpperCase())
@@ -86,7 +87,7 @@ function PageInfos({ itemsRef, heroesRef, activeTab = "overview", onTabChange })
             {activeTab === "perk-catalogue" && <CataloguePerk items={items} sets={sets} />}
             {(activeTab === "hero-catalogue" || activeTab === "hero-banners-catalogue") && <CatalogueHero heroesRef={heroes} initialView={activeTab === "hero-banners-catalogue" ? "banners" : "heroes"} onViewChange={view => setActiveTab(view === "banners" ? "hero-banners-catalogue" : "hero-catalogue")} />}
             {(activeTab === "resources-catalogue" || activeTab === "gems-catalogue") && <CatalogueResources initialView={activeTab === "gems-catalogue" ? "gems" : "resources"} onViewChange={view => setActiveTab(view === "gems" ? "gems-catalogue" : "resources-catalogue")} />}
-            {activeTab === "skills-talents-catalogue" && <CatalogueSkillsTalents heroes={heroes} />}
+            {(activeTab === "skills-catalogue" || activeTab === "talents-catalogue") && <CatalogueSkillsTalents heroes={heroes} view={activeTab === "talents-catalogue" ? "talents" : "skills"} />}
             {activeTab === "status-catalogue" && <CatalogueStatus />}
         </div>
         <BackToTopButton scrollRef={listRef} />
