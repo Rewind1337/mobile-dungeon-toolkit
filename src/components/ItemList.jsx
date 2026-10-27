@@ -67,7 +67,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                 ...Object.entries(PERK_DEFINITIONS).flatMap(([key, perk]) => ([...(itemObj.fixedPerks ?? []), ...(itemObj.perks ?? [])].some(value => value && typeof value === 'object' ? value.id === perk.id : String(value).toUpperCase().replace(/\s/g, '_') === key || String(value) === String(perk.id)) ? [key, perk.name] : [])
             ].join(' ').toLowerCase()
             const searchQuery = filters.name.trim().toLowerCase()
-            const isUnique = itemObj.unique !== undefined && itemObj.unique !== null && itemObj.unique !== 0 && itemObj.unique !== 'NOTHING'
+            const isUnique = itemObj.unique !== 'NOTHING'
             const matchesName = !searchQuery || (searchQuery === 'unique' ? isUnique : searchQuery === 'not unique' ? !isUnique : searchable.includes(searchQuery));
 
             return matchesItemType && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity && matchesName;
