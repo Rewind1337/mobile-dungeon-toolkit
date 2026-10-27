@@ -337,7 +337,7 @@
   object-fit: contain;
   flex: 0 0;
 }
-@media (max-width: 900px) {
+@include M.media-query-max(V.$bp-mobile, ()) {
   .hero-list .hero-sprite, .hero .hero-sprite {
     width: 60px;
     height: 85px;
@@ -348,6 +348,8 @@
   }
   .hero-preview .hero-metadata > .hero-metadata-name {
     order: -1;
+    flex: 1 1 100%;
+    width: 100%;
     flex-basis: 100%;
   }
   .hero-preview .hero-metadata img { width: 32px; height: 32px; }
