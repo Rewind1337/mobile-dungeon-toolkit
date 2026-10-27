@@ -298,7 +298,7 @@ function SetCatalogueCard({ set, pieces }) {
     )
 }
 
-function SubPageItemCatalogue({ itemsRef, setsRef, initialView = "items", onViewChange }) {
+function CatalogueItem({ itemsRef, setsRef, initialView = "items", onViewChange }) {
     const [view, setView] = useState(initialView)
     const changeView = nextView => { setView(nextView); onViewChange?.(nextView) }
     const [search, setSearch] = useState("")
@@ -481,4 +481,4 @@ function SubPageItemCatalogue({ itemsRef, setsRef, initialView = "items", onView
     )
 }
 
-export default SubPageItemCatalogue
+export default CatalogueItem

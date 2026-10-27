@@ -5,7 +5,7 @@ import "../css/other.scss"
 
 const perkLabel = key => PERK_DEFINITIONS[key]?.name ?? key.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())
 
-function SubPagePerkCatalogue() {
+function CataloguePerk() {
     const [search, setSearch] = useState("")
     const entries = useMemo(() => {
         const slotsByPerk = new Map()
@@ -50,4 +50,4 @@ function SubPagePerkCatalogue() {
         </div>
     </section>
 }
-export default SubPagePerkCatalogue
+export default CataloguePerk

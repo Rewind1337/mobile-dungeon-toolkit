@@ -276,7 +276,7 @@ function StatusCard({ status }) {
     )
 }
 
-function SubPageStatusCatalogue() {
+function CatalogueStatus() {
     const [search, setSearch] = useState("")
     const [categoryFilter, setCategoryFilter] = useState("all")
 
@@ -344,4 +344,4 @@ function SubPageStatusCatalogue() {
     )
 }
 
-export default SubPageStatusCatalogue
+export default CatalogueStatus

@@ -229,7 +229,7 @@ function App() {
                 <Button className="not-found-link" text="Teams" color={2} onClick={() => switchTabTo('teams')} />
                 <Button className="not-found-link" text="Home" color={3} onClick={() => switchTabTo('splash')} />
                 <Button className="not-found-link" text="Simulators" color={4} onClick={() => switchTabTo('simulator')} />
-                <Button className="not-found-link" text="Other Stuff" color={5} onClick={() => switchTabTo('other')} />
+                <Button className="not-found-link" text="Info" color={5} onClick={() => switchTabTo('info')} />
               </nav>
             </section>
           </main>

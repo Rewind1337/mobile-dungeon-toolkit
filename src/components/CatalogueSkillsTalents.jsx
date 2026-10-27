@@ -60,7 +60,7 @@ function TalentCard({ talent, sources }) {
     </article>
 }
 
-function SubPageSkillsTalentsCatalogue({ heroes = [] }) {
+function CatalogueSkillsTalents({ heroes = [] }) {
     const [view, setView] = useState("skills")
     const [search, setSearch] = useState("")
     const entries = useMemo(() => {
@@ -95,4 +95,4 @@ function SubPageSkillsTalentsCatalogue({ heroes = [] }) {
         {filtered.length === 0 ? <p className="catalogue-empty card">No {view} match this search.</p> : <div className="hero-catalogue-grid">{filtered.map(entry => view === "skills" ? <SkillCard key={entry.key} hero={entry.hero} skill={entry.skill} skillIndex={entry.skillIndex} /> : <TalentCard key={entry.key} talent={entry.talent} sources={entry.sources} />)}</div>}
     </section>
 }
-export default SubPageSkillsTalentsCatalogue
+export default CatalogueSkillsTalents

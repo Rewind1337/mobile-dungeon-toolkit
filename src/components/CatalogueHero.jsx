@@ -131,7 +131,7 @@ function HeroCatalogueCard({ hero }) {
     )
 }
 
-function SubPageHeroCatalogue({ heroesRef }) {
+function CatalogueHero({ heroesRef }) {
     const [search, setSearch] = useState("")
     const [rarityFilter, setRarityFilter] = useState("all")
     const [attributeFilter, setAttributeFilter] = useState("all")
@@ -250,4 +250,4 @@ function SubPageHeroCatalogue({ heroesRef }) {
     )
 }
 
-export default SubPageHeroCatalogue
+export default CatalogueHero
