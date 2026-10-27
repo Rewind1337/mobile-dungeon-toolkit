@@ -193,29 +193,68 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
         const preview = listRef.current
         if (!preview) return
 
-        const nextHeight = preview.getBoundingClientRect().height
         const previousHeight = previousPreviewHeight.current
+        if (previousHeight === null) {
+            previousPreviewHeight.current = preview.getBoundingClientRect().height
+            return
+        }
 
-        if (previousHeight !== null && Math.abs(previousHeight - nextHeight) > 1) {
-            preview.style.height = `${previousHeight}px`
-            preview.style.transition = 'height 200ms ease'
+        const pane = preview.closest('.hero-preview-pane')
+        let timeoutId
+        let animationStarted = false
+        let finishAnimation
+
+        preview.style.height = `${previousHeight}px`
+        preview.style.transition = 'height 200ms ease'
+
+        const animateHeight = () => {
+            if (animationStarted) return
+            animationStarted = true
+            window.clearTimeout(timeoutId)
+            if (pane && onPaneTransitionEnd) pane.removeEventListener('transitionend', onPaneTransitionEnd)
+
+            const startHeight = preview.getBoundingClientRect().height
+            preview.style.transition = 'none'
+            preview.style.height = 'auto'
+            const targetHeight = preview.getBoundingClientRect().height
+            preview.style.height = `${startHeight}px`
             preview.getBoundingClientRect()
-            preview.style.height = `${nextHeight}px`
 
-            const finishAnimation = event => {
+            if (Math.abs(startHeight - targetHeight) <= 1) {
+                preview.style.height = ''
+                preview.style.transition = ''
+                previousPreviewHeight.current = targetHeight
+                return
+            }
+
+            preview.style.transition = 'height 200ms ease'
+            finishAnimation = event => {
                 if (event.target !== preview || event.propertyName !== 'height') return
                 preview.style.height = ''
                 preview.style.transition = ''
                 preview.removeEventListener('transitionend', finishAnimation)
             }
             preview.addEventListener('transitionend', finishAnimation)
+            preview.style.height = `${targetHeight}px`
+            previousPreviewHeight.current = targetHeight
         }
 
-        previousPreviewHeight.current = nextHeight
-        return () => {
-            if (listRef.current) {
-                previousPreviewHeight.current = listRef.current.getBoundingClientRect().height
+        const onPaneTransitionEnd = event => {
+            if (event.target === pane && (event.propertyName === 'width' || event.propertyName === 'flex-basis')) {
+                animateHeight()
             }
+        }
+
+        if (pane) pane.addEventListener('transitionend', onPaneTransitionEnd)
+        timeoutId = window.setTimeout(animateHeight, 250)
+
+        return () => {
+            window.clearTimeout(timeoutId)
+            if (pane) pane.removeEventListener('transitionend', onPaneTransitionEnd)
+            if (finishAnimation) preview.removeEventListener('transitionend', finishAnimation)
+            previousPreviewHeight.current = preview.getBoundingClientRect().height
+            preview.style.height = ''
+            preview.style.transition = ''
         }
     }, [isFullWidth])
 
