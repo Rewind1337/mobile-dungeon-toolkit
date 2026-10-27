@@ -15,7 +15,7 @@ const PageItems = lazy(() => import('./components/PageItems.jsx'))
 const PageHeroes = lazy(() => import('./components/PageHeroes.jsx'))
 const PageSimulators = lazy(() => import('./components/PageSimulators.jsx'))
 const PageTeams = lazy(() => import('./components/PageTeams.jsx'))
-const PageOther = lazy(() => import('./components/PageOther.jsx'))
+const PageInfos = lazy(() => import('./components/PageInfos.jsx'))
 
 
 const BASE_HEROES = init_hero_db()
@@ -26,17 +26,17 @@ const PAGE_TO_ROUTE = {
   items: '/items/',
   teams: '/teams/',
   simulator: '/simulators/',
-  other: '/other/',
+  info: '/info/',
 };
 
-const OTHER_TAB_TO_ROUTE = {
-  overview: '/other/',
-  'item-catalogue': '/other/item-catalogue/items/',
-  'set-catalogue': '/other/item-catalogue/sets/',
-  'perk-catalogue': '/other/perk-catalogue/',
-  'hero-catalogue': '/other/hero-catalogue/',
-  'status-catalogue': '/other/status-catalogue/',
-  'skills-talents-catalogue': '/other/skills-talents-catalogue/',
+const INFO_TAB_TO_ROUTE = {
+  overview: '/info/',
+  'item-catalogue': '/info/item-catalogue/items/',
+  'set-catalogue': '/info/item-catalogue/sets/',
+  'perk-catalogue': '/info/perk-catalogue/',
+  'hero-catalogue': '/info/hero-catalogue/',
+  'status-catalogue': '/info/status-catalogue/',
+  'skills-talents-catalogue': '/info/skills-talents-catalogue/',
 };
 
 const normalizeRoute = (route) => {
@@ -66,15 +66,14 @@ const getPageFromPath = () => {
   const pathname = getPathWithoutBase();
 
   // Catalogue subroutes are views within the existing "Other" page.
-  if (pathname.startsWith('/other/')) return 'other';
+  if (pathname === '/info' || pathname.startsWith('/info/') || pathname === '/other' || pathname.startsWith('/other/')) return 'info';
 
   return ROUTE_TO_PAGE[pathname] ?? 'notFound';
 };
 
-const getOtherTabFromPath = () => {
+const getInfoTabFromPath = () => {
   const pathname = getPathWithoutBase();
-  return Object.entries(OTHER_TAB_TO_ROUTE).find(([, route]) => normalizeRoute(route) === pathname)?.[0]
-    ?? 'overview';
+  return Object.entries(INFO_TAB_TO_ROUTE).find(([, route]) => normalizeRoute(route) === pathname || normalizeRoute(route.replace('/info/', '/other/')) === pathname)?.[0] ?? 'overview';
 };
 
 const createDefaultState = () => ({
@@ -141,7 +140,7 @@ function App() {
 
   // app related
   const [pageContent, setPageContent] = useState(getPageFromPath)
-  const [activeOtherTab, setActiveOtherTab] = useState(getOtherTabFromPath)
+  const [activeInfoTab, setActiveInfoTab] = useState(getInfoTabFromPath)
   const [importStatus, setImportStatus] = useState("")
 
   const saveToLocalStorage = useCallback(() => {
@@ -167,7 +166,7 @@ function App() {
   useEffect(() => {
     const handlePopState = () => {
       setPageContent(getPageFromPath());
-      setActiveOtherTab(getOtherTabFromPath());
+      setActiveInfoTab(getInfoTabFromPath());
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -187,12 +186,12 @@ function App() {
       window.history.pushState({}, '', destination);
     }
 
-    if (page === 'other') setActiveOtherTab('overview');
+    if (page === 'info') setActiveInfoTab('overview');
     setPageContent(page);
   };
 
-  const switchOtherCatalogueTo = (tab) => {
-    const route = OTHER_TAB_TO_ROUTE[tab];
+  const switchInfoCatalogueTo = (tab) => {
+    const route = INFO_TAB_TO_ROUTE[tab];
     if (!route) return;
 
     const baseUrl = import.meta.env.BASE_URL;
@@ -202,8 +201,8 @@ function App() {
       window.history.pushState({}, '', destination);
     }
 
-    setActiveOtherTab(tab);
-    setPageContent('other');
+    setActiveInfoTab(tab);
+    setPageContent('info');
   }
 
   return (
@@ -327,12 +326,12 @@ function App() {
 
         {pageContent === 'simulator' && <PageSimulators itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
 
-        {pageContent === 'other' && (
-          <PageOther
+        {pageContent === 'info' && (
+          <PageInfos
             itemsRef={itemsRef}
             heroesRef={heroesRef}
-            activeTab={activeOtherTab}
-            onTabChange={switchOtherCatalogueTo}
+            activeTab={activeInfoTab}
+            onTabChange={switchInfoCatalogueTo}
           />
         )}
 

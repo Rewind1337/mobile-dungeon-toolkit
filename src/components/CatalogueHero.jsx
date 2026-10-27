@@ -66,7 +66,7 @@ function HeroCatalogueCard({ hero }) {
                     <Hero heroObj={hero} selected={false} level={null} onClick={() => {}} />
                 </div>
                 <div className="hero-catalogue-heading">
-                    <h3 className="hero-catalogue-name catalogue-chip header text" data-rarity={hero.rarity}>{hero.name}</h3>
+                    <div className="hero-catalogue-name catalogue-chip header text" data-rarity={hero.rarity}>{hero.name}</div>
                     <div className="hero-catalogue-meta-row">
                         <span className="catalogue-chip catalogue-chip-rarity text" data-rarity={hero.rarity}>{humanize(rarity)}</span>
                         <span className={`catalogue-chip catalogue-chip-attribute catalogue-chip-attribute-${String(attribute).toLowerCase()} text`}>
@@ -84,7 +84,7 @@ function HeroCatalogueCard({ hero }) {
 
             {skills.length > 0 && (
                 <section className="hero-catalogue-section card">
-                    <h4 className="catalogue-section-label text">Skills ({skills.length})</h4>
+                    <div className="catalogue-section-label text">Skills ({skills.length})</div>
                     <div className="hero-catalogue-skills">
                         {skills.map((skill, index) => (
                             <article className="hero-catalogue-skill" key={skill.name ?? index}>
@@ -110,7 +110,7 @@ function HeroCatalogueCard({ hero }) {
 
             {talents.length > 0 && (
                 <section className="hero-catalogue-section card">
-                    <h4 className="catalogue-section-label text">Talents ({talents.length})</h4>
+                    <div className="catalogue-section-label text">Talents ({talents.length})</div>
                     <div className="hero-catalogue-talents">
                         {talents.map(([key, talent]) => (
                             <article className="hero-catalogue-talent" key={key}>
@@ -189,7 +189,7 @@ function SubPageHeroCatalogue({ heroesRef }) {
         <section className="hero-catalogue">
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
-                    <h2 className="catalogue-title header-big">Hero Catalogue</h2>
+                    <div className="catalogue-title header-big">Hero Catalogue</div>
                     <p className="catalogue-description text">
                         Search heroes, skills, talents, effects, attributes, rarity, element, role, and other stored hero data.
                     </p>

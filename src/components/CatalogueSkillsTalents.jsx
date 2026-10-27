@@ -86,7 +86,7 @@ function SubPageSkillsTalentsCatalogue({ heroes = [] }) {
         return (sourceText + " " + stringify(value) + " " + (entry.id ?? "")).toLowerCase().includes(search.trim().toLowerCase())
     })
     return <section className="hero-catalogue">
-        <header className="catalogue-header"><div className="catalogue-heading-copy"><h2 className="catalogue-title header-big">Skills &amp; Talents Catalogue</h2><p className="catalogue-description text">Every skill and talent entry currently present in the hero database, with its source hero. Repeated names are intentionally listed separately.</p></div></header>
+        <header className="catalogue-header"><div className="catalogue-heading-copy"><div className="catalogue-title header-big">Skills &amp; Talents Catalogue</div><p className="catalogue-description text">Every skill and talent entry currently present in the hero database, with its source hero. Repeated names are intentionally listed separately.</p></div></header>
         <nav className="catalogue-view-switch" aria-label="Skills and talents view">
             <Button text="Skill Catalogue" color={5} active={view === "skills"} onClick={() => setView("skills")} />
             <Button text="Talent Catalogue" color={5} active={view === "talents"} onClick={() => setView("talents")} />

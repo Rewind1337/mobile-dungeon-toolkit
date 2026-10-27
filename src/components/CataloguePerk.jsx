@@ -23,7 +23,7 @@ function SubPagePerkCatalogue() {
     return <section className="perk-catalogue">
         <header className="catalogue-header">
             <div className="catalogue-heading-copy">
-                <h2 className="catalogue-title header-big">Perk Catalogue</h2>
+                <div className="catalogue-title header-big">Perk Catalogue</div>
                 <p className="catalogue-description text">Each perk is listed once, alongside the equipment slots it can roll on.</p>
             </div>
         </header>

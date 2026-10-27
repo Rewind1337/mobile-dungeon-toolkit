@@ -123,7 +123,7 @@ function PerkList({ perks, label = "Perks" }) {
 
     return (
         <section className="catalogue-perks card">
-            <h4 className="catalogue-section-label text">{label}</h4>
+            <div className="catalogue-section-label text">{label}</div>
             {visiblePerks.length === 0
                 ? <p className="catalogue-muted">None recorded</p>
                 : <ul className="catalogue-perk-list flex-row">
@@ -213,7 +213,7 @@ function ItemCatalogueCard({ item, set }) {
                     <Item itemObj={item} selected={false} level={null} />
                 </div>
                 <div className="catalogue-item-heading">
-                    <h3 className="catalogue-item-name catalogue-chip catalogue-chip-name header text">{item.name}</h3>
+                    <div className="catalogue-item-name catalogue-chip catalogue-chip-name header text">{item.name}</div>
                     <div className="catalogue-item-meta-row">
                         <div className="catalogue-item-meta text">
                             <span className="catalogue-chip text">
@@ -235,7 +235,7 @@ function ItemCatalogueCard({ item, set }) {
 
             {effectDescription && (
                 <section className="catalogue-effect card">
-                    <h4 className="catalogue-section-label text flex-row">
+                    <div className="catalogue-section-label text flex-row">
                         {statuses.length > 0 && (
                             <div className="catalogue-statuses" aria-label="Statuses applied by weapon effect">
                                 {statuses.map(status => (
@@ -244,7 +244,7 @@ function ItemCatalogueCard({ item, set }) {
                             </div>
                         )}
                         <div className="text">Unique Effect</div>
-                    </h4>
+                    </div>
                     <p className="catalogue-effect-description text">{effectDescription}</p>
                 </section>
             )}
@@ -257,40 +257,46 @@ function ItemCatalogueCard({ item, set }) {
 
 function SetCatalogueCard({ set, pieces }) {
     const locations = getSetLocations(set, pieces)
+    const attributeLabel = getAttributeRequirementLabel(set.attributeRequirement)
+    const attributeKey = ATTRIBUTE_ICON_KEYS[attributeLabel.toLowerCase()]
+    const attributeClass = attributeLabel.toLowerCase().includes("strength")
+        ? "catalogue-chip-attribute-strength"
+        : attributeLabel.toLowerCase().includes("dexterity")
+            ? "catalogue-chip-attribute-dexterity"
+            : attributeLabel.toLowerCase().includes("intelligence")
+                ? "catalogue-chip-attribute-intelligence"
+                : ""
 
     return (
         <article className="catalogue-set-card card">
             <header className="catalogue-set-header">
-                <h3 className="catalogue-set-name catalogue-chip catalogue-chip-name header text">{set.name}</h3>
-                <p className={`catalogue-set-requirement catalogue-chip text catalogue-chip-attribute ${getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("strength") ? "catalogue-chip-attribute-strength" : getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("dexterity") ? "catalogue-chip-attribute-dexterity" : getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("intelligence") ? "catalogue-chip-attribute-intelligence" : ""}`}>
-                    {attributeSprites[ATTRIBUTE_ICON_KEYS[getAttributeRequirementLabel(set.attributeRequirement).toLowerCase()]] && <img className="catalogue-chip-icon" src={attributeSprites[ATTRIBUTE_ICON_KEYS[getAttributeRequirementLabel(set.attributeRequirement).toLowerCase()]]} alt="" />}
-                    Required attribute: {getAttributeRequirementLabel(set.attributeRequirement)}
+                <div className="catalogue-set-name catalogue-chip catalogue-chip-name header text">{set.name}</div>
+                <section className="catalogue-set-pieces">
+                    <div className="catalogue-section-label text">Pieces ({pieces.length})</div>
+                    {pieces.length > 0
+                        ? <ul className="catalogue-piece-list">
+                            {pieces.map(item => (
+                                <li className="catalogue-piece card" key={item.id}>
+                                    <img className="catalogue-piece-image" src={item.itemSrc} alt="" draggable={false} />
+                                    <span className="catalogue-piece-name text">{item.name}</span>
+                                </li>
+                            ))}
+                        </ul>
+                        : <p className="catalogue-muted">No item pieces are currently linked to this set in the item database.</p>
+                    }
+                </section>
+                <p className={`catalogue-set-requirement catalogue-chip text catalogue-chip-attribute ${attributeClass}`}>
+                    {attributeSprites[attributeKey] && <img className="catalogue-chip-icon" src={attributeSprites[attributeKey]} alt="" />}
+                    Attribute: {attributeLabel}
                 </p>
                 <div className="catalogue-set-meta flex-row justify-center text">
                     <span className="catalogue-chip text">{getDropSourceLabel(set.dropSource, locations)}</span>
                 </div>
             </header>
-
             <PerkList perks={set.setBonus} label="Set bonuses" />
-
-            <section className="catalogue-set-pieces">
-                <h4 className="catalogue-section-label text">Pieces ({pieces.length})</h4>
-                {pieces.length > 0
-                    ? <ul className="catalogue-piece-list">
-                        {pieces.map(item => (
-                            <li className="catalogue-piece card" key={item.id}>
-                                <img className="catalogue-piece-image" src={item.itemSrc} alt="" draggable={false} />
-                                <span className="catalogue-piece-name text">{item.name}</span>
-                            </li>
-                        ))}
-                    </ul>
-                    : <p className="catalogue-muted">No item pieces are currently linked to this set in the item database.</p>
-                }
-            </section>
         </article>
     )
 }
-
 
 function SubPageItemCatalogue({ itemsRef, setsRef, initialView = "items", onViewChange }) {
     const [view, setView] = useState(initialView)
@@ -415,7 +421,7 @@ function SubPageItemCatalogue({ itemsRef, setsRef, initialView = "items", onView
         <section className="item-catalogue">
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
-                    <h2 className="catalogue-title header-big">{view === "sets" ? "Set Catalogue" : "Item Catalogue"}</h2>
+                    <div className="catalogue-title header-big">{view === "sets" ? "Set Catalogue" : "Item Catalogue"}</div>
                     <p className="catalogue-description text">
                         Search item names, unique-effect descriptions, fixed perks, set bonuses, rarity, source, location, and other stored item data.
                     </p>

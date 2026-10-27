@@ -258,7 +258,7 @@ function StatusCard({ status }) {
                     : <span className="status-catalogue-icon-fallback" aria-hidden="true">◆</span>
                 }
                 <div className="status-catalogue-heading">
-                    <h3 className="status-catalogue-name header">{humanize(status.name)}</h3>
+                    <div className="status-catalogue-name header">{humanize(status.name)}</div>
                     <span className={`catalogue-chip text status-catalogue-category status-category-${category.toLowerCase().replaceAll(" ", "-")}`}>{category}</span>
                 </div>
             </div>
@@ -302,7 +302,7 @@ function SubPageStatusCatalogue() {
         <section className="status-catalogue">
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
-                    <h2 className="catalogue-title header-big">Status Effect Catalogue</h2>
+                    <div className="catalogue-title header-big">Status Effect Catalogue</div>
                     <p className="catalogue-description text">
                         A searchable reference for the status effects currently defined in the project, including their recorded mechanics.
                     </p>
