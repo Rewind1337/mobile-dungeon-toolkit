@@ -7,12 +7,14 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                 <Button
                     text="Resources"
                     color={5}
+                    disabled
                     active={initialView === "resources"}
                     onClick={() => onViewChange?.("resources")}
                 />
                 <Button
                     text="Gems"
                     color={5}
+                    disabled
                     active={initialView === "gems"}
                     onClick={() => onViewChange?.("gems")}
                 />
