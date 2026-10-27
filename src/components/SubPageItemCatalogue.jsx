@@ -324,8 +324,8 @@ function ItemOverview({ items, sets }) {
     )
 }
 
-function SubPageItemCatalogue({ itemsRef, setsRef }) {
-    const [view, setView] = useState("items")
+function SubPageItemCatalogue({ itemsRef, setsRef, initialView = "items" }) {
+    const [view, setView] = useState(initialView)
     const [search, setSearch] = useState("")
     const [sourceFilter, setSourceFilter] = useState("all")
     const [slotFilter, setSlotFilter] = useState("all")
@@ -437,7 +437,7 @@ function SubPageItemCatalogue({ itemsRef, setsRef }) {
         <section className="item-catalogue">
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
-                    <h2 className="catalogue-title header-big">Item Catalogue</h2>
+                    <h2 className="catalogue-title header-big">{view === "sets" ? "Set Catalogue" : "Item Catalogue"}</h2>
                     <p className="catalogue-description text">
                         Search item names, unique-effect descriptions, fixed perks, set bonuses, rarity, source, location, and other stored item data.
                     </p>
