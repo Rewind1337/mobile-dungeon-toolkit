@@ -61,36 +61,36 @@ function ItemRarityFilters({ toggleFilter, filters, filterSprites }) {
     </div>)
 }
 
-function ItemFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, clearFilters, filters, filterSprites, topOffset, sortOrder, onToggleSort }) {
+function ItemFilters({ savedItems = false, setFiltersAdvanced, advanced, toggleFilter, setSearch, clearFilters, filters, filterSprites, topOffset, sortOrder, onToggleSort }) {
 
     if (!advanced) {
         return (
             <div className='filters flex-row card' style={{ top: topOffset }}>
-                <Button className='filters-advanced-button' round onClick={() => {setFiltersAdvanced(advanced => !advanced)}} imgAsText text={(advanced ? filterSprites[54] : filterSprites[53])} active={advanced} />
-                <Button className='filters-clear-button' round onClick={clearFilters} text={"ALL"} active={Object.values(filters).every((v) => v === null || v === "")} />
+                <Button title="Show or hide advanced filters" className='filters-advanced-button' round onClick={() => {setFiltersAdvanced(advanced => !advanced)}} imgAsText text={(advanced ? filterSprites[54] : filterSprites[53])} active={advanced} />
+                <Button title="Clear all filters" className='filters-clear-button' round onClick={clearFilters} text={"ALL"} active={Object.values(filters).every((v) => v === null || v === "")} />
                 <ItemSlotFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <div className="name-search-filter">
                     <input className="selectable w-100" type="text" aria-label="Search items by name" placeholder="Search items..." value={filters.name} onChange={(event) => setSearch(event.target.value)} />
                 </div>
-                <Button className='filters-sort-button' round onClick={onToggleSort} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
+                <Button title={sortOrder == 0 ? "Sort A to Z" : "Sort Z to A"} className='filters-sort-button' round onClick={onToggleSort} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
             </div>
         )
     } else {
         return (
             <div className='filters flex-row flex-wrap card'>
-                <Button className='filters-advanced-button' round onClick={() => {setFiltersAdvanced(advanced => !advanced)}} imgAsText text={(advanced ? filterSprites[54] : filterSprites[53])} active={advanced} />
-                <Button className='filters-clear-button' round onClick={clearFilters} text={"ALL"} active={Object.values(filters).every((v) => v === null || v === "")} />
+                <Button title="Show or hide advanced filters" className='filters-advanced-button' round onClick={() => {setFiltersAdvanced(advanced => !advanced)}} imgAsText text={(advanced ? filterSprites[54] : filterSprites[53])} active={advanced} />
+                <Button title="Clear all filters" className='filters-clear-button' round onClick={clearFilters} text={"ALL"} active={Object.values(filters).every((v) => v === null || v === "")} />
                 <ItemSlotFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <div className="name-search-filter">
                     <input className="selectable w-100" type="text" aria-label="Search items by name" placeholder="Search items..." value={filters.name} onChange={(event) => setSearch(event.target.value)} />
                 </div>
-                <Button className='filters-sort-button' round onClick={onToggleSort} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
+                <Button title={sortOrder == 0 ? "Sort A to Z" : "Sort Z to A"} className='filters-sort-button' round onClick={onToggleSort} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
                 <div className='flex-wrapper' />
                 <ItemSetUniqueFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <div className='flex-wrapper' />
                 <ItemAttributeFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <div className='flex-wrapper' />
-                <ItemRarityFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
+                {savedItems && <ItemRarityFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />}
             </div>
         )
     }
