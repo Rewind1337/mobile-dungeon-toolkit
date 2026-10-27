@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react"
 import { STATUS_EFFECT_DEFINITIONS } from "../database/enums.jsx"
 import { statusSprites } from "../database/db_sprites.jsx"
+import Button from "./Button.jsx"
 
 const STATUS_DESCRIPTIONS = {
     attack_up: "Increases Attack.",
@@ -237,8 +238,8 @@ function getDetails(status) {
     if (status.duration !== undefined) details.push(`Duration: ${status.duration} turn(s)`)
     if (status.interval !== undefined) details.push(`Tick: ${humanize(status.interval)}`)
     if (status.stat !== undefined) details.push(`Stat: ${humanize(status.stat)}`)
-    details.push(`Mitigatable: ${status.mitigatable === undefined ? "Not specified" : status.mitigatable ? "Yes" : "No"}`)
-    details.push(`Removable: ${status.removable === undefined ? "Not specified" : status.removable ? "Yes" : "No"}`)
+    if (status.mitigatable === false) details.push("Not mitigatable")
+    if (status.removable === false) details.push("Not removable")
     return details
 }
 
@@ -325,7 +326,7 @@ function SubPageStatusCatalogue() {
                     </select>
                 </label>
                 <div className="catalogue-filter-actions">
-                    <button type="button" className="status-catalogue-clear" onClick={() => { setSearch(""); setCategoryFilter("all") }}>Clear filters</button>
+                    <Button className="status-catalogue-clear" text="Clear filters" color={5} onClick={() => { setSearch(""); setCategoryFilter("all") }} />
                 </div>
             </div>
 
