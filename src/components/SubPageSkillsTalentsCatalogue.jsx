@@ -7,15 +7,19 @@ const stringify = value => {
     try { return JSON.stringify(value, null, 2) } catch { return String(value) }
 }
 
-function SkillCard({ hero, skill }) {
+function SkillCard({ hero, skill, skillIndex }) {
+    const skillType = ["Primary", "Secondary", "Ultimate"][skillIndex] ?? `Skill ${skillIndex + 1}`
     return <article className="hero-catalogue-skill card">
-        <div className="hero-catalogue-skill-heading">
-            <div className="header">{skill.name || "Unnamed skill"}</div>
-            <span className="text">{hero.name}</span>
+        <div className="skill-catalogue-heading">
+            <span className="catalogue-chip text skill-catalogue-name header">{skill.name || "Unnamed skill"}</span>
+            <div className="skill-catalogue-meta">
+                <span className="catalogue-chip text skill-catalogue-hero">{hero.name}</span>
+                <span className="catalogue-chip text skill-catalogue-type">{skillType}</span>
+                {skill.cooldown != null && <span className="catalogue-chip text skill-catalogue-cooldown">Cooldown: {skill.cooldown} Turns</span>}
+            </div>
         </div>
-        {skill.cooldown != null && <div className="catalogue-meta-row text"><span>Cooldown: {skill.cooldown}</span></div>}
-        {skill.description && <p className="text">{skill.description}</p>}
-        {skill.effect != null && <details className="hero-catalogue-details"><summary>Effect data</summary><pre className="hero-catalogue-code">{stringify(skill.effect)}</pre></details>}
+        {skill.description && <p className="catalogue-chip text skill-catalogue-description">{skill.description}</p>}
+        {skill.effect != null && <details className="hero-catalogue-details"><summary className="text">Effect data</summary><pre className="hero-catalogue-code text">{stringify(skill.effect)}</pre></details>}
     </article>
 }
 
@@ -62,7 +66,7 @@ function SubPageSkillsTalentsCatalogue({ heroes = [] }) {
     const entries = useMemo(() => {
         if (view === "skills") {
             return heroes.flatMap(hero => (Array.isArray(hero.skills) ? hero.skills : []).map((skill, index) => ({
-                hero, skill, key: hero.id + "-skill-" + index
+                hero, skill, skillIndex: index, key: hero.id + "-skill-" + index
             })))
         }
         const groupedTalents = new Map()
@@ -88,7 +92,7 @@ function SubPageSkillsTalentsCatalogue({ heroes = [] }) {
             <Button text="Talent Catalogue" color={5} active={view === "talents"} onClick={() => setView("talents")} />
         </nav>
         <label className="catalogue-search skills-talents-catalogue-filters card"><span className="catalogue-control-label text">Search {view} ({filtered.length} of {entries.length} {view === "skills" ? "skills" : "talent entries"})</span><input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} placeholder="Name, hero, effect…" /></label>
-        {filtered.length === 0 ? <p className="catalogue-empty card">No {view} match this search.</p> : <div className="hero-catalogue-grid">{filtered.map(entry => view === "skills" ? <SkillCard key={entry.key} hero={entry.hero} skill={entry.skill} /> : <TalentCard key={entry.key} talent={entry.talent} sources={entry.sources} />)}</div>}
+        {filtered.length === 0 ? <p className="catalogue-empty card">No {view} match this search.</p> : <div className="hero-catalogue-grid">{filtered.map(entry => view === "skills" ? <SkillCard key={entry.key} hero={entry.hero} skill={entry.skill} skillIndex={entry.skillIndex} /> : <TalentCard key={entry.key} talent={entry.talent} sources={entry.sources} />)}</div>}
     </section>
 }
 export default SubPageSkillsTalentsCatalogue
