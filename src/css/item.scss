@@ -275,3 +275,95 @@
     min-width: 0;
   }
 }
+
+/* Responsive perk rows and consistent sprite bounds */
+.mobile-filter-control, .mobile-filter-specials { display: none; }
+.item .item-sprite {
+  width: V.$item-sprite-width;
+  height: V.$item-sprite-height;
+  flex: 0 0 V.$item-sprite-width;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.item .item-sprite-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+.item-perk {
+  flex: 1 1 340px;
+  min-width: 0;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px;
+}
+.item-perk > .flex-row:first-child {
+  flex: 1 1 160px;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+.item-perk .perk-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+.item-perk .perk-input-row { align-items: center; gap: 4px; }
+.item-perk input.text { flex: 1 1 64px; width: 100%; min-width: 0; }
+.item-perk .perk-flat-percent {
+  flex: 0 0 auto;
+  transform: none;
+  white-space: nowrap;
+  font-size: 14px;
+}
+.item-perk .perk-effective { margin-top: 2px; font-size: 12px; }
+.item-perk > .flex-col { flex: 1 1 120px; min-width: 0; width: auto; }
+.item-perk .perk-not-changeable, .item-perk button {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+@media (max-width: 900px) {
+  .item-list .item-sprite, .item .item-sprite {
+    width: 60px;
+    height: 80px;
+    flex-basis: 60px;
+  }
+  #page-items .filters .filter-group > button,
+  .modal .filters .filter-group > button { display: none; }
+  #page-items .filters .mobile-filter-control,
+  .modal .filters .mobile-filter-control { display: flex; }
+  #page-items .filters .mobile-filter-specials,
+  .modal .filters .mobile-filter-specials { display: flex; flex: 1 1 100%; gap: 6px; }
+  #page-items .filters .filter-group,
+  .modal .filters .filter-group { width: auto; margin: 0; flex: 1 1 140px; min-width: 0; }
+  #page-items .filters .mobile-filter-control,
+  .modal .filters .mobile-filter-control {
+    width: 100%;
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+    text-align: left;
+    font-size: 11px;
+  }
+  #page-items .filters .mobile-filter-control select,
+  .modal .filters .mobile-filter-control select {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding: 7px 5px;
+    border-radius: 5px;
+    color: inherit;
+    background: #17212c;
+    border: 1px solid rgba(255,255,255,.25);
+    font: inherit;
+  }
+  .item-perk { flex-basis: 100%; gap: 6px; }
+  .item-perk > .flex-row:first-child { flex-basis: 100%; }
+  .item-perk > .flex-col { flex: 1 1 100px; }
+}
