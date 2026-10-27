@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo } from "react"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import Button from "./Button.jsx"
 import SubPageItemCatalogue from "./SubPageItemCatalogue.jsx"
@@ -37,7 +37,7 @@ function OtherOverview({ items, sets, heroes }) {
     }, {})
     const skillCount = heroes.reduce((total, hero) => total + (Array.isArray(hero.skills) ? hero.skills.length : 0), 0)
     const talentCount = heroes.reduce((total, hero) => total + (hero.talents && typeof hero.talents === "object" ? Object.keys(hero.talents).length : 0), 0)
-    const rows = (label, values) => Object.entries(values).sort((a, b) => a[0].localeCompare(b[0])).map(([name, count]) => <div className="catalogue-overview-slot card" key={name}><span className="text">{name}</span><span className="header">{count}</span></div>)
+    const rows = values => Object.entries(values).sort((a, b) => a[0].localeCompare(b[0])).map(([name, count]) => <div className="catalogue-overview-slot card" key={name}><span className="text">{name}</span><span className="header">{count}</span></div>)
     return <section className="other-overview">
         <header className="catalogue-header">
             <div className="catalogue-heading-copy">
@@ -53,9 +53,9 @@ function OtherOverview({ items, sets, heroes }) {
             <Stat label="Talent entries" value={talentCount} />
         </div>
         <div className="other-overview-breakdown">
-            <section className="card"><h3 className="header">Heroes by element</h3><div className="catalogue-overview-slot-list">{rows("Element", heroCountBy("element", ELEMENT_DEFINITIONS))}</div></section>
-            <section className="card"><h3 className="header">Heroes by role</h3><div className="catalogue-overview-slot-list">{rows("Role", heroCountBy("role", ROLE_DEFINITIONS))}</div></section>
-            <section className="card"><h3 className="header">Heroes by rarity</h3><div className="catalogue-overview-slot-list">{rows("Rarity", heroCountBy("rarity", RARITY_DEFINITIONS))}</div></section>
+            <section className="card"><h3 className="header">Heroes by element</h3><div className="catalogue-overview-slot-list">{rows(heroCountBy("element", ELEMENT_DEFINITIONS))}</div></section>
+            <section className="card"><h3 className="header">Heroes by role</h3><div className="catalogue-overview-slot-list">{rows(heroCountBy("role", ROLE_DEFINITIONS))}</div></section>
+            <section className="card"><h3 className="header">Heroes by rarity</h3><div className="catalogue-overview-slot-list">{rows(heroCountBy("rarity", RARITY_DEFINITIONS))}</div></section>
         </div>
         <p className="catalogue-muted text">Counts reflect the current in-project data. Skills and talent entries are counted per hero, so repeated names are included.</p>
     </section>
