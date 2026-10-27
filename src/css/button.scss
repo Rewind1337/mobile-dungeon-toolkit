@@ -261,3 +261,17 @@ button {
     margin-top: -25px;
   }
 }
+.back-to-top-button {
+  position: fixed;
+  right: V.$gap;
+  bottom: V.$gap;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: V.$gap;
+  min-width: 150px;
+  min-height: 48px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.55);
+}
+.back-to-top-button .icon-left { font-size: 1.4em; }
