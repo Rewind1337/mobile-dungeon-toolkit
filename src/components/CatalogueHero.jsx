@@ -189,7 +189,7 @@ function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
         <section className="hero-catalogue">
             <div className="catalogue-view-switch" aria-label="Hero catalogue sections">
                 <Button text="Heroes" color={5} active={initialView === "heroes"} onClick={() => onViewChange?.("heroes")} />
-                <Button text="Banners" color={5} active={initialView === "banners"} onClick={() => onViewChange?.("banners")} />
+                <Button disabled text="Banners" color={5} active={initialView === "banners"} onClick={() => onViewChange?.("banners")} />
             </div>
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
