@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { CONSTANTS } from '../database/constants.jsx'
 import { DEFAULT_MASTERWORK_MUTATIONS, MASTERWORK_MUTATION_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, getEnumNameById, getItemPerkCount, getMaxMasterworkLevel } from '../database/enums.jsx'
-import { attributeSprites, iconSprites, filterSprites } from '../database/db_sprites.jsx'
+import { attributeSprites, iconSprites } from '../database/db_sprites.jsx'
 import ExpandSrc from '../sprites/expand.webp'
 import CrossSrc from '../sprites/cross.png'
 
