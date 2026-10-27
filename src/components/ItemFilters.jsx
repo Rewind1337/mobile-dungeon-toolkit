@@ -20,7 +20,9 @@ function ItemSetUniqueFilters({ toggleFilter, filters, filterSprites }) {
         <Button className='filters-special-button' round onClick={() => toggleFilter('unique', 'unique')} imgAsText text={filterSprites[42]} active={filters.unique === 'unique'} />
         <Button className='filters-special-button' round onClick={() => toggleFilter('set', 'twoset')} imgAsText text={filterSprites[40]} active={filters.set === 'twoset'} />
         <Button className='filters-special-button' round onClick={() => toggleFilter('set', 'fourset')} imgAsText text={filterSprites[41]} active={filters.set === 'fourset'} />
-        <div className="mobile-filter-specials"><MobileFilterSelect label="Unique" value={filters.unique} onChange={event => toggleFilter('unique', event.target.value === '' ? null : event.target.value)} options={[{value: 'unique', label: 'Unique'}]} /><MobileFilterSelect label="Set" value={filters.set} onChange={event => toggleFilter('set', event.target.value === '' ? null : event.target.value)} options={[{value: 'twoset', label: '2-piece set'}, {value: 'fourset', label: '4-piece set'}]} /></div>
+        <div className="mobile-filter-specials flex-row justify-between">
+            <MobileFilterSelect label="Unique" value={filters.unique} onChange={event => toggleFilter('unique', event.target.value === '' ? null : event.target.value)} options={[{value: 'unique', label: 'Unique'}]} />
+            <MobileFilterSelect label="Set" value={filters.set} onChange={event => toggleFilter('set', event.target.value === '' ? null : event.target.value)} options={[{value: 'twoset', label: '2-piece set'}, {value: 'fourset', label: '4-piece set'}]} /></div>
     </div>)
 }
 
@@ -68,7 +70,7 @@ function ItemFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, cl
                 <Button className='filters-clear-button' round onClick={clearFilters} text={"ALL"} active={Object.values(filters).every((v) => v === null || v === "")} />
                 <ItemSlotFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <div className="name-search-filter">
-                    <input className="selectable" type="text" aria-label="Search items by name" placeholder="Search items..." value={filters.name} onChange={(event) => setSearch(event.target.value)} />
+                    <input className="selectable w-100" type="text" aria-label="Search items by name" placeholder="Search items..." value={filters.name} onChange={(event) => setSearch(event.target.value)} />
                 </div>
                 <Button className='filters-sort-button' round onClick={onToggleSort} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
             </div>
@@ -80,7 +82,7 @@ function ItemFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, cl
                 <Button className='filters-clear-button' round onClick={clearFilters} text={"ALL"} active={Object.values(filters).every((v) => v === null || v === "")} />
                 <ItemSlotFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <div className="name-search-filter">
-                    <input className="selectable" type="text" aria-label="Search items by name" placeholder="Search items..." value={filters.name} onChange={(event) => setSearch(event.target.value)} />
+                    <input className="selectable w-100" type="text" aria-label="Search items by name" placeholder="Search items..." value={filters.name} onChange={(event) => setSearch(event.target.value)} />
                 </div>
                 <Button className='filters-sort-button' round onClick={onToggleSort} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
                 <div className='flex-wrapper' />
