@@ -646,12 +646,6 @@
   overflow-wrap: anywhere;
 }
 
-.status-polarity-row { display:flex; flex-wrap:wrap; gap:V.$gap-small V.$gap; }
-.status-polarity { display:inline-flex; align-items:center; gap:5px; font-size:V.$font-size-xsmall; }
-.status-polarity-icon { display:block; flex:0 0 20px; width:20px; height:20px; object-fit:contain; }
-.status-polarity-icon.is-negative { flex-basis:16px; width:16px; height:16px; }
-
-
 .perk-catalogue { display:flex; flex-direction:column; gap:V.$gap; width:100%; min-width:0; padding:V.$padding-card; }
 .perk-catalogue-list { display:flex; flex-direction:column; gap:V.$gap-small; min-width:0; }
 .perk-catalogue-row { display:grid; grid-template-columns:minmax(180px, 1fr) minmax(0, 2fr); align-items:center; gap:V.$gap; padding:V.$padding-card; min-width:0; }
