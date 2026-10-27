@@ -354,7 +354,7 @@ function SubPageItemCatalogue({ itemsRef, setsRef, initialView = "items", onView
             ...getLocations(item),
             humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity"),
             ...getEffectStatuses(item).map(status => status.name),
-            ...(item.fixedPerks ?? []).map(getPerkLabel),
+            ...(item.fixedPerks ?? []).flatMap(perk => [getPerkLabel(perk), getPerkKey(perk)]),
             ...(item.setBonusLabels ?? [])
         ].join(" ").toLowerCase()
         const matchesSearch = !query || (query === "unique" ? unique : query === "not unique" ? !unique : searchable.includes(query))
@@ -386,7 +386,7 @@ function SubPageItemCatalogue({ itemsRef, setsRef, initialView = "items", onView
             getAttributeRequirementLabel(set.attributeRequirement),
             sourceName,
             ...locations,
-            ...(set.setBonus ?? []).map(getPerkLabel),
+            ...(set.setBonus ?? []).flatMap(perk => [getPerkLabel(perk), getPerkKey(perk)]),
             ...pieces.map(item => item.name)
         ].join(" ").toLowerCase()
         const matchesSearch = !query || searchable.includes(query)
