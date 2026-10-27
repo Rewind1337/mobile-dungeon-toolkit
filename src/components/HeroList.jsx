@@ -52,7 +52,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
             <HeroFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={(name) => setFilters((prev) => ({ ...prev, name }))} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} sortOrder={sortOrder} onToggleSort={() => setSortOrder(order => order === 0 ? 1 : 0)} />
         </div>
         <div className='header-big'>{headerText}</div>
-        <div className='list hero-list flex-row' ref={listRef} {...events} style={(filtersAdvanced ? { maxHeight: (listHeight - 189)} : { maxHeight: listHeight })}>
+        <div className='list hero-list flex-row' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
             {filteredHeroes.length === 0 ? (
                 <div className="text-big margin-auto">No heroes match the selected filters</div>
             ) : (
