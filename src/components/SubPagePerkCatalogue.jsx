@@ -19,7 +19,7 @@ function SubPagePerkCatalogue() {
             .map(([key, slots]) => ({ key, name: perkLabel(key), slots: [...slots] }))
             .sort((a, b) => a.name.localeCompare(b.name))
     }, [])
-    const filtered = entries.filter(entry => `${entry.name} ${entry.slots.join(" ")}`.toLowerCase().includes(search.trim().toLowerCase()))
+    const filtered = entries.filter(entry => `${entry.name} ${entry.key} ${entry.slots.join(" ")}`.toLowerCase().includes(search.trim().toLowerCase()))
     return <section className="perk-catalogue">
         <header className="catalogue-header">
             <div className="catalogue-heading-copy">
