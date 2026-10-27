@@ -35,8 +35,10 @@ const INFO_TAB_TO_ROUTE = {
   'item-catalogue': '/info/item-catalogue/items/',
   'set-catalogue': '/info/item-catalogue/sets/',
   'perk-catalogue': '/info/perk-catalogue/',
-  'hero-catalogue': '/info/hero-catalogue/',
+  'hero-catalogue': '/info/hero-catalogue/heroes/',
   'hero-banners-catalogue': '/info/hero-catalogue/banners/',
+  'resources-catalogue': '/info/resources-catalogue/resources/',
+  'gems-catalogue': '/info/resources-catalogue/gems/',
   'status-catalogue': '/info/status-catalogue/',
   'skills-talents-catalogue': '/info/skills-talents-catalogue/',
 };
@@ -67,14 +69,27 @@ const getPathWithoutBase = () => {
 const getPageFromPath = () => {
   const pathname = getPathWithoutBase();
 
-  // Catalogue subroutes are views within the existing "Other" page.
-  if (pathname === '/info' || pathname.startsWith('/info/') || pathname === '/other' || pathname.startsWith('/other/')) return 'info';
+  // Catalogue subroutes are views within the existing Info page. Keep short root-level aliases working too.
+  if (pathname === '/info' || pathname.startsWith('/info/') || pathname === '/other' || pathname.startsWith('/other/')
+      || pathname === '/hero-catalogue' || pathname.startsWith('/hero-catalogue/')
+      || pathname === '/resources-catalogue' || pathname.startsWith('/resources-catalogue/')) return 'info';
 
   return ROUTE_TO_PAGE[pathname] ?? 'notFound';
 };
 
 const getInfoTabFromPath = () => {
   const pathname = getPathWithoutBase();
+  const aliases = {
+    '/info/hero-catalogue': 'hero-catalogue',
+    '/hero-catalogue': 'hero-catalogue',
+    '/hero-catalogue/heroes': 'hero-catalogue',
+    '/hero-catalogue/banners': 'hero-banners-catalogue',
+    '/info/resources-catalogue': 'resources-catalogue',
+    '/resources-catalogue': 'resources-catalogue',
+    '/resources-catalogue/resources': 'resources-catalogue',
+    '/resources-catalogue/gems': 'gems-catalogue',
+  };
+  if (aliases[pathname]) return aliases[pathname];
   return Object.entries(INFO_TAB_TO_ROUTE).find(([, route]) => normalizeRoute(route) === pathname || normalizeRoute(route.replace('/info/', '/other/')) === pathname)?.[0] ?? 'overview';
 };
 
