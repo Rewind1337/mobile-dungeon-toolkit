@@ -149,9 +149,10 @@ function formatStatValue(value) {
     return Number.isInteger(rounded) ? String(rounded) : String(rounded)
 }
 
-function HeroPreview({ isFullWidth = false, onToggleFullWidth, heroesRef, selectedHeroId, saveHero, deleteSavedHero, onItemClick, equippedItems = [], setsRef = [] }) {
+function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, heroesRef, selectedHeroId, saveHero, deleteSavedHero, onItemClick, equippedItems = [], setsRef = [] }) {
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
+    const previousPreviewHeight = useRef(null)
     const [showSkillsAndTalents, setShowSkillsAndTalents] = useState(false)
     const [exportModalVisible, setExportModalVisible] = useState(false)
     const [heroShareUrl, setHeroShareUrl] = useState("")
@@ -187,6 +188,36 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, heroesRef, select
         onResize();
         return () => window.removeEventListener('resize', onResize);
     }, []);
+
+    useLayoutEffect(() => {
+        const preview = listRef.current
+        if (!preview) return
+
+        const nextHeight = preview.getBoundingClientRect().height
+        const previousHeight = previousPreviewHeight.current
+
+        if (previousHeight !== null && Math.abs(previousHeight - nextHeight) > 1) {
+            preview.style.height = `${previousHeight}px`
+            preview.style.transition = 'height 200ms ease'
+            preview.getBoundingClientRect()
+            preview.style.height = `${nextHeight}px`
+
+            const finishAnimation = event => {
+                if (event.target !== preview || event.propertyName !== 'height') return
+                preview.style.height = ''
+                preview.style.transition = ''
+                preview.removeEventListener('transitionend', finishAnimation)
+            }
+            preview.addEventListener('transitionend', finishAnimation)
+        }
+
+        previousPreviewHeight.current = nextHeight
+        return () => {
+            if (listRef.current) {
+                previousPreviewHeight.current = listRef.current.getBoundingClientRect().height
+            }
+        }
+    }, [isFullWidth])
 
     let heroObj = heroesRef.find(hero => hero.id === selectedHeroId || hero.saveId === selectedHeroId)
 
@@ -422,7 +453,10 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, heroesRef, select
     } else {
         return (
             <div ref={listRef} className='hero-preview flex-col' style={{ maxHeight: listHeight }}>
-                <div className='preview-top-row flex-row'><Button className='preview-back-button' title={isFullWidth ? 'Show hero list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} /></div>
+                <div className='preview-top-row flex-row'>
+                    <Button className='preview-back-button' title={isFullWidth ? 'Show hero list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} />
+                    <Button className='preview-close-button' title='Deselect this hero and close the preview' text='Deselect Hero' onClick={onClosePreview} color='cancel' />
+                </div>
                 <Modal position="center" isVisible={exportModalVisible} onClose={() => setExportModalVisible(false)}>
                     <div className="flex-col card w-100">
                         <div className="header-big margin-auto">Export Hero</div>
