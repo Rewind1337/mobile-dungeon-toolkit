@@ -67,7 +67,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
         </div>
         <div className='header-big'>{headerText}</div>
 
-        <div className='list item-list flex-row' ref={listRef} {...events} style={(filtersAdvanced ? { maxHeight: (listHeight - 189)} : { maxHeight: listHeight })}>
+        <div className='list item-list flex-row' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
             {filteredItems.length === 0 ? (
                 <div className="text-big margin-auto">No items match the selected filters</div>
             ) : (
