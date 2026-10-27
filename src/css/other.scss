@@ -687,13 +687,13 @@
 
 
 
-@media (min-width: 1500px) {
+@include M.media-query(V.$bp-wide) {
   .status-catalogue-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 1200px) {
+@include M.media-query-max(V.$bp-tablet) {
   .status-catalogue-filters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -703,7 +703,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@include M.media-query-max(V.$bp-mobile) {
   .status-catalogue {
     padding: 0;
   }
