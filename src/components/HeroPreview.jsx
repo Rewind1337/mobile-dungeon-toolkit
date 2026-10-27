@@ -462,13 +462,13 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
                         </>}
                     </div>
                 </Modal>
-                <div className='flex-row top-row'>
-                    <div className='header pill flex-row'>
+                <div className='flex-row top-row hero-metadata'>
+                    <div className='header pill flex-row hero-metadata-attribute'>
                         <img width={48} src={attributeSprites[heroObj.mainAttribute]}/>
                         {getEnumNameById(ATTRIBUTE_DEFINITIONS, heroObj.mainAttribute)}
                     </div>
-                    <div className='header-big pill'>{heroObj.variant ? heroObj.variant + " - " : ""}{heroObj.name}</div>
-                    <div className='header pill flex-row'>
+                    <div className='header-big pill hero-metadata-name'>{heroObj.variant ? heroObj.variant + " - " : ""}{heroObj.name}</div>
+                    <div className='header pill flex-row hero-metadata-role'>
                         <img width={48} src={roleSprites[heroObj.role]}/>
                         {getEnumNameById(ROLE_DEFINITIONS, heroObj.role)}
                     </div>
