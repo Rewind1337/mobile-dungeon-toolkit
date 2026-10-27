@@ -204,15 +204,17 @@ function ItemCatalogueCard({ item, set }) {
                 <div className="catalogue-item-heading">
                     <h3 className="catalogue-item-name header">{item.name}</h3>
                     <div className="catalogue-item-meta-row">
-                        <p className="catalogue-item-meta text">
-                            {humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity")} · {humanize(item.slotLabel ?? "Unknown slot")} · {getAttributeRequirementLabel(item.attributeRequirement)}
-                        </p>
+                        <div className="catalogue-item-meta text">
+                            <span className="catalogue-chip catalogue-chip-rarity">{humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity")}</span>
+                            <span className="catalogue-chip">{humanize(item.slotLabel ?? "Unknown slot")}</span>
+                            <span className="catalogue-chip">Attribute: {getAttributeRequirementLabel(item.attributeRequirement)}</span>
+                        </div>
                         {set && <p className="catalogue-item-set text">· Set: {set.name}</p>}
                     </div>
                     <div className="catalogue-item-source-row text">
-                        <p className="catalogue-item-source">Source: {humanize(getSourceName(item.dropSource))}</p>
+                        <p className="catalogue-item-source"><span className="catalogue-chip">Drop source: {humanize(getSourceName(item.dropSource))}</span></p>
                         <p className="catalogue-item-location">
-                            · Boosted: {getLocations(item).filter(location => location !== "Unspecified location").join(", ") || "Unspecified"}
+                            <span className="catalogue-chip">Location: {getLocations(item).filter(location => location !== "Unspecified location").join(", ") || "Unspecified"}</span>
                         </p>
                     </div>
                 </div>
