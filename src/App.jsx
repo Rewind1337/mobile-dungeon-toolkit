@@ -30,9 +30,13 @@ const PAGE_TO_ROUTE = {
 };
 
 const OTHER_TAB_TO_ROUTE = {
+  overview: '/other/',
   'item-catalogue': '/other/item-catalogue/',
+  'set-catalogue': '/other/set-catalogue/',
+  'perk-catalogue': '/other/perk-catalogue/',
   'hero-catalogue': '/other/hero-catalogue/',
   'status-catalogue': '/other/status-catalogue/',
+  'skills-talents-catalogue': '/other/skills-talents-catalogue/',
 };
 
 const normalizeRoute = (route) => {
@@ -70,7 +74,7 @@ const getPageFromPath = () => {
 const getOtherTabFromPath = () => {
   const pathname = getPathWithoutBase();
   return Object.entries(OTHER_TAB_TO_ROUTE).find(([, route]) => normalizeRoute(route) === pathname)?.[0]
-    ?? 'item-catalogue';
+    ?? 'overview';
 };
 
 const createDefaultState = () => ({
@@ -183,7 +187,7 @@ function App() {
       window.history.pushState({}, '', destination);
     }
 
-    if (page === 'other') setActiveOtherTab('item-catalogue');
+    if (page === 'other') setActiveOtherTab('overview');
     setPageContent(page);
   };
 
