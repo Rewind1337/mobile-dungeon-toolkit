@@ -39,21 +39,23 @@ button {
     }
 
     &::before {
-      content: "";
+      content: "░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░";
+      color: rgba(0, 0, 0, 0.2);
+      font-size: 80px;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: end;
+      align-items: center;
       position: absolute;
-      inset: 0 auto 0 0;
+      top: 0;
+      left: 0;
+      height: 250%;
       width: var(--data-percent, 0%);
-      pointer-events: none;
-      background: repeating-linear-gradient(
-        100deg,
-        transparent 0 12px,
-        rgba(255, 255, 255, 0.07) 12px 14px,
-        transparent 14px 26px
-      );
-      background-position: 0 0;
-      animation: buttonPatternDrift 12s linear infinite;
+      animation: marginWobble 20s ease infinite;
+      background: rgba(255, 255, 255, 0.33);
       transition: width 0.25s linear;
       z-index: 0;
+      pointer-events: none;
     }
 
     > .icon-left,
@@ -260,13 +262,14 @@ button {
   }
 }
 
-@keyframes buttonPatternDrift {
-  from {
-    background-position: 0 0;
+@keyframes marginWobble {
+  0%,
+  100% {
+    margin-top: -45px;
   }
 
-  to {
-    background-position: 25.6px -4.5px;
+  50% {
+    margin-top: -25px;
   }
 }
 .back-to-top-button {
