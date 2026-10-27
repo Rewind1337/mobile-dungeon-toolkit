@@ -211,16 +211,16 @@ function ItemCatalogueCard({ item, set }) {
                     <Item itemObj={item} selected={false} level={null} />
                 </div>
                 <div className="catalogue-item-heading">
-                    <h3 className="catalogue-item-name catalogue-chip catalogue-chip-name header">{item.name}</h3>
+                    <h3 className="catalogue-item-name catalogue-chip catalogue-chip-name header text">{item.name}</h3>
                     <div className="catalogue-item-meta-row">
                         <div className="catalogue-item-meta text">
-                            <span className="catalogue-chip">{humanize(item.slotLabel ?? "Unknown slot")}</span>
-                            <span className={`catalogue-chip catalogue-chip-attribute ${getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("strength") ? "catalogue-chip-attribute-strength" : getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("dexterity") ? "catalogue-chip-attribute-dexterity" : getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("intelligence") ? "catalogue-chip-attribute-intelligence" : ""}`}>Attribute: {getAttributeRequirementLabel(item.attributeRequirement)}</span>
+                            <span className="catalogue-chip text">{humanize(item.slotLabel ?? "Unknown slot")}</span>
+                            <span className={`catalogue-chip text catalogue-chip-attribute ${getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("strength") ? "catalogue-chip-attribute-strength" : getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("dexterity") ? "catalogue-chip-attribute-dexterity" : getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("intelligence") ? "catalogue-chip-attribute-intelligence" : ""}`}>Attribute: {getAttributeRequirementLabel(item.attributeRequirement)}</span>
                         </div>
                         {set && <p className="catalogue-item-set catalogue-chip text">Set: {set.name}</p>}
                     </div>
                     <div className="catalogue-item-source-row text">
-                        <p className="catalogue-item-source"><span className="catalogue-chip">{getDropSourceLabel(item.dropSource, getLocations(item))}</span></p>
+                        <p className="catalogue-item-source"><span className="catalogue-chip text">{getDropSourceLabel(item.dropSource, getLocations(item))}</span></p>
                     </div>
                 </div>
             </div>
@@ -253,10 +253,10 @@ function SetCatalogueCard({ set, pieces }) {
     return (
         <article className="catalogue-set-card card">
             <header className="catalogue-set-header">
-                <h3 className="catalogue-set-name catalogue-chip catalogue-chip-name header">{set.name}</h3>
-                <p className={`catalogue-set-requirement catalogue-chip catalogue-chip-attribute ${getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("strength") ? "catalogue-chip-attribute-strength" : getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("dexterity") ? "catalogue-chip-attribute-dexterity" : getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("intelligence") ? "catalogue-chip-attribute-intelligence" : ""}`}>Required attribute: {getAttributeRequirementLabel(set.attributeRequirement)}</p>
+                <h3 className="catalogue-set-name catalogue-chip catalogue-chip-name header text">{set.name}</h3>
+                <p className={`catalogue-set-requirement catalogue-chip text catalogue-chip-attribute ${getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("strength") ? "catalogue-chip-attribute-strength" : getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("dexterity") ? "catalogue-chip-attribute-dexterity" : getAttributeRequirementLabel(set.attributeRequirement).toLowerCase().includes("intelligence") ? "catalogue-chip-attribute-intelligence" : ""}`}>Required attribute: {getAttributeRequirementLabel(set.attributeRequirement)}</p>
                 <div className="catalogue-set-meta flex-row justify-center text">
-                    <span className="catalogue-chip">{getDropSourceLabel(set.dropSource, locations)}</span>
+                    <span className="catalogue-chip text">{getDropSourceLabel(set.dropSource, locations)}</span>
                 </div>
             </header>
 
