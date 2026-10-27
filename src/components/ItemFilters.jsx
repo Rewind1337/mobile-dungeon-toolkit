@@ -20,7 +20,7 @@ function ItemSetUniqueFilters({ toggleFilter, filters, filterSprites }) {
         <Button className='filters-special-button' round onClick={() => toggleFilter('unique', 'unique')} imgAsText text={filterSprites[42]} active={filters.unique === 'unique'} />
         <Button className='filters-special-button' round onClick={() => toggleFilter('set', 'twoset')} imgAsText text={filterSprites[40]} active={filters.set === 'twoset'} />
         <Button className='filters-special-button' round onClick={() => toggleFilter('set', 'fourset')} imgAsText text={filterSprites[41]} active={filters.set === 'fourset'} />
-        <div className="mobile-filter-specials"><MobileFilterSelect label="Unique" value={filters.unique} onChange={event => toggleFilter('unique', event.target.value === '' ? filters.unique : event.target.value)} options={[{value: 'unique', label: 'Unique'}]} /><MobileFilterSelect label="Set" value={filters.set} onChange={event => toggleFilter('set', event.target.value === '' ? filters.set : event.target.value)} options={[{value: 'twoset', label: '2-piece set'}, {value: 'fourset', label: '4-piece set'}]} /></div>
+        <div className="mobile-filter-specials"><MobileFilterSelect label="Unique" value={filters.unique} onChange={event => toggleFilter('unique', event.target.value === '' ? null : event.target.value)} options={[{value: 'unique', label: 'Unique'}]} /><MobileFilterSelect label="Set" value={filters.set} onChange={event => toggleFilter('set', event.target.value === '' ? null : event.target.value)} options={[{value: 'twoset', label: '2-piece set'}, {value: 'fourset', label: '4-piece set'}]} /></div>
     </div>)
 }
 
@@ -31,7 +31,7 @@ function ItemSlotFilters({ toggleFilter, filters, filterSprites }) {
         <Button className='filters-slot-button' round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.ARMOR.id)} imgAsText text={filterSprites[45]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.ARMOR.id} />
         <Button className='filters-slot-button' round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.RING.id)} imgAsText text={filterSprites[46]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.RING.id} />
         <Button className='filters-slot-button' round onClick={() => toggleFilter('slot', EQUIPMENT_SLOT_DEFINITIONS.NECKLACE.id)} imgAsText text={filterSprites[47]} active={filters.slot === EQUIPMENT_SLOT_DEFINITIONS.NECKLACE.id} />
-        <MobileFilterSelect label="Slot" value={filters.slot} onChange={event => toggleFilter('slot', event.target.value === '' ? filters.slot : Number(event.target.value))} options={Object.values(EQUIPMENT_SLOT_DEFINITIONS).filter(option => option.id !== EQUIPMENT_SLOT_DEFINITIONS.OTHER.id).map(option => ({value: option.id, label: option.name[0] + option.name.slice(1).toLowerCase()}))} />
+        <MobileFilterSelect label="Slot" value={filters.slot} onChange={event => toggleFilter('slot', event.target.value === '' ? null : Number(event.target.value))} options={Object.values(EQUIPMENT_SLOT_DEFINITIONS).filter(option => option.id !== EQUIPMENT_SLOT_DEFINITIONS.OTHER.id).map(option => ({value: option.id, label: option.name[0] + option.name.slice(1).toLowerCase()}))} />
     </div>)
 }
 
@@ -40,7 +40,7 @@ function ItemAttributeFilters({ toggleFilter, filters, filterSprites }) {
         <Button className='filters-attribute-button' round onClick={() => toggleFilter('attributeRequirement', ATTRIBUTE_DEFINITIONS.STRENGTH.id)} imgAsText text={filterSprites[20]} active={filters.attributeRequirement === ATTRIBUTE_DEFINITIONS.STRENGTH.id} />
         <Button className='filters-attribute-button' round onClick={() => toggleFilter('attributeRequirement', ATTRIBUTE_DEFINITIONS.DEXTERITY.id)} imgAsText text={filterSprites[21]} active={filters.attributeRequirement === ATTRIBUTE_DEFINITIONS.DEXTERITY.id} />
         <Button className='filters-attribute-button' round onClick={() => toggleFilter('attributeRequirement', ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id)} imgAsText text={filterSprites[22]} active={filters.attributeRequirement === ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id} />
-        <MobileFilterSelect label="Attribute" value={filters.attributeRequirement} onChange={event => toggleFilter('attributeRequirement', event.target.value === '' ? filters.attributeRequirement : Number(event.target.value))} options={[{value: ATTRIBUTE_DEFINITIONS.STRENGTH.id, label: 'Strength'}, {value: ATTRIBUTE_DEFINITIONS.DEXTERITY.id, label: 'Dexterity'}, {value: ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id, label: 'Intelligence'}]} />
+        <MobileFilterSelect label="Attribute" value={filters.attributeRequirement} onChange={event => toggleFilter('attributeRequirement', event.target.value === '' ? null : Number(event.target.value))} options={[{value: ATTRIBUTE_DEFINITIONS.STRENGTH.id, label: 'Strength'}, {value: ATTRIBUTE_DEFINITIONS.DEXTERITY.id, label: 'Dexterity'}, {value: ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id, label: 'Intelligence'}]} />
     </div>)
 }
 
@@ -55,7 +55,7 @@ function ItemRarityFilters({ toggleFilter, filters, filterSprites }) {
         <Button className='filters-rarity-button' round color={"heroic"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.HEROIC.id)} text={filterSprites[36]} active={filters.rarity === RARITY_DEFINITIONS.HEROIC.id} />
         <Button className='filters-rarity-button' round color={"divine"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.DIVINE.id)} text={filterSprites[37]} active={filters.rarity === RARITY_DEFINITIONS.DIVINE.id} />
         <Button className='filters-rarity-button' round color={"ancient"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.ANCIENT.id)} text={filterSprites[38]} active={filters.rarity === RARITY_DEFINITIONS.ANCIENT.id} />
-        <MobileFilterSelect label="Rarity" value={filters.rarity} onChange={event => toggleFilter('rarity', event.target.value === '' ? filters.rarity : Number(event.target.value))} options={Object.values(RARITY_DEFINITIONS).map(option => ({value: option.id, label: option.name[0] + option.name.slice(1).toLowerCase()}))} />
+        <MobileFilterSelect label="Rarity" value={filters.rarity} onChange={event => toggleFilter('rarity', event.target.value === '' ? null : Number(event.target.value))} options={Object.values(RARITY_DEFINITIONS).map(option => ({value: option.id, label: option.name[0] + option.name.slice(1).toLowerCase()}))} />
     </div>)
 }
 
