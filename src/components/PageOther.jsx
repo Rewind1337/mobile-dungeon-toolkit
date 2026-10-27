@@ -28,7 +28,7 @@ function Stat({ label, value }) {
 }
 
 function OtherOverview({ items, sets, heroes }) {
-    const itemCount = Object.values(items).reduce((total, list) => total + (Array.isArray(list) ? list.length : 0), 0)
+    const itemCount = Array.isArray(items) ? items.length : Object.values(items).reduce((total, list) => total + (Array.isArray(list) ? list.length : 0), 0)
     const heroCountBy = (key, definitions) => heroes.reduce((counts, hero) => {
         const value = Object.values(definitions).find(entry => entry.id === Number(hero[key]))
         const label = humanize(value?.name ?? "unknown")
