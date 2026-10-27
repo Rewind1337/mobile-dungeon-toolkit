@@ -3,6 +3,7 @@ import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import Button from "./Button.jsx"
 import CatalogueItem from "./CatalogueItem.jsx"
 import CatalogueHero from "./CatalogueHero.jsx"
+import CatalogueResources from "./CatalogueResources.jsx"
 import CatalogueStatus from "./CatalogueStatus.jsx"
 import CatalogueSkillsTalents from "./CatalogueSkillsTalents.jsx"
 import CataloguePerk from "./CataloguePerk.jsx"
@@ -14,6 +15,7 @@ import { ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS } from "../da
 const EMPTY_ITEM_DATA = {}
 const TABS = [
     ["hero-catalogue", "Hero Catalogue"],
+    ["resources-catalogue", "Resources"],
     ["item-catalogue", "Items & Sets"],
     ["perk-catalogue", "Perk Catalogue"],
     ["skills-talents-catalogue", "Skills & Talents"],
@@ -74,7 +76,7 @@ function PageInfos({ itemsRef, heroesRef, activeTab = "overview", onTabChange })
     return <div id="page-info-layout">
         <div className="sub-nav-bar flex-row" style={{ flex: "0 0 auto" }}>
             <div className="pagination flex-row card w-100">
-                {TABS.map(([id, label]) => <Button key={id} text={label} color={5} active={id === "item-catalogue" ? activeTab === "item-catalogue" || activeTab === "set-catalogue" : id === "hero-catalogue" ? activeTab === "hero-catalogue" || activeTab === "hero-banners-catalogue" : activeTab === id} onClick={() => setActiveTab(id)} />)}
+                {TABS.map(([id, label]) => <Button key={id} text={label} color={5} active={id === "item-catalogue" ? activeTab === "item-catalogue" || activeTab === "set-catalogue" : id === "hero-catalogue" ? activeTab === "hero-catalogue" || activeTab === "hero-banners-catalogue" : id === "resources-catalogue" ? activeTab === "resources-catalogue" || activeTab === "gems-catalogue" : activeTab === id} onClick={() => setActiveTab(id)} />)}
             </div>
         </div>
         <div id="page-info" className="page card w-100" ref={listRef} {...events} style={{ display:"flex", flexDirection:"column", alignItems:"stretch", flex:"1 1 0", minHeight:0, minWidth:0, overflowY:"auto", overflowX:"hidden", alignContent:"start" }}>
@@ -83,6 +85,7 @@ function PageInfos({ itemsRef, heroesRef, activeTab = "overview", onTabChange })
             {activeTab === "set-catalogue" && <CatalogueItem itemsRef={itemData} setsRef={sets} initialView="sets" onViewChange={view => setActiveTab(view === "sets" ? "set-catalogue" : "item-catalogue")} />}
             {activeTab === "perk-catalogue" && <CataloguePerk items={items} sets={sets} />}
             {(activeTab === "hero-catalogue" || activeTab === "hero-banners-catalogue") && <CatalogueHero heroesRef={heroes} initialView={activeTab === "hero-banners-catalogue" ? "banners" : "heroes"} onViewChange={view => setActiveTab(view === "banners" ? "hero-banners-catalogue" : "hero-catalogue")} />}
+            {(activeTab === "resources-catalogue" || activeTab === "gems-catalogue") && <CatalogueResources initialView={activeTab === "gems-catalogue" ? "gems" : "resources"} onViewChange={view => setActiveTab(view === "gems" ? "gems-catalogue" : "resources-catalogue")} />}
             {activeTab === "skills-talents-catalogue" && <CatalogueSkillsTalents heroes={heroes} />}
             {activeTab === "status-catalogue" && <CatalogueStatus />}
         </div>
