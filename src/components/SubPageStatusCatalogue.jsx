@@ -307,12 +307,11 @@ function SubPageStatusCatalogue() {
                         A searchable reference for the status effects currently defined in the project, including their recorded mechanics.
                     </p>
                 </div>
-                <p className="catalogue-result-count text">{filteredStatuses.length} of {statuses.length} status effects</p>
             </header>
 
             <div className="status-catalogue-filters card">
                 <label className="catalogue-search">
-                    <span className="catalogue-control-label text">Search status effects</span>
+                    <span className="catalogue-control-label text">Search status effects ({filteredStatuses.length} of {statuses.length} status effects)</span>
                     <input
                         className="selectable catalogue-input"
                         aria-label="Search status effects"
