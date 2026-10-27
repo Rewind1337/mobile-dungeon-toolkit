@@ -65,10 +65,12 @@ function HeroCatalogueCard({ hero }) {
                     <Hero heroObj={hero} selected={false} level={null} onClick={() => {}} />
                 </div>
                 <div className="hero-catalogue-heading">
-                    <h3 className="hero-catalogue-name header">{hero.name}</h3>
-                    <p className="hero-catalogue-meta text">
-                        {humanize(rarity)} · {humanize(attribute)} · {humanize(role)}
-                    </p>
+                    <h3 className="hero-catalogue-name header" data-rarity={hero.rarity}>{hero.name}</h3>
+                    <div className="hero-catalogue-meta-row">
+                        <span className="catalogue-chip catalogue-chip-rarity">{humanize(rarity)}</span>
+                        <span className="catalogue-chip">{humanize(attribute)}</span>
+                        <span className="catalogue-chip">{humanize(role)}</span>
+                    </div>
                     {hero.variant && <p className="hero-catalogue-variant text">Variant: {hero.variant}</p>}
                 </div>
             </header>
