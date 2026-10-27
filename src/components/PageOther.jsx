@@ -12,9 +12,7 @@ import { ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS } from "../da
 
 const EMPTY_ITEM_DATA = {}
 const TABS = [
-    ["overview", "Overview"],
-    ["item-catalogue", "Item Catalogue"],
-    ["set-catalogue", "Set Catalogue"],
+    ["item-catalogue", "Items & Sets"],
     ["perk-catalogue", "Perk Catalogue"],
     ["hero-catalogue", "Hero Catalogue"],
     ["skills-talents-catalogue", "Skills & Talents"],
@@ -75,13 +73,13 @@ function PageOther({ itemsRef, heroesRef, activeTab = "overview", onTabChange })
     return <div id="page-other-layout">
         <div className="sub-nav-bar flex-row" style={{ flex: "0 0 auto" }}>
             <div className="pagination flex-row card w-100">
-                {TABS.map(([id, label]) => <Button key={id} text={label} color={5} active={activeTab === id} onClick={() => setActiveTab(id)} />)}
+                {activeTab !== "overview" && TABS.map(([id, label]) => <Button key={id} text={label} color={5} active={id === "item-catalogue" ? activeTab === "item-catalogue" || activeTab === "set-catalogue" : activeTab === id} onClick={() => setActiveTab(id)} />)}
             </div>
         </div>
         <div id="page-other" className="page card w-100" ref={listRef} {...events} style={{ display:"flex", flexDirection:"column", alignItems:"stretch", flex:"1 1 0", minHeight:0, minWidth:0, overflowY:"auto", overflowX:"hidden", alignContent:"start" }}>
             {activeTab === "overview" && <OtherOverview items={items} sets={sets} heroes={heroes} />}
-            {activeTab === "item-catalogue" && <SubPageItemCatalogue itemsRef={itemData} setsRef={sets} />}
-            {activeTab === "set-catalogue" && <SubPageItemCatalogue itemsRef={itemData} setsRef={sets} initialView="sets" />}
+            {activeTab === "item-catalogue" && <SubPageItemCatalogue itemsRef={itemData} setsRef={sets} onViewChange={view => setActiveTab(view === "sets" ? "set-catalogue" : "item-catalogue")} />}
+            {activeTab === "set-catalogue" && <SubPageItemCatalogue itemsRef={itemData} setsRef={sets} initialView="sets" onViewChange={view => setActiveTab(view === "sets" ? "set-catalogue" : "item-catalogue")} />}
             {activeTab === "perk-catalogue" && <SubPagePerkCatalogue items={items} sets={sets} />}
             {activeTab === "hero-catalogue" && <SubPageHeroCatalogue heroesRef={heroes} />}
             {activeTab === "skills-talents-catalogue" && <SubPageSkillsTalentsCatalogue heroes={heroes} />}
