@@ -11,7 +11,7 @@ function SkillCard({ hero, skill, skillIndex }) {
     const skillType = ["Primary", "Secondary", "Ultimate"][skillIndex] ?? `Skill ${skillIndex + 1}`
     return <article className="hero-catalogue-skill card">
         <div className="skill-catalogue-heading">
-            <span className="catalogue-chip text skill-catalogue-name header">{skill.name || "Unnamed skill"}</span>
+            <span className="catalogue-chip text skill-catalogue-name">{skill.name || "Unnamed skill"}</span>
             <div className="skill-catalogue-meta">
                 <span className="catalogue-chip text skill-catalogue-hero">{hero.name}</span>
                 <span className="catalogue-chip text skill-catalogue-type">{skillType}</span>
