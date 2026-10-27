@@ -289,7 +289,7 @@ function SubPageStatusCatalogue() {
         return statuses.filter(status => {
             const category = getCategory(status)
             const description = STATUS_DESCRIPTIONS[status.name] ?? humanize(status.effectType ?? "effect")
-            const searchable = `${status.name} ${description} ${status.effectType ?? ""} ${JSON.stringify(status)}`.toLowerCase()
+            const searchable = `${status.name} ${humanize(status.name)} ${category} ${description} ${status.effectType ?? ""} ${JSON.stringify(status)}`.toLowerCase()
             return (!query || searchable.includes(query))
                 && (categoryFilter === "all"
                     || (categoryFilter === "special"
