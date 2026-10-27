@@ -105,17 +105,19 @@ $z-index-background: -1;
 
 // Breakpoints
 $breakpoints: (
+    small: 600px,
     mobile: 900px,
     tablet: 1200px,
     wide: 1500px,
     desktop: 1800px,
     ultra: 1800px
 );
+$bp-small: map.get($breakpoints, small);
 $bp-mobile: map.get($breakpoints, mobile);
 $bp-tablet: map.get($breakpoints, tablet);
 $bp-wide: map.get($breakpoints, wide);
 $bp-desktop: map.get($breakpoints, desktop);
-$bp-ultra: 1800px;
+$bp-ultra: map.get($breakpoints, ultra);
 
 @keyframes rainbow-bg {
 
