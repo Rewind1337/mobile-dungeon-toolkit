@@ -257,14 +257,6 @@
   line-height: 1.2;
   overflow-wrap: anywhere;
 }
-.catalogue-item-card[data-rarity="1"] .catalogue-item-name { border-color: rgba(80, 190, 100, 0.7); }
-.catalogue-item-card[data-rarity="2"] .catalogue-item-name { border-color: rgba(80, 145, 245, 0.75); }
-.catalogue-item-card[data-rarity="3"] .catalogue-item-name { border-color: rgba(180, 95, 235, 0.75); }
-.catalogue-item-card[data-rarity="4"] .catalogue-item-name { border-color: rgba(235, 165, 55, 0.8); }
-.catalogue-item-name[data-rarity="1"] { border-color: rgba(80, 190, 100, 0.7); }
-.catalogue-item-name[data-rarity="2"] { border-color: rgba(80, 145, 245, 0.75); }
-.catalogue-item-name[data-rarity="3"] { border-color: rgba(180, 95, 235, 0.75); }
-.catalogue-item-name[data-rarity="4"] { border-color: rgba(235, 165, 55, 0.8); }
 
 .catalogue-item-meta,
 .catalogue-item-set,
@@ -293,6 +285,7 @@
   overflow-wrap: anywhere;
 }
 .catalogue-item-meta { display: flex; flex-wrap: wrap; align-items: center; gap: V.$gap-small; }
+.catalogue-item-set { flex: 0 1 auto; align-items: center; }
 .catalogue-item-source .catalogue-chip,
 .catalogue-item-location .catalogue-chip { display: inline-flex; max-width: 100%; }
 
@@ -584,6 +577,23 @@
   text-align: center;
 }
 
+.skill-catalogue-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+.skill-catalogue-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+.skill-catalogue-name { justify-content: center; text-align: center; }
+.skill-catalogue-description { align-self: stretch; text-align: center; white-space: normal; }
+
 .talent-source-list {
   display: flex;
   flex-wrap: wrap;
@@ -754,6 +764,8 @@
 .status-category-special { border-color: rgba(174, 126, 224, 0.75); }
 .status-category-special-buff { border-color: rgba(66, 190, 183, 0.75); }
 .status-category-special-debuff { border-color: rgba(226, 105, 117, 0.75); }
+.status-polarity-positive { border-color: rgba(80, 190, 100, 0.7); }
+.status-polarity-negative { border-color: rgba(226, 105, 117, 0.75); }
 
 .status-catalogue-description {
   margin: 0;
