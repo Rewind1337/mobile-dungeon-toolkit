@@ -224,8 +224,8 @@ function ItemCatalogueCard({ item, set }) {
                                 {attributeSprites[ATTRIBUTE_ICON_KEYS[getAttributeRequirementLabel(item.attributeRequirement).toLowerCase()]] && <img className="catalogue-chip-icon" src={attributeSprites[ATTRIBUTE_ICON_KEYS[getAttributeRequirementLabel(item.attributeRequirement).toLowerCase()]]} alt="" />}
                                 Attribute: {getAttributeRequirementLabel(item.attributeRequirement)}
                             </span>
+                            {set && <p className="catalogue-item-set catalogue-chip text">Set: {set.name}</p>}
                         </div>
-                        {set && <p className="catalogue-item-set catalogue-chip text">Set: {set.name}</p>}
                     </div>
                     <div className="catalogue-item-source-row text">
                         <p className="catalogue-item-source"><span className="catalogue-chip text">{getDropSourceLabel(item.dropSource, getLocations(item))}</span></p>
