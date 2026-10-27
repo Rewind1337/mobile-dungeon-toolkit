@@ -6,7 +6,6 @@ const stringify = value => {
     if (typeof value === "string") return value
     try { return JSON.stringify(value, null, 2) } catch { return String(value) }
 }
-const humanize = value => String(value ?? "").replaceAll("_", " ").replace(/\b\w/g, letter => letter.toUpperCase())
 
 function SkillCard({ hero, skill }) {
     return <article className="hero-catalogue-skill card">
