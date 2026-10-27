@@ -25,10 +25,9 @@ function SubPagePerkCatalogue() {
                 <h2 className="catalogue-title header-big">Perk Catalogue</h2>
                 <p className="catalogue-description text">Each perk is listed once, alongside the equipment slots it can roll on.</p>
             </div>
-            <p className="catalogue-result-count text">{filtered.length} of {entries.length} perks</p>
         </header>
         <label className="catalogue-search perk-catalogue-filters card">
-            <span className="catalogue-control-label text">Search perks</span>
+            <span className="catalogue-control-label text">Search perks ({filtered.length} of {entries.length} perks)</span>
             <input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} placeholder="Search perks or equipment slots…" />
         </label>
         <div className="perk-catalogue-list">
