@@ -64,6 +64,10 @@
 }
 
 .catalogue-chip-rarity { border-color: rgba(255, 255, 255, 0.28); }
+.catalogue-chip-rarity[data-rarity="1"] { border-color: rgba(80, 190, 100, 0.7); }
+.catalogue-chip-rarity[data-rarity="2"] { border-color: rgba(80, 145, 245, 0.75); }
+.catalogue-chip-rarity[data-rarity="3"] { border-color: rgba(180, 95, 235, 0.75); }
+.catalogue-chip-rarity[data-rarity="4"] { border-color: rgba(235, 165, 55, 0.8); }
 
 .catalogue-description,
 .catalogue-result-count,
@@ -507,10 +511,10 @@
   border-radius: V.$border-radius-small;
   background: rgba(0, 0, 0, 0.2);
 }
-.hero-catalogue-name[data-rarity="1"] { border-color: rgba(80, 190, 100, 0.7); }
-.hero-catalogue-name[data-rarity="2"] { border-color: rgba(80, 145, 245, 0.75); }
-.hero-catalogue-name[data-rarity="3"] { border-color: rgba(180, 95, 235, 0.75); }
-.hero-catalogue-name[data-rarity="4"] { border-color: rgba(235, 165, 55, 0.8); }
+.hero-catalogue-name[data-rarity="1"] { color: #73d17c; border-color: rgba(80, 190, 100, 0.7); }
+.hero-catalogue-name[data-rarity="2"] { color: #83b5ff; border-color: rgba(80, 145, 245, 0.75); }
+.hero-catalogue-name[data-rarity="3"] { color: #d3a0ff; border-color: rgba(180, 95, 235, 0.75); }
+.hero-catalogue-name[data-rarity="4"] { color: #ffc56e; border-color: rgba(235, 165, 55, 0.8); }
 
 .hero-catalogue-meta-row {
   display: flex;
