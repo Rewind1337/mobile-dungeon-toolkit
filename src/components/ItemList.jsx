@@ -54,8 +54,10 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
     const filteredItems = useMemo(() => {
         const result = allItems.filter((itemObj) => {
             const matchesItemType = itemType === null || itemObj.slot === itemType
-            const matchesSet = filters.set === null || itemObj.iconType === filters.set;
-            const matchesUnique = filters.unique === null || (filters.unique ? itemObj.unique !== 'NOTHING' : itemObj.unique === 'NOTHING');
+            const hasSet = itemObj.set !== undefined && itemObj.set !== null && itemObj.set !== -1;
+            const hasUnique = itemObj.unique !== undefined && itemObj.unique !== null && itemObj.unique !== 0 && itemObj.unique !== 'NOTHING';
+            const matchesSet = filters.set === null || (filters.set === 'noSet' ? !hasSet : itemObj.iconType === filters.set);
+            const matchesUnique = filters.unique === null || (filters.unique === 'unique' ? hasUnique : !hasUnique);
             const matchesSlot = filters.slot === null || itemObj.slot === filters.slot;
             const matchesAttribute = filters.attributeRequirement === null || itemObj.attributeRequirement === filters.attributeRequirement;
             const matchesRarity = filters.rarity === null || itemObj.rarity === filters.rarity;
