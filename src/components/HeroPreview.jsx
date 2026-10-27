@@ -203,6 +203,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
         let timeoutId
         let animationStarted = false
         let finishAnimation
+        let onPaneTransitionEnd
 
         preview.style.height = `${previousHeight}px`
         preview.style.transition = 'height 200ms ease'
@@ -239,7 +240,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
             previousPreviewHeight.current = targetHeight
         }
 
-        const onPaneTransitionEnd = event => {
+        onPaneTransitionEnd = event => {
             if (event.target === pane && (event.propertyName === 'width' || event.propertyName === 'flex-basis')) {
                 animateHeight()
             }
