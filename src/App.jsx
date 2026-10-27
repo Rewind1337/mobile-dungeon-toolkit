@@ -40,7 +40,8 @@ const INFO_TAB_TO_ROUTE = {
   'resources-catalogue': '/info/resources-catalogue/resources/',
   'gems-catalogue': '/info/resources-catalogue/gems/',
   'status-catalogue': '/info/status-catalogue/',
-  'skills-talents-catalogue': '/info/skills-talents-catalogue/',
+  'skills-catalogue': '/info/skills-catalogue/',
+  'talents-catalogue': '/info/talents-catalogue/',
 };
 
 const normalizeRoute = (route) => {
@@ -84,6 +85,9 @@ const getInfoTabFromPath = () => {
     '/hero-catalogue': 'hero-catalogue',
     '/hero-catalogue/heroes': 'hero-catalogue',
     '/hero-catalogue/banners': 'hero-banners-catalogue',
+    '/info/skills-talents-catalogue': 'skills-catalogue',
+    '/info/skills-catalogue': 'skills-catalogue',
+    '/info/talents-catalogue': 'talents-catalogue',
     '/info/resources-catalogue': 'resources-catalogue',
     '/resources-catalogue': 'resources-catalogue',
     '/resources-catalogue/resources': 'resources-catalogue',
