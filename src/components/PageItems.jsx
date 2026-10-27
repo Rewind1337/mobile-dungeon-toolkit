@@ -14,6 +14,11 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
     const [previewFullWidth, setPreviewFullWidth] = useState(false)
     const [selectedItemId, setSelectedItemId] = useState({ slot: null, id: null })
     const [selectedSavedItemId, setSelectedSavedItemId] = useState({ slot: null, id: null })
+    const clearItemSelection = () => {
+        setSelectedItemId({ slot: null, id: null })
+        setSelectedSavedItemId({ slot: null, id: null })
+        setPreviewFullWidth(false)
+    }
     const [itemImportModalVisible, setItemImportModalVisible] = useState(false)
     const [itemShareInput, setItemShareInput] = useState("")
     const [itemShareUrl, setItemShareUrl] = useState("")
@@ -283,7 +288,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                             />
                         </div>
                         <div className='card w-50 item-preview-pane' style={{ display: (selectedItemId.slot === null) ? "none" : "block" }}>
-                            <ItemPreview isFullWidth={previewFullWidth} onToggleFullWidth={() => setPreviewFullWidth(value => !value)}
+                            <ItemPreview isFullWidth={previewFullWidth} onToggleFullWidth={() => setPreviewFullWidth(value => !value)} onClosePreview={clearItemSelection}
                                 itemsRef={itemsRef.current.BASE_ITEMS}
                                 setsRef={itemsRef.current.ITEM_SETS}
                                 selectedItemId={selectedItemId}
@@ -307,7 +312,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                             />
                         </div>
                         <div className='card w-50 item-preview-pane' style={{ display: (selectedSavedItemId.slot === null) ? "none" : "block" }}>
-                            <ItemPreview isFullWidth={previewFullWidth} onToggleFullWidth={() => setPreviewFullWidth(value => !value)}
+                            <ItemPreview isFullWidth={previewFullWidth} onToggleFullWidth={() => setPreviewFullWidth(value => !value)} onClosePreview={clearItemSelection}
                                 itemsRef={savedItemsRef.current}
                                 setsRef={itemsRef.current.ITEM_SETS}
                                 selectedItemId={selectedSavedItemId}
