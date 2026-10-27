@@ -17,7 +17,8 @@ function MobileFilterSelect({ label, value, onChange, options }) {
 
 function ItemSetUniqueFilters({ toggleFilter, filters, filterSprites }) {
     return (<div className='filter-group filters-group-special flex-row'>
-        <Button title={filters.unique === 'unique' ? "Unique items (click for Not Unique)" : filters.unique === 'notUnique' ? "Not Unique items (click to clear)" : "Unique items"} className='filters-special-button' round onClick={() => toggleFilter('unique', filters.unique === null ? 'unique' : filters.unique === 'unique' ? 'notUnique' : null)} imgAsText text={filterSprites[42]} active={filters.unique !== null} />
+        <Button title="Unique items" className='filters-special-button' round onClick={() => toggleFilter('unique', 'unique')} imgAsText text={filterSprites[42]} active={filters.unique === 'unique'} />
+        <Button title="Items without a unique effect" className='filters-not-unique-button' onClick={() => toggleFilter('unique', 'notUnique')} text="Not Unique" active={filters.unique === 'notUnique'} />
         <Button title="Items with 2-piece sets" className='filters-special-button' round onClick={() => toggleFilter('set', 'twoset')} imgAsText text={filterSprites[40]} active={filters.set === 'twoset'} />
         <Button title="Items with 4-piece sets" className='filters-special-button' round onClick={() => toggleFilter('set', 'fourset')} imgAsText text={filterSprites[41]} active={filters.set === 'fourset'} />
         <Button title="Items without a set" className='filters-no-set-button' onClick={() => toggleFilter('set', 'noSet')} text="No Set" active={filters.set === 'noSet'} />
