@@ -66,7 +66,9 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                 getEnumNameById(RARITY_DEFINITIONS, Number(itemObj.rarity)) ?? '', set?.name ?? '',
                 ...Object.entries(PERK_DEFINITIONS).flatMap(([key, perk]) => (itemObj.fixedPerks ?? []).some(value => value.id === perk.id) ? [key, perk.name] : [])
             ].join(' ').toLowerCase()
-            const matchesName = !filters.name.trim() || searchable.includes(filters.name.trim().toLowerCase());
+            const searchQuery = filters.name.trim().toLowerCase()
+            const isUnique = itemObj.unique !== undefined && itemObj.unique !== null && itemObj.unique !== 0 && itemObj.unique !== 'NOTHING'
+            const matchesName = !searchQuery || (searchQuery === 'unique' ? isUnique : searchQuery === 'not unique' ? !isUnique : searchable.includes(searchQuery));
 
             return matchesItemType && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity && matchesName;
         });
