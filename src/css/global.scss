@@ -1013,6 +1013,7 @@ input[type="number"] {
 .preview-top-row { display: flex; justify-content: flex-end; width: 100%; margin-bottom: 6px; }
 #page-items.preview-full-width-active .item-list-pane, #page-heroes.preview-full-width-active .hero-list-pane { display: none !important; }
 #page-items.preview-full-width-active .item-preview-pane, #page-heroes.preview-full-width-active .hero-preview-pane { width: 100% !important; flex: 1 1 100%; max-width: 100%; }
+#page-heroes .hero-preview-pane { transition: width 0.2s ease, height 0.2s ease, flex-basis 0.2s ease, max-width 0.2s ease; }
 
 /* Mobile-only select replacements for icon filters */
 .filters .mobile-filter-control,
