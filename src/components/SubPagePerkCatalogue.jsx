@@ -33,13 +33,16 @@ function SubPagePerkCatalogue() {
         </label>
         <div className="perk-catalogue-list">
             {filtered.map(entry => <article className="perk-catalogue-row card" key={entry.key}>
-                {perkSprites[entry.key] && <img className="perk-catalogue-icon" src={perkSprites[entry.key]} alt="" loading="lazy" draggable={false} />}
-                <span className="header perk-catalogue-name">{entry.name}</span>
+                <div className="perk-catalogue-heading">
+                    {perkSprites[entry.key] && <img className="perk-catalogue-icon" src={perkSprites[entry.key]} alt="" loading="lazy" draggable={false} />}
+                    <span className="catalogue-chip text perk-catalogue-name">{entry.name}</span>
+                </div>
                 <div className="perk-catalogue-slots">{entry.slots.map(slot => {
-                    const slotKey = slot.toLowerCase()
+                    const slotLabel = slot.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())
+                    const iconKey = ({ WEAPONS: "weapons", HELMETS: "helmets", ARMORS: "armors", NECKLACES: "necklaces", RINGS: "rings" })[slot] ?? slot.toLowerCase()
                     return <span className="catalogue-chip text" key={slot}>
-                        {iconSprites[slotKey] && <img className="catalogue-chip-icon" src={iconSprites[slotKey]} alt="" />}
-                        {slot.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())}
+                        {iconSprites[iconKey] && <img className="catalogue-chip-icon" src={iconSprites[iconKey]} alt="" />}
+                        {slotLabel}
                     </span>
                 })}</div>
             </article>)}
