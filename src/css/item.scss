@@ -294,7 +294,7 @@
   object-position: center;
 }
 .item-perk {
-  flex: 1 1 340px;
+  flex: 1 1;
   min-width: 0;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -364,6 +364,5 @@
     font: inherit;
   }
   .item-perk { flex-basis: 100%; gap: 6px; }
-  .item-perk > .flex-row:first-child { flex-basis: 100%; }
   .item-perk > .flex-col { flex: 1 1 100px; }
 }

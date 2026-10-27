@@ -70,7 +70,7 @@ function ItemPerk({
             </>}
 
             {!hideChangeButton && (onClick
-                ? <Button text={buttonText} color={buttonColor} disabled={changeDisabled} onClick={() => onClick()} />
+                ? <Button slim text={buttonText} color={buttonColor} disabled={changeDisabled} onClick={() => onClick()} />
                 : <div className='text perk-not-changeable'>not changeable</div>
             )}
         </div>

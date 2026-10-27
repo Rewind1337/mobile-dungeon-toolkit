@@ -3,8 +3,17 @@ import Button from './Button.jsx'
 import { EQUIPMENT_SLOT_DEFINITIONS, ATTRIBUTE_DEFINITIONS, RARITY_DEFINITIONS} from '../database/enums.jsx'
 
 function MobileFilterSelect({ label, value, onChange, options }) {
-    return <label className="mobile-filter-control"><span>{label}</span><select aria-label={label} value={value ?? ""} onChange={onChange}><option value="">All</option>{options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>
-}
+    return (
+    <label className="mobile-filter-control">
+        <span>{label}</span>
+        <select aria-label={label} value={value ?? ""} onChange={onChange}>
+            <option value="">All</option>
+            {options.map(option => 
+                <option key={option.value} value={option.value}>{option.label}</option>
+            )}
+        </select>
+    </label>
+)}
 
 function ItemSetUniqueFilters({ toggleFilter, filters, filterSprites }) {
     return (<div className='filter-group filters-group-special flex-row'>

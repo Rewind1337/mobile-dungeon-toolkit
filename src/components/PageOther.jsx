@@ -19,18 +19,7 @@ function PageOther({ itemsRef, heroesRef, activeTab = "item-catalogue", onTabCha
     const heroes = heroesRef?.current ?? []
 
     return (
-        <div
-            id="page-other-layout"
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                flex: "1 1 0",
-                minHeight: 0,
-                minWidth: 0,
-                width: "100%",
-                gap: "10px"
-            }}
-        >
+        <div id="page-other-layout">
             <div className="sub-nav-bar flex-row" style={{ flex: "0 0 auto" }}>
                 <div className="pagination flex-row card w-100">
                     <Button text="Item Catalogue" color={5} active={activeTab === "item-catalogue"} onClick={() => setActiveTab("item-catalogue")} />
