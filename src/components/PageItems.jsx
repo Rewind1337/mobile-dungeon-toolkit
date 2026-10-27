@@ -10,6 +10,7 @@ import { createItemShareToken, decodeItemShareInput, decodeItemsShareInput, rest
 
 function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
     const [pageContent, setPageContent] = useState(0)
+    const [previewFullWidth, setPreviewFullWidth] = useState(false)
     const [selectedItemId, setSelectedItemId] = useState({ slot: null, id: null })
     const [selectedSavedItemId, setSelectedSavedItemId] = useState({ slot: null, id: null })
     const [itemImportModalVisible, setItemImportModalVisible] = useState(false)
@@ -268,10 +269,10 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                 </div>
             </div>
 
-            <div id={'page-items'} className='page flex-row w-100'>
+            <div id={'page-items'} className={'page flex-row w-100 ' + (previewFullWidth ? 'preview-full-width-active' : '')}>
                 {pageContent === 0 &&
                     <>
-                        <div className='card w-50' style={{ width: (selectedItemId.slot === null) ? "300%" : "50%" }}>
+                        <div className='card w-50 item-list-pane' style={{ width: (selectedItemId.slot === null) ? "300%" : "50%" }}>
                             <ItemList
                                 headerText={"All Items"}
                                 filtersOffset={"5px"}
@@ -280,8 +281,8 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                                 setsRef={itemsRef.current.BASE_SETS}
                             />
                         </div>
-                        <div className='card w-50' style={{ display: (selectedItemId.slot === null) ? "none" : "block" }}>
-                            <ItemPreview
+                        <div className='card w-50 item-preview-pane' style={{ display: (selectedItemId.slot === null) ? "none" : "block" }}>
+                            <ItemPreview isFullWidth={previewFullWidth} onToggleFullWidth={() => setPreviewFullWidth(value => !value)}
                                 itemsRef={itemsRef.current.BASE_ITEMS}
                                 setsRef={itemsRef.current.ITEM_SETS}
                                 selectedItemId={selectedItemId}
@@ -294,7 +295,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                 }
                 {pageContent === 1 &&
                     <>
-                        <div className='card w-50' style={{ width: (selectedSavedItemId.slot === null) ? "300%" : "50%" }}>
+                        <div className='card w-50 item-list-pane' style={{ width: (selectedSavedItemId.slot === null) ? "300%" : "50%" }}>
                             <ItemList
                                 savedItems
                                 headerText={"Saved Items"}
@@ -304,8 +305,8 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                                 setsRef={itemsRef.current.ITEM_SETS}
                             />
                         </div>
-                        <div className='card w-50' style={{ display: (selectedSavedItemId.slot === null) ? "none" : "block" }}>
-                            <ItemPreview
+                        <div className='card w-50 item-preview-pane' style={{ display: (selectedSavedItemId.slot === null) ? "none" : "block" }}>
+                            <ItemPreview isFullWidth={previewFullWidth} onToggleFullWidth={() => setPreviewFullWidth(value => !value)}
                                 itemsRef={savedItemsRef.current}
                                 setsRef={itemsRef.current.ITEM_SETS}
                                 selectedItemId={selectedSavedItemId}
