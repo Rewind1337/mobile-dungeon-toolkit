@@ -355,8 +355,7 @@
 
 
 @media (max-width: 900px) {
-  .hero-preview .calculated-stats-heading { margin-top:8px; text-align:left; font-size:20px; }
-  .hero-preview .calculated-stats-heading small { font-size:.75em; cursor:help; }
+  .hero-preview .calculated-stats-heading small { font-size:.75em; }
   .hero-preview .base-stats:not(.calculated-stats) { flex-direction:column; align-items:stretch; }
   .hero-preview .base-stats:not(.calculated-stats) > .card { width:100%; min-width:0; justify-content:flex-start; gap:8px; }
   .hero-preview .calculated-stats { flex-direction:column; align-items:stretch; }

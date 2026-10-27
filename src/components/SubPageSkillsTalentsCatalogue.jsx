@@ -41,10 +41,10 @@ function SubPageSkillsTalentsCatalogue({ heroes = [] }) {
     return <section className="hero-catalogue">
         <header className="catalogue-header"><div className="catalogue-heading-copy"><h2 className="catalogue-title header-big">Skills &amp; Talents Catalogue</h2><p className="catalogue-description text">Every skill and talent entry currently present in the hero database, with its source hero. Repeated names are intentionally listed separately.</p></div><p className="catalogue-result-count text">{filtered.length} {view === "skills" ? "skills" : "talent entries"}</p></header>
         <nav className="catalogue-view-switch" aria-label="Skills and talents view">
-            <Button text="Skills" color={5} active={view === "skills"} onClick={() => setView("skills")} />
-            <Button text="Talents" color={5} active={view === "talents"} onClick={() => setView("talents")} />
+            <Button text="Skill Catalogue" color={5} active={view === "skills"} onClick={() => setView("skills")} />
+            <Button text="Talent Catalogue" color={5} active={view === "talents"} onClick={() => setView("talents")} />
         </nav>
-        <label className="catalogue-search"><span className="catalogue-control-label text">Search {view}</span><input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} placeholder="Name, hero, effect…" /></label>
+        <label className="catalogue-search skills-talents-catalogue-filters card"><span className="catalogue-control-label text">Search {view}</span><input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} placeholder="Name, hero, effect…" /></label>
         {filtered.length === 0 ? <p className="catalogue-empty card">No {view} match this search.</p> : <div className="hero-catalogue-grid">{filtered.map(entry => view === "skills" ? <SkillCard key={entry.key} hero={entry.hero} skill={entry.skill} /> : <TalentCard key={entry.key} hero={entry.hero} talent={entry.talent} talentId={entry.id} />)}</div>}
     </section>
 }

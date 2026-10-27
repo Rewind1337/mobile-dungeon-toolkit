@@ -80,18 +80,24 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: V.$gap-small;
+  gap: V.$gap;
+
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    gap: 0;
+  }
 }
 
 .catalogue-filters,
 .hero-catalogue-filters,
-.status-catalogue-filters {
+.status-catalogue-filters,
+.perk-catalogue-filters,
+.skills-talents-catalogue-filters {
   position: sticky;
   top: V.$gap-small;
   z-index: 100;
   display: grid;
   gap: V.$gap;
-  align-items: end;
+  align-items: start;
   padding: V.$padding-card;
 
   @include M.media-query-max(V.$bp-mobile, ()) {
@@ -724,6 +730,7 @@
 .status-polarity-row { display:flex; flex-wrap:wrap; gap:V.$gap-small V.$gap; }
 .status-polarity { display:inline-flex; align-items:center; gap:5px; font-size:V.$font-size-xsmall; }
 .status-polarity-icon { display:block; flex:0 0 20px; width:20px; height:20px; object-fit:contain; }
+
 
 .perk-catalogue { display:flex; flex-direction:column; gap:V.$gap; width:100%; min-width:0; padding:V.$padding-card; }
 .perk-catalogue-list { display:flex; flex-direction:column; gap:V.$gap-small; min-width:0; }
