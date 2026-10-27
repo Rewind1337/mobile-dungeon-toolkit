@@ -8,6 +8,7 @@ import SubPageSkillsTalentsCatalogue from "./SubPageSkillsTalentsCatalogue.jsx"
 import SubPagePerkCatalogue from "./SubPagePerkCatalogue.jsx"
 import "../css/other.scss"
 import "../css/hero.scss"
+import { ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS } from "../database/enums.jsx"
 
 const EMPTY_ITEM_DATA = {}
 const TABS = [
@@ -28,8 +29,9 @@ function Stat({ label, value }) {
 
 function OtherOverview({ items, sets, heroes }) {
     const itemCount = Object.values(items).reduce((total, list) => total + (Array.isArray(list) ? list.length : 0), 0)
-    const heroCountBy = (key) => heroes.reduce((counts, hero) => {
-        const label = humanize(hero[key] ?? "unknown")
+    const heroCountBy = (key, definitions) => heroes.reduce((counts, hero) => {
+        const value = Object.values(definitions).find(entry => entry.id === Number(hero[key]))
+        const label = humanize(value?.name ?? "unknown")
         counts[label] = (counts[label] ?? 0) + 1
         return counts
     }, {})
@@ -51,8 +53,9 @@ function OtherOverview({ items, sets, heroes }) {
             <Stat label="Talent entries" value={talentCount} />
         </div>
         <div className="other-overview-breakdown">
-            <section className="card"><h3 className="header">Heroes by element</h3><div className="catalogue-overview-slot-list">{rows("Element", heroCountBy("element"))}</div></section>
-            <section className="card"><h3 className="header">Heroes by role</h3><div className="catalogue-overview-slot-list">{rows("Role", heroCountBy("role"))}</div></section>
+            <section className="card"><h3 className="header">Heroes by element</h3><div className="catalogue-overview-slot-list">{rows("Element", heroCountBy("element", ELEMENT_DEFINITIONS))}</div></section>
+            <section className="card"><h3 className="header">Heroes by role</h3><div className="catalogue-overview-slot-list">{rows("Role", heroCountBy("role", ROLE_DEFINITIONS))}</div></section>
+            <section className="card"><h3 className="header">Heroes by rarity</h3><div className="catalogue-overview-slot-list">{rows("Rarity", heroCountBy("rarity", RARITY_DEFINITIONS))}</div></section>
         </div>
         <p className="catalogue-muted text">Counts reflect the current in-project data. Skills and talent entries are counted per hero, so repeated names are included.</p>
     </section>
