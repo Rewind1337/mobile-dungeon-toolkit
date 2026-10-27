@@ -185,12 +185,11 @@ function SubPageHeroCatalogue({ heroesRef }) {
                         Search heroes, skills, talents, effects, attributes, rarity, element, role, and other stored hero data.
                     </p>
                 </div>
-                <p className="catalogue-result-count text">{filteredHeroes.length} of {catalogueHeroes.length} heroes</p>
             </header>
 
             <div className="hero-catalogue-filters card">
                 <label className="catalogue-search">
-                    <span className="catalogue-control-label text">Search all hero data</span>
+                    <span className="catalogue-control-label text">Search heroes ({filteredHeroes.length} of {catalogueHeroes.length} heroes)</span>
                     <input
                         className="selectable catalogue-input"
                         aria-label="Search hero catalogue"
@@ -232,7 +231,6 @@ function SubPageHeroCatalogue({ heroesRef }) {
                 </div>
             </div>
 
-            <p className="catalogue-result-count text">{filteredHeroes.length} heroes shown</p>
             {filteredHeroes.length === 0
                 ? <p className="catalogue-empty card">No heroes match these filters.</p>
                 : <div className="hero-catalogue-grid">
