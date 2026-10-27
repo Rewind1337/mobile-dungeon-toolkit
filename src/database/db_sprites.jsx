@@ -982,6 +982,10 @@ import QuestionmarkSrc from '../sprites/questionmark.webp'
 
 export const perkSprites = {
     NOTHING: QuestionmarkSrc,
+    MAIN_STAT_PERCENT: StrengthColorSrc,
+    MAIN_STAT_FLAT: StrengthColorSrc,
+    MAIN_ATTRIBUTE_PERCENT: StrengthColorSrc,
+    MAIN_ATTRIBUTE_FLAT: StrengthColorSrc,
     HEALTH_PERCENT: HealthColorSrc,
     ATTACK_PERCENT: StrengthColorSrc,
     DEFENCE_PERCENT: DefenseColorSrc,
