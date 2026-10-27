@@ -146,7 +146,7 @@ function CatalogueFilters({
     clearFilters
 }) {
     return (
-        <div className="catalogue-filters">
+        <div className="catalogue-filters card">
             <label className="catalogue-search">
                 <span className="catalogue-control-label text">Search all item data</span>
                 <input
@@ -183,7 +183,7 @@ function CatalogueFilters({
                 </label>
             </>}
             <div className="catalogue-filter-actions">
-                <Button text="Clear filters" color={5} onClick={clearFilters} />
+                <Button text="Clear filters" color={"cancel"} onClick={clearFilters} />
             </div>
         </div>
     )
@@ -395,8 +395,8 @@ function SubPageItemCatalogue({ itemsRef, setsRef, initialView = "items", onView
             </header>
 
             <nav className="catalogue-view-switch" aria-label="Catalogue view">
-                <Button text="Items" color={5} active={view === "items"} onClick={() => changeView("items")} />
-                <Button text="Set Overview" color={5} active={view === "sets"} onClick={() => changeView("sets")} />
+                <Button text="Item Catalogue" color={5} active={view === "items"} onClick={() => setView("items")} />
+                <Button text="Set Catalogue" color={5} active={view === "sets"} onClick={() => setView("sets")} />
             </nav>
 
             <CatalogueFilters

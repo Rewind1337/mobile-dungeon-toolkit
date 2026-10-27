@@ -310,7 +310,7 @@ function SubPageStatusCatalogue() {
                 <p className="catalogue-result-count text">{filteredStatuses.length} of {statuses.length} status effects</p>
             </header>
 
-            <div className="status-catalogue-filters">
+            <div className="status-catalogue-filters card">
                 <label className="catalogue-search">
                     <span className="catalogue-control-label text">Search status effects</span>
                     <input
