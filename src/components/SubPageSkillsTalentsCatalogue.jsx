@@ -47,9 +47,10 @@ function TalentCard({ talent, sources }) {
             <div className="header">{talent.name || "Unnamed talent"}</div>
         </div>
         <div className="talent-source-list" aria-label="Heroes with this talent">
-            {sources.map(({ hero, id }) => <span className="catalogue-chip talent-source-chip" key={hero.id + "-" + id}>
-                {hero.name} · {getTalentPosition(id)}
-            </span>)}
+            {sources.map(({ hero, id }) => <div className="talent-source-entry" key={hero.id + "-" + id}>
+                <span className="catalogue-chip talent-source-hero">{hero.name}</span>
+                <span className="catalogue-chip talent-source-position">{getTalentPosition(id)}</span>
+            </div>)}
         </div>
         {talent.effect != null && <TalentEffect effect={talent.effect} />}
     </article>
