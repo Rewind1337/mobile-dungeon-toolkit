@@ -238,8 +238,7 @@ function getDetails(status) {
     if (status.duration !== undefined) details.push(`Duration: ${status.duration} turn(s)`)
     if (status.interval !== undefined) details.push(`Tick: ${humanize(status.interval)}`)
     if (status.stat !== undefined) details.push(`Stat: ${humanize(status.stat)}`)
-    if (status.mitigatable === false) details.push("Not mitigatable")
-    if (status.removable === false) details.push("Not removable")
+
     return details
 }
 
@@ -262,7 +261,7 @@ function StatusCard({ status }) {
                 </div>
             </div>
             <p className="status-catalogue-description text">{description}</p>
-            {getDetails(status).length > 0 && (
+            <div className="status-polarity-row" aria-label="Status effect properties">\n                <span className="status-polarity" title={status.mitigatable === false ? "Not mitigatable" : "Mitigatable"}><span aria-hidden="true">{status.mitigatable === false ? "✕" : "✓"}</span><span className="text">Mitigatable</span></span>\n                <span className="status-polarity" title={status.removable === false ? "Not removable" : "Removable"}><span aria-hidden="true">{status.removable === false ? "✕" : "✓"}</span><span className="text">Removable</span></span>\n            </div>\n            {getDetails(status).length > 0 && (
                 <ul className="status-catalogue-details">
                     {getDetails(status).map(detail => <li className="text" key={detail}>{detail}</li>)}
                 </ul>
