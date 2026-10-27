@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react"
-import Button from "./Button.jsx"
 
 const stringify = value => {
     if (value == null) return ""
@@ -60,8 +59,7 @@ function TalentCard({ talent, sources }) {
     </article>
 }
 
-function CatalogueSkillsTalents({ heroes = [] }) {
-    const [view, setView] = useState("skills")
+function CatalogueSkillsTalents({ heroes = [], view = "skills" }) {
     const [search, setSearch] = useState("")
     const entries = useMemo(() => {
         if (view === "skills") {
@@ -86,11 +84,7 @@ function CatalogueSkillsTalents({ heroes = [] }) {
         return (sourceText + " " + stringify(value) + " " + (entry.id ?? "")).toLowerCase().includes(search.trim().toLowerCase())
     })
     return <section className="hero-catalogue">
-        <header className="catalogue-header"><div className="catalogue-heading-copy"><div className="catalogue-title header-big">Skills &amp; Talents Catalogue</div><p className="catalogue-description text">Every skill and talent entry currently present in the hero database, with its source hero. Repeated names are intentionally listed separately.</p></div></header>
-        <nav className="catalogue-view-switch" aria-label="Skills and talents view">
-            <Button text="Skill Catalogue" color={5} active={view === "skills"} onClick={() => setView("skills")} />
-            <Button text="Talent Catalogue" color={5} active={view === "talents"} onClick={() => setView("talents")} />
-        </nav>
+        <header className="catalogue-header"><div className="catalogue-heading-copy"><div className="catalogue-title header-big">{view === "skills" ? "Skills Catalogue" : "Talents Catalogue"}</div><p className="catalogue-description text">{view === "skills" ? "Every skill currently present in the hero database, with its source hero." : "Every unique talent currently present in the hero database, with its source hero and position. Shared talents list all source heroes."}</p></div></header>
         <label className="catalogue-search skills-talents-catalogue-filters card"><span className="catalogue-control-label text">Search {view} ({filtered.length} of {entries.length} {view === "skills" ? "skills" : "talent entries"})</span><input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} placeholder="Name, hero, effect…" /></label>
         {filtered.length === 0 ? <p className="catalogue-empty card">No {view} match this search.</p> : <div className="hero-catalogue-grid">{filtered.map(entry => view === "skills" ? <SkillCard key={entry.key} hero={entry.hero} skill={entry.skill} skillIndex={entry.skillIndex} /> : <TalentCard key={entry.key} talent={entry.talent} sources={entry.sources} />)}</div>}
     </section>
