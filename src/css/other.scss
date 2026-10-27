@@ -61,25 +61,20 @@
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: V.$border-radius-small;
   background: rgba(0, 0, 0, 0.2);
-  font-size: V.$font-size-xsmall;
+  font-size: V.$font-size-small;
+  font-family: V.$font-family-stats;
   line-height: 1.2;
   overflow-wrap: anywhere;
 }
 
 .catalogue-chip-attribute-strength {
-  color: #ffad83;
   border-color: rgba(242, 116, 65, 0.65);
-  background: rgba(242, 116, 65, 0.12);
 }
 .catalogue-chip-attribute-dexterity {
-  color: #91dc9c;
   border-color: rgba(83, 190, 105, 0.65);
-  background: rgba(83, 190, 105, 0.12);
 }
 .catalogue-chip-attribute-intelligence {
-  color: #91c5ff;
   border-color: rgba(75, 145, 235, 0.65);
-  background: rgba(75, 145, 235, 0.12);
 }
 
 .catalogue-chip-rarity { border-color: rgba(255, 255, 255, 0.28); }
