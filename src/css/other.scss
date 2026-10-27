@@ -54,13 +54,32 @@
   display: inline-flex;
   flex: 0 1 auto;
   align-items: center;
+  box-sizing: border-box;
+  min-height: 24px;
   max-width: 100%;
   padding: 3px 7px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: V.$border-radius-small;
   background: rgba(0, 0, 0, 0.2);
-  line-height: 1.35;
+  font-size: V.$font-size-xsmall;
+  line-height: 1.2;
   overflow-wrap: anywhere;
+}
+
+.catalogue-chip-attribute-strength {
+  color: #ffad83;
+  border-color: rgba(242, 116, 65, 0.65);
+  background: rgba(242, 116, 65, 0.12);
+}
+.catalogue-chip-attribute-dexterity {
+  color: #91dc9c;
+  border-color: rgba(83, 190, 105, 0.65);
+  background: rgba(83, 190, 105, 0.12);
+}
+.catalogue-chip-attribute-intelligence {
+  color: #91c5ff;
+  border-color: rgba(75, 145, 235, 0.65);
+  background: rgba(75, 145, 235, 0.12);
 }
 
 .catalogue-chip-rarity { border-color: rgba(255, 255, 255, 0.28); }
@@ -225,7 +244,7 @@
 
 .catalogue-item-name {
   display: inline-flex;
-  flex: 1 1 100%;
+  flex: 0 1 auto;
   width: fit-content;
   max-width: 100%;
   margin: 0;
@@ -505,7 +524,11 @@
 
 .hero-catalogue-name {
   display: inline-flex;
+  box-sizing: border-box;
+  align-self: flex-start;
   max-width: 100%;
+  min-height: 28px;
+  align-items: center;
   padding: 3px 8px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: V.$border-radius-small;
@@ -633,6 +656,132 @@
 .perk-catalogue-list { display:flex; flex-direction:column; gap:V.$gap-small; min-width:0; }
 .perk-catalogue-row { display:grid; grid-template-columns:minmax(180px, 1fr) minmax(0, 2fr); align-items:center; gap:V.$gap; padding:V.$padding-card; min-width:0; }
 .perk-catalogue-slots { overflow-wrap:anywhere; }
+
+/* Status effect catalogue */
+
+.status-catalogue {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap;
+  width: 100%;
+  min-width: 0;
+  padding: V.$padding-card;
+}
+
+.status-catalogue-filters {
+  grid-template-columns: minmax(260px, 2fr) minmax(180px, 1fr) auto;
+  align-items: end;
+}
+
+.status-catalogue-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.status-catalogue-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: V.$gap-small;
+  min-width: 0;
+  padding: V.$padding-card;
+  text-align: left;
+}
+
+.status-catalogue-identity {
+  display: flex;
+  align-items: center;
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.status-catalogue-icon,
+.status-catalogue-icon-fallback {
+  display: flex;
+  flex: 0 0 42px;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.status-catalogue-icon-fallback {
+  font-size: V.$font-size-header;
+  opacity: 0.7;
+}
+
+.status-catalogue-heading {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.status-catalogue-name {
+  margin: 0;
+  font-size: V.$font-size-header-small;
+  overflow-wrap: anywhere;
+}
+
+.status-catalogue-category {
+  padding: 2px 7px;
+  font-size: V.$font-size-xsmall;
+  white-space: nowrap;
+}
+
+.status-catalogue-description {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.status-polarity-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: V.$gap;
+}
+
+.status-polarity {
+  display: inline-flex;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.status-polarity-icon {
+  display: block;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.status-polarity-icon.is-negative {
+  flex-basis: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.status-catalogue-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px V.$gap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  opacity: 0.8;
+  font-size: V.$font-size-xsmall;
+}
+
+.status-catalogue-details li {
+  overflow-wrap: anywhere;
+}
 
 /* Responsive layouts: one grouped block per breakpoint. */
 
