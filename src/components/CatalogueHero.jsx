@@ -191,15 +191,17 @@ function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
                 <Button text="Heroes" color={5} active={initialView === "heroes"} onClick={() => onViewChange?.("heroes")} />
                 <Button text="Banners" color={5} active={initialView === "banners"} disabled />
             </div>
-            {initialView === "banners" ? null : <>
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
-                    <div className="catalogue-title header-big">Hero Catalogue</div>
+                    <div className="catalogue-title header-big">{initialView === "banners" ? "Banner Catalogue" : "Hero Catalogue"}</div>
                     <p className="catalogue-description text">
-                        Search heroes, skills, talents, effects, attributes, rarity, element, role, and other stored hero data.
+                        {initialView === "banners"
+                            ? "The banner catalogue will be available here when banner data is added to the toolkit."
+                            : "Search heroes, skills, talents, effects, attributes, rarity, element, role, and other stored hero data."}
                     </p>
                 </div>
             </header>
+            {initialView === "banners" ? null : <>
             <div className="hero-catalogue-filters card">
                 <label className="catalogue-search">
                     <span className="catalogue-control-label text">Search heroes ({filteredHeroes.length} of {catalogueHeroes.length} heroes)</span>
