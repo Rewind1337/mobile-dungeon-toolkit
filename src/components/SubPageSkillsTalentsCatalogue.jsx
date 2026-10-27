@@ -10,7 +10,7 @@ const stringify = value => {
 function SkillCard({ hero, skill }) {
     return <article className="hero-catalogue-skill card">
         <div className="hero-catalogue-skill-heading">
-            <h3 className="header">{skill.name || "Unnamed skill"}</h3>
+            <div className="header">{skill.name || "Unnamed skill"}</div>
             <span className="text">{hero.name}</span>
         </div>
         {skill.cooldown != null && <div className="catalogue-meta-row text"><span>Cooldown: {skill.cooldown}</span></div>}
@@ -33,8 +33,8 @@ function TalentEffect({ effect }) {
         if (value && typeof value === "object" && !Array.isArray(value)) return Object.entries(value)
         return [["Effect", value]]
     })
-    return <dl className="talent-effect-list">
-        {entries.map(([key, value], index) => <div className="talent-effect-entry" key={key + "-" + index}>
+    return <dl className="talent-effect-list flex-row justify-center">
+        {entries.map(([key, value], index) => <div className="talent-effect-entry w-fit" key={key + "-" + index}>
             <dt className="text">{humanizeKey(key)}</dt>
             <dd className="text">{typeof value === "object" && value !== null ? stringify(value) : String(value)}</dd>
         </div>)}
@@ -44,10 +44,10 @@ function TalentEffect({ effect }) {
 function TalentCard({ hero, talent, talentId }) {
     return <article className="hero-catalogue-talent card">
         <div className="hero-catalogue-skill-heading">
-            <h3 className="header">{talent.name || "Unnamed talent"}</h3>
+            <div className="header">{talent.name || "Unnamed talent"}</div>
             <span className="text">{hero.name}</span>
         </div>
-        <div className="catalogue-meta-row text"><span>{getTalentPosition(talentId)}</span>{talent.active != null && <span>{talent.active ? "Active" : "Passive"}</span>}</div>
+        <div className="catalogue-meta-row text"><span>{getTalentPosition(talentId)}</span></div>
         {talent.effect != null && <TalentEffect effect={talent.effect} />}
     </article>
 }
