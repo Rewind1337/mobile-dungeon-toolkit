@@ -422,7 +422,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, heroesRef, select
     } else {
         return (
             <div ref={listRef} className='hero-preview flex-col' style={{ maxHeight: listHeight }}>
-                <div className='preview-top-row flex-row'><Button title={isFullWidth ? 'Show hero list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} /></div>
+                <div className='preview-top-row flex-row'><Button className='preview-back-button' title={isFullWidth ? 'Show hero list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} /></div>
                 <Modal position="center" isVisible={exportModalVisible} onClose={() => setExportModalVisible(false)}>
                     <div className="flex-col card w-100">
                         <div className="header-big margin-auto">Export Hero</div>
