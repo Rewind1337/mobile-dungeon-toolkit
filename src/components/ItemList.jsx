@@ -66,7 +66,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                 getEnumNameById(RARITY_DEFINITIONS, Number(itemObj.rarity)) ?? '',
                 getEnumNameById(DROP_SOURCE_DEFINITIONS, Number(itemObj.dropSource)) ?? '',
                 itemObj.dropLocation ?? '', set?.name ?? '',
-                ...Object.entries(PERK_DEFINITIONS).flatMap(([key, perk]) => ([...(itemObj.fixedPerks ?? []), ...(itemObj.perks ?? [])].some(value => value && typeof value === 'object' ? value.id === perk.id : String(value).toUpperCase().replace(/\\s/g, '_') === key || String(value) === String(perk.id)) ? [key, perk.name] : []))
+                ...Object.entries(PERK_DEFINITIONS).flatMap(([key, perk]) => ([...(itemObj.fixedPerks ?? []), ...(itemObj.perks ?? [])].some(value => value && typeof value === 'object' ? value.id === perk.id : String(value).toUpperCase().replace(/\s/g, '_') === key || String(value) === String(perk.id)) ? [key, perk.name] : []))
             ].join(' ').toLowerCase()
             const searchQuery = filters.name.trim().toLowerCase()
             const isUnique = itemObj.unique !== 'NOTHING'
