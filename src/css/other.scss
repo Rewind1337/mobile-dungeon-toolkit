@@ -77,6 +77,12 @@
   border-color: rgba(75, 145, 235, 0.65);
 }
 
+/* Role colors are intentionally border-only to preserve the current chip styling. */
+.catalogue-chip-role-offensive { border-color: rgba(226, 105, 117, 0.75); }
+.catalogue-chip-role-defensive { border-color: rgba(191, 157, 85, 0.75); }
+.catalogue-chip-role-control { border-color: rgba(174, 126, 224, 0.75); }
+.catalogue-chip-role-support { border-color: rgba(66, 190, 183, 0.75); }
+
 .catalogue-chip-rarity { border-color: rgba(255, 255, 255, 0.28); }
 .catalogue-chip-rarity[data-rarity="1"] { border-color: rgba(80, 190, 100, 0.7); }
 .catalogue-chip-rarity[data-rarity="2"] { border-color: rgba(80, 145, 245, 0.75); }
@@ -255,6 +261,10 @@
 .catalogue-item-card[data-rarity="2"] .catalogue-item-name { border-color: rgba(80, 145, 245, 0.75); }
 .catalogue-item-card[data-rarity="3"] .catalogue-item-name { border-color: rgba(180, 95, 235, 0.75); }
 .catalogue-item-card[data-rarity="4"] .catalogue-item-name { border-color: rgba(235, 165, 55, 0.8); }
+.catalogue-item-name[data-rarity="1"] { border-color: rgba(80, 190, 100, 0.7); }
+.catalogue-item-name[data-rarity="2"] { border-color: rgba(80, 145, 245, 0.75); }
+.catalogue-item-name[data-rarity="3"] { border-color: rgba(180, 95, 235, 0.75); }
+.catalogue-item-name[data-rarity="4"] { border-color: rgba(235, 165, 55, 0.8); }
 
 .catalogue-item-meta,
 .catalogue-item-set,
@@ -375,6 +385,9 @@
 }
 
 .catalogue-set-name {
+  align-self: flex-start;
+  width: fit-content;
+  max-width: 100%;
   margin: 0;
   font-size: V.$font-size-header;
   overflow-wrap: anywhere;
@@ -578,7 +591,19 @@
   gap: V.$gap-small;
   min-width: 0;
 }
-.talent-source-chip { text-align: center; }
+.talent-source-entry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: V.$border-radius-small;
+}
+.talent-source-hero { font-weight: 700; }
+.talent-source-position { font-size: V.$font-size-xsmall; }
 
 .talent-effect-list {
   display: flex;
@@ -643,8 +668,10 @@
 
 .perk-catalogue { display:flex; flex-direction:column; gap:V.$gap; width:100%; min-width:0; padding:V.$padding-card; }
 .perk-catalogue-list { display:flex; flex-direction:column; gap:V.$gap-small; min-width:0; }
-.perk-catalogue-row { display:grid; grid-template-columns:minmax(180px, 1fr) minmax(0, 2fr); align-items:center; gap:V.$gap; padding:V.$padding-card; min-width:0; }
-.perk-catalogue-slots { overflow-wrap:anywhere; }
+.perk-catalogue-row { display:grid; grid-template-columns:36px minmax(180px, 1fr) minmax(0, 2fr); align-items:center; gap:V.$gap; padding:V.$padding-card; min-width:0; }
+.perk-catalogue-icon { display:block; width:32px; height:32px; object-fit:contain; }
+.perk-catalogue-name { min-width:0; overflow-wrap:anywhere; }
+.perk-catalogue-slots { display:flex; flex-wrap:wrap; gap:V.$gap-small; min-width:0; overflow-wrap:anywhere; }
 
 /* Status effect catalogue */
 
@@ -719,10 +746,14 @@
 }
 
 .status-catalogue-category {
-  padding: 2px 7px;
   font-size: V.$font-size-xsmall;
   white-space: nowrap;
 }
+.status-category-buff { border-color: rgba(80, 190, 100, 0.7); }
+.status-category-debuff { border-color: rgba(226, 105, 117, 0.75); }
+.status-category-special { border-color: rgba(174, 126, 224, 0.75); }
+.status-category-special-buff { border-color: rgba(66, 190, 183, 0.75); }
+.status-category-special-debuff { border-color: rgba(226, 105, 117, 0.75); }
 
 .status-catalogue-description {
   margin: 0;
@@ -741,6 +772,7 @@
   align-items: center;
   gap: V.$gap-small;
   min-width: 0;
+  font-size: V.$font-size-xsmall;
 }
 
 .status-polarity-icon {
@@ -803,7 +835,9 @@
   .catalogue-result-count { flex-basis: 100%; text-align: left; }
   .catalogue-overview-stats { grid-template-columns: minmax(0, 1fr); }
   .status-catalogue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .perk-catalogue-row { grid-template-columns: minmax(0, 1fr); gap: V.$gap-small; }
+  .perk-catalogue-row { grid-template-columns: 32px minmax(0, 1fr); gap: V.$gap-small; }
+  .perk-catalogue-slots { grid-column: 2; }
+  .catalogue-chip, .catalogue-item-name, .hero-catalogue-name { border-radius: 0; }
 }
 
 @include M.media-query-max(V.$bp-small) {
