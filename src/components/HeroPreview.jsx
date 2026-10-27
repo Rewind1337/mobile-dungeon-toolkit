@@ -547,6 +547,7 @@ function HeroPreview({ heroesRef, selectedHeroId, saveHero, deleteSavedHero, onI
                             </div>
                         ))}
                     </div>
+                    <div className='header calculated-stats-heading' title='These calculations are experimental and may be incorrect or incomplete.'>Calculated Stats <small>(?)</small></div>
                     <div className='flex-row base-stats calculated-stats' aria-label='Calculated main stats'>
                         {Object.entries(MAIN_STAT_PERKS).map(([name, mapping]) => {
                             const hasMax = Math.abs(calculatedStats.mainMax[name] - calculatedStats.main[name]) > 0.001
