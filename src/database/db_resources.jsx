@@ -20,6 +20,10 @@ function add_resource(name, description, rarity = null) {
 }
 
 export function init_resource_db() {
+    // This initializer is used by the Info overview and the Resource/Gem catalogues.
+    // Rebuild the list on every call so module-level state doesn't accumulate duplicates.
+    BASE_RESOURCES = []
+
     add_resource("Crystal", "Description here.", RARITY_DEFINITIONS.COMMON)
     add_resource("Gold", "Description here.", RARITY_DEFINITIONS.COMMON)
     add_resource("Hero Experience Scroll", "Description here.", RARITY_DEFINITIONS.COMMON)
