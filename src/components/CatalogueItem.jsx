@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react"
 
 import { ATTRIBUTE_DEFINITIONS, DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
-import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
+import { isSearchAssetField, matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import { attributeSprites, iconSprites, perkSprites, statusSprites } from "../database/db_sprites.jsx"
 import Button from "./Button.jsx"
 import Item from "./Item.jsx"
@@ -82,7 +82,7 @@ function getSearchableValues(value, seen = new Set()) {
     if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return [String(value)]
     if (typeof value !== "object" || seen.has(value)) return []
     seen.add(value)
-    return Object.values(value).flatMap(child => getSearchableValues(child, seen))
+    return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : getSearchableValues(child, seen))
 }
 
 const STATUS_ALIASES = [
