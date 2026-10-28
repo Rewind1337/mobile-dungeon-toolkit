@@ -223,9 +223,12 @@ function App() {
     if (!route) return;
 
     const baseUrl = import.meta.env.BASE_URL;
-    const destination = `${baseUrl}${route.slice(1)}`;
+    const destinationPath = `${baseUrl}${route.slice(1)}`;
+    // Preserve existing URL parameters while the search helper only writes the "search" parameter.
+    const destination = `${destinationPath}${window.location.search}${window.location.hash}`;
+    const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
 
-    if (window.location.pathname !== destination) {
+    if (currentUrl !== destination) {
       window.history.pushState({}, '', destination);
     }
 

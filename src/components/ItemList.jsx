@@ -8,6 +8,7 @@ import { filterSprites } from '../database/db_sprites.jsx'
 import ItemFilters from './ItemFilters.jsx'
 import BackToTopButton from './BackToTopButton.jsx'
 import { ATTRIBUTE_DEFINITIONS, DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
+import { matchesSearchQuery, useUrlSearch } from '../js/search.jsx'
 
 function getSearchableValues(value, seen = new Set()) {
     if (value === null || value === undefined) return []
@@ -18,13 +19,13 @@ function getSearchableValues(value, seen = new Set()) {
 }
 function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, setsRef = [], itemType = null, setSelectedItemId }) {
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
+    const [search, setSearch, commitSearch] = useUrlSearch();
     const [filters, setFilters] = useState({
         set: null,
         unique: null,
         slot: null,
         attributeRequirement: null,
         rarity: null,
-        name: "",
     });
     const [filtersAdvanced, setFiltersAdvanced] = useState(false)
     const [sortOrder, setSortOrder] = useState(0) // 0 alphabetical, 1 reverse alphabetical
@@ -47,7 +48,9 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
     };
 
     const clearFilters = () => {
-        setFilters({ set: null, unique: null, slot: null, attributeRequirement: null, rarity: null, name: "" });
+        setFilters({ set: null, unique: null, slot: null, attributeRequirement: null, rarity: null });
+        setSearch("");
+        commitSearch("");
     };
 
     // Memoize filtered items
@@ -70,9 +73,12 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                 itemObj.dropLocation ?? '', set?.name ?? '',
                 ...Object.entries(PERK_DEFINITIONS).flatMap(([key, perk]) => ([...(itemObj.fixedPerks ?? []), ...(itemObj.perks ?? [])].some(value => value && typeof value === 'object' ? value.id === perk.id : String(value).toUpperCase().replace(/\s/g, '_') === key || String(value) === String(perk.id)) ? [key, perk.name] : []))
             ].join(' ').toLowerCase()
-            const searchQuery = filters.name.trim().toLowerCase()
             const isUnique = hasUnique
-            const matchesName = !searchQuery || (searchQuery === 'unique' ? isUnique : searchQuery === 'not unique' ? !isUnique : searchable.includes(searchQuery));
+            const matchesName = matchesSearchQuery(searchable, search, term => {
+                if (term === 'unique') return isUnique;
+                if (term === 'not unique') return !isUnique;
+                return undefined;
+            });
 
             return matchesItemType && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity && matchesName;
         });
@@ -81,11 +87,11 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
             const comparison = a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
             return sortOrder === 0 ? comparison : -comparison;
         });
-    }, [allItems, filters, itemType, sortOrder, setsRef]);
+    }, [allItems, filters, search, itemType, sortOrder, setsRef]);
 
     return (<>
         <div className='flex-row'>
-            <ItemFilters savedItems={savedItems} setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={(name) => setFilters((prev) => ({ ...prev, name }))} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} topOffset={filtersOffset} sortOrder={sortOrder} onToggleSort={() => setSortOrder(order => order === 0 ? 1 : 0)} />
+            <ItemFilters savedItems={savedItems} setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={setSearch} onSearchBlur={() => commitSearch(search)} clearFilters={clearFilters} filters={{ ...filters, name: search }} filterSprites={filterSprites} topOffset={filtersOffset} sortOrder={sortOrder} onToggleSort={() => setSortOrder(order => order === 0 ? 1 : 0)} />
         </div>
         <div className='header-big'>{headerText}</div>
 

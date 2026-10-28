@@ -11,6 +11,7 @@ import Hero from "./Hero.jsx"
 import { init_banner_db } from "../database/db_banners.jsx"
 import { getBannerLastLiveLabel } from "../database/bannerUtils.jsx"
 import { attributeSprites, roleSprites } from "../database/db_sprites.jsx"
+import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
     rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
@@ -184,23 +185,21 @@ function resolveBannerHero(heroId, heroesById) {
 }
 
 function matchesBannerHeroQuery(hero, query) {
-    if (!query) return true
-
-    // Keep the banner search consistent with the Hero Catalogue for these useful shortcuts.
-    if (query === "starred") return hero.isStarred === true
-    if (query === "not starred") return hero.isStarred !== true
-
     const rarity = getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? ""
     const attribute = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? ""
     const element = getEnumNameById(ELEMENT_DEFINITIONS, Number(hero.element)) ?? ""
     const role = getEnumNameById(ROLE_DEFINITIONS, Number(hero.role)) ?? ""
-    return [
+    return matchesSearchQuery([
         ...getSearchableValues(hero),
         rarity,
         attribute,
         element,
         role,
-    ].join(" ").toLowerCase().includes(query)
+    ], query, term => {
+        if (term === "starred") return hero.isStarred === true
+        if (term === "not starred") return hero.isStarred !== true
+        return undefined
+    })
 }
 
 function BannerHeroGroup({ title, heroes }) {
@@ -284,8 +283,7 @@ function BannerCatalogueCard({ result, heroesById }) {
     )
 }
 
-function BannerCatalogueList({ heroesRef }) {
-    const [search, setSearch] = useState("")
+function BannerCatalogueList({ heroesRef, search, setSearch, commitSearch }) {
     const heroesById = useMemo(() => {
         const heroes = Array.isArray(heroesRef) ? heroesRef : []
         return new Map(heroes.map(hero => [hero.id, hero]))
@@ -324,7 +322,7 @@ function BannerCatalogueList({ heroesRef }) {
                     ? ["conditional conditional heroes", `${banner.conditionalHeroIDs.length} conditional heroes`]
                     : []),
             ].join(" ").toLowerCase()
-            const bannerMatches = !query || searchableBannerMetadata.includes(query)
+            const bannerMatches = matchesSearchQuery(searchableBannerMetadata, query)
             const visibleHeroes = primaryRaw.filter(
                 hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query))
             )
@@ -369,7 +367,7 @@ function BannerCatalogueList({ heroesRef }) {
                     aria-label="Search all banner and hero details"
                     placeholder="Search banners, heroes, and details..."
                     value={search}
-                    onChange={event => setSearch(event.target.value)}
+                    onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)}
                 />
                 <span className="catalogue-result-count text">
                     Showing {filteredBanners.length} of {BANNERS.length} banners
@@ -388,7 +386,7 @@ function BannerCatalogueList({ heroesRef }) {
 }
 
 function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
-    const [search, setSearch] = useState("")
+    const [search, setSearch, commitSearch] = useUrlSearch()
     const [rarityFilter, setRarityFilter] = useState("all")
     const [attributeFilter, setAttributeFilter] = useState("all")
     const [elementFilter, setElementFilter] = useState("all")
@@ -404,7 +402,6 @@ function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
     }, [heroesRef])
 
     const filteredHeroes = useMemo(() => {
-        const query = search.trim().toLowerCase()
         return catalogueHeroes.filter(hero => {
             const rarity = getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? ""
             const attribute = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? ""
@@ -423,7 +420,11 @@ function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
                 hero.isStarred ? "true" : "false"
             ].join(" ").toLowerCase()
 
-            const matchesSearch = !query || (query === "starred" ? hero.isStarred === true : searchable.includes(query))
+            const matchesSearch = matchesSearchQuery(searchable, search, term => {
+                if (term === "starred") return hero.isStarred === true
+                if (term === "not starred") return hero.isStarred !== true
+                return undefined
+            })
 
             return matchesSearch
                 && (rarityFilter === "all" || String(hero.rarity) === rarityFilter)
@@ -435,6 +436,7 @@ function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
 
     const clearFilters = () => {
         setSearch("")
+        commitSearch("")
         setRarityFilter("all")
         setAttributeFilter("all")
         setElementFilter("all")
@@ -458,7 +460,7 @@ function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
                 </div>
             </header>
             {initialView === "banners" ? (
-                <BannerCatalogueList heroesRef={heroesRef} />
+                <BannerCatalogueList heroesRef={heroesRef} search={search} setSearch={setSearch} commitSearch={commitSearch} />
             ) : (
                 <>
             <div className="hero-catalogue-filters card">
@@ -469,7 +471,7 @@ function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
                         aria-label="Search hero catalogue"
                         placeholder="Name, skill, talent, effect, ID…"
                         value={search}
-                        onChange={event => setSearch(event.target.value)}
+                        onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)}
                     />
                 </label>
                 <label className="catalogue-filter">

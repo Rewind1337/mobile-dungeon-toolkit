@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react"
+import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import Button from "./Button.jsx"
 
 const stringify = value => {
@@ -62,11 +63,11 @@ function TalentCard({ talent, sources }) {
 
 function CatalogueSkillsTalents({ heroes = [], initialView = "skills", onViewChange }) {
     const [view, setView] = useState(initialView)
-    const [search, setSearch] = useState("")
+    const [search, setSearch, commitSearch] = useUrlSearch()
     const changeView = nextView => {
         setView(nextView)
-        setSearch("")
         onViewChange?.(nextView)
+        commitSearch(search)
     }
     const entries = useMemo(() => {
         if (view === "skills") {
@@ -88,7 +89,7 @@ function CatalogueSkillsTalents({ heroes = [], initialView = "skills", onViewCha
     const filtered = entries.filter(entry => {
         const value = view === "skills" ? entry.skill : entry.talent
         const sourceText = view === "skills" ? entry.hero.name : entry.sources.map(({ hero, id }) => hero.name + " " + getTalentPosition(id)).join(" ")
-        return (sourceText + " " + stringify(value) + " " + (entry.id ?? "")).toLowerCase().includes(search.trim().toLowerCase())
+        return matchesSearchQuery([sourceText, stringify(value), entry.id ?? ""], search)
     })
     return <section className="hero-catalogue">
         <nav className="catalogue-view-switch" aria-label="Skills and talents sections">
@@ -96,7 +97,7 @@ function CatalogueSkillsTalents({ heroes = [], initialView = "skills", onViewCha
             <Button text="Talents" color={5} active={view === "talents"} onClick={() => changeView("talents")} />
         </nav>
         <header className="catalogue-header"><div className="catalogue-heading-copy"><div className="catalogue-title header-big">{view === "skills" ? "Skills Catalogue" : "Talents Catalogue"}</div><p className="catalogue-description text">{view === "skills" ? "Every skill currently present in the hero database, with its source hero." : "Every unique talent currently present in the hero database, with its source hero and position. Shared talents list all source heroes."}</p></div></header>
-        <label className="catalogue-search skills-talents-catalogue-filters card"><span className="catalogue-control-label text">Search {view} ({filtered.length} of {entries.length} {view === "skills" ? "skills" : "talents"})</span><input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} placeholder="Name, hero, effect…" /></label>
+        <label className="catalogue-search skills-talents-catalogue-filters card"><span className="catalogue-control-label text">Search {view} ({filtered.length} of {entries.length} {view === "skills" ? "skills" : "talents"})</span><input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} placeholder="Name, hero, effect…" /></label>
         {filtered.length === 0 ? <p className="catalogue-empty card">No {view} match this search.</p> : <div className="hero-catalogue-grid">{filtered.map(entry => view === "skills" ? <SkillCard key={entry.key} hero={entry.hero} skill={entry.skill} skillIndex={entry.skillIndex} /> : <TalentCard key={entry.key} talent={entry.talent} sources={entry.sources} />)}</div>}
     </section>
 }

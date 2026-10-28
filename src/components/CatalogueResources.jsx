@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
+import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import Button from "./Button.jsx"
 import { init_resource_db } from "../database/db_resources.jsx"
 import { RARITY_DEFINITIONS } from "../database/enums.jsx"
@@ -36,7 +37,7 @@ function ResourceCard({ resource }) {
 }
 
 function CatalogueResources({ initialView = "resources", onViewChange }) {
-    const [search, setSearch] = useState("")
+    const [search, setSearch, commitSearch] = useUrlSearch()
     const isGemsView = initialView === "gems"
 
     const sourceResources = useMemo(() => isGemsView
@@ -45,10 +46,8 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
     [isGemsView])
 
     const filteredResources = useMemo(() => {
-        const query = search.trim().toLowerCase()
         return sourceResources
-            .filter(resource => !query || [resource.name, resource.description, resource.gemType, resource.rarity?.name]
-                .filter(Boolean).join(" ").toLowerCase().includes(query))
+            .filter(resource => matchesSearchQuery([resource.name, resource.description, resource.gemType, resource.rarity?.name], search))
             .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }))
     }, [sourceResources, search])
 
@@ -57,7 +56,10 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
         variants: filteredResources.filter(resource => resource.gemType === gem.name).sort((a, b) => a.rarity.id - b.rarity.id),
     })).filter(group => group.variants.length > 0), [filteredResources])
 
-    const clearSearch = () => setSearch("")
+    const clearSearch = () => {
+        setSearch("")
+        commitSearch("")
+    }
 
     return (
         <section className="resource-catalogue">
@@ -66,13 +68,19 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                     text="Resources"
                     color={5}
                     active={!isGemsView}
-                    onClick={() => onViewChange?.("resources")}
+                    onClick={() => {
+                        onViewChange?.("resources")
+                        commitSearch(search)
+                    }}
                 />
                 <Button
                     text="Gems"
                     color={5}
                     active={isGemsView}
-                    onClick={() => onViewChange?.("gems")}
+                    onClick={() => {
+                        onViewChange?.("gems")
+                        commitSearch(search)
+                    }}
                 />
             </div>
 
@@ -97,6 +105,7 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                         placeholder={isGemsView ? "Search gems..." : "Search resources..."}
                         value={search}
                         onChange={event => setSearch(event.target.value)}
+                        onBlur={() => commitSearch(search)}
                     />
                     <span className="catalogue-result-count text">
                         Showing {filteredResources.length} of {sourceResources.length} {isGemsView ? "gems" : "resources"}

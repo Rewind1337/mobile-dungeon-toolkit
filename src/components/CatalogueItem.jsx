@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react"
 
 import { ATTRIBUTE_DEFINITIONS, DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
+import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import { attributeSprites, iconSprites, perkSprites, statusSprites } from "../database/db_sprites.jsx"
 import Button from "./Button.jsx"
 import Item from "./Item.jsx"
@@ -156,7 +157,8 @@ function CatalogueFilters({
     view,
     resultCount,
     totalCount,
-    clearFilters
+    clearFilters,
+    onSearchBlur
 }) {
     return (
         <div className={`catalogue-filters card${view === "sets" ? " is-set-view" : ""}`}>
@@ -168,6 +170,7 @@ function CatalogueFilters({
                     placeholder="Name, effect text, perk, set, source, ID…"
                     value={search}
                     onChange={event => setSearch(event.target.value)}
+                    onBlur={onSearchBlur}
                 />
             </label>
             <label className="catalogue-filter">
@@ -300,8 +303,12 @@ function SetCatalogueCard({ set, pieces }) {
 
 function CatalogueItem({ itemsRef, setsRef, initialView = "items", onViewChange }) {
     const [view, setView] = useState(initialView)
-    const changeView = nextView => { setView(nextView); onViewChange?.(nextView) }
-    const [search, setSearch] = useState("")
+    const [search, setSearch, commitSearch] = useUrlSearch()
+    const changeView = nextView => {
+        setView(nextView)
+        onViewChange?.(nextView)
+        commitSearch(search)
+    }
     const [sourceFilter, setSourceFilter] = useState("all")
     const [slotFilter, setSlotFilter] = useState("all")
     const [locationFilter, setLocationFilter] = useState("all")
@@ -345,7 +352,6 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", onViewChange 
     ])].sort(), [allItems, setsRef])
 
     const filteredItems = useMemo(() => allItems.filter(item => {
-        const query = search.trim().toLowerCase()
         const sourceName = getSourceName(item.dropSource)
         const unique = isUniqueItem(item)
         const searchable = [
@@ -363,7 +369,11 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", onViewChange 
             ...(item.fixedPerks ?? []).flatMap(perk => [getPerkLabel(perk), getPerkKey(perk)]),
             ...(item.setBonusLabels ?? [])
         ].join(" ").toLowerCase()
-        const matchesSearch = !query || (query === "unique" ? unique : query === "not unique" ? !unique : searchable.includes(query))
+        const matchesSearch = matchesSearchQuery(searchable, search, term => {
+            if (term === "unique") return unique
+            if (term === "not unique") return !unique
+            return undefined
+        })
         const matchesSource = sourceFilter === "all" || sourceName === sourceFilter
         const matchesSlot = slotFilter === "all" || String(item.slot) === slotFilter
         const matchesLocation = locationFilter === "all" || getLocations(item).includes(locationFilter)
@@ -381,7 +391,6 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", onViewChange 
     }, [allItems])
 
     const filteredSets = useMemo(() => (setsRef ?? []).filter(set => {
-        const query = search.trim().toLowerCase()
         const sourceName = getSourceName(set.dropSource)
         const pieces = itemsBySet.get(set.id) ?? []
         const locations = getSetLocations(set, pieces)
@@ -404,7 +413,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", onViewChange 
                 ...getEffectStatuses(item).map(status => status.name)
             ])
         ].join(" ").toLowerCase()
-        const matchesSearch = !query || searchable.includes(query)
+        const matchesSearch = matchesSearchQuery(searchable, search)
         const matchesSource = sourceFilter === "all" || sourceName === sourceFilter
         const matchesLocation = locationFilter === "all" || locations.includes(locationFilter)
         return matchesSearch && matchesSource && matchesLocation
@@ -412,6 +421,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", onViewChange 
 
     const clearFilters = () => {
         setSearch("")
+        commitSearch("")
         setSourceFilter("all")
         setSlotFilter("all")
         setLocationFilter("all")
@@ -438,6 +448,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", onViewChange 
             <CatalogueFilters
                 search={search}
                 setSearch={setSearch}
+                onSearchBlur={() => commitSearch(search)}
                 sourceFilter={sourceFilter}
                 setSourceFilter={setSourceFilter}
                 slotFilter={slotFilter}

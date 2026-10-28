@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react"
+import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import { STATUS_EFFECT_DEFINITIONS } from "../database/enums.jsx"
 import { statusSprites } from "../database/db_sprites.jsx"
 import CheckmarkSprite from "../sprites/checkmark.webp"
@@ -245,39 +246,51 @@ function getDetails(status) {
 }
 
 function matchesStatusSearch(status, rawQuery) {
-    const query = rawQuery.trim().toLowerCase()
-    if (!query) return true
-
-    const wantsNotMitigatable = /\b(?:not|non)[-\s]+mitigatable\b/.test(query)
-    const wantsNotRemovable = /\b(?:not|non)[-\s]+removable\b/.test(query)
-    const wantsMitigatable = !wantsNotMitigatable && /\bmitigatable\b/.test(query)
-    const wantsRemovable = !wantsNotRemovable && /\bremovable\b/.test(query)
-
-    // The catalogue treats an unspecified property the same as the positive chip.
-    if (wantsNotMitigatable && status.mitigatable !== false) return false
-    if (wantsMitigatable && status.mitigatable === false) return false
-    if (wantsNotRemovable && status.removable !== false) return false
-    if (wantsRemovable && status.removable === false) return false
-
-    const remainingQuery = query
-        .replace(/\b(?:not|non)[-\s]+mitigatable\b/g, " ")
-        .replace(/\b(?:not|non)[-\s]+removable\b/g, " ")
-        .replace(/\bmitigatable\b/g, " ")
-        .replace(/\bremovable\b/g, " ")
-        .replace(/\s+/g, " ")
-        .trim()
-
-    if (!remainingQuery) return true
-
-    // Don't index these property names as plain text: they are handled as real filters above.
+    // Polarity flags are handled as query predicates instead of searching their property names.
     const searchableStatus = { ...status }
     delete searchableStatus.mitigatable
     delete searchableStatus.removable
     const category = getCategory(status)
     const description = STATUS_DESCRIPTIONS[status.name] ?? humanize(status.effectType ?? "effect")
-    const searchable = `${status.name} ${humanize(status.name)} ${category} ${description} ${status.effectType ?? ""} ${JSON.stringify(searchableStatus)}`.toLowerCase()
+    const searchable = [status.name, humanize(status.name), category, description, status.effectType ?? "", JSON.stringify(searchableStatus)].join(" ")
 
-    return searchable.includes(remainingQuery)
+    const matchesPolarityTerm = term => {
+        // Missing flags are shown as positive in the catalogue UI.
+        if (term === "mitigatable") return status.mitigatable !== false
+        if (term === "removable") return status.removable !== false
+        if (/^(?:not|non)[-\s]+mitigatable$/.test(term)) return status.mitigatable === false
+        if (/^(?:not|non)[-\s]+removable$/.test(term)) return status.removable === false
+        return undefined
+    }
+
+    // Keep ampersand-separated clauses independent while preserving the old
+    // "mitigatable poison" / "not removable shield" style of combined queries.
+    return String(rawQuery ?? "").toLowerCase().split("&").map(term => term.trim()).filter(Boolean).every(rawTerm => {
+        // A leading ! applies to the whole clause, including polarity shortcuts.
+        if (rawTerm.startsWith("!")) {
+            return matchesSearchQuery(searchable, rawTerm, matchesPolarityTerm)
+        }
+
+        const wantsNotMitigatable = /\b(?:not|non)[-\s]+mitigatable\b/.test(rawTerm)
+        const wantsNotRemovable = /\b(?:not|non)[-\s]+removable\b/.test(rawTerm)
+        const wantsMitigatable = !wantsNotMitigatable && /\bmitigatable\b/.test(rawTerm)
+        const wantsRemovable = !wantsNotRemovable && /\bremovable\b/.test(rawTerm)
+
+        if (wantsNotMitigatable && status.mitigatable !== false) return false
+        if (wantsMitigatable && status.mitigatable === false) return false
+        if (wantsNotRemovable && status.removable !== false) return false
+        if (wantsRemovable && status.removable === false) return false
+
+        const remainingTerm = rawTerm
+            .replace(/\b(?:not|non)[-\s]+mitigatable\b/g, " ")
+            .replace(/\b(?:not|non)[-\s]+removable\b/g, " ")
+            .replace(/\bmitigatable\b/g, " ")
+            .replace(/\bremovable\b/g, " ")
+            .replace(/\s+/g, " ")
+            .trim()
+
+        return matchesSearchQuery(searchable, remainingTerm, matchesPolarityTerm)
+    })
 }
 
 
@@ -314,7 +327,7 @@ function StatusCard({ status }) {
 }
 
 function CatalogueStatus() {
-    const [search, setSearch] = useState("")
+    const [search, setSearch, commitSearch] = useUrlSearch()
     const [categoryFilter, setCategoryFilter] = useState("all")
 
     const statuses = useMemo(() => Object.values(STATUS_EFFECT_DEFINITIONS)
@@ -322,10 +335,9 @@ function CatalogueStatus() {
         .sort((a, b) => a.id - b.id), [])
 
     const filteredStatuses = useMemo(() => {
-        const query = search.trim().toLowerCase()
         return statuses.filter(status => {
             const category = getCategory(status)
-            return matchesStatusSearch(status, query)
+            return matchesStatusSearch(status, search)
                 && (categoryFilter === "all"
                     || (categoryFilter === "special"
                         ? category.startsWith("Special")
@@ -353,6 +365,7 @@ function CatalogueStatus() {
                         placeholder="Name, effect, stat, mechanic…"
                         value={search}
                         onChange={event => setSearch(event.target.value)}
+                        onBlur={() => commitSearch(search)}
                     />
                 </label>
                 <label className="catalogue-filter">
@@ -365,7 +378,7 @@ function CatalogueStatus() {
                     </select>
                 </label>
                 <div className="catalogue-filter-actions">
-                    <Button className="status-catalogue-clear" text="Clear filters" color={"cancel"} onClick={() => { setSearch(""); setCategoryFilter("all") }} />
+                    <Button className="status-catalogue-clear" text="Clear filters" color={"cancel"} onClick={() => { setSearch(""); commitSearch(""); setCategoryFilter("all") }} />
                 </div>
             </div>
 
