@@ -301,6 +301,107 @@ import ScarabRedSrc from '../sprites/heroes/scarab_red.webp';
 import ScarabGreenSrc from '../sprites/heroes/scarab_green.webp';
 
 import NullSrc from '../sprites/null.webp';
+import ResourceSpriteAdventureExperienceScroll from '../sprites/resources/adventure_experience_scroll.webp';
+import ResourceSpriteAdventureThirst from '../sprites/resources/adventure_thirst.webp';
+import ResourceSpriteArenaCoin from '../sprites/resources/arena_coin.webp';
+import ResourceSpriteArenaTicket from '../sprites/resources/arena_ticket.webp';
+import ResourceSpriteAutumnAcorn from '../sprites/resources/autumn_acorn.webp';
+import ResourceSpriteAutumnChestnut from '../sprites/resources/autumn_chestnut.webp';
+import ResourceSpriteAutumnLeaf from '../sprites/resources/autumn_leaf.webp';
+import ResourceSpriteBirthdayBaloon from '../sprites/resources/birthday_baloon.webp';
+import ResourceSpriteBirthdayCake from '../sprites/resources/birthday_cake.webp';
+import ResourceSpriteBirthdayGift from '../sprites/resources/birthday_gift.webp';
+import ResourceSpriteChaostowerCoin from '../sprites/resources/chaostower_coin.webp';
+import ResourceSpriteChaostowerTicket from '../sprites/resources/chaostower_ticket.webp';
+import ResourceSpriteCinder from '../sprites/resources/cinder.webp';
+import ResourceSpriteCommonEquipmentDust from '../sprites/resources/common_equipment_dust.webp';
+import ResourceSpriteCrimsonHourglass from '../sprites/resources/crimson_hourglass.webp';
+import ResourceSpriteCrystal from '../sprites/resources/crystal.webp';
+import ResourceSpriteCrystalizedSoul from '../sprites/resources/crystalized_soul.webp';
+import ResourceSpriteDiamond from '../sprites/resources/diamond.webp';
+import ResourceSpriteDungeonArtifact from '../sprites/resources/dungeon_artifact.webp';
+import ResourceSpriteDungeonArtifactAncient from '../sprites/resources/dungeon_artifact_ancient.webp';
+import ResourceSpriteDungeonKey from '../sprites/resources/dungeon_key.webp';
+import ResourceSpriteEmerald from '../sprites/resources/emerald.webp';
+import ResourceSpriteEpicAscencionOrb from '../sprites/resources/epic_ascencion_orb.webp';
+import ResourceSpriteEpicBannerBooster from '../sprites/resources/epic_banner_booster.webp';
+import ResourceSpriteEpicEquipmentDust from '../sprites/resources/epic_equipment_dust.webp';
+import ResourceSpriteEpicSkillTome from '../sprites/resources/epic_skill_tome.webp';
+import ResourceSpriteEpicWildcard from '../sprites/resources/epic_wildcard.webp';
+import ResourceSpriteEssence from '../sprites/resources/essence.webp';
+import ResourceSpriteFireShardTier1 from '../sprites/resources/fire_shard_tier1.webp';
+import ResourceSpriteFireShardTier2 from '../sprites/resources/fire_shard_tier2.webp';
+import ResourceSpriteFireShardTier3 from '../sprites/resources/fire_shard_tier3.webp';
+import ResourceSpriteFireShardTier4 from '../sprites/resources/fire_shard_tier4.webp';
+import ResourceSpriteFireShardTier5 from '../sprites/resources/fire_shard_tier5.webp';
+import ResourceSpriteFireShardTier6 from '../sprites/resources/fire_shard_tier6.webp';
+import ResourceSpriteFireShardTier7 from '../sprites/resources/fire_shard_tier7.webp';
+import ResourceSpriteFireShardTier8 from '../sprites/resources/fire_shard_tier8.webp';
+import ResourceSpriteGold from '../sprites/resources/gold.webp';
+import ResourceSpriteGoldenHourglass from '../sprites/resources/golden_hourglass.webp';
+import ResourceSpriteGoldenKey from '../sprites/resources/golden_key.webp';
+import ResourceSpriteGuildhuntCoin from '../sprites/resources/guildhunt_coin.webp';
+import ResourceSpriteGuildhuntCoinDark from '../sprites/resources/guildhunt_coin_dark.webp';
+import ResourceSpriteGuildhuntMedal from '../sprites/resources/guildhunt_medal.webp';
+import ResourceSpriteGuildhuntTicket from '../sprites/resources/guildhunt_ticket.webp';
+import ResourceSpriteHeroExperienceScroll from '../sprites/resources/hero_experience_scroll.webp';
+import ResourceSpriteLegendaryAscencionOrb from '../sprites/resources/legendary_ascencion_orb.webp';
+import ResourceSpriteLegendaryBannerBooster from '../sprites/resources/legendary_banner_booster.webp';
+import ResourceSpriteLegendaryEquipmentDust from '../sprites/resources/legendary_equipment_dust.webp';
+import ResourceSpriteLegendarySkillTome from '../sprites/resources/legendary_skill_tome.webp';
+import ResourceSpriteLegendaryWildcard from '../sprites/resources/legendary_wildcard.webp';
+import ResourceSpriteLightShardTier1 from '../sprites/resources/light_shard_tier1.webp';
+import ResourceSpriteLightShardTier2 from '../sprites/resources/light_shard_tier2.webp';
+import ResourceSpriteLightShardTier3 from '../sprites/resources/light_shard_tier3.webp';
+import ResourceSpriteLightShardTier4 from '../sprites/resources/light_shard_tier4.webp';
+import ResourceSpriteLightShardTier5 from '../sprites/resources/light_shard_tier5.webp';
+import ResourceSpriteLightShardTier6 from '../sprites/resources/light_shard_tier6.webp';
+import ResourceSpriteLightShardTier7 from '../sprites/resources/light_shard_tier7.webp';
+import ResourceSpriteLightShardTier8 from '../sprites/resources/light_shard_tier8.webp';
+import ResourceSpriteMonsterMusk from '../sprites/resources/monster_musk.webp';
+import ResourceSpriteNatureShardTier1 from '../sprites/resources/nature_shard_tier1.webp';
+import ResourceSpriteNatureShardTier2 from '../sprites/resources/nature_shard_tier2.webp';
+import ResourceSpriteNatureShardTier3 from '../sprites/resources/nature_shard_tier3.webp';
+import ResourceSpriteNatureShardTier4 from '../sprites/resources/nature_shard_tier4.webp';
+import ResourceSpriteNatureShardTier5 from '../sprites/resources/nature_shard_tier5.webp';
+import ResourceSpriteNatureShardTier6 from '../sprites/resources/nature_shard_tier6.webp';
+import ResourceSpriteNatureShardTier7 from '../sprites/resources/nature_shard_tier7.webp';
+import ResourceSpriteNatureShardTier8 from '../sprites/resources/nature_shard_tier8.webp';
+import ResourceSpriteProtectionScroll from '../sprites/resources/protection_scroll.webp';
+import ResourceSpriteRareAscencionOrb from '../sprites/resources/rare_ascencion_orb.webp';
+import ResourceSpriteRareBannerBooster from '../sprites/resources/rare_banner_booster.webp';
+import ResourceSpriteRareCrystalizedSoul from '../sprites/resources/rare_crystalized_soul.webp';
+import ResourceSpriteRareEquipmentDust from '../sprites/resources/rare_equipment_dust.webp';
+import ResourceSpriteRareSkillTome from '../sprites/resources/rare_skill_tome.webp';
+import ResourceSpriteRareWildcard from '../sprites/resources/rare_wildcard.webp';
+import ResourceSpriteRedKey from '../sprites/resources/red_key.webp';
+import ResourceSpriteReincarnationStone from '../sprites/resources/reincarnation_stone.webp';
+import ResourceSpriteRootBeer from '../sprites/resources/root_beer.webp';
+import ResourceSpriteRuby from '../sprites/resources/ruby.webp';
+import ResourceSpriteSapphire from '../sprites/resources/sapphire.webp';
+import ResourceSpriteShadowShardTier1 from '../sprites/resources/shadow_shard_tier1.webp';
+import ResourceSpriteShadowShardTier2 from '../sprites/resources/shadow_shard_tier2.webp';
+import ResourceSpriteShadowShardTier3 from '../sprites/resources/shadow_shard_tier3.webp';
+import ResourceSpriteShadowShardTier4 from '../sprites/resources/shadow_shard_tier4.webp';
+import ResourceSpriteShadowShardTier5 from '../sprites/resources/shadow_shard_tier5.webp';
+import ResourceSpriteShadowShardTier6 from '../sprites/resources/shadow_shard_tier6.webp';
+import ResourceSpriteShadowShardTier7 from '../sprites/resources/shadow_shard_tier7.webp';
+import ResourceSpriteShadowShardTier8 from '../sprites/resources/shadow_shard_tier8.webp';
+import ResourceSpriteShimmeringSoul from '../sprites/resources/shimmering_soul.webp';
+import ResourceSpriteSoul from '../sprites/resources/soul.webp';
+import ResourceSpriteUncommonAscencionOrb from '../sprites/resources/uncommon_ascencion_orb.webp';
+import ResourceSpriteUncommonBannerBooster from '../sprites/resources/uncommon_banner_booster.webp';
+import ResourceSpriteUncommonEquipmentDust from '../sprites/resources/uncommon_equipment_dust.webp';
+import ResourceSpriteUncommonSkillTome from '../sprites/resources/uncommon_skill_tome.webp';
+import ResourceSpriteUncommonWildcard from '../sprites/resources/uncommon_wildcard.webp';
+import ResourceSpriteWaterShardTier1 from '../sprites/resources/water_shard_tier1.webp';
+import ResourceSpriteWaterShardTier2 from '../sprites/resources/water_shard_tier2.webp';
+import ResourceSpriteWaterShardTier3 from '../sprites/resources/water_shard_tier3.webp';
+import ResourceSpriteWaterShardTier4 from '../sprites/resources/water_shard_tier4.webp';
+import ResourceSpriteWaterShardTier5 from '../sprites/resources/water_shard_tier5.webp';
+import ResourceSpriteWaterShardTier6 from '../sprites/resources/water_shard_tier6.webp';
+import ResourceSpriteWaterShardTier7 from '../sprites/resources/water_shard_tier7.webp';
+import ResourceSpriteWaterShardTier8 from '../sprites/resources/water_shard_tier8.webp';
 
 export const heroSprites = {
     null: NullSrc,
@@ -1364,19 +1465,115 @@ export const statusSprites = {
     miasma: Miasma,
 }
 
-// Resource sprites are keyed by filename (without the .webp extension).
-// Keep each filename normalized to the resource name used in db_resources.jsx.
-const resourceSpriteModules = import.meta.glob("../sprites/resources/*.webp", {
-    eager: true,
-    import: "default",
-})
-
+// Resource sprites are keyed by their filename (without the .webp extension).
+// Explicit imports keep supported assets visible and easy to search in the editor.
 export const resourceSprites = {
     null: NullSrc,
-    ...Object.fromEntries(
-        Object.entries(resourceSpriteModules).map(([path, src]) => [
-            path.split("/").pop().replace(/\.webp$/, ""),
-            src,
-        ])
-    ),
+    adventure_experience_scroll: ResourceSpriteAdventureExperienceScroll,
+    adventure_thirst: ResourceSpriteAdventureThirst,
+    arena_coin: ResourceSpriteArenaCoin,
+    arena_ticket: ResourceSpriteArenaTicket,
+    autumn_acorn: ResourceSpriteAutumnAcorn,
+    autumn_chestnut: ResourceSpriteAutumnChestnut,
+    autumn_leaf: ResourceSpriteAutumnLeaf,
+    birthday_baloon: ResourceSpriteBirthdayBaloon,
+    birthday_cake: ResourceSpriteBirthdayCake,
+    birthday_gift: ResourceSpriteBirthdayGift,
+    chaostower_coin: ResourceSpriteChaostowerCoin,
+    chaostower_ticket: ResourceSpriteChaostowerTicket,
+    cinder: ResourceSpriteCinder,
+    common_equipment_dust: ResourceSpriteCommonEquipmentDust,
+    crimson_hourglass: ResourceSpriteCrimsonHourglass,
+    crystal: ResourceSpriteCrystal,
+    crystalized_soul: ResourceSpriteCrystalizedSoul,
+    diamond: ResourceSpriteDiamond,
+    dungeon_artifact: ResourceSpriteDungeonArtifact,
+    dungeon_artifact_ancient: ResourceSpriteDungeonArtifactAncient,
+    dungeon_key: ResourceSpriteDungeonKey,
+    emerald: ResourceSpriteEmerald,
+    epic_ascencion_orb: ResourceSpriteEpicAscencionOrb,
+    epic_banner_booster: ResourceSpriteEpicBannerBooster,
+    epic_equipment_dust: ResourceSpriteEpicEquipmentDust,
+    epic_skill_tome: ResourceSpriteEpicSkillTome,
+    epic_wildcard: ResourceSpriteEpicWildcard,
+    essence: ResourceSpriteEssence,
+    fire_shard_tier1: ResourceSpriteFireShardTier1,
+    fire_shard_tier2: ResourceSpriteFireShardTier2,
+    fire_shard_tier3: ResourceSpriteFireShardTier3,
+    fire_shard_tier4: ResourceSpriteFireShardTier4,
+    fire_shard_tier5: ResourceSpriteFireShardTier5,
+    fire_shard_tier6: ResourceSpriteFireShardTier6,
+    fire_shard_tier7: ResourceSpriteFireShardTier7,
+    fire_shard_tier8: ResourceSpriteFireShardTier8,
+    gold: ResourceSpriteGold,
+    golden_hourglass: ResourceSpriteGoldenHourglass,
+    golden_key: ResourceSpriteGoldenKey,
+    guildhunt_coin: ResourceSpriteGuildhuntCoin,
+    guildhunt_coin_dark: ResourceSpriteGuildhuntCoinDark,
+    guildhunt_medal: ResourceSpriteGuildhuntMedal,
+    guildhunt_ticket: ResourceSpriteGuildhuntTicket,
+    hero_experience_scroll: ResourceSpriteHeroExperienceScroll,
+    legendary_ascencion_orb: ResourceSpriteLegendaryAscencionOrb,
+    legendary_banner_booster: ResourceSpriteLegendaryBannerBooster,
+    legendary_equipment_dust: ResourceSpriteLegendaryEquipmentDust,
+    legendary_skill_tome: ResourceSpriteLegendarySkillTome,
+    legendary_wildcard: ResourceSpriteLegendaryWildcard,
+    light_shard_tier1: ResourceSpriteLightShardTier1,
+    light_shard_tier2: ResourceSpriteLightShardTier2,
+    light_shard_tier3: ResourceSpriteLightShardTier3,
+    light_shard_tier4: ResourceSpriteLightShardTier4,
+    light_shard_tier5: ResourceSpriteLightShardTier5,
+    light_shard_tier6: ResourceSpriteLightShardTier6,
+    light_shard_tier7: ResourceSpriteLightShardTier7,
+    light_shard_tier8: ResourceSpriteLightShardTier8,
+    monster_musk: ResourceSpriteMonsterMusk,
+    nature_shard_tier1: ResourceSpriteNatureShardTier1,
+    nature_shard_tier2: ResourceSpriteNatureShardTier2,
+    nature_shard_tier3: ResourceSpriteNatureShardTier3,
+    nature_shard_tier4: ResourceSpriteNatureShardTier4,
+    nature_shard_tier5: ResourceSpriteNatureShardTier5,
+    nature_shard_tier6: ResourceSpriteNatureShardTier6,
+    nature_shard_tier7: ResourceSpriteNatureShardTier7,
+    nature_shard_tier8: ResourceSpriteNatureShardTier8,
+    protection_scroll: ResourceSpriteProtectionScroll,
+    rare_ascencion_orb: ResourceSpriteRareAscencionOrb,
+    rare_banner_booster: ResourceSpriteRareBannerBooster,
+    rare_crystalized_soul: ResourceSpriteRareCrystalizedSoul,
+    rare_equipment_dust: ResourceSpriteRareEquipmentDust,
+    rare_skill_tome: ResourceSpriteRareSkillTome,
+    rare_wildcard: ResourceSpriteRareWildcard,
+    red_key: ResourceSpriteRedKey,
+    reincarnation_stone: ResourceSpriteReincarnationStone,
+    root_beer: ResourceSpriteRootBeer,
+    ruby: ResourceSpriteRuby,
+    sapphire: ResourceSpriteSapphire,
+    shadow_shard_tier1: ResourceSpriteShadowShardTier1,
+    shadow_shard_tier2: ResourceSpriteShadowShardTier2,
+    shadow_shard_tier3: ResourceSpriteShadowShardTier3,
+    shadow_shard_tier4: ResourceSpriteShadowShardTier4,
+    shadow_shard_tier5: ResourceSpriteShadowShardTier5,
+    shadow_shard_tier6: ResourceSpriteShadowShardTier6,
+    shadow_shard_tier7: ResourceSpriteShadowShardTier7,
+    shadow_shard_tier8: ResourceSpriteShadowShardTier8,
+    shimmering_soul: ResourceSpriteShimmeringSoul,
+    soul: ResourceSpriteSoul,
+    uncommon_ascencion_orb: ResourceSpriteUncommonAscencionOrb,
+    uncommon_banner_booster: ResourceSpriteUncommonBannerBooster,
+    uncommon_equipment_dust: ResourceSpriteUncommonEquipmentDust,
+    uncommon_skill_tome: ResourceSpriteUncommonSkillTome,
+    uncommon_wildcard: ResourceSpriteUncommonWildcard,
+    water_shard_tier1: ResourceSpriteWaterShardTier1,
+    water_shard_tier2: ResourceSpriteWaterShardTier2,
+    water_shard_tier3: ResourceSpriteWaterShardTier3,
+    water_shard_tier4: ResourceSpriteWaterShardTier4,
+    water_shard_tier5: ResourceSpriteWaterShardTier5,
+    water_shard_tier6: ResourceSpriteWaterShardTier6,
+    water_shard_tier7: ResourceSpriteWaterShardTier7,
+    water_shard_tier8: ResourceSpriteWaterShardTier8,
+
+    // These filenames contain a typo; expose correctly spelled resource keys as aliases.
+    uncommon_ascension_orb: ResourceSpriteUncommonAscencionOrb,
+    rare_ascension_orb: ResourceSpriteRareAscencionOrb,
+    epic_ascension_orb: ResourceSpriteEpicAscencionOrb,
+    legendary_ascension_orb: ResourceSpriteLegendaryAscencionOrb,
 }
