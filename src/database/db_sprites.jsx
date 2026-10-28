@@ -1363,3 +1363,6 @@ export const statusSprites = {
     hollowing: Hollowing,
     miasma: Miasma,
 }
+
+// Add manually verified resource sprite imports and stable keys here as resource data is collected.
+export const resourceSprites = {}
