@@ -19,8 +19,7 @@ function add_resource(name, description, rarity = null) {
 }
 
 export function init_resource_db() {
-    // Add manually verified resources here. IDs are generated from each name.
-    // Add manually verified resource entries here.
+    // Add manually verified resource entries here. IDs are generated from each name.
 
     return BASE_RESOURCES
 }
