@@ -33,18 +33,24 @@ function CataloguePerk() {
         </label>
         <div className="perk-catalogue-list">
             {filtered.map(entry => <article className="perk-catalogue-row card" key={entry.key}>
-                <div className="perk-catalogue-heading">
-                    {perkSprites[entry.key] && <img className="perk-catalogue-icon" src={perkSprites[entry.key]} alt="" loading="lazy" draggable={false} />}
-                    <span className="text-big perk-catalogue-name">{entry.name}</span>
+                {perkSprites[entry.key] && (
+                    <div className="perk-catalogue-icon-wrap">
+                        <img className="perk-catalogue-icon" src={perkSprites[entry.key]} alt="" loading="lazy" decoding="async" draggable={false} />
+                    </div>
+                )}
+                <div className="perk-catalogue-content">
+                    <div className="perk-catalogue-heading">
+                        <span className="text-big perk-catalogue-name">{entry.name}</span>
+                    </div>
+                    <div className="perk-catalogue-slots">{entry.slots.map(slot => {
+                        const slotLabel = slot.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())
+                        const iconKey = slot.toLowerCase()
+                        return <span className="catalogue-chip text" key={slot}>
+                            {iconSprites[iconKey] && <img className="catalogue-chip-icon" src={iconSprites[iconKey]} alt="" />}
+                            {slotLabel}
+                        </span>
+                    })}</div>
                 </div>
-                <div className="perk-catalogue-slots">{entry.slots.map(slot => {
-                    const slotLabel = slot.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())
-                    const iconKey = slot.toLowerCase()
-                    return <span className="catalogue-chip text" key={slot}>
-                        {iconSprites[iconKey] && <img className="catalogue-chip-icon" src={iconSprites[iconKey]} alt="" />}
-                        {slotLabel}
-                    </span>
-                })}</div>
             </article>)}
             {filtered.length === 0 && <p className="catalogue-empty card">No perks match this search.</p>}
         </div>
