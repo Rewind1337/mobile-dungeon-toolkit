@@ -1,41 +1,12 @@
 import { resourceSprites } from "./db_sprites.jsx"
-import { RARITY_DEFINITIONS } from "./enums"
+import { RESOURCE_LOCATIONS, RARITY_DEFINITIONS } from "./enums"
 
-// Use arrays of these values for resources that have multiple sources or uses.
-const RESOURCE_LOCATIONS = {
-    BLACK_MARKET_OFFERS: "Offers (Black Market)",
-    BLACK_MARKET_PACKS: "Packs (Black Market)",
-    BLACK_MARKET_RESOURCES: "Resources (Black Market)",
-    REGULAR_SHOP: "Regular Shop (Trader)",
-    DUNGEON_SHOP: "Dungeon Shop (Trader)",
-    MAGIC_TOILET_SHOP: "Magic Toilet Shop (Trader)",
-    CHAPEL: "Chapel",
-    TAVERN: "Tavern",
-    ADVENTURE: "Regular Adventure",
-    ADVENTURE_SHADOW: "Shadow World Adventure",
-    ARENA: "Arena",
-    GUILD_HUNT: "Guild Hunt",
-    GUILD_HUNT_STREAK: "Guild Hunt Streak",
-    GUILD_QUESTS: "Guild Quests",
-    DAILY_QUESTS: "Daily Quests",
-    WEEKLY_QUESTS: "Weekly Quests",
-    MAIN_QUESTS: "Main Quests",
-    GUILD_SHOP: "Guild Shop (Warmaster)",
-    ARENA_SHOP: "Arena Shop (Warmaster)",
-    SMITH_DISMANTLE: "Dismantle (Smith)",
-    SMITH_ENHANCE: "Enhance (Smith)",
-    SMITH_REFINE: "Refine (Smith)",
-    ALCHEMIST_TRANSMUTATION: "Transmutation (Alchemist)",
-    ALCHEMIST_DISTILLATION: "Distillation (Alchemist)",
-    ALCHEMIST_MASTERWORK: "Masterwork (Alchemist)",
-    EVENT_TRADER: "Event Trader",
-}
-
+export { RESOURCE_LOCATIONS }
 
 let BASE_RESOURCES = []
 
 function add_resource(name, description, rarity = null) {
-    const normalizedName = name.toLowerCase().replace(/[^a-z]/g, "_")
+    const normalizedName = name.toLowerCase().replace(/[^a-z0-9]/g, "_").replace(/^_+|_+$/g, "")
     const id = name.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "")
     if (BASE_RESOURCES.some(resource => resource.id === id)) {
         throw new Error(`Duplicate stable resource ID "${id}". Give the resource a distinct name.`)
