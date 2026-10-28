@@ -11,6 +11,7 @@ import './css/not-found.scss'
 
 import { init_hero_db } from './database/db_heroes.jsx'
 import { init_item_db } from './database/db_items.jsx'
+import { clearSearchFromUrl } from './js/search.jsx'
 
 const PageItems = lazy(() => import('./components/PageItems.jsx'))
 const PageHeroes = lazy(() => import('./components/PageHeroes.jsx'))
@@ -211,6 +212,7 @@ function App() {
     const destination = route === '/' ? baseUrl : `${baseUrl}${route.slice(1)}`;
 
     if (window.location.pathname !== destination) {
+      clearSearchFromUrl();
       window.history.pushState({}, '', destination);
     }
 
@@ -223,12 +225,10 @@ function App() {
     if (!route) return;
 
     const baseUrl = import.meta.env.BASE_URL;
-    const destinationPath = `${baseUrl}${route.slice(1)}`;
-    // Preserve existing URL parameters while the search helper only writes the "search" parameter.
-    const destination = `${destinationPath}${window.location.search}${window.location.hash}`;
-    const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    const destination = `${baseUrl}${route.slice(1)}`;
 
-    if (currentUrl !== destination) {
+    if (window.location.pathname !== destination) {
+      clearSearchFromUrl();
       window.history.pushState({}, '', destination);
     }
 
