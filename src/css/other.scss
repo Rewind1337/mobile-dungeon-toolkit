@@ -1273,7 +1273,7 @@
 }
 
 @include M.media-query(V.$bp-ultra) {
-  .catalogue-overview-stats { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+  .catalogue-overview-stats { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
   .catalogue-overview-links { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
