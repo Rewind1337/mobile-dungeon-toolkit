@@ -1118,9 +1118,6 @@ input[type="number"] {
 .preview-top-row .preview-action-chip .icon-left img { display: block; width: 24px; height: 24px; object-fit: contain; }
 .preview-top-row .preview-action-chip .text { white-space: normal; }
 .preview-top-row .preview-close-icon { display: block; width: 18px; height: 18px; object-fit: contain; }
-.starred-filter-control { display: flex; flex-direction: column; gap: 4px; min-width: 130px; }
-.starred-filter-control > span { font-size: V.$font-size-small; opacity: .85; }
-.starred-filter-control select { width: 100%; min-width: 0; min-height: 38px; font-family: V.$font-family-stats; }
 .hero-metadata-name[data-rarity="1"], .item-preview-name[data-rarity="1"] { color: #73d17c; border-color: rgba(80, 190, 100, 0.7); }
 .hero-metadata-name[data-rarity="2"], .item-preview-name[data-rarity="2"] { color: #83b5ff; border-color: rgba(80, 145, 245, 0.75); }
 .hero-metadata-name[data-rarity="3"], .item-preview-name[data-rarity="3"] { color: #d3a0ff; border-color: rgba(180, 95, 235, 0.75); }
