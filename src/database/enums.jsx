@@ -5,6 +5,36 @@ export const DROP_SOURCE_DEFINITIONS = {
 
 export const DROP_SOURCE = createNumericEnum(DROP_SOURCE_DEFINITIONS);
 
+// Use arrays of these values for resources that have multiple sources or uses.
+export const RESOURCE_LOCATIONS = {
+    BLACK_MARKET_OFFERS: "Offers (Black Market)",
+    BLACK_MARKET_PACKS: "Packs (Black Market)",
+    BLACK_MARKET_RESOURCES: "Resources (Black Market)",
+    REGULAR_SHOP: "Regular Shop (Trader)",
+    DUNGEON_SHOP: "Dungeon Shop (Trader)",
+    MAGIC_TOILET_SHOP: "Magic Toilet Shop (Trader)",
+    CHAPEL: "Chapel",
+    TAVERN: "Tavern",
+    ADVENTURE: "Regular Adventure",
+    ADVENTURE_SHADOW: "Shadow World Adventure",
+    ARENA: "Arena",
+    GUILD_HUNT: "Guild Hunt",
+    GUILD_HUNT_STREAK: "Guild Hunt Streak",
+    GUILD_QUESTS: "Guild Quests",
+    DAILY_QUESTS: "Daily Quests",
+    WEEKLY_QUESTS: "Weekly Quests",
+    MAIN_QUESTS: "Main Quests",
+    GUILD_SHOP: "Guild Shop (Warmaster)",
+    ARENA_SHOP: "Arena Shop (Warmaster)",
+    SMITH_DISMANTLE: "Dismantle (Smith)",
+    SMITH_ENHANCE: "Enhance (Smith)",
+    SMITH_REFINE: "Refine (Smith)",
+    ALCHEMIST_TRANSMUTATION: "Transmutation (Alchemist)",
+    ALCHEMIST_DISTILLATION: "Distillation (Alchemist)",
+    ALCHEMIST_MASTERWORK: "Masterwork (Alchemist)",
+    EVENT_TRADER: "Event Trader",
+}
+
 // Cache reverse indexes so repeated UI lookups don't rescan the full definition object.
 // Supports simple enums (KEY: number) and structured definitions ({ id, name, ... }).
 const enumNameIndexes = new WeakMap();

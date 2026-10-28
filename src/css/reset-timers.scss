@@ -1,0 +1,145 @@
+@use './_variables.scss' as V;
+@use './mixins.scss' as M;
+
+.splash-status-panel {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: V.$gap;
+  width: 100%;
+  min-width: 0;
+}
+
+.reset-timers-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  flex: 0 0 auto;
+  gap: V.$gap;
+  width: 100%;
+  min-width: 0;
+}
+
+.reset-timer {
+  display: grid;
+  grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+  align-items: center;
+  gap: V.$gap-small;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  padding: V.$gap-small V.$gap;
+}
+
+.reset-timer-label {
+  min-width: 0;
+  margin: 0;
+  font-size: clamp(0.95rem, 1.35vw, 1.45rem);
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.reset-timer-countdown {
+  min-width: 0;
+  margin: 0;
+  font-size: clamp(0.8rem, 1.05vw, 1.2rem);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.under-construction-row {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 72px;
+  overflow: hidden;
+  padding: 14px 16px;
+  border: 2px solid transparent;
+  border-radius: V.$border-radius;
+  background: linear-gradient(110deg, rgba(43, 34, 10, 0.94), rgba(21, 22, 25, 0.96) 45%, rgba(43, 34, 10, 0.94));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04), 0 3px 12px rgba(0, 0, 0, 0.2);
+}
+
+.under-construction-row::before,
+.under-construction-row::after {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 8px;
+  content: "";
+  background: repeating-linear-gradient(
+    135deg,
+    #f5c542 0,
+    #f5c542 12px,
+    #171717 12px,
+    #171717 24px
+  );
+}
+
+.under-construction-row::before {
+  top: 0;
+}
+
+.under-construction-row::after {
+  bottom: 0;
+}
+
+.under-construction-sign {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: V.$gap V.$gap;
+  min-width: 0;
+  text-align: center;
+}
+
+.under-construction-label {
+  color: #f5c542;
+  font-family: V.$font-family-header;
+  font-size: clamp(1.1rem, 2vw, 1.8rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-shadow: 0 0 10px rgba(245, 197, 66, 0.22), 1px 2px 2px #000;
+}
+
+.under-construction-caption {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: clamp(0.8rem, 1.1vw, 1rem);
+}
+
+@include M.media-query-max(V.$bp-small) {
+  .reset-timers-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .reset-timer {
+    grid-template-columns: minmax(0, 0.65fr) minmax(0, 1.35fr);
+  }
+
+  .reset-timer-label {
+    font-size: 1rem;
+  }
+
+  .reset-timer-countdown {
+    font-size: clamp(0.8rem, 3.1vw, 1rem);
+  }
+
+  .under-construction-row {
+    min-height: 68px;
+    padding-inline: 10px;
+  }
+
+  .under-construction-sign {
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+}

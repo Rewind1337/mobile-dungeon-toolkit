@@ -15,6 +15,8 @@ button {
   font-weight: 500;
   cursor: pointer;
   overflow: hidden;
+  position: relative;
+  isolation: isolate;
   transform: translate(0, 0);
   transition: V.$transition-button;
   z-index: 5;
@@ -37,7 +39,7 @@ button {
     }
 
     &::before {
-      content: "░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░";
+      content: "░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░";
       color: rgba(0, 0, 0, 0.2);
       font-size: 80px;
       text-transform: uppercase;
@@ -52,7 +54,15 @@ button {
       animation: marginWobble 20s ease infinite;
       background: rgba(255, 255, 255, 0.33);
       transition: width 0.25s linear;
-      z-index: -1;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    > .icon-left,
+    > .text,
+    > .icon-right {
+      position: relative;
+      z-index: 1;
     }
 
     &.pressed {
@@ -68,6 +78,8 @@ button {
         background: rgba(255, 255, 255, 0.1);
         border-radius: 100%;
         transition: width 3s ease-out, height 3s ease-out;
+        z-index: 2;
+        pointer-events: none;
       }
 
       &:active:after {
@@ -147,6 +159,14 @@ button {
       &:active {
         background: V.$button-six-gradient-click;
       }
+    }
+  }
+
+  &[data-color="6"]:not(.disabled) {
+    background: V.$button-seven-gradient;
+    &:hover {
+      background: V.$button-seven-gradient-hover;
+      &:active { background: V.$button-seven-gradient-click; }
     }
   }
 
@@ -241,6 +261,12 @@ button {
     }
   }
 
+  &.nav-home-button {
+    justify-content: center;
+    padding: 4px 10px;
+    img { display: block; height: 42px; max-width: 100%; object-fit: contain; z-index: 1;}
+  }
+
   .icon-left,
   .text,
   .icon-right {
@@ -251,7 +277,6 @@ button {
 }
 
 @keyframes marginWobble {
-
   0%,
   100% {
     margin-top: -45px;
@@ -261,3 +286,17 @@ button {
     margin-top: -25px;
   }
 }
+.back-to-top-button {
+  position: fixed;
+  right: V.$gap;
+  bottom: V.$gap;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: V.$gap;
+  min-width: 150px;
+  min-height: 48px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.55);
+}
+.back-to-top-button .icon-left { font-size: 1.4em; }

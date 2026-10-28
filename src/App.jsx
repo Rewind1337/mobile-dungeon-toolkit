@@ -6,6 +6,7 @@ import Seagull from './sprites/seagull.webp'
 
 import NavBar from './components/NavBar.jsx'
 import Button from './components/Button.jsx'
+import ResetTimers from './components/ResetTimers.jsx'
 import './css/not-found.scss'
 
 import { init_hero_db } from './database/db_heroes.jsx'
@@ -15,7 +16,7 @@ const PageItems = lazy(() => import('./components/PageItems.jsx'))
 const PageHeroes = lazy(() => import('./components/PageHeroes.jsx'))
 const PageSimulators = lazy(() => import('./components/PageSimulators.jsx'))
 const PageTeams = lazy(() => import('./components/PageTeams.jsx'))
-const PageOther = lazy(() => import('./components/PageOther.jsx'))
+const PageInfos = lazy(() => import('./components/PageInfos.jsx'))
 
 
 const BASE_HEROES = init_hero_db()
@@ -26,13 +27,22 @@ const PAGE_TO_ROUTE = {
   items: '/items/',
   teams: '/teams/',
   simulator: '/simulators/',
-  other: '/other/',
+  info: '/info/',
 };
 
-const OTHER_TAB_TO_ROUTE = {
-  'item-catalogue': '/other/item-catalogue/',
-  'hero-catalogue': '/other/hero-catalogue/',
-  'status-catalogue': '/other/status-catalogue/',
+const INFO_TAB_TO_ROUTE = {
+  overview: '/info/',
+  'item-catalogue': '/info/item-catalogue/items/',
+  'set-catalogue': '/info/item-catalogue/sets/',
+  'perk-catalogue': '/info/perk-catalogue/',
+  'hero-catalogue': '/info/hero-catalogue/heroes/',
+  'hero-banners-catalogue': '/info/hero-catalogue/banners/',
+  'resources-catalogue': '/info/resources-catalogue/resources/',
+  'gems-catalogue': '/info/resources-catalogue/gems/',
+  'status-catalogue': '/info/status-catalogue/',
+  'skills-talents-catalogue': '/info/skills-talents-catalogue/skills/',
+  'skills-catalogue': '/info/skills-talents-catalogue/skills/',
+  'talents-catalogue': '/info/skills-talents-catalogue/talents/',
 };
 
 const normalizeRoute = (route) => {
@@ -61,16 +71,37 @@ const getPathWithoutBase = () => {
 const getPageFromPath = () => {
   const pathname = getPathWithoutBase();
 
-  // Catalogue subroutes are views within the existing "Other" page.
-  if (pathname.startsWith('/other/')) return 'other';
+  // Catalogue subroutes are views within the existing Info page. Keep short root-level aliases working too.
+  if (pathname === '/info' || pathname.startsWith('/info/') || pathname === '/other' || pathname.startsWith('/other/')
+      || pathname === '/hero-catalogue' || pathname.startsWith('/hero-catalogue/')
+      || pathname === '/resources-catalogue' || pathname.startsWith('/resources-catalogue/')
+      || pathname === '/skills-catalogue' || pathname.startsWith('/skills-catalogue/')
+      || pathname === '/talents-catalogue' || pathname.startsWith('/talents-catalogue/')) return 'info';
 
   return ROUTE_TO_PAGE[pathname] ?? 'notFound';
 };
 
-const getOtherTabFromPath = () => {
+const getInfoTabFromPath = () => {
   const pathname = getPathWithoutBase();
-  return Object.entries(OTHER_TAB_TO_ROUTE).find(([, route]) => normalizeRoute(route) === pathname)?.[0]
-    ?? 'item-catalogue';
+  const aliases = {
+    '/info/hero-catalogue': 'hero-catalogue',
+    '/hero-catalogue': 'hero-catalogue',
+    '/hero-catalogue/heroes': 'hero-catalogue',
+    '/hero-catalogue/banners': 'hero-banners-catalogue',
+    '/info/skills-talents-catalogue': 'skills-catalogue',
+    '/info/skills-talents-catalogue/skills': 'skills-catalogue',
+    '/info/skills-catalogue': 'skills-catalogue',
+    '/skills-catalogue': 'skills-catalogue',
+    '/info/skills-talents-catalogue/talents': 'talents-catalogue',
+    '/info/talents-catalogue': 'talents-catalogue',
+    '/talents-catalogue': 'talents-catalogue',
+    '/info/resources-catalogue': 'resources-catalogue',
+    '/resources-catalogue': 'resources-catalogue',
+    '/resources-catalogue/resources': 'resources-catalogue',
+    '/resources-catalogue/gems': 'gems-catalogue',
+  };
+  if (aliases[pathname]) return aliases[pathname];
+  return Object.entries(INFO_TAB_TO_ROUTE).find(([, route]) => normalizeRoute(route) === pathname || normalizeRoute(route.replace('/info/', '/other/')) === pathname)?.[0] ?? 'overview';
 };
 
 const createDefaultState = () => ({
@@ -137,7 +168,7 @@ function App() {
 
   // app related
   const [pageContent, setPageContent] = useState(getPageFromPath)
-  const [activeOtherTab, setActiveOtherTab] = useState(getOtherTabFromPath)
+  const [activeInfoTab, setActiveInfoTab] = useState(getInfoTabFromPath)
   const [importStatus, setImportStatus] = useState("")
 
   const saveToLocalStorage = useCallback(() => {
@@ -163,7 +194,7 @@ function App() {
   useEffect(() => {
     const handlePopState = () => {
       setPageContent(getPageFromPath());
-      setActiveOtherTab(getOtherTabFromPath());
+      setActiveInfoTab(getInfoTabFromPath());
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -183,12 +214,12 @@ function App() {
       window.history.pushState({}, '', destination);
     }
 
-    if (page === 'other') setActiveOtherTab('item-catalogue');
+    if (page === 'info') setActiveInfoTab('overview');
     setPageContent(page);
   };
 
-  const switchOtherCatalogueTo = (tab) => {
-    const route = OTHER_TAB_TO_ROUTE[tab];
+  const switchInfoCatalogueTo = (tab) => {
+    const route = INFO_TAB_TO_ROUTE[tab];
     if (!route) return;
 
     const baseUrl = import.meta.env.BASE_URL;
@@ -198,8 +229,8 @@ function App() {
       window.history.pushState({}, '', destination);
     }
 
-    setActiveOtherTab(tab);
-    setPageContent('other');
+    setActiveInfoTab(tab);
+    setPageContent('info');
   }
 
   return (
@@ -226,7 +257,7 @@ function App() {
                 <Button className="not-found-link" text="Teams" color={2} onClick={() => switchTabTo('teams')} />
                 <Button className="not-found-link" text="Home" color={3} onClick={() => switchTabTo('splash')} />
                 <Button className="not-found-link" text="Simulators" color={4} onClick={() => switchTabTo('simulator')} />
-                <Button className="not-found-link" text="Other Stuff" color={5} onClick={() => switchTabTo('other')} />
+                <Button className="not-found-link" text="Info" color={5} onClick={() => switchTabTo('info')} />
               </nav>
             </section>
           </main>
@@ -234,6 +265,13 @@ function App() {
 
         {pageContent === 'splash' &&
           <div id='page-splash' className='page flex-col w-100'>
+            <section className="under-construction-row card" style={{height: "50px"}} aria-label="Under construction">
+                <div className="under-construction-sign">
+                    <span className="under-construction-label">UNDER CONSTRUCTION</span>
+                    <span className="under-construction-caption">More features are on the way</span>
+                </div>
+            </section>
+            <ResetTimers />
             <div className='flex-row top'>
               <div className='card management flex-col'>
                 <div className='header-big'>Management</div>
@@ -323,12 +361,12 @@ function App() {
 
         {pageContent === 'simulator' && <PageSimulators itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
 
-        {pageContent === 'other' && (
-          <PageOther
+        {pageContent === 'info' && (
+          <PageInfos
             itemsRef={itemsRef}
             heroesRef={heroesRef}
-            activeTab={activeOtherTab}
-            onTabChange={switchOtherCatalogueTo}
+            activeTab={activeInfoTab}
+            onTabChange={switchInfoCatalogueTo}
           />
         )}
 

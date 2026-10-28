@@ -46,7 +46,7 @@ function HeroRarityFilters({ toggleFilter, filters, filterSprites }) {
     </div>)
 }
 
-function HeroFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, clearFilters, filters, filterSprites, sortOrder, onToggleSort }) {
+function HeroFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, clearFilters, filters, filterSprites, sortOrder, onToggleSort, searchPlaceholder = "Search heroes...", searchAriaLabel = "Search heroes by name" }) {
 
     if (!advanced) {
         return (
@@ -55,7 +55,7 @@ function HeroFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, cl
                 <Button title="Clear all filters" className='filters-clear-button' round onClick={clearFilters} text={"ALL"} active={Object.values(filters).every((v) => v === null || v === "")} />
                 <HeroElementFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <div className="name-search-filter">
-                    <input className="selectable w-100" type="text" aria-label="Search heroes by name" placeholder="Search heroes..." value={filters.name} onChange={(event) => setSearch(event.target.value)} />
+                    <input className="selectable w-100" type="text" aria-label={searchAriaLabel} placeholder={searchPlaceholder} value={filters.name} onChange={(event) => setSearch(event.target.value)} />
                 </div>
                 <Button title={sortOrder == 0 ? "Sort A to Z" : "Sort Z to A"} className='filters-sort-button' round onClick={onToggleSort} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
             </div>
@@ -67,7 +67,7 @@ function HeroFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, cl
                 <Button title="Clear all filters" className='filters-clear-button' round onClick={clearFilters} text={"ALL"} active={Object.values(filters).every((v) => v === null || v === "")} />
                 <HeroElementFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <div className="name-search-filter">
-                    <input className="selectable w-100" type="text" aria-label="Search heroes by name" placeholder="Search heroes..." value={filters.name} onChange={(event) => setSearch(event.target.value)} />
+                    <input className="selectable w-100" type="text" aria-label={searchAriaLabel} placeholder={searchPlaceholder} value={filters.name} onChange={(event) => setSearch(event.target.value)} />
                 </div>
                 <Button title={sortOrder == 0 ? "Sort A to Z" : "Sort Z to A"} className='filters-sort-button' round onClick={onToggleSort} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
                 <div className='flex-wrapper' />
@@ -75,8 +75,8 @@ function HeroFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, cl
                 <div className='flex-wrapper' />
                 <HeroAttributeFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <div className='flex-wrapper' />
-                <div className='filter-group filters-group-special flex-row'>
-                    <Button title="Show starred heroes only" round onClick={() => toggleFilter('isStarred', true)} imgAsText text={filterSprites[50]} active={filters.isStarred === true} />
+                <div className='filter-group filters-group-special filters-starred-group flex-row'>
+                    <Button title="Show starred heroes only" className='filters-starred-button' round onClick={() => toggleFilter('isStarred', true)} imgAsText text={filterSprites[50]} active={filters.isStarred === true} />
                 </div>
                 <div className='flex-wrapper' />
                 <HeroRarityFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />

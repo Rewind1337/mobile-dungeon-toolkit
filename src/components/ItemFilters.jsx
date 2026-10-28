@@ -21,8 +21,8 @@ function ItemSetUniqueFilters({ toggleFilter, filters, filterSprites }) {
         <Button title="Items with 2-piece sets" className='filters-special-button' round onClick={() => toggleFilter('set', 'twoset')} imgAsText text={filterSprites[40]} active={filters.set === 'twoset'} />
         <Button title="Items with 4-piece sets" className='filters-special-button' round onClick={() => toggleFilter('set', 'fourset')} imgAsText text={filterSprites[41]} active={filters.set === 'fourset'} />
         <div className="mobile-filter-specials flex-row justify-between">
-            <MobileFilterSelect label="Unique" value={filters.unique} onChange={event => toggleFilter('unique', event.target.value === '' ? null : event.target.value)} options={[{value: 'unique', label: 'Unique'}]} />
-            <MobileFilterSelect label="Set" value={filters.set} onChange={event => toggleFilter('set', event.target.value === '' ? null : event.target.value)} options={[{value: 'twoset', label: '2-piece set'}, {value: 'fourset', label: '4-piece set'}]} /></div>
+            <MobileFilterSelect label="Unique" value={filters.unique} onChange={event => toggleFilter('unique', event.target.value === '' ? null : event.target.value)} options={[{value: 'unique', label: 'Unique'}, {value: 'notUnique', label: 'Not Unique'}]} />
+            <MobileFilterSelect label="Set" value={filters.set} onChange={event => toggleFilter('set', event.target.value === '' ? null : event.target.value)} options={[{value: 'twoset', label: '2-piece set'}, {value: 'fourset', label: '4-piece set'}, {value: 'noSet', label: 'No Set'}]} /></div>
     </div>)
 }
 

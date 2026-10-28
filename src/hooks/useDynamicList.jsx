@@ -20,7 +20,23 @@ export function useDynamicList(extraHeight = 0, enableDraggable = true) {
 
         window.addEventListener('resize', onResize);
         onResize();
-        return () => window.removeEventListener('resize', onResize);
+
+        const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(onResize);
+        const list = listRef.current;
+        if (list) {
+            observer?.observe(list);
+            if (list.parentElement) observer?.observe(list.parentElement);
+            let sibling = list.previousElementSibling;
+            while (sibling) {
+                observer?.observe(sibling);
+                sibling = sibling.previousElementSibling;
+            }
+        }
+
+        return () => {
+            window.removeEventListener('resize', onResize);
+            observer?.disconnect();
+        };
     }, [extraHeight]);
 
     return { listHeight, listRef, events: enableDraggable ? events : {} };

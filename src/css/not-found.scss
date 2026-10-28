@@ -1,4 +1,5 @@
 @use './_variables.scss' as V;
+@use './mixins.scss' as M;
 
 #page-not-found {
   flex: 1;
@@ -94,7 +95,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@include M.media-query-max(V.$bp-small) {
   #page-not-found {
     padding: 8px;
   }

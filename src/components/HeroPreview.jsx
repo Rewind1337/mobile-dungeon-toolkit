@@ -3,6 +3,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, ROLE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, PERK_DEFINITIONS, MASTERWORK_MUTATION_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
 import { heroSprites, iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites, elementSprites } from '../database/db_sprites.jsx'
+import ExpandSrc from '../sprites/expand.webp'
+import CrossSrc from '../sprites/cross.png'
 
 import Button from './Button.jsx'
 import Modal from './Modal.jsx'
@@ -149,9 +151,10 @@ function formatStatValue(value) {
     return Number.isInteger(rounded) ? String(rounded) : String(rounded)
 }
 
-function HeroPreview({ isFullWidth = false, onToggleFullWidth, heroesRef, selectedHeroId, saveHero, deleteSavedHero, onItemClick, equippedItems = [], setsRef = [] }) {
+function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, heroesRef, selectedHeroId, saveHero, deleteSavedHero, onItemClick, equippedItems = [], setsRef = [] }) {
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
+    const previousPreviewHeight = useRef(null)
     const [showSkillsAndTalents, setShowSkillsAndTalents] = useState(false)
     const [exportModalVisible, setExportModalVisible] = useState(false)
     const [heroShareUrl, setHeroShareUrl] = useState("")
@@ -187,6 +190,76 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, heroesRef, select
         onResize();
         return () => window.removeEventListener('resize', onResize);
     }, []);
+
+    useLayoutEffect(() => {
+        const preview = listRef.current
+        if (!preview) return
+
+        const previousHeight = previousPreviewHeight.current
+        if (previousHeight === null) {
+            previousPreviewHeight.current = preview.getBoundingClientRect().height
+            return
+        }
+
+        const pane = preview.closest('.hero-preview-pane')
+        let timeoutId
+        let animationStarted = false
+        let finishAnimation
+        let onPaneTransitionEnd
+
+        preview.style.height = `${previousHeight}px`
+        preview.style.transition = 'height 200ms ease'
+
+        const animateHeight = () => {
+            if (animationStarted) return
+            animationStarted = true
+            window.clearTimeout(timeoutId)
+            if (pane && onPaneTransitionEnd) pane.removeEventListener('transitionend', onPaneTransitionEnd)
+
+            const startHeight = preview.getBoundingClientRect().height
+            preview.style.transition = 'none'
+            preview.style.height = 'auto'
+            const targetHeight = preview.getBoundingClientRect().height
+            preview.style.height = `${startHeight}px`
+            preview.getBoundingClientRect()
+
+            if (Math.abs(startHeight - targetHeight) <= 1) {
+                preview.style.height = ''
+                preview.style.transition = ''
+                previousPreviewHeight.current = targetHeight
+                return
+            }
+
+            preview.style.transition = 'height 200ms ease'
+            finishAnimation = event => {
+                if (event.target !== preview || event.propertyName !== 'height') return
+                preview.style.height = ''
+                preview.style.transition = ''
+                preview.removeEventListener('transitionend', finishAnimation)
+            }
+            preview.addEventListener('transitionend', finishAnimation)
+            preview.style.height = `${targetHeight}px`
+            previousPreviewHeight.current = targetHeight
+        }
+
+        onPaneTransitionEnd = event => {
+            if (event.target === pane && (event.propertyName === 'width' || event.propertyName === 'flex-basis')) {
+                animateHeight()
+            }
+        }
+
+        if (pane) pane.addEventListener('transitionend', onPaneTransitionEnd)
+        timeoutId = window.setTimeout(animateHeight, 250)
+
+        return () => {
+            window.clearTimeout(timeoutId)
+            if (pane) pane.removeEventListener('transitionend', onPaneTransitionEnd)
+            if (finishAnimation) preview.removeEventListener('transitionend', finishAnimation)
+            previousPreviewHeight.current = preview.getBoundingClientRect().height
+            preview.style.height = ''
+            preview.style.transition = ''
+        }
+    }, [isFullWidth])
 
     let heroObj = heroesRef.find(hero => hero.id === selectedHeroId || hero.saveId === selectedHeroId)
 
@@ -422,7 +495,10 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, heroesRef, select
     } else {
         return (
             <div ref={listRef} className='hero-preview flex-col' style={{ maxHeight: listHeight }}>
-                <div className='preview-top-row flex-row'><Button title={isFullWidth ? 'Show hero list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} /></div>
+                <div className='preview-top-row flex-row'>
+                    <Button className='preview-back-button preview-action-chip catalogue-chip' prefix={<img className="preview-direction-icon" src={ExpandSrc} alt="" style={{ transform: isFullWidth ? 'rotate(-90deg)' : 'rotate(90deg)' }} />} title={isFullWidth ? 'Show hero list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} />
+                    <Button className='preview-close-button preview-action-chip catalogue-chip' prefix={<img className="preview-close-icon" src={CrossSrc} alt="" />} title='Deselect this hero and close the preview' text='Deselect Hero' onClick={onClosePreview} color='cancel' />
+                </div>
                 <Modal position="center" isVisible={exportModalVisible} onClose={() => setExportModalVisible(false)}>
                     <div className="flex-col card w-100">
                         <div className="header-big margin-auto">Export Hero</div>
@@ -464,13 +540,13 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, heroesRef, select
                     </div>
                 </Modal>
                 <div className='flex-row top-row hero-metadata'>
-                    <div className='header flex-row hero-metadata-attribute'>
+                    <div className={'catalogue-chip text hero-metadata-attribute catalogue-chip-attribute-' + String(getEnumNameById(ATTRIBUTE_DEFINITIONS, heroObj.mainAttribute) ?? '').toLowerCase()}>
+                        {typeof attributeSprites[heroObj.mainAttribute] === 'string' && <img className='catalogue-chip-icon' src={attributeSprites[heroObj.mainAttribute]} alt='' />}
                         {getEnumNameById(ATTRIBUTE_DEFINITIONS, heroObj.mainAttribute)}
-                        <img width={48} src={attributeSprites[heroObj.mainAttribute]}/>
                     </div>
-                    <div className='header-big hero-metadata-name'>{heroObj.variant ? heroObj.variant + " - " : ""}{heroObj.name}</div>
-                    <div className='header flex-row hero-metadata-role'>
-                        <img width={48} src={roleSprites[heroObj.role]}/>
+                    <div className='catalogue-chip text header hero-metadata-name' data-rarity={heroObj.rarity}>{heroObj.variant ? heroObj.variant + " - " : ""}{heroObj.name}</div>
+                    <div className={'catalogue-chip text hero-metadata-role catalogue-chip-role-' + String(getEnumNameById(ROLE_DEFINITIONS, heroObj.role) ?? '').toLowerCase()}>
+                        <img className='catalogue-chip-icon' src={roleSprites[heroObj.role]} alt='' />
                         {getEnumNameById(ROLE_DEFINITIONS, heroObj.role)}
                     </div>
                 </div>

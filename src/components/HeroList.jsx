@@ -6,7 +6,16 @@ import '../css/hero.scss'
 import Hero from './Hero.jsx'
 import { filterSprites } from '../database/db_sprites.jsx'
 import HeroFilters from './HeroFilters.jsx';
+import BackToTopButton from './BackToTopButton.jsx';
+import { ATTRIBUTE_DEFINITIONS, ELEMENT_DEFINITIONS, RARITY_DEFINITIONS, ROLE_DEFINITIONS, getEnumNameById } from '../database/enums.jsx';
 
+function getSearchableValues(value, seen = new Set()) {
+    if (value === null || value === undefined) return []
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return [String(value)]
+    if (typeof value !== 'object' || seen.has(value)) return []
+    seen.add(value)
+    return Object.entries(value).flatMap(([key, child]) => [key, ...getSearchableValues(child, seen)])
+}
 function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId }) {
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
     const [filters, setFilters] = useState({
@@ -38,7 +47,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
             (filters.mainAttribute === null || heroObj.mainAttribute === filters.mainAttribute) &&
             (filters.rarity === null || heroObj.rarity === filters.rarity) &&
             (filters.isStarred === null || heroObj.isStarred === filters.isStarred) &&
-            heroObj.name.toLowerCase().includes(filters.name.trim().toLowerCase())
+            (!filters.name.trim() || (filters.name.trim().toLowerCase() === 'starred' ? heroObj.isStarred === true : filters.name.trim().toLowerCase() === 'not starred' ? heroObj.isStarred === false : [...getSearchableValues(heroObj), getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(heroObj.mainAttribute)) ?? '', getEnumNameById(ELEMENT_DEFINITIONS, Number(heroObj.element)) ?? '', getEnumNameById(RARITY_DEFINITIONS, Number(heroObj.rarity)) ?? '', getEnumNameById(ROLE_DEFINITIONS, Number(heroObj.role)) ?? ''].join(' ').toLowerCase().includes(filters.name.trim().toLowerCase())))
         ));
 
         return result.sort((a, b) => {
@@ -52,7 +61,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
             <HeroFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={(name) => setFilters((prev) => ({ ...prev, name }))} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} sortOrder={sortOrder} onToggleSort={() => setSortOrder(order => order === 0 ? 1 : 0)} />
         </div>
         <div className='header-big'>{headerText}</div>
-        <div className='list hero-list flex-row' ref={listRef} {...events} style={(filtersAdvanced ? { maxHeight: (listHeight - 189)} : { maxHeight: listHeight })}>
+        <div className='list hero-list flex-row' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
             {filteredHeroes.length === 0 ? (
                 <div className="text-big margin-auto">No heroes match the selected filters</div>
             ) : (
@@ -67,6 +76,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
                 ))
             )}
         </div>
+        <BackToTopButton scrollRef={listRef} />
     </>
     )
 }

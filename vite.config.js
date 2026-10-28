@@ -14,6 +14,8 @@ export default defineConfig(({ command }) => ({
     }),
   ],
   build: {
+    // Keep the many small sprites as separate assets instead of embedding their bytes in JS chunks.
+    assetsInlineLimit: 0,
     chunkSizeWarningLimit: 800, // kB
   },
   // GitHub Pages hosts this project under /mobile-dungeon-toolkit/.

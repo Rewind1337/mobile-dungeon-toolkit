@@ -301,6 +301,107 @@ import ScarabRedSrc from '../sprites/heroes/scarab_red.webp';
 import ScarabGreenSrc from '../sprites/heroes/scarab_green.webp';
 
 import NullSrc from '../sprites/null.webp';
+import AdventureExperienceScroll from '../sprites/resources/adventure_experience_scroll.webp';
+import AdventureThirst from '../sprites/resources/adventure_thirst.webp';
+import ArenaCoin from '../sprites/resources/arena_coin.webp';
+import ArenaTicket from '../sprites/resources/arena_ticket.webp';
+import AutumnAcorn from '../sprites/resources/autumn_acorn.webp';
+import AutumnChestnut from '../sprites/resources/autumn_chestnut.webp';
+import AutumnLeaf from '../sprites/resources/autumn_leaf.webp';
+import BirthdayBaloon from '../sprites/resources/birthday_baloon.webp';
+import BirthdayCake from '../sprites/resources/birthday_cake.webp';
+import BirthdayGift from '../sprites/resources/birthday_gift.webp';
+import ChaostowerCoin from '../sprites/resources/chaostower_coin.webp';
+import ChaostowerTicket from '../sprites/resources/chaostower_ticket.webp';
+import Cinder from '../sprites/resources/cinder.webp';
+import CommonEquipmentDust from '../sprites/resources/common_equipment_dust.webp';
+import CrimsonHourglass from '../sprites/resources/crimson_hourglass.webp';
+import Crystal from '../sprites/resources/crystal.webp';
+import CrystalizedSoul from '../sprites/resources/crystalized_soul.webp';
+import Diamond from '../sprites/resources/diamond.webp';
+import DungeonArtifact from '../sprites/resources/dungeon_artifact.webp';
+import DungeonArtifactAncient from '../sprites/resources/dungeon_artifact_ancient.webp';
+import DungeonKey from '../sprites/resources/dungeon_key.webp';
+import Emerald from '../sprites/resources/emerald.webp';
+import EpicAscensionOrb from '../sprites/resources/epic_ascension_orb.webp';
+import EpicBannerBooster from '../sprites/resources/epic_banner_booster.webp';
+import EpicEquipmentDust from '../sprites/resources/epic_equipment_dust.webp';
+import EpicSkillTome from '../sprites/resources/epic_skill_tome.webp';
+import EpicWildcard from '../sprites/resources/epic_wildcard.webp';
+import Essence from '../sprites/resources/essence.webp';
+import FireShardTier1 from '../sprites/resources/fire_shard_tier1.webp';
+import FireShardTier2 from '../sprites/resources/fire_shard_tier2.webp';
+import FireShardTier3 from '../sprites/resources/fire_shard_tier3.webp';
+import FireShardTier4 from '../sprites/resources/fire_shard_tier4.webp';
+import FireShardTier5 from '../sprites/resources/fire_shard_tier5.webp';
+import FireShardTier6 from '../sprites/resources/fire_shard_tier6.webp';
+import FireShardTier7 from '../sprites/resources/fire_shard_tier7.webp';
+import FireShardTier8 from '../sprites/resources/fire_shard_tier8.webp';
+import Gold from '../sprites/resources/gold.webp';
+import GoldenHourglass from '../sprites/resources/golden_hourglass.webp';
+import GoldenKey from '../sprites/resources/golden_key.webp';
+import GuildhuntCoin from '../sprites/resources/guildhunt_coin.webp';
+import GuildhuntCoinDark from '../sprites/resources/guildhunt_coin_dark.webp';
+import GuildhuntMedal from '../sprites/resources/guildhunt_medal.webp';
+import GuildhuntTicket from '../sprites/resources/guildhunt_ticket.webp';
+import HeroExperienceScroll from '../sprites/resources/hero_experience_scroll.webp';
+import LegendaryAscensionOrb from '../sprites/resources/legendary_ascension_orb.webp';
+import LegendaryBannerBooster from '../sprites/resources/legendary_banner_booster.webp';
+import LegendaryEquipmentDust from '../sprites/resources/legendary_equipment_dust.webp';
+import LegendarySkillTome from '../sprites/resources/legendary_skill_tome.webp';
+import LegendaryWildcard from '../sprites/resources/legendary_wildcard.webp';
+import LightShardTier1 from '../sprites/resources/light_shard_tier1.webp';
+import LightShardTier2 from '../sprites/resources/light_shard_tier2.webp';
+import LightShardTier3 from '../sprites/resources/light_shard_tier3.webp';
+import LightShardTier4 from '../sprites/resources/light_shard_tier4.webp';
+import LightShardTier5 from '../sprites/resources/light_shard_tier5.webp';
+import LightShardTier6 from '../sprites/resources/light_shard_tier6.webp';
+import LightShardTier7 from '../sprites/resources/light_shard_tier7.webp';
+import LightShardTier8 from '../sprites/resources/light_shard_tier8.webp';
+import MonsterMusk from '../sprites/resources/monster_musk.webp';
+import NatureShardTier1 from '../sprites/resources/nature_shard_tier1.webp';
+import NatureShardTier2 from '../sprites/resources/nature_shard_tier2.webp';
+import NatureShardTier3 from '../sprites/resources/nature_shard_tier3.webp';
+import NatureShardTier4 from '../sprites/resources/nature_shard_tier4.webp';
+import NatureShardTier5 from '../sprites/resources/nature_shard_tier5.webp';
+import NatureShardTier6 from '../sprites/resources/nature_shard_tier6.webp';
+import NatureShardTier7 from '../sprites/resources/nature_shard_tier7.webp';
+import NatureShardTier8 from '../sprites/resources/nature_shard_tier8.webp';
+import ProtectionScroll from '../sprites/resources/protection_scroll.webp';
+import RareAscensionOrb from '../sprites/resources/rare_ascension_orb.webp';
+import RareBannerBooster from '../sprites/resources/rare_banner_booster.webp';
+import RareCrystalizedSoul from '../sprites/resources/rare_crystalized_soul.webp';
+import RareEquipmentDust from '../sprites/resources/rare_equipment_dust.webp';
+import RareSkillTome from '../sprites/resources/rare_skill_tome.webp';
+import RareWildcard from '../sprites/resources/rare_wildcard.webp';
+import RedKey from '../sprites/resources/red_key.webp';
+import ReincarnationStone from '../sprites/resources/reincarnation_stone.webp';
+import RootBeer from '../sprites/resources/root_beer.webp';
+import Ruby from '../sprites/resources/ruby.webp';
+import Sapphire from '../sprites/resources/sapphire.webp';
+import ShadowShardTier1 from '../sprites/resources/shadow_shard_tier1.webp';
+import ShadowShardTier2 from '../sprites/resources/shadow_shard_tier2.webp';
+import ShadowShardTier3 from '../sprites/resources/shadow_shard_tier3.webp';
+import ShadowShardTier4 from '../sprites/resources/shadow_shard_tier4.webp';
+import ShadowShardTier5 from '../sprites/resources/shadow_shard_tier5.webp';
+import ShadowShardTier6 from '../sprites/resources/shadow_shard_tier6.webp';
+import ShadowShardTier7 from '../sprites/resources/shadow_shard_tier7.webp';
+import ShadowShardTier8 from '../sprites/resources/shadow_shard_tier8.webp';
+import ShimmeringSoul from '../sprites/resources/shimmering_soul.webp';
+import Soul from '../sprites/resources/soul.webp';
+import UncommonAscensionOrb from '../sprites/resources/uncommon_ascension_orb.webp';
+import UncommonBannerBooster from '../sprites/resources/uncommon_banner_booster.webp';
+import UncommonEquipmentDust from '../sprites/resources/uncommon_equipment_dust.webp';
+import UncommonSkillTome from '../sprites/resources/uncommon_skill_tome.webp';
+import UncommonWildcard from '../sprites/resources/uncommon_wildcard.webp';
+import WaterShardTier1 from '../sprites/resources/water_shard_tier1.webp';
+import WaterShardTier2 from '../sprites/resources/water_shard_tier2.webp';
+import WaterShardTier3 from '../sprites/resources/water_shard_tier3.webp';
+import WaterShardTier4 from '../sprites/resources/water_shard_tier4.webp';
+import WaterShardTier5 from '../sprites/resources/water_shard_tier5.webp';
+import WaterShardTier6 from '../sprites/resources/water_shard_tier6.webp';
+import WaterShardTier7 from '../sprites/resources/water_shard_tier7.webp';
+import WaterShardTier8 from '../sprites/resources/water_shard_tier8.webp';
 
 export const heroSprites = {
     null: NullSrc,
@@ -982,6 +1083,10 @@ import QuestionmarkSrc from '../sprites/questionmark.webp'
 
 export const perkSprites = {
     NOTHING: QuestionmarkSrc,
+    MAIN_STAT_PERCENT: StrengthColorSrc,
+    MAIN_STAT_FLAT: StrengthColorSrc,
+    MAIN_ATTRIBUTE_PERCENT: StrengthColorSrc,
+    MAIN_ATTRIBUTE_FLAT: StrengthColorSrc,
     HEALTH_PERCENT: HealthColorSrc,
     ATTACK_PERCENT: StrengthColorSrc,
     DEFENCE_PERCENT: DefenseColorSrc,
@@ -1358,4 +1463,110 @@ export const statusSprites = {
     echo: Echo,
     hollowing: Hollowing,
     miasma: Miasma,
+}
+
+export const resourceSprites = {
+    null: NullSrc,
+    adventure_experience_scroll: AdventureExperienceScroll,
+    adventure_thirst: AdventureThirst,
+    arena_coin: ArenaCoin,
+    arena_ticket: ArenaTicket,
+    autumn_acorn: AutumnAcorn,
+    autumn_chestnut: AutumnChestnut,
+    autumn_leaf: AutumnLeaf,
+    birthday_baloon: BirthdayBaloon,
+    birthday_cake: BirthdayCake,
+    birthday_gift: BirthdayGift,
+    chaostower_coin: ChaostowerCoin,
+    chaostower_ticket: ChaostowerTicket,
+    cinder: Cinder,
+    common_equipment_dust: CommonEquipmentDust,
+    crimson_hourglass: CrimsonHourglass,
+    crystal: Crystal,
+    crystalized_soul: CrystalizedSoul,
+    diamond: Diamond,
+    dungeon_artifact: DungeonArtifact,
+    dungeon_artifact_ancient: DungeonArtifactAncient,
+    dungeon_key: DungeonKey,
+    emerald: Emerald,
+    epic_ascension_orb: EpicAscensionOrb,
+    epic_banner_booster: EpicBannerBooster,
+    epic_equipment_dust: EpicEquipmentDust,
+    epic_skill_tome: EpicSkillTome,
+    epic_wildcard: EpicWildcard,
+    essence: Essence,
+    fire_shard_tier1: FireShardTier1,
+    fire_shard_tier2: FireShardTier2,
+    fire_shard_tier3: FireShardTier3,
+    fire_shard_tier4: FireShardTier4,
+    fire_shard_tier5: FireShardTier5,
+    fire_shard_tier6: FireShardTier6,
+    fire_shard_tier7: FireShardTier7,
+    fire_shard_tier8: FireShardTier8,
+    gold: Gold,
+    golden_hourglass: GoldenHourglass,
+    golden_key: GoldenKey,
+    guildhunt_coin: GuildhuntCoin,
+    guildhunt_coin_dark: GuildhuntCoinDark,
+    guildhunt_medal: GuildhuntMedal,
+    guildhunt_ticket: GuildhuntTicket,
+    hero_experience_scroll: HeroExperienceScroll,
+    legendary_ascension_orb: LegendaryAscensionOrb,
+    legendary_banner_booster: LegendaryBannerBooster,
+    legendary_equipment_dust: LegendaryEquipmentDust,
+    legendary_skill_tome: LegendarySkillTome,
+    legendary_wildcard: LegendaryWildcard,
+    light_shard_tier1: LightShardTier1,
+    light_shard_tier2: LightShardTier2,
+    light_shard_tier3: LightShardTier3,
+    light_shard_tier4: LightShardTier4,
+    light_shard_tier5: LightShardTier5,
+    light_shard_tier6: LightShardTier6,
+    light_shard_tier7: LightShardTier7,
+    light_shard_tier8: LightShardTier8,
+    monster_musk: MonsterMusk,
+    nature_shard_tier1: NatureShardTier1,
+    nature_shard_tier2: NatureShardTier2,
+    nature_shard_tier3: NatureShardTier3,
+    nature_shard_tier4: NatureShardTier4,
+    nature_shard_tier5: NatureShardTier5,
+    nature_shard_tier6: NatureShardTier6,
+    nature_shard_tier7: NatureShardTier7,
+    nature_shard_tier8: NatureShardTier8,
+    protection_scroll: ProtectionScroll,
+    rare_ascension_orb: RareAscensionOrb,
+    rare_banner_booster: RareBannerBooster,
+    rare_crystalized_soul: RareCrystalizedSoul,
+    rare_equipment_dust: RareEquipmentDust,
+    rare_skill_tome: RareSkillTome,
+    rare_wildcard: RareWildcard,
+    red_key: RedKey,
+    reincarnation_stone: ReincarnationStone,
+    root_beer: RootBeer,
+    ruby: Ruby,
+    sapphire: Sapphire,
+    shadow_shard_tier1: ShadowShardTier1,
+    shadow_shard_tier2: ShadowShardTier2,
+    shadow_shard_tier3: ShadowShardTier3,
+    shadow_shard_tier4: ShadowShardTier4,
+    shadow_shard_tier5: ShadowShardTier5,
+    shadow_shard_tier6: ShadowShardTier6,
+    shadow_shard_tier7: ShadowShardTier7,
+    shadow_shard_tier8: ShadowShardTier8,
+    shimmering_soul: ShimmeringSoul,
+    soul: Soul,
+    uncommon_ascension_orb: UncommonAscensionOrb,
+    uncommon_banner_booster: UncommonBannerBooster,
+    uncommon_equipment_dust: UncommonEquipmentDust,
+    uncommon_skill_tome: UncommonSkillTome,
+    uncommon_wildcard: UncommonWildcard,
+    water_shard_tier1: WaterShardTier1,
+    water_shard_tier2: WaterShardTier2,
+    water_shard_tier3: WaterShardTier3,
+    water_shard_tier4: WaterShardTier4,
+    water_shard_tier5: WaterShardTier5,
+    water_shard_tier6: WaterShardTier6,
+    water_shard_tier7: WaterShardTier7,
+    water_shard_tier8: WaterShardTier8,
+
 }
