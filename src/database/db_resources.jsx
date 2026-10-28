@@ -1,8 +1,6 @@
 import { resourceSprites } from "./db_sprites.jsx"
 import { RESOURCE_LOCATIONS, RARITY_DEFINITIONS } from "./enums"
 
-export { RESOURCE_LOCATIONS }
-
 let BASE_RESOURCES = []
 
 function add_resource(name, description, rarity = null) {

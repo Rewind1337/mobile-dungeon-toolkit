@@ -46,7 +46,7 @@ export function init_banner_db() {
 
     add_banner("Midgard's Might", null, [
         "heimdall", "loki", "odin", "valkyre", "thor", "sleipnir", "goblin_shredder",
-        "yotunn", "war_bard", "sylvanna", "neanderthal", "candy_elemental", "black_skull_mage", "black_skull_warrior"
+        "jotunn", "war_bard", "sylvanna", "neanderthal", "candy_elemental", "black_skull_mage", "black_skull_warrior"
     ])
 
     add_banner("Monsters & Machines", null, [
@@ -76,7 +76,7 @@ export function init_banner_db() {
 
     add_banner("From the Shadows", null, [
         "rat_king", "high_priest_aureus", "odin", "heimdall", "sleipnir", "loki", "goblin_shredder",
-        "wine_slime", "rapunzel", "yotunn", "war_bard", "candy_elemental", "black_skull_mage", "black_skull_warrior"
+        "wine_slime", "rapunzel", "jotunn", "war_bard", "candy_elemental", "black_skull_mage", "black_skull_warrior"
     ])
 
     add_banner("Deadly Symbiosis", null, [
@@ -96,7 +96,7 @@ export function init_banner_db() {
 
     add_banner("Manipulative Mindbreakers", null, [
         "countess_mortana", "vyper", "void_assassin", "drillbert", "beholder", "armadrax", "isolde",
-        "cyntrix", "cheery", "hector", "atomic_seagull", "woolinator", "ramgor", "candy_elemental"
+        "cyntrix", "cheery", "hektor", "atomic_seagull", "woolinator", "ramgor", "candy_elemental"
     ])
 
     add_banner("Ruthless Hunters", null, [
@@ -106,7 +106,7 @@ export function init_banner_db() {
 
     add_banner("Cleansing Absolution", null, [
         "oozkar", "cruelty", "high_priest_aureus", "odin", "rat_king", "heimdall", "sleipnir",
-        "snatchkin", "van_helsing", "rapunzel", "wine_slime", "yotunn", "war_bard", "black_skull_warrior"
+        "snatchkin", "van_helsing", "rapunzel", "wine_slime", "jotunn", "war_bard", "black_skull_warrior"
     ])
 
     add_banner("Servants of Chaos", null, [
@@ -126,7 +126,7 @@ export function init_banner_db() {
 
     add_banner("Weight of the Deep", null, [
         "nautor", "rodent_rangers", "vyper", "void_assassin", "countess_mortana", "beholder", "isolde",
-        "cyntrix", "mariana", "bobbybot", "cheery", "hector", "atomic_seagull", "candy_elemental"
+        "cyntrix", "mariana", "bobbybot", "cheery", "hektor", "atomic_seagull", "candy_elemental"
     ])
 
     return BASE_BANNERS
