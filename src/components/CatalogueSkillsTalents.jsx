@@ -67,7 +67,6 @@ function CatalogueSkillsTalents({ heroes = [], initialView = "skills", onViewCha
     const changeView = nextView => {
         setView(nextView)
         onViewChange?.(nextView)
-        commitSearch(search)
     }
     const entries = useMemo(() => {
         if (view === "skills") {
