@@ -2,14 +2,45 @@ import { useCallback, useEffect, useState } from "react"
 
 const SEARCH_PARAM = "search"
 
+/**
+ * Read the raw query value so a literal "+" can act as the AND separator.
+ * Spaces in our URLs are encoded as "%20", so they remain distinct from "+".
+ */
+function getSearchFromLocation() {
+    if (typeof window === "undefined") return ""
+
+    const rawParams = window.location.search.replace(/^\\?/, "").split(/[+&]/)
+    for (const param of rawParams) {
+        const separatorIndex = param.indexOf("=")
+        const rawKey = separatorIndex === -1 ? param : param.slice(0, separatorIndex)
+        let key
+        try {
+            key = decodeURIComponent(rawKey.replace(/\\+/g, " "))
+        } catch {
+            continue
+        }
+        if (key !== SEARCH_PARAM) continue
+
+        const rawValue = separatorIndex === -1 ? "" : param.slice(separatorIndex + 1)
+        try {
+            return decodeURIComponent(rawValue)
+        } catch {
+            return rawValue
+        }
+    }
+
+    return ""
+}
+
 /** Return true for object fields that store asset locations rather than searchable content. */
 export function isSearchAssetField(key) {
     return /(?:src|sprites?|icons?|images?|urls?|paths?)$/i.test(String(key ?? ""))
 }
 
 /**
- * Match all ampersand-separated search terms against one searchable text corpus.
- * A leading "!" negates that term. Matching is case-insensitive substring matching.
+ * Match all plus-separated search terms against one searchable text corpus.
+ * "&" remains accepted as a separator for older search URLs. A leading "!"
+ * negates that term. Matching is case-insensitive substring matching.
  */
 export function matchesSearchQuery(searchableValues, rawQuery, matchSpecialTerm) {
     const queryTerms = String(rawQuery ?? "")
@@ -66,14 +97,14 @@ export function clearSearchFromUrl() {
 export function useUrlSearch() {
     const [search, setSearch] = useState(() => {
         if (typeof window === "undefined") return ""
-        return new URLSearchParams(window.location.search).get(SEARCH_PARAM) ?? ""
+        return getSearchFromLocation()
     })
 
     useEffect(() => {
         if (typeof window === "undefined") return undefined
 
         const syncSearchFromUrl = () => {
-            setSearch(new URLSearchParams(window.location.search).get(SEARCH_PARAM) ?? "")
+            setSearch(getSearchFromLocation())
         }
         window.addEventListener("popstate", syncSearchFromUrl)
         window.addEventListener("search-reset", syncSearchFromUrl)
@@ -88,13 +119,17 @@ export function useUrlSearch() {
 
         const query = String(value ?? "")
         const url = new URL(window.location.href)
+        url.searchParams.delete(SEARCH_PARAM)
+
+        // Encode each term independently and join with a literal "+" so the
+        // separator stays readable in the URL. Spaces inside terms become "%20".
+        let nextSearch = url.search
         if (query.trim()) {
-            url.searchParams.set(SEARCH_PARAM, query)
-        } else {
-            url.searchParams.delete(SEARCH_PARAM)
+            const encodedQuery = query.split("+").map(term => encodeURIComponent(term)).join("+")
+            nextSearch += `${nextSearch ? "&" : "?"}${SEARCH_PARAM}=${encodedQuery}`
         }
 
-        const nextUrl = `${url.pathname}${url.search}${url.hash}`
+        const nextUrl = `${url.pathname}${nextSearch}${url.hash}`
         const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`
         if (nextUrl !== currentUrl) {
             window.history.replaceState(window.history.state, "", nextUrl)
