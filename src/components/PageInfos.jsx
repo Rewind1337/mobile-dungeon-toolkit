@@ -2,16 +2,17 @@ import { lazy, Suspense, useEffect, useMemo } from "react"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import Button from "./Button.jsx"
 
+import BackToTopButton from "./BackToTopButton.jsx"
+import "../css/other.scss"
+import "../css/hero.scss"
+import { ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS } from "../database/enums.jsx"
+
 const CatalogueItem = lazy(() => import("./CatalogueItem.jsx"))
 const CatalogueHero = lazy(() => import("./CatalogueHero.jsx"))
 const CatalogueResources = lazy(() => import("./CatalogueResources.jsx"))
 const CatalogueStatus = lazy(() => import("./CatalogueStatus.jsx"))
 const CatalogueSkillsTalents = lazy(() => import("./CatalogueSkillsTalents.jsx"))
 const CataloguePerk = lazy(() => import("./CataloguePerk.jsx"))
-import BackToTopButton from "./BackToTopButton.jsx"
-import "../css/other.scss"
-import "../css/hero.scss"
-import { ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS } from "../database/enums.jsx"
 
 const EMPTY_ITEM_DATA = {}
 const TABS = [
@@ -83,14 +84,14 @@ function PageInfos({ itemsRef, heroesRef, activeTab = "overview", onTabChange })
         <div id="page-info" className="page card w-100" ref={listRef} {...events} style={{ display:"flex", flexDirection:"column", alignItems:"stretch", flex:"1 1 0", minHeight:0, minWidth:0, overflowY:"auto", overflowX:"hidden", alignContent:"start" }}>
             {activeTab === "overview" && <InfoOverview items={items} sets={sets} heroes={heroes} />}
             <Suspense fallback={<div className="card">Loading catalogue...</div>}>
-            {activeTab === "item-catalogue" && <CatalogueItem itemsRef={itemData} setsRef={sets} onViewChange={view => setActiveTab(view === "sets" ? "set-catalogue" : "item-catalogue")} />}
-            {activeTab === "set-catalogue" && <CatalogueItem itemsRef={itemData} setsRef={sets} initialView="sets" onViewChange={view => setActiveTab(view === "sets" ? "set-catalogue" : "item-catalogue")} />}
-            {activeTab === "perk-catalogue" && <CataloguePerk items={items} sets={sets} />}
-            {(activeTab === "hero-catalogue" || activeTab === "hero-banners-catalogue") && <CatalogueHero heroesRef={heroes} initialView={activeTab === "hero-banners-catalogue" ? "banners" : "heroes"} onViewChange={view => setActiveTab(view === "banners" ? "hero-banners-catalogue" : "hero-catalogue")} />}
-            {(activeTab === "resources-catalogue" || activeTab === "gems-catalogue") && <CatalogueResources initialView={activeTab === "gems-catalogue" ? "gems" : "resources"} onViewChange={view => setActiveTab(view === "gems" ? "gems-catalogue" : "resources-catalogue")} />}
-            {(activeTab === "skills-catalogue" || activeTab === "talents-catalogue") && <CatalogueSkillsTalents heroes={heroes} initialView={activeTab === "talents-catalogue" ? "talents" : "skills"} onViewChange={view => setActiveTab(view === "talents" ? "talents-catalogue" : "skills-catalogue")} />}
-            {activeTab === "skills-talents-catalogue" && <CatalogueSkillsTalents heroes={heroes} initialView="skills" onViewChange={view => setActiveTab(view === "talents" ? "talents-catalogue" : "skills-catalogue")} />}
-            {activeTab === "status-catalogue" && <CatalogueStatus />}
+                {activeTab === "item-catalogue" && <CatalogueItem itemsRef={itemData} setsRef={sets} onViewChange={view => setActiveTab(view === "sets" ? "set-catalogue" : "item-catalogue")} />}
+                {activeTab === "set-catalogue" && <CatalogueItem itemsRef={itemData} setsRef={sets} initialView="sets" onViewChange={view => setActiveTab(view === "sets" ? "set-catalogue" : "item-catalogue")} />}
+                {activeTab === "perk-catalogue" && <CataloguePerk items={items} sets={sets} />}
+                {(activeTab === "hero-catalogue" || activeTab === "hero-banners-catalogue") && <CatalogueHero heroesRef={heroes} initialView={activeTab === "hero-banners-catalogue" ? "banners" : "heroes"} onViewChange={view => setActiveTab(view === "banners" ? "hero-banners-catalogue" : "hero-catalogue")} />}
+                {(activeTab === "resources-catalogue" || activeTab === "gems-catalogue") && <CatalogueResources initialView={activeTab === "gems-catalogue" ? "gems" : "resources"} onViewChange={view => setActiveTab(view === "gems" ? "gems-catalogue" : "resources-catalogue")} />}
+                {(activeTab === "skills-catalogue" || activeTab === "talents-catalogue") && <CatalogueSkillsTalents heroes={heroes} initialView={activeTab === "talents-catalogue" ? "talents" : "skills"} onViewChange={view => setActiveTab(view === "talents" ? "talents-catalogue" : "skills-catalogue")} />}
+                {activeTab === "skills-talents-catalogue" && <CatalogueSkillsTalents heroes={heroes} initialView="skills" onViewChange={view => setActiveTab(view === "talents" ? "talents-catalogue" : "skills-catalogue")} />}
+                {activeTab === "status-catalogue" && <CatalogueStatus />}
             </Suspense>
         </div>
         <BackToTopButton scrollRef={listRef} />
