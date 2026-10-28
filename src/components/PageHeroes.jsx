@@ -6,9 +6,14 @@ import HeroPreview from "./HeroPreview.jsx"
 import Button from "./Button.jsx"
 import Modal from "./Modal.jsx"
 import { decodeHeroShareInput, restoreSharedHero } from "../utils/heroShare.js"
+import { clearSearchFromUrl } from "../js/search.jsx"
 
 function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
     const [pageContent, setPageContent] = useState(0)
+    const switchListPage = nextPage => {
+        if (pageContent !== nextPage) clearSearchFromUrl()
+        setPageContent(nextPage)
+    }
     useEffect(() => { setPreviewFullWidth(false) }, [pageContent])
     const [previewFullWidth, setPreviewFullWidth] = useState(false)
     const [importModalVisible, setImportModalVisible] = useState(false)
@@ -46,7 +51,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
 
         savedHeroesRef.current = [...savedHeroesRef.current, savedHero]
         setSavedHeroesRevision(revision => revision + 1)
-        setPageContent(1)
+        switchListPage(1)
         setSelectedHeroId(null)
         setSelectedSavedHeroId(nextSaveId)
         setEquippedItems([...savedHero.items])
@@ -119,7 +124,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
             ))
             setSavedHeroesRevision(revision => revision + 1)
             setSelectedSavedHeroId(existingSaveId)
-            setPageContent(1)
+            switchListPage(1)
             if (manualSaveFunction) manualSaveFunction()
             return
         }
@@ -237,8 +242,8 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
 
             <div className="sub-nav-bar flex-row">
                 <div className="pagination flex-row card w-100">
-                    <Button text={"All Heroes"} color={0} onClick={() => { setPageContent(0) }} />
-                    <Button text={"Saved Heroes"} color={0} onClick={() => { setPageContent(1) }} />
+                    <Button text={"All Heroes"} color={0} onClick={() => { switchListPage(0) }} />
+                    <Button text={"Saved Heroes"} color={0} onClick={() => { switchListPage(1) }} />
                     <Button text={"Import Hero"} color={0} onClick={() => setImportModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">
