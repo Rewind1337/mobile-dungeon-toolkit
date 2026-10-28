@@ -903,7 +903,8 @@
 
 .banner-catalogue-hero-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  // Hero sprites are 96px wide on desktop; include the Hero card's 10px horizontal padding.
+  grid-template-columns: repeat(auto-fill, minmax(106px, 1fr));
   align-items: start;
   justify-items: center;
   gap: V.$gap-small;
@@ -918,7 +919,35 @@
 }
 
 .banner-catalogue-hero .hero {
+  flex: 0 0 auto;
+  width: max-content;
+  max-width: 100%;
   cursor: default;
+}
+
+.banner-catalogue-card--everyday {
+  grid-column: 1 / -1;
+  border: 1px solid rgba(244, 195, 92, 0.75);
+  background: linear-gradient(125deg, rgba(99, 66, 16, 0.44), rgba(20, 57, 54, 0.52) 52%, rgba(7, 15, 25, 0.86));
+  box-shadow: inset 0 0 0 1px rgba(255, 225, 160, 0.12), 0 0 16px rgba(231, 175, 65, 0.08);
+}
+
+.banner-catalogue-card--everyday .banner-catalogue-name {
+  color: #ffe1a0;
+  text-shadow: 0 0 12px rgba(244, 195, 92, 0.2);
+}
+
+.banner-catalogue-chip-permanent {
+  color: #ffe1a0;
+  border-color: rgba(244, 195, 92, 0.78);
+  background: rgba(99, 66, 16, 0.48);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.banner-catalogue-live-date {
+  white-space: nowrap;
 }
 
 .banner-catalogue-missing {
@@ -1207,6 +1236,8 @@
   .catalogue-overview-links,
   .info-overview-breakdown,
   .gem-catalogue-grid { grid-template-columns: minmax(0, 1fr); }
-  .banner-catalogue-hero-grid { grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)); }
+  // The shared Hero component uses a 60px sprite plus 10px of card padding on mobile.
+  .banner-catalogue-hero-grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); }
+  .banner-catalogue-card--everyday { grid-column: 1 / -1; }
   .resource-catalogue-filters { align-items: stretch; flex-direction: column; }
 }
