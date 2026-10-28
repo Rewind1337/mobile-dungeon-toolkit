@@ -680,8 +680,8 @@
 .perk-catalogue { display:flex; flex-direction:column; gap:V.$gap; width:100%; min-width:0; padding:V.$padding-card; }
 .perk-catalogue-list { display:grid; grid-template-columns:minmax(0,1fr); align-items:stretch; gap:V.$gap-small; min-width:0; }
 .perk-catalogue-row { display:flex; flex-direction:row; align-items:stretch; gap:V.$gap; padding:V.$padding-card; min-width:0; }
-.perk-catalogue-icon-wrap { display:flex; flex:0 0 68px; align-self:stretch; align-items:center; justify-content:center; min-width:0; min-height:64px; padding-right:V.$gap; border-right:1px solid rgba(255,255,255,.12); }
-.perk-catalogue-icon { display:block; flex:0 0 auto; width:100%; max-width:68px; height:100%; min-height:56px; object-fit:contain; }
+.perk-catalogue-icon-wrap { display:flex; flex:0 0 68px; align-self:stretch; align-items:center; justify-content:center; min-width:0; min-height:64px;}
+.perk-catalogue-icon { display:block; flex:0 0 auto; aspect-ratio: 1; height: 60px; object-fit:contain; }
 .perk-catalogue-content { display:flex; flex:1 1 auto; flex-direction:column; justify-content:center; gap:V.$gap-small; min-width:0; }
 .perk-catalogue-heading { display:flex; align-items:center; gap:V.$gap-small; min-width:0; }
 .perk-catalogue-name { min-width:0; overflow-wrap:anywhere; }
