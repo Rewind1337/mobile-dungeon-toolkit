@@ -271,6 +271,13 @@ function SetCatalogueCard({ set, pieces }) {
         <article className="catalogue-set-card card">
             <header className="catalogue-set-header">
                 <div className="catalogue-set-name catalogue-chip catalogue-chip-name header text">{set.name}</div>
+                <p className={`catalogue-set-requirement catalogue-chip text catalogue-chip-attribute ${attributeClass}`}>
+                    {attributeSprites[attributeKey] && <img className="catalogue-chip-icon" src={attributeSprites[attributeKey]} alt="" />}
+                    Attribute: {attributeLabel}
+                </p>
+                <div className="catalogue-set-meta flex-row justify-center text">
+                    <span className="catalogue-chip text">{getDropSourceLabel(set.dropSource, locations)}</span>
+                </div>
                 <section className="catalogue-set-pieces">
                     <div className="catalogue-section-label text">Pieces ({pieces.length})</div>
                     {pieces.length > 0
@@ -285,13 +292,6 @@ function SetCatalogueCard({ set, pieces }) {
                         : <p className="catalogue-muted">No item pieces are currently linked to this set in the item database.</p>
                     }
                 </section>
-                <p className={`catalogue-set-requirement catalogue-chip text catalogue-chip-attribute ${attributeClass}`}>
-                    {attributeSprites[attributeKey] && <img className="catalogue-chip-icon" src={attributeSprites[attributeKey]} alt="" />}
-                    Attribute: {attributeLabel}
-                </p>
-                <div className="catalogue-set-meta flex-row justify-center text">
-                    <span className="catalogue-chip text">{getDropSourceLabel(set.dropSource, locations)}</span>
-                </div>
             </header>
             <PerkList perks={set.setBonus} label="Set bonuses" />
         </article>

@@ -258,7 +258,7 @@ function StatusCard({ status }) {
                     : <span className="status-catalogue-icon-fallback" aria-hidden="true">◆</span>
                 }
                 <div className="status-catalogue-heading">
-                    <div className="status-catalogue-name header">{humanize(status.name)}</div>
+                    <div className="status-catalogue-name text-big">{humanize(status.name)}</div>
                     <span className={`catalogue-chip text status-catalogue-category status-category-${category.toLowerCase().replaceAll(" ", "-")}`}>{category}</span>
                 </div>
             </div>
