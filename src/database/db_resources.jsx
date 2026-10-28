@@ -1,4 +1,3 @@
-import { RARITY_DEFINITIONS } from "./enums.jsx"
 import { resourceSprites } from "./db_sprites.jsx"
 
 let BASE_RESOURCES = []
@@ -21,8 +20,7 @@ function add_resource(name, description, rarity = null) {
 
 export function init_resource_db() {
     // Add manually verified resources here. IDs are generated from each name.
-    // Use RARITY_DEFINITIONS.<RARITY>.id when the resource has a rarity.
-    add_resource("Premium Currency", "Used to purchase premium items.", RARITY_DEFINITIONS.RARE.id)
+    // Add manually verified resource entries here.
 
     return BASE_RESOURCES
 }
