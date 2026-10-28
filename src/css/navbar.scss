@@ -54,6 +54,24 @@
   justify-content: center;
 }
 
+.nav-home {
+  flex: 0 0 auto;
+}
+
+.nav-home .nav-home-button {
+  flex: 0 0 58px;
+  width: 58px;
+  min-width: 58px;
+  padding: 4px;
+  justify-content: center;
+
+  img {
+    max-width: 100%;
+    max-height: 48px;
+    object-fit: contain;
+  }
+}
+
 .nav-right {
   justify-content: center;
 }
