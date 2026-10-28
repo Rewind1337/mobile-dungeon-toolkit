@@ -32,7 +32,7 @@ function getSearchableValues(value, seen = new Set()) {
     if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return [String(value)]
     if (typeof value !== "object" || seen.has(value)) return []
     seen.add(value)
-    return Object.entries(value).flatMap(([key, child]) => [key, ...getSearchableValues(child, seen)])
+    return Object.values(value).flatMap(child => getSearchableValues(child, seen))
 }
 
 function formatEffect(effect) {
@@ -244,7 +244,6 @@ function BannerCatalogueList({ heroesRef }) {
         const primaryRaw = resolveList(banner.heroIds)
         const conditionalRaw = resolveList(banner.conditionalHeroIDs)
         const missingHeroCount = primaryRaw.filter(hero => !hero).length + conditionalRaw.filter(hero => !hero).length
-        const allHeroes = [...primaryRaw, ...conditionalRaw].filter(Boolean)
         const bannerMetadata = {
             ...banner,
             heroIds: [],
