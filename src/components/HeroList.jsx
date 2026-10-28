@@ -8,14 +8,14 @@ import { filterSprites } from '../database/db_sprites.jsx'
 import HeroFilters from './HeroFilters.jsx';
 import BackToTopButton from './BackToTopButton.jsx';
 import { ATTRIBUTE_DEFINITIONS, ELEMENT_DEFINITIONS, RARITY_DEFINITIONS, ROLE_DEFINITIONS, getEnumNameById } from '../database/enums.jsx';
-import { matchesSearchQuery, useUrlSearch } from '../js/search.jsx';
+import { isSearchAssetField, matchesSearchQuery, useUrlSearch } from '../js/search.jsx';
 
 function getSearchableValues(value, seen = new Set()) {
     if (value === null || value === undefined) return []
     if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return [String(value)]
     if (typeof value !== 'object' || seen.has(value)) return []
     seen.add(value)
-    return Object.entries(value).flatMap(([key, child]) => [key, ...getSearchableValues(child, seen)])
+    return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : [key, ...getSearchableValues(child, seen)])
 }
 function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId }) {
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
