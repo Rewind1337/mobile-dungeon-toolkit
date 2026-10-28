@@ -8,6 +8,7 @@ import "../css/hero.scss"
 import { ATTRIBUTE_DEFINITIONS, ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS, PERK_DEFINITIONS, STATUS_EFFECT_DEFINITIONS } from "../database/enums.jsx"
 import { init_banner_db } from "../database/db_banners.jsx"
 import { init_resource_db } from "../database/db_resources.jsx"
+import { attributeSprites, elementSprites, roleSprites } from "../database/db_sprites.jsx"
 
 const CatalogueItem = lazy(() => import("./CatalogueItem.jsx"))
 const CatalogueHero = lazy(() => import("./CatalogueHero.jsx"))
@@ -56,26 +57,48 @@ function OverviewLink({ title, description, buttonText, onClick }) {
 
 function InfoOverview({ items, sets, heroes, onNavigate }) {
     const itemCount = Array.isArray(items) ? items.length : Object.values(items).reduce((total, list) => total + (Array.isArray(list) ? list.length : 0), 0)
-    const heroCountBy = (key, definitions) => heroes.reduce((counts, hero) => {
-        const value = Object.values(definitions).find(entry => entry.id === Number(hero[key]))
-        const label = humanize(value?.name ?? "unknown")
-        counts[label] = (counts[label] ?? 0) + 1
-        return counts
-    }, {})
+    const heroCountBy = (key, definitions) => {
+        const counts = new Map()
+        for (const hero of heroes) {
+            const id = Number(hero[key])
+            const definition = Object.values(definitions).find(entry => entry.id === id)
+            const label = humanize(definition?.name ?? "unknown")
+            const count = counts.get(label) ?? { label, id, count: 0 }
+            count.count += 1
+            counts.set(label, count)
+        }
+        return [...counts.values()].sort((a, b) => a.label.localeCompare(b.label))
+    }
     const skillCount = heroes.reduce((total, hero) => total + (Array.isArray(hero.skills) ? hero.skills.length : 0), 0)
     const talentCount = heroes.reduce((total, hero) => total + (hero.talents && typeof hero.talents === "object" ? Object.keys(hero.talents).length : 0), 0)
-    const rows = values => Object.entries(values).sort((a, b) => a[0].localeCompare(b[0])).map(([name, count]) => (
-        <div className="catalogue-overview-slot card" key={name}>
-            <span className="text">{name}</span>
-            <span className="header">{count}</span>
-        </div>
-    ))
+    const rows = (values, iconType) => values.map(({ label, count, id }) => {
+        const iconSrc = iconType === "element"
+            ? elementSprites[id]
+            : iconType === "role"
+                ? roleSprites[id]
+                : iconType === "attribute"
+                    ? attributeSprites[id]
+                    : null
+
+        return (
+            <div className="catalogue-overview-slot card" key={label}>
+                {iconType === "rarity" ? (
+                    <span className="catalogue-overview-slot-icon catalogue-overview-rarity-icon" data-rarity={id} aria-hidden="true" />
+                ) : typeof iconSrc === "string" ? (
+                    <img className="catalogue-overview-slot-icon" src={iconSrc} alt="" loading="lazy" decoding="async" draggable={false} />
+                ) : (
+                    <span className="catalogue-overview-slot-icon catalogue-overview-slot-icon-fallback" aria-hidden="true">◆</span>
+                )}
+                <span className="text">{label}</span>
+                <span className="header">{count}</span>
+            </div>
+        )
+    })
 
     return (
         <section className="info-overview">
             <header className="info-overview-hero card">
-                <div className="info-overview-eyebrow text">Mobile Dungeon Toolkit</div>
-                <h1 className="catalogue-title header-big">Your data hub</h1>
+                <h1 className="catalogue-title header-big">Information Hub</h1>
                 <p className="catalogue-description text">
                     Explore the heroes, banners, equipment, gems, resources, perks, skills, talents, and status effects tracked by the toolkit.
                     Choose a collection below to jump straight into its catalogue.
@@ -97,6 +120,33 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
 
             <section className="info-overview-section">
                 <div className="info-overview-section-heading">
+                    <h2 className="header">Hero Overview</h2>
+                    <p className="text">Distribution of the currently loaded hero data.</p>
+                </div>
+                <div className="info-overview-breakdown">
+                    <section className="info-overview-breakdown-card card">
+                        <h3 className="header">By element</h3>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("element", ELEMENT_DEFINITIONS), "element")}</div>
+                    </section>
+                    <section className="info-overview-breakdown-card card">
+                        <h3 className="header">By role</h3>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("role", ROLE_DEFINITIONS), "role")}</div>
+                    </section>
+                    <section className="info-overview-breakdown-card card">
+                        <h3 className="header">By rarity</h3>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("rarity", RARITY_DEFINITIONS), "rarity")}</div>
+                    </section>
+                    <section className="info-overview-breakdown-card card">
+                        <h3 className="header">By main attribute</h3>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("mainAttribute", ATTRIBUTE_DEFINITIONS), "attribute")}</div>
+                    </section>
+                </div>
+            </section>
+
+            <p className="catalogue-muted text">Counts reflect the data currently loaded in the project. Skills and talent entries are counted per hero, so repeated names are included.</p>
+
+            <section className="info-overview-section">
+                <div className="info-overview-section-heading">
                     <h2 className="header">Browse catalogues</h2>
                     <p className="text">Each section has its own search and browsing tools.</p>
                 </div>
@@ -112,32 +162,6 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
                     <OverviewLink title="Gems" description="Browse every defined rarity of ruby, sapphire, emerald, and diamond, grouped by gem type." buttonText="Browse gems" onClick={() => onNavigate("gems-catalogue")} />
                 </div>
             </section>
-
-            <section className="info-overview-section">
-                <div className="info-overview-section-heading">
-                    <h2 className="header">Hero roster at a glance</h2>
-                    <p className="text">Distribution of the currently loaded hero data.</p>
-                </div>
-                <div className="info-overview-breakdown">
-                    <section className="info-overview-breakdown-card card">
-                        <h3 className="header">By element</h3>
-                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("element", ELEMENT_DEFINITIONS))}</div>
-                    </section>
-                    <section className="info-overview-breakdown-card card">
-                        <h3 className="header">By role</h3>
-                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("role", ROLE_DEFINITIONS))}</div>
-                    </section>
-                    <section className="info-overview-breakdown-card card">
-                        <h3 className="header">By rarity</h3>
-                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("rarity", RARITY_DEFINITIONS))}</div>
-                    </section>
-                    <section className="info-overview-breakdown-card card">
-                        <h3 className="header">By main attribute</h3>
-                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("mainAttribute", ATTRIBUTE_DEFINITIONS))}</div>
-                    </section>
-                </div>
-            </section>
-            <p className="catalogue-muted text">Counts reflect the data currently loaded in the project. Skills and talent entries are counted per hero, so repeated names are included.</p>
         </section>
     )
 }
