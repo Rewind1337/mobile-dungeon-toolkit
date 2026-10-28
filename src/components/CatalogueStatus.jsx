@@ -270,7 +270,9 @@ function matchesStatusSearch(status, rawQuery) {
     if (!remainingQuery) return true
 
     // Don't index these property names as plain text: they are handled as real filters above.
-    const { mitigatable, removable, ...searchableStatus } = status
+    const searchableStatus = { ...status }
+    delete searchableStatus.mitigatable
+    delete searchableStatus.removable
     const category = getCategory(status)
     const description = STATUS_DESCRIPTIONS[status.name] ?? humanize(status.effectType ?? "effect")
     const searchable = `${status.name} ${humanize(status.name)} ${category} ${description} ${status.effectType ?? ""} ${JSON.stringify(searchableStatus)}`.toLowerCase()
