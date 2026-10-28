@@ -1,4 +1,3 @@
-export { RARITY_DEFINITIONS } from "./enums.jsx"
 import { RARITY_DEFINITIONS } from "./enums.jsx"
 import { resourceSprites } from "./db_sprites.jsx"
 
@@ -21,13 +20,10 @@ function add_resource(name, description, spriteKey, rarity = null) {
 }
 
 export function init_resource_db() {
-    BASE_RESOURCES = []
-
     // Add manually verified resources here. IDs are generated from each name.
     // Add the matching sprite import/key to resourceSprites in db_sprites.jsx.
     // Use RARITY_DEFINITIONS.<RARITY>.id when the resource has a rarity.
-    // Example:
-    // add_resource("Premium Currency", "Used to purchase premium items.", "premium_currency", RARITY_DEFINITIONS.RARE.id)
+    add_resource("Premium Currency", "Used to purchase premium items.", "premium_currency", RARITY_DEFINITIONS.RARE.id)
 
     return BASE_RESOURCES
 }
