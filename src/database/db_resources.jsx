@@ -1,4 +1,4 @@
-import { RARITY_DEFINITIONS } from "./enums.jsx"
+export { RARITY_DEFINITIONS } from "./enums.jsx"
 import { resourceSprites } from "./db_sprites.jsx"
 
 // Add manually verified resources here. IDs are stable keys and do not need to
