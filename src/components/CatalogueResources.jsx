@@ -70,7 +70,6 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                     active={!isGemsView}
                     onClick={() => {
                         onViewChange?.("resources")
-                        commitSearch(search)
                     }}
                 />
                 <Button
@@ -79,7 +78,6 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                     active={isGemsView}
                     onClick={() => {
                         onViewChange?.("gems")
-                        commitSearch(search)
                     }}
                 />
             </div>
