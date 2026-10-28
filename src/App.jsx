@@ -236,7 +236,6 @@ function App() {
   return (
     <>
       {pageContent !== 'notFound' && <NavBar switchTabTo={switchTabTo} />}
-      {pageContent === 'splash' && <ResetTimers />}
 
       {importStatus && <div className="text" role="status" aria-live="polite" style={{ padding: "4px 10px" }}>{importStatus}</div>}
 
@@ -266,6 +265,13 @@ function App() {
 
         {pageContent === 'splash' &&
           <div id='page-splash' className='page flex-col w-100'>
+            <section className="under-construction-row card" style={{height: "50px"}} aria-label="Under construction">
+                <div className="under-construction-sign">
+                    <span className="under-construction-label">UNDER CONSTRUCTION</span>
+                    <span className="under-construction-caption">More features are on the way</span>
+                </div>
+            </section>
+            <ResetTimers />
             <div className='flex-row top'>
               <div className='card management flex-col'>
                 <div className='header-big'>Management</div>

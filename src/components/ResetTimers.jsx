@@ -37,21 +37,15 @@ function ResetTimers() {
     weeklyReset.setDate(weeklyReset.getDate() + 5)
 
     return (
-        <div className="splash-status-panel">
+        <div className="splash-status-panel" style={{height: "50px"}}>
             <section className="reset-timers-row" aria-label="Reset timers">
-                <div className="reset-timer card">
+                <div className="reset-timer card" style={{height: "50px"}}>
                     <span className="reset-timer-label header">Daily Reset</span>
                     <span className="reset-timer-countdown text-big">{formatRemaining(dailyReset.getTime() - now)}</span>
                 </div>
-                <div className="reset-timer card">
+                <div className="reset-timer card" style={{height: "50px"}}>
                     <span className="reset-timer-label header">Weekly Reset</span>
                     <span className="reset-timer-countdown text-big">{formatRemaining(weeklyReset.getTime() - now)}</span>
-                </div>
-            </section>
-            <section className="under-construction-row" aria-label="Under construction">
-                <div className="under-construction-sign">
-                    <span className="under-construction-label">UNDER CONSTRUCTION</span>
-                    <span className="under-construction-caption">More features are on the way</span>
                 </div>
             </section>
         </div>
