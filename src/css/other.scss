@@ -410,8 +410,8 @@
 
 .catalogue-overview-stats {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: V.$gap;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: V.$gap-small;
 }
 
 .catalogue-overview-stat {
@@ -437,11 +437,58 @@
 .catalogue-overview-slot {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-start;
   gap: V.$gap-small;
   min-width: 0;
   padding: V.$padding-card;
 }
+
+.catalogue-overview-slot > .text {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.catalogue-overview-slot > .header {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.catalogue-overview-slot-icon {
+  display: block;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.catalogue-overview-slot-icon-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+}
+
+.catalogue-overview-rarity-icon {
+  width: 15px;
+  height: 15px;
+  flex-basis: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.65);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+  background: #ddd0b2;
+}
+.catalogue-overview-rarity-icon[data-rarity="1"] { background: #9de260; }
+.catalogue-overview-rarity-icon[data-rarity="2"] { background: #0099ff; }
+.catalogue-overview-rarity-icon[data-rarity="3"] { background: #9f5fff; }
+.catalogue-overview-rarity-icon[data-rarity="4"] { background: #ffe900; }
+.catalogue-overview-rarity-icon[data-rarity="5"] { background: #ffa100; }
+.catalogue-overview-rarity-icon[data-rarity="6"] { background: #fd5d47; }
+.catalogue-overview-rarity-icon[data-rarity="7"] { background: #7efffe; }
+.catalogue-overview-rarity-icon[data-rarity="8"] { background: #d6e6ff; }
 
 /* Hero catalogue */
 
@@ -631,12 +678,14 @@
 }
 
 .perk-catalogue { display:flex; flex-direction:column; gap:V.$gap; width:100%; min-width:0; padding:V.$padding-card; }
-.perk-catalogue-list { display:grid; grid-template-columns:minmax(0,1fr); align-items:start; gap:V.$gap-small; min-width:0; }
-.perk-catalogue-row { display:flex; flex-direction:column; align-items:stretch; gap:V.$gap-small; padding:V.$padding-card; min-width:0; }
+.perk-catalogue-list { display:grid; grid-template-columns:minmax(0,1fr); align-items:stretch; gap:V.$gap-small; min-width:0; }
+.perk-catalogue-row { display:flex; flex-direction:row; align-items:stretch; gap:V.$gap; padding:V.$padding-card; min-width:0; }
+.perk-catalogue-icon-wrap { display:flex; flex:0 0 68px; align-self:stretch; align-items:center; justify-content:center; min-width:0; min-height:64px; padding-right:V.$gap; border-right:1px solid rgba(255,255,255,.12); }
+.perk-catalogue-icon { display:block; flex:0 0 auto; width:100%; max-width:68px; height:100%; min-height:56px; max-height:116px; object-fit:contain; }
+.perk-catalogue-content { display:flex; flex:1 1 auto; flex-direction:column; justify-content:center; gap:V.$gap-small; min-width:0; }
 .perk-catalogue-heading { display:flex; align-items:center; gap:V.$gap-small; min-width:0; }
-.perk-catalogue-icon { display:block; flex:0 0 24px; width:24px; height:24px; object-fit:contain; }
 .perk-catalogue-name { min-width:0; overflow-wrap:anywhere; }
-.perk-catalogue-slots { display:flex; flex-wrap:wrap; gap:V.$gap-small; min-width:0; overflow-wrap:anywhere; justify-content:center; }
+.perk-catalogue-slots { display:flex; flex-wrap:wrap; gap:V.$gap-small; min-width:0; overflow-wrap:anywhere; justify-content:flex-start; }
 
 /* Status effect catalogue */
 
@@ -1104,11 +1153,11 @@
 .info-overview-hero {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: V.$gap-small;
   min-width: 0;
   padding: clamp(16px, 3vw, 30px);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(0, 0, 0, 0.18));
+  text-align: center;
 }
 
 .info-overview-eyebrow {
@@ -1125,6 +1174,7 @@
 .info-overview-hero .catalogue-description {
   max-width: 850px;
   line-height: 1.5;
+  text-align: center;
 }
 
 .info-overview-section {
@@ -1154,7 +1204,7 @@
 
 .catalogue-overview-links {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: V.$gap;
   min-width: 0;
 }
@@ -1167,7 +1217,6 @@
   gap: V.$gap;
   min-width: 0;
   padding: V.$padding-card;
-  background: rgba(0, 0, 0, 0.12);
 }
 
 .catalogue-overview-link-copy {
@@ -1191,6 +1240,7 @@
 
 .catalogue-overview-link button {
   align-self: flex-start;
+  width: auto;
   max-width: 100%;
 }
 
@@ -1219,12 +1269,18 @@
 }
 
 @include M.media-query(V.$bp-wide) {
-  .catalogue-overview-links { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .gem-catalogue-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+@include M.media-query(V.$bp-ultra) {
+  .catalogue-overview-stats { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+  .catalogue-overview-links { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
 @include M.media-query-max(V.$bp-tablet) {
+  .catalogue-overview-stats { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
   .catalogue-overview-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .catalogue-overview-link { gap: V.$gap-small; }
   .info-overview-breakdown { grid-template-columns: minmax(0, 1fr); }
   .gem-catalogue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -1233,11 +1289,19 @@
   .info-overview,
   .banner-catalogue-list,
   .resource-catalogue { padding: 0; }
-  .catalogue-overview-links,
+  .catalogue-overview-stats { grid-template-columns: repeat(auto-fit, minmax(88px, 1fr)); }
+  .catalogue-overview-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .catalogue-overview-link { padding: V.$gap-small; }
   .info-overview-breakdown,
   .gem-catalogue-grid { grid-template-columns: minmax(0, 1fr); }
   // The shared Hero component uses a 60px sprite plus 10px of card padding on mobile.
   .banner-catalogue-hero-grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); }
   .banner-catalogue-card--everyday { grid-column: 1 / -1; }
   .resource-catalogue-filters { align-items: stretch; flex-direction: column; }
+}
+
+@include M.media-query-max(V.$bp-small) {
+  .catalogue-overview-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .catalogue-overview-links { grid-template-columns: minmax(0, 1fr); }
+  .catalogue-overview-link button { align-self: flex-start; }
 }
