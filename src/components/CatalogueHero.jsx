@@ -11,7 +11,7 @@ import Hero from "./Hero.jsx"
 import { init_banner_db } from "../database/db_banners.jsx"
 import { getBannerLastLiveLabel } from "../database/bannerUtils.jsx"
 import { attributeSprites, roleSprites } from "../database/db_sprites.jsx"
-import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
+import { isSearchAssetField, matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
     rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
@@ -71,7 +71,7 @@ function getSearchableValues(value, seen = new Set()) {
     if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return [String(value)]
     if (typeof value !== "object" || seen.has(value)) return []
     seen.add(value)
-    return Object.values(value).flatMap(child => getSearchableValues(child, seen))
+    return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : getSearchableValues(child, seen))
 }
 
 function formatEffect(effect) {
