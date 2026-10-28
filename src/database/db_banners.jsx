@@ -19,6 +19,10 @@ function add_banner(name, date, heroIDs, hasFeaturedHero = true, standardBanner 
 }
 
 export function init_banner_db() {
+    // This initializer is used by multiple catalogues; rebuild the list on every call.
+    // Otherwise each call appends another copy of every banner and trips the stable-ID guard.
+    BASE_BANNERS = []
+
     add_banner("Everyday Heroes", null, [
         "lilith", "thor", "murdering_mass", "undead_dragon", "prellbog", "jack_o_lantern", "valkyre",
         "siren", "monk", "pele", "medusa",
