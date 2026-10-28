@@ -6,6 +6,8 @@ import BackToTopButton from "./BackToTopButton.jsx"
 import "../css/other.scss"
 import "../css/hero.scss"
 import { ATTRIBUTE_DEFINITIONS, ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS, PERK_DEFINITIONS, STATUS_EFFECT_DEFINITIONS } from "../database/enums.jsx"
+import { init_banner_db } from "../database/db_banners.jsx"
+import { init_resource_db } from "../database/db_resources.jsx"
 
 const CatalogueItem = lazy(() => import("./CatalogueItem.jsx"))
 const CatalogueHero = lazy(() => import("./CatalogueHero.jsx"))
@@ -15,6 +17,11 @@ const CatalogueSkillsTalents = lazy(() => import("./CatalogueSkillsTalents.jsx")
 const CataloguePerk = lazy(() => import("./CataloguePerk.jsx"))
 
 const EMPTY_ITEM_DATA = {}
+const BANNER_DATA = init_banner_db()
+const RESOURCE_DATA = init_resource_db()
+const GEM_RESOURCE_IDS = new Set(["ruby", "sapphire", "emerald", "diamond"])
+const RESOURCE_COUNT = RESOURCE_DATA.filter(resource => !GEM_RESOURCE_IDS.has(resource.id)).length
+const GEM_TYPE_COUNT = RESOURCE_DATA.filter(resource => GEM_RESOURCE_IDS.has(resource.id)).length
 const TABS = [
     ["hero-catalogue", "Hero Catalogue"],
     ["item-catalogue", "Items & Sets"],
@@ -79,10 +86,13 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
                 <Stat label="Items" value={itemCount} />
                 <Stat label="Item sets" value={sets.length} />
                 <Stat label="Heroes" value={heroes.length} />
+                <Stat label="Banners" value={BANNER_DATA.length} />
                 <Stat label="Skills" value={skillCount} />
                 <Stat label="Talent entries" value={talentCount} />
                 <Stat label="Perks" value={Object.keys(PERK_DEFINITIONS).length} />
                 <Stat label="Status effects" value={Object.keys(STATUS_EFFECT_DEFINITIONS).length} />
+                <Stat label="Resources" value={RESOURCE_COUNT} />
+                <Stat label="Gem types" value={GEM_TYPE_COUNT} />
             </div>
 
             <section className="info-overview-section">
