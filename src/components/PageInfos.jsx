@@ -1,12 +1,13 @@
-import { useEffect, useMemo } from "react"
+import { lazy, Suspense, useEffect, useMemo } from "react"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import Button from "./Button.jsx"
-import CatalogueItem from "./CatalogueItem.jsx"
-import CatalogueHero from "./CatalogueHero.jsx"
-import CatalogueResources from "./CatalogueResources.jsx"
-import CatalogueStatus from "./CatalogueStatus.jsx"
-import CatalogueSkillsTalents from "./CatalogueSkillsTalents.jsx"
-import CataloguePerk from "./CataloguePerk.jsx"
+
+const CatalogueItem = lazy(() => import("./CatalogueItem.jsx"))
+const CatalogueHero = lazy(() => import("./CatalogueHero.jsx"))
+const CatalogueResources = lazy(() => import("./CatalogueResources.jsx"))
+const CatalogueStatus = lazy(() => import("./CatalogueStatus.jsx"))
+const CatalogueSkillsTalents = lazy(() => import("./CatalogueSkillsTalents.jsx"))
+const CataloguePerk = lazy(() => import("./CataloguePerk.jsx"))
 import BackToTopButton from "./BackToTopButton.jsx"
 import "../css/other.scss"
 import "../css/hero.scss"
@@ -81,6 +82,7 @@ function PageInfos({ itemsRef, heroesRef, activeTab = "overview", onTabChange })
         </div>
         <div id="page-info" className="page card w-100" ref={listRef} {...events} style={{ display:"flex", flexDirection:"column", alignItems:"stretch", flex:"1 1 0", minHeight:0, minWidth:0, overflowY:"auto", overflowX:"hidden", alignContent:"start" }}>
             {activeTab === "overview" && <InfoOverview items={items} sets={sets} heroes={heroes} />}
+            <Suspense fallback={<div className="card">Loading catalogue...</div>}>
             {activeTab === "item-catalogue" && <CatalogueItem itemsRef={itemData} setsRef={sets} onViewChange={view => setActiveTab(view === "sets" ? "set-catalogue" : "item-catalogue")} />}
             {activeTab === "set-catalogue" && <CatalogueItem itemsRef={itemData} setsRef={sets} initialView="sets" onViewChange={view => setActiveTab(view === "sets" ? "set-catalogue" : "item-catalogue")} />}
             {activeTab === "perk-catalogue" && <CataloguePerk items={items} sets={sets} />}
@@ -89,6 +91,7 @@ function PageInfos({ itemsRef, heroesRef, activeTab = "overview", onTabChange })
             {(activeTab === "skills-catalogue" || activeTab === "talents-catalogue") && <CatalogueSkillsTalents heroes={heroes} initialView={activeTab === "talents-catalogue" ? "talents" : "skills"} onViewChange={view => setActiveTab(view === "talents" ? "talents-catalogue" : "skills-catalogue")} />}
             {activeTab === "skills-talents-catalogue" && <CatalogueSkillsTalents heroes={heroes} initialView="skills" onViewChange={view => setActiveTab(view === "talents" ? "talents-catalogue" : "skills-catalogue")} />}
             {activeTab === "status-catalogue" && <CatalogueStatus />}
+            </Suspense>
         </div>
         <BackToTopButton scrollRef={listRef} />
     </div>
