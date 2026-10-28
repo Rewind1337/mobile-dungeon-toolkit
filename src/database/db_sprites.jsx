@@ -1364,5 +1364,19 @@ export const statusSprites = {
     miasma: Miasma,
 }
 
-// Add manually verified resource sprite imports and stable keys here as resource data is collected.
-export const resourceSprites = {}
+// Resource sprites are keyed by filename (without the .webp extension).
+// Keep each filename normalized to the resource name used in db_resources.jsx.
+const resourceSpriteModules = import.meta.glob("../sprites/resources/*.webp", {
+    eager: true,
+    import: "default",
+})
+
+export const resourceSprites = {
+    null: NullSrc,
+    ...Object.fromEntries(
+        Object.entries(resourceSpriteModules).map(([path, src]) => [
+            path.split("/").pop().replace(/\.webp$/, ""),
+            src,
+        ])
+    ),
+}
