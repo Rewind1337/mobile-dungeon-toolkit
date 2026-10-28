@@ -17,7 +17,7 @@ function getSearchFromLocation() {
         const rawKey = separatorIndex === -1 ? param : param.slice(0, separatorIndex)
         let key
         try {
-            key = decodeURIComponent(rawKey.replace(/\\+/g, " "))
+            key = decodeURIComponent(rawKey)
         } catch {
             continue
         }
