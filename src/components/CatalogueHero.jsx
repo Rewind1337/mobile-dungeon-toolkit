@@ -294,59 +294,67 @@ function BannerCatalogueList({ heroesRef }) {
         const allDated = BANNERS.every(banner =>
             banner.id === "everyday_heroes" || hasValidBannerDate(banner)
         )
+
         return BANNERS.map((banner, sourceIndex) => {
-        const resolveList = ids => (Array.isArray(ids) ? ids : [])
-            .map(id => resolveBannerHero(id, heroesById))
-        const primaryRaw = resolveList(banner.heroIds)
-        const conditionalRaw = resolveList(banner.conditionalHeroIDs)
-        const missingHeroCount = primaryRaw.filter(hero => !hero).length + conditionalRaw.filter(hero => !hero).length
-        const bannerMetadata = {
-            ...banner,
-            heroIds: [],
-            conditionalHeroIDs: [],
-            featuredHeroId: null,
-        }
-        // Search both the banner metadata and the text represented by its visible detail chips.
-        // Hero IDs are searched through the resolved hero objects below, so matching a hero
-        // keeps the result focused on that hero instead of expanding the entire banner.
-        const liveDateInfo = getBannerLiveDateInfo(BANNERS, sourceIndex)
-        const searchableBannerMetadata = [
-            ...getSearchableValues(bannerMetadata),
-            banner.standardBanner ? "standard standard banner" : "event banner",
-            `${Array.isArray(banner.heroIds) ? banner.heroIds.length : 0} listed heroes`,
-            banner.featuredHeroId ? "featured featured hero" : "",
-            liveDateInfo.date ? `last live ${liveDateInfo.date}` : "last live n/a",
-            ...(Array.isArray(banner.conditionalHeroIDs) && banner.conditionalHeroIDs.length > 0
-                ? ["conditional conditional heroes", `${banner.conditionalHeroIDs.length} conditional heroes`]
-                : []),
-        ].join(" ").toLowerCase()
-        const bannerMatches = !query || searchableBannerMetadata.includes(query)
-        const visibleHeroes = primaryRaw.filter(hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query)))
-        const visibleConditionalHeroes = conditionalRaw.filter(hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query)))
-
-        return {
-            banner,
-            sourceIndex,
-            bannerMatches,
-            heroes: visibleHeroes,
-            conditionalHeroes: visibleConditionalHeroes,
-            missingHeroCount,
-        }
-    })
-        .filter(result => result.bannerMatches || result.heroes.length > 0 || result.conditionalHeroes.length > 0)
-        .sort((a, b) => {
-            // The permanent Everyday Heroes banner always leads the catalogue.
-            if (a.banner.id === "everyday_heroes") return b.banner.id === "everyday_heroes" ? 0 : -1
-            if (b.banner.id === "everyday_heroes") return 1
-
-            // Once all event banners have dates, sort chronologically (oldest first).
-            // Until then preserve the curated source order, including the first special banner.
-            if (allDated) {
-                return parseBannerDate(a.banner.lastLiveDate) - parseBannerDate(b.banner.lastLiveDate)
-                    || a.sourceIndex - b.sourceIndex
+            const resolveList = ids => (Array.isArray(ids) ? ids : [])
+                .map(id => resolveBannerHero(id, heroesById))
+            const primaryRaw = resolveList(banner.heroIds)
+            const conditionalRaw = resolveList(banner.conditionalHeroIDs)
+            const missingHeroCount = primaryRaw.filter(hero => !hero).length
+                + conditionalRaw.filter(hero => !hero).length
+            const bannerMetadata = {
+                ...banner,
+                heroIds: [],
+                conditionalHeroIDs: [],
+                featuredHeroId: null,
             }
-            return a.sourceIndex - b.sourceIndex
+
+            // Search both banner metadata and the text represented by its visible detail chips.
+            // Hero data is searched separately so a matching hero doesn't expose unrelated heroes.
+            const liveDateInfo = getBannerLiveDateInfo(BANNERS, sourceIndex)
+            const searchableBannerMetadata = [
+                ...getSearchableValues(bannerMetadata),
+                banner.standardBanner ? "standard standard banner" : "event banner",
+                `${Array.isArray(banner.heroIds) ? banner.heroIds.length : 0} listed heroes`,
+                banner.featuredHeroId ? "featured featured hero" : "",
+                liveDateInfo.date ? `last live ${liveDateInfo.date}` : "last live n/a",
+                ...(Array.isArray(banner.conditionalHeroIDs) && banner.conditionalHeroIDs.length > 0
+                    ? ["conditional conditional heroes", `${banner.conditionalHeroIDs.length} conditional heroes`]
+                    : []),
+            ].join(" ").toLowerCase()
+            const bannerMatches = !query || searchableBannerMetadata.includes(query)
+            const visibleHeroes = primaryRaw.filter(
+                hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query))
+            )
+            const visibleConditionalHeroes = conditionalRaw.filter(
+                hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query))
+            )
+
+            return {
+                banner,
+                sourceIndex,
+                bannerMatches,
+                heroes: visibleHeroes,
+                conditionalHeroes: visibleConditionalHeroes,
+                missingHeroCount,
+            }
         })
+            .filter(result =>
+                result.bannerMatches || result.heroes.length > 0 || result.conditionalHeroes.length > 0
+            )
+            .sort((a, b) => {
+                // The permanent Everyday Heroes banner always leads the catalogue.
+                if (a.banner.id === "everyday_heroes") return b.banner.id === "everyday_heroes" ? 0 : -1
+                if (b.banner.id === "everyday_heroes") return 1
+
+                // Once all event banners have dates, sort chronologically (oldest first).
+                // Until then preserve the curated source order, including the first special banner.
+                if (allDated) {
+                    return parseBannerDate(a.banner.lastLiveDate) - parseBannerDate(b.banner.lastLiveDate)
+                        || a.sourceIndex - b.sourceIndex
+                }
+                return a.sourceIndex - b.sourceIndex
+            })
     }, [heroesById, query])
 
     return (
