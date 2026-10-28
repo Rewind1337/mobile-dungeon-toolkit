@@ -15,13 +15,10 @@ function add_banner(name, date, heroIDs) {
         lastLiveDate: date,
         heroIds: heroIds,
         featuredHeroId: heroIds[0] ?? null,
-        lastLiveLabel: getBannerLastLiveLabel(date),
     })
 }
 
 export function init_banner_db() {
-    BASE_BANNERS = []
-
     // Replace these placeholders with manually verified banner data.
     // Keep each heroIDs array in the order you want it displayed.
     add_banner("Banner 1", null, [])
