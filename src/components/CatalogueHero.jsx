@@ -27,6 +27,44 @@ const humanize = value => String(value ?? "")
     .toLowerCase()
     .replace(/\b\w/g, letter => letter.toUpperCase())
 
+function parseBannerDate(dateString) {
+    if (typeof dateString !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return null
+
+    const [year, month, day] = dateString.split("-").map(Number)
+    const timestamp = Date.UTC(year, month - 1, day)
+    const parsed = new Date(timestamp)
+    if (
+        parsed.getUTCFullYear() !== year
+        || parsed.getUTCMonth() !== month - 1
+        || parsed.getUTCDate() !== day
+    ) return null
+
+    return timestamp
+}
+
+// Prefer a recorded date. If it is missing, estimate it from the previous and next
+// banners only when both adjacent dates exist; until then the UI displays N/A.
+function getBannerLiveDateInfo(banners, index) {
+    const currentBanner = banners[index]
+    const currentTimestamp = parseBannerDate(currentBanner?.lastLiveDate)
+    if (currentTimestamp !== null) {
+        return { date: currentBanner.lastLiveDate, estimated: false }
+    }
+
+    const previousTimestamp = parseBannerDate(banners[index - 1]?.lastLiveDate)
+    const nextTimestamp = parseBannerDate(banners[index + 1]?.lastLiveDate)
+    if (previousTimestamp !== null && nextTimestamp !== null && nextTimestamp >= previousTimestamp) {
+        const estimatedTimestamp = Math.round((previousTimestamp + nextTimestamp) / 2)
+        return { date: new Date(estimatedTimestamp).toISOString().slice(0, 10), estimated: true }
+    }
+
+    return { date: null, estimated: false }
+}
+
+function hasValidBannerDate(banner) {
+    return parseBannerDate(banner?.lastLiveDate) !== null
+}
+
 function getSearchableValues(value, seen = new Set()) {
     if (value === null || value === undefined) return []
     if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return [String(value)]
@@ -182,11 +220,16 @@ function BannerHeroGroup({ title, heroes }) {
 }
 
 function BannerCatalogueCard({ result, heroesById }) {
-    const { banner, heroes, conditionalHeroes, missingHeroCount } = result
+    const { banner, heroes, conditionalHeroes, missingHeroCount, sourceIndex } = result
+    const isEverydayBanner = banner.id === "everyday_heroes"
     const featuredHero = banner.featuredHeroId
         ? resolveBannerHero(banner.featuredHeroId, heroesById)
         : null
-    const lastLiveLabel = getBannerLastLiveLabel(banner.lastLiveDate)
+    const liveDateInfo = getBannerLiveDateInfo(BANNERS, sourceIndex)
+    const lastLiveLabel = liveDateInfo.date ? getBannerLastLiveLabel(liveDateInfo.date) : ""
+    const liveDateText = liveDateInfo.date
+        ? `${liveDateInfo.estimated ? "~" : ""}${liveDateInfo.date}${lastLiveLabel}`
+        : "N/A"
     const rarityGroups = [
         ["Legendary Heroes", heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.LEGENDARY.id)],
         ["Epic Heroes", heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.EPIC.id)],
@@ -194,14 +237,20 @@ function BannerCatalogueCard({ result, heroesById }) {
     ]
 
     return (
-        <article className="banner-catalogue-card card">
+        <article className={`banner-catalogue-card card${isEverydayBanner ? " banner-catalogue-card--everyday" : ""}`}>
             <header className="banner-catalogue-card-header">
                 <h2 className="banner-catalogue-name header">{banner.name}</h2>
                 <div className="banner-catalogue-meta">
                     <span className="catalogue-chip text">{banner.heroIds.length} listed heroes</span>
                     {banner.standardBanner && <span className="catalogue-chip text">Standard banner</span>}
                     {featuredHero && <span className="catalogue-chip text">Featured: {featuredHero.name}</span>}
-                    {banner.lastLiveDate && <span className="catalogue-chip text">Last live: {banner.lastLiveDate}{lastLiveLabel}</span>}
+                    <span
+                        className="catalogue-chip banner-catalogue-live-date text"
+                        title={liveDateInfo.estimated ? "Estimated from the previous and next banner dates" : "Recorded last-live date"}
+                    >
+                        Last live: {liveDateText}
+                    </span>
+                    {isEverydayBanner && <span className="catalogue-chip banner-catalogue-chip-permanent text">Always available</span>}
                     {Array.isArray(banner.conditionalHeroIDs) && banner.conditionalHeroIDs.length > 0
                         && <span className="catalogue-chip text">{banner.conditionalHeroIDs.length} conditional heroes</span>}
                 </div>
@@ -241,7 +290,11 @@ function BannerCatalogueList({ heroesRef }) {
     const heroesById = useMemo(() => new Map(heroes.map(hero => [hero.id, hero])), [heroes])
     const query = search.trim().toLowerCase()
 
-    const filteredBanners = useMemo(() => BANNERS.map(banner => {
+    const filteredBanners = useMemo(() => {
+        const allDated = BANNERS.every(banner =>
+            banner.id === "everyday_heroes" || hasValidBannerDate(banner)
+        )
+        return BANNERS.map((banner, sourceIndex) => {
         const resolveList = ids => (Array.isArray(ids) ? ids : [])
             .map(id => resolveBannerHero(id, heroesById))
         const primaryRaw = resolveList(banner.heroIds)
@@ -256,12 +309,13 @@ function BannerCatalogueList({ heroesRef }) {
         // Search both the banner metadata and the text represented by its visible detail chips.
         // Hero IDs are searched through the resolved hero objects below, so matching a hero
         // keeps the result focused on that hero instead of expanding the entire banner.
+        const liveDateInfo = getBannerLiveDateInfo(BANNERS, sourceIndex)
         const searchableBannerMetadata = [
             ...getSearchableValues(bannerMetadata),
             banner.standardBanner ? "standard standard banner" : "event banner",
             `${Array.isArray(banner.heroIds) ? banner.heroIds.length : 0} listed heroes`,
             banner.featuredHeroId ? "featured featured hero" : "",
-            banner.lastLiveDate ? "last live" : "",
+            liveDateInfo.date ? `last live ${liveDateInfo.date}` : "last live n/a",
             ...(Array.isArray(banner.conditionalHeroIDs) && banner.conditionalHeroIDs.length > 0
                 ? ["conditional conditional heroes", `${banner.conditionalHeroIDs.length} conditional heroes`]
                 : []),
@@ -272,6 +326,7 @@ function BannerCatalogueList({ heroesRef }) {
 
         return {
             banner,
+            sourceIndex,
             bannerMatches,
             heroes: visibleHeroes,
             conditionalHeroes: visibleConditionalHeroes,
@@ -279,8 +334,20 @@ function BannerCatalogueList({ heroesRef }) {
         }
     })
         .filter(result => result.bannerMatches || result.heroes.length > 0 || result.conditionalHeroes.length > 0)
-        .sort((a, b) => a.banner.name.localeCompare(b.banner.name, undefined, { sensitivity: "base" })),
-    [heroesById, query])
+        .sort((a, b) => {
+            // The permanent Everyday Heroes banner always leads the catalogue.
+            if (a.banner.id === "everyday_heroes") return b.banner.id === "everyday_heroes" ? 0 : -1
+            if (b.banner.id === "everyday_heroes") return 1
+
+            // Once all event banners have dates, sort chronologically (oldest first).
+            // Until then preserve the curated source order, including the first special banner.
+            if (allDated) {
+                return parseBannerDate(a.banner.lastLiveDate) - parseBannerDate(b.banner.lastLiveDate)
+                    || a.sourceIndex - b.sourceIndex
+            }
+            return a.sourceIndex - b.sourceIndex
+        })
+    }, [heroesById, query])
 
     return (
         <div className="banner-catalogue-list">
