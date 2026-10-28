@@ -32,7 +32,7 @@ function getSearchableValues(value, seen = new Set()) {
     if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return [String(value)]
     if (typeof value !== "object" || seen.has(value)) return []
     seen.add(value)
-    return Object.values(value).flatMap(child => getSearchableValues(child, seen))
+    return Object.entries(value).flatMap(([key, child]) => [key, ...getSearchableValues(child, seen)])
 }
 
 function formatEffect(effect) {
@@ -245,17 +245,14 @@ function BannerCatalogueList({ heroesRef }) {
         const conditionalRaw = resolveList(banner.conditionalHeroIDs)
         const missingHeroCount = primaryRaw.filter(hero => !hero).length + conditionalRaw.filter(hero => !hero).length
         const allHeroes = [...primaryRaw, ...conditionalRaw].filter(Boolean)
-        const searchableBanner = [
-            ...getSearchableValues(banner),
-            ...allHeroes.flatMap(hero => [
-                ...getSearchableValues(hero),
-                getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? "",
-                getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? "",
-                getEnumNameById(ELEMENT_DEFINITIONS, Number(hero.element)) ?? "",
-                getEnumNameById(ROLE_DEFINITIONS, Number(hero.role)) ?? "",
-            ]),
-        ].join(" ").toLowerCase()
-        const bannerMatches = !query || searchableBanner.includes(query)
+        const bannerMetadata = {
+            ...banner,
+            heroIds: [],
+            conditionalHeroIDs: [],
+            featuredHeroId: null,
+        }
+        const searchableBannerMetadata = getSearchableValues(bannerMetadata).join(" ").toLowerCase()
+        const bannerMatches = !query || searchableBannerMetadata.includes(query)
         const visibleHeroes = primaryRaw.filter(hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query)))
         const visibleConditionalHeroes = conditionalRaw.filter(hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query)))
 
