@@ -2,6 +2,22 @@ import { resourceSprites } from "./db_sprites.jsx"
 import { RARITY_DEFINITIONS } from "./enums"
 
 
+// Use arrays of these values for resources that have multiple sources or uses.
+export const RESOURCE_SOURCES = Object.freeze({
+    BLACK_MARKET: "Black Market",
+    GUILD_SHOP: "Guild Shop",
+    ARENA_SHOP: "Arena Shop",
+    GUILDHUNT_SHOP: "Guildhunt Shop",
+    CHAOSTOWER_SHOP: "Chaostower Shop",
+})
+
+export const RESOURCE_USES = Object.freeze({
+    MULTIPLE_SYSTEMS: "Multiple Systems",
+    CHAPEL: "Chapel",
+    SMITH: "Smith",
+})
+
+
 let BASE_RESOURCES = []
 
 function add_resource(name, description, rarity = null) {
