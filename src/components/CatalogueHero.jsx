@@ -8,10 +8,9 @@ import {
 } from "../database/enums.jsx"
 import Button from "./Button.jsx"
 import Hero from "./Hero.jsx"
-import HeroFilters from "./HeroFilters.jsx"
 import { init_banner_db } from "../database/db_banners.jsx"
 import { getBannerLastLiveLabel } from "../database/bannerUtils.jsx"
-import { attributeSprites, roleSprites, filterSprites } from "../database/db_sprites.jsx"
+import { attributeSprites, roleSprites } from "../database/db_sprites.jsx"
 
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
     rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
@@ -23,15 +22,6 @@ const BANNER_HERO_ID_ALIASES = Object.freeze({
     sphynx: "sphinx",
     caotl: "coatl",
 })
-const DEFAULT_BANNER_FILTERS = Object.freeze({
-    element: null,
-    role: null,
-    mainAttribute: null,
-    rarity: null,
-    isStarred: null,
-    name: "",
-})
-
 const humanize = value => String(value ?? "")
     .replaceAll("_", " ")
     .toLowerCase()
@@ -157,8 +147,6 @@ function resolveBannerHero(heroId, heroesById) {
 
 function matchesBannerHeroQuery(hero, query) {
     if (!query) return true
-    if (query === "starred") return hero.isStarred === true
-    if (query === "not starred") return hero.isStarred === false
 
     const rarity = getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? ""
     const attribute = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? ""
@@ -166,8 +154,6 @@ function matchesBannerHeroQuery(hero, query) {
     const role = getEnumNameById(ROLE_DEFINITIONS, Number(hero.role)) ?? ""
     return [
         ...getSearchableValues(hero),
-        hero.name,
-        hero.id,
         rarity,
         attribute,
         element,
@@ -247,80 +233,61 @@ function BannerCatalogueCard({ result, heroesById }) {
 }
 
 function BannerCatalogueList({ heroesRef }) {
-    const [filters, setFilters] = useState({ ...DEFAULT_BANNER_FILTERS })
-    const [filtersAdvanced, setFiltersAdvanced] = useState(false)
-    const [sortOrder, setSortOrder] = useState(0)
+    const [search, setSearch] = useState("")
     const heroes = Array.isArray(heroesRef) ? heroesRef : []
     const heroesById = useMemo(() => new Map(heroes.map(hero => [hero.id, hero])), [heroes])
+    const query = search.trim().toLowerCase()
 
-    const toggleFilter = (type, value) => {
-        setFilters(previous => ({
-            ...previous,
-            [type]: previous[type] === value ? null : value,
-        }))
-    }
+    const filteredBanners = useMemo(() => BANNERS.map(banner => {
+        const resolveList = ids => (Array.isArray(ids) ? ids : [])
+            .map(id => resolveBannerHero(id, heroesById))
+        const primaryRaw = resolveList(banner.heroIds)
+        const conditionalRaw = resolveList(banner.conditionalHeroIDs)
+        const missingHeroCount = primaryRaw.filter(hero => !hero).length + conditionalRaw.filter(hero => !hero).length
+        const allHeroes = [...primaryRaw, ...conditionalRaw].filter(Boolean)
+        const searchableBanner = [
+            ...getSearchableValues(banner),
+            ...allHeroes.flatMap(hero => [
+                ...getSearchableValues(hero),
+                getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? "",
+                getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? "",
+                getEnumNameById(ELEMENT_DEFINITIONS, Number(hero.element)) ?? "",
+                getEnumNameById(ROLE_DEFINITIONS, Number(hero.role)) ?? "",
+            ]),
+        ].join(" ").toLowerCase()
+        const bannerMatches = !query || searchableBanner.includes(query)
+        const visibleHeroes = primaryRaw.filter(hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query)))
+        const visibleConditionalHeroes = conditionalRaw.filter(hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query)))
 
-    const clearFilters = () => setFilters({ ...DEFAULT_BANNER_FILTERS })
-
-    const filteredBanners = useMemo(() => {
-        const query = filters.name.trim().toLowerCase()
-        const matchesFacets = hero => (
-            (filters.element === null || hero.element === filters.element)
-            && (filters.role === null || hero.role === filters.role)
-            && (filters.mainAttribute === null || hero.mainAttribute === filters.mainAttribute)
-            && (filters.rarity === null || hero.rarity === filters.rarity)
-            && (filters.isStarred === null || hero.isStarred === filters.isStarred)
-        )
-
-        return BANNERS.map(banner => {
-            const resolveList = ids => (Array.isArray(ids) ? ids : [])
-                .map(id => resolveBannerHero(id, heroesById))
-            const primaryRaw = resolveList(banner.heroIds)
-            const conditionalRaw = resolveList(banner.conditionalHeroIDs)
-            const missingHeroCount = primaryRaw.filter(hero => !hero).length + conditionalRaw.filter(hero => !hero).length
-            const primaryEligible = primaryRaw.filter(hero => hero && matchesFacets(hero))
-            const conditionalEligible = conditionalRaw.filter(hero => hero && matchesFacets(hero))
-            const bannerNameMatches = Boolean(query) && banner.name.toLowerCase().includes(query)
-            const applySearch = list => !query || bannerNameMatches
-                ? list
-                : list.filter(hero => matchesBannerHeroQuery(hero, query))
-            const visibleHeroes = applySearch(primaryEligible)
-            const visibleConditionalHeroes = applySearch(conditionalEligible)
-
-            return {
-                banner,
-                heroes: visibleHeroes,
-                conditionalHeroes: visibleConditionalHeroes,
-                missingHeroCount,
-            }
-        })
+        return {
+            banner,
+            heroes: visibleHeroes,
+            conditionalHeroes: visibleConditionalHeroes,
+            missingHeroCount,
+        }
+    })
         .filter(result => result.heroes.length > 0 || result.conditionalHeroes.length > 0)
-        .sort((a, b) => {
-            const comparison = a.banner.name.localeCompare(b.banner.name, undefined, { sensitivity: "base" })
-            return sortOrder === 0 ? comparison : -comparison
-        })
-    }, [heroesById, filters, sortOrder])
+        .sort((a, b) => a.banner.name.localeCompare(b.banner.name, undefined, { sensitivity: "base" })),
+    [heroesById, query])
 
     return (
         <div className="banner-catalogue-list">
-            <HeroFilters
-                setFiltersAdvanced={setFiltersAdvanced}
-                advanced={filtersAdvanced}
-                toggleFilter={toggleFilter}
-                setSearch={name => setFilters(previous => ({ ...previous, name }))}
-                clearFilters={clearFilters}
-                filters={filters}
-                filterSprites={filterSprites}
-                sortOrder={sortOrder}
-                onToggleSort={() => setSortOrder(order => order === 0 ? 1 : 0)}
-                searchPlaceholder="Search banners or heroes..."
-                searchAriaLabel="Search banners or heroes"
-            />
-            <p className="catalogue-result-count text">
-                Showing {filteredBanners.length} of {BANNERS.length} banners
-            </p>
+            <label className="catalogue-search banner-catalogue-search">
+                <span className="catalogue-control-label text">Search banners, heroes, and banner details</span>
+                <input
+                    className="selectable catalogue-input"
+                    type="search"
+                    aria-label="Search all banner and hero details"
+                    placeholder="Search banners, heroes, and details..."
+                    value={search}
+                    onChange={event => setSearch(event.target.value)}
+                />
+                <span className="catalogue-result-count text">
+                    Showing {filteredBanners.length} of {BANNERS.length} banners
+                </span>
+            </label>
             {filteredBanners.length === 0
-                ? <p className="catalogue-empty card">No banners or heroes match these filters.</p>
+                ? <p className="catalogue-empty card">No banners match that search.</p>
                 : <div className="banner-catalogue-grid">
                     {filteredBanners.map(result => (
                         <BannerCatalogueCard key={result.banner.id} result={result} heroesById={heroesById} />
