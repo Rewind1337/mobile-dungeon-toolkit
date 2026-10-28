@@ -1,5 +1,3 @@
-import { getBannerLastLiveLabel } from "./bannerUtils.jsx"
-
 let BASE_BANNERS = []
 
 function add_banner(name, date, heroIDs) {
