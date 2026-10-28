@@ -148,6 +148,10 @@ function resolveBannerHero(heroId, heroesById) {
 function matchesBannerHeroQuery(hero, query) {
     if (!query) return true
 
+    // Keep the banner search consistent with the Hero Catalogue for these useful shortcuts.
+    if (query === "starred") return hero.isStarred === true
+    if (query === "not starred") return hero.isStarred !== true
+
     const rarity = getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? ""
     const attribute = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? ""
     const element = getEnumNameById(ELEMENT_DEFINITIONS, Number(hero.element)) ?? ""
@@ -158,7 +162,6 @@ function matchesBannerHeroQuery(hero, query) {
         attribute,
         element,
         role,
-        hero.isStarred ? "starred" : "not starred",
     ].join(" ").toLowerCase().includes(query)
 }
 
@@ -250,19 +253,32 @@ function BannerCatalogueList({ heroesRef }) {
             conditionalHeroIDs: [],
             featuredHeroId: null,
         }
-        const searchableBannerMetadata = getSearchableValues(bannerMetadata).join(" ").toLowerCase()
+        // Search both the banner metadata and the text represented by its visible detail chips.
+        // Hero IDs are searched through the resolved hero objects below, so matching a hero
+        // keeps the result focused on that hero instead of expanding the entire banner.
+        const searchableBannerMetadata = [
+            ...getSearchableValues(bannerMetadata),
+            banner.standardBanner ? "standard standard banner" : "event banner",
+            `${Array.isArray(banner.heroIds) ? banner.heroIds.length : 0} listed heroes`,
+            banner.featuredHeroId ? "featured featured hero" : "",
+            banner.lastLiveDate ? "last live" : "",
+            ...(Array.isArray(banner.conditionalHeroIDs) && banner.conditionalHeroIDs.length > 0
+                ? ["conditional conditional heroes", `${banner.conditionalHeroIDs.length} conditional heroes`]
+                : []),
+        ].join(" ").toLowerCase()
         const bannerMatches = !query || searchableBannerMetadata.includes(query)
         const visibleHeroes = primaryRaw.filter(hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query)))
         const visibleConditionalHeroes = conditionalRaw.filter(hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query)))
 
         return {
             banner,
+            bannerMatches,
             heroes: visibleHeroes,
             conditionalHeroes: visibleConditionalHeroes,
             missingHeroCount,
         }
     })
-        .filter(result => result.heroes.length > 0 || result.conditionalHeroes.length > 0)
+        .filter(result => result.bannerMatches || result.heroes.length > 0 || result.conditionalHeroes.length > 0)
         .sort((a, b) => a.banner.name.localeCompare(b.banner.name, undefined, { sensitivity: "base" })),
     [heroesById, query])
 
