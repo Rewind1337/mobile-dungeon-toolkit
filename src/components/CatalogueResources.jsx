@@ -54,7 +54,7 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
 
     const gemGroups = useMemo(() => GEM_BASES.map(gem => ({
         ...gem,
-        variants: filteredResources.filter(resource => resource.gemType === gem.name),
+        variants: filteredResources.filter(resource => resource.gemType === gem.name).sort((a, b) => a.rarity.id - b.rarity.id),
     })).filter(group => group.variants.length > 0), [filteredResources])
 
     const clearSearch = () => setSearch("")
