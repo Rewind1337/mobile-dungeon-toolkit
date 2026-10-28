@@ -5,7 +5,7 @@ import Button from "./Button.jsx"
 import BackToTopButton from "./BackToTopButton.jsx"
 import "../css/other.scss"
 import "../css/hero.scss"
-import { ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS } from "../database/enums.jsx"
+import { ATTRIBUTE_DEFINITIONS, ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS, PERK_DEFINITIONS, STATUS_EFFECT_DEFINITIONS } from "../database/enums.jsx"
 
 const CatalogueItem = lazy(() => import("./CatalogueItem.jsx"))
 const CatalogueHero = lazy(() => import("./CatalogueHero.jsx"))
@@ -27,10 +27,27 @@ const TABS = [
 const humanize = value => String(value ?? "").replaceAll("_", " ").replace(/\b\w/g, letter => letter.toUpperCase())
 
 function Stat({ label, value }) {
-    return <div className="catalogue-overview-stat card"><span className="text">{label}</span><span className="header-big">{value}</span></div>
+    return (
+        <div className="catalogue-overview-stat card">
+            <span className="text">{label}</span>
+            <span className="header-big">{value}</span>
+        </div>
+    )
 }
 
-function InfoOverview({ items, sets, heroes }) {
+function OverviewLink({ title, description, buttonText, onClick }) {
+    return (
+        <article className="catalogue-overview-link card">
+            <div className="catalogue-overview-link-copy">
+                <h3 className="header">{title}</h3>
+                <p className="text">{description}</p>
+            </div>
+            <Button text={buttonText} color={5} onClick={onClick} />
+        </article>
+    )
+}
+
+function InfoOverview({ items, sets, heroes, onNavigate }) {
     const itemCount = Array.isArray(items) ? items.length : Object.values(items).reduce((total, list) => total + (Array.isArray(list) ? list.length : 0), 0)
     const heroCountBy = (key, definitions) => heroes.reduce((counts, hero) => {
         const value = Object.values(definitions).find(entry => entry.id === Number(hero[key]))
@@ -40,28 +57,79 @@ function InfoOverview({ items, sets, heroes }) {
     }, {})
     const skillCount = heroes.reduce((total, hero) => total + (Array.isArray(hero.skills) ? hero.skills.length : 0), 0)
     const talentCount = heroes.reduce((total, hero) => total + (hero.talents && typeof hero.talents === "object" ? Object.keys(hero.talents).length : 0), 0)
-    const rows = values => Object.entries(values).sort((a, b) => a[0].localeCompare(b[0])).map(([name, count]) => <div className="catalogue-overview-slot card" key={name}><span className="text">{name}</span><span className="header">{count}</span></div>)
-    return <section className="info-overview">
-        <header className="catalogue-header">
-            <div className="catalogue-heading-copy">
-                <div className="catalogue-title header-big">Info</div>
-                <p className="catalogue-description text">A quick overview of the data available in the toolkit. Choose a catalogue above to explore individual entries.</p>
+    const rows = values => Object.entries(values).sort((a, b) => a[0].localeCompare(b[0])).map(([name, count]) => (
+        <div className="catalogue-overview-slot card" key={name}>
+            <span className="text">{name}</span>
+            <span className="header">{count}</span>
+        </div>
+    ))
+
+    return (
+        <section className="info-overview">
+            <header className="info-overview-hero card">
+                <div className="info-overview-eyebrow text">Mobile Dungeon Toolkit</div>
+                <h1 className="catalogue-title header-big">Your data hub</h1>
+                <p className="catalogue-description text">
+                    Explore the heroes, banners, equipment, gems, resources, perks, skills, talents, and status effects tracked by the toolkit.
+                    Choose a collection below to jump straight into its catalogue.
+                </p>
+            </header>
+
+            <div className="catalogue-overview-stats">
+                <Stat label="Items" value={itemCount} />
+                <Stat label="Item sets" value={sets.length} />
+                <Stat label="Heroes" value={heroes.length} />
+                <Stat label="Skills" value={skillCount} />
+                <Stat label="Talent entries" value={talentCount} />
+                <Stat label="Perks" value={Object.keys(PERK_DEFINITIONS).length} />
+                <Stat label="Status effects" value={Object.keys(STATUS_EFFECT_DEFINITIONS).length} />
             </div>
-        </header>
-        <div className="catalogue-overview-stats">
-            <Stat label="Items" value={itemCount} />
-            <Stat label="Item sets" value={sets.length} />
-            <Stat label="Heroes" value={heroes.length} />
-            <Stat label="Skills" value={skillCount} />
-            <Stat label="Talent entries" value={talentCount} />
-        </div>
-        <div className="info-overview-breakdown">
-            <section className="card"><div className="header">Heroes by element</div><div className="catalogue-overview-slot-list">{rows(heroCountBy("element", ELEMENT_DEFINITIONS))}</div></section>
-            <section className="card"><div className="header">Heroes by role</div><div className="catalogue-overview-slot-list">{rows(heroCountBy("role", ROLE_DEFINITIONS))}</div></section>
-            <section className="card"><div className="header">Heroes by rarity</div><div className="catalogue-overview-slot-list">{rows(heroCountBy("rarity", RARITY_DEFINITIONS))}</div></section>
-        </div>
-        <p className="catalogue-muted text">Counts reflect the current in-project data. Skills and talent entries are counted per hero, so repeated names are included.</p>
-    </section>
+
+            <section className="info-overview-section">
+                <div className="info-overview-section-heading">
+                    <h2 className="header">Browse catalogues</h2>
+                    <p className="text">Each section has its own search and browsing tools.</p>
+                </div>
+                <div className="catalogue-overview-links">
+                    <OverviewLink title="Heroes" description="Browse hero portraits, rarities, elements, roles, attributes, skills, and talents." buttonText="Browse heroes" onClick={() => onNavigate("hero-catalogue")} />
+                    <OverviewLink title="Banners" description="Explore banner definitions and their featured, legendary, epic, and conditional heroes." buttonText="Browse banners" onClick={() => onNavigate("hero-banners-catalogue")} />
+                    <OverviewLink title="Items" description="Search equipment, item details, rarity, perks, and drop locations." buttonText="Browse items" onClick={() => onNavigate("item-catalogue")} />
+                    <OverviewLink title="Sets" description="Review item sets, their bonuses, and the pieces that belong to each set." buttonText="Browse sets" onClick={() => onNavigate("set-catalogue")} />
+                    <OverviewLink title="Perks" description="Look up perk effects and the gear pieces that can roll each perk." buttonText="Browse perks" onClick={() => onNavigate("perk-catalogue")} />
+                    <OverviewLink title="Skills & Talents" description="Search skill descriptions and talent effects across the hero roster." buttonText="Browse skills" onClick={() => onNavigate("skills-talents-catalogue")} />
+                    <OverviewLink title="Status Effects" description="Review effects, polarity, removability, and mitigation information." buttonText="Browse statuses" onClick={() => onNavigate("status-catalogue")} />
+                    <OverviewLink title="Resources" description="Find resource names and descriptions, excluding gems." buttonText="Browse resources" onClick={() => onNavigate("resources-catalogue")} />
+                    <OverviewLink title="Gems" description="Browse every defined rarity of ruby, sapphire, emerald, and diamond, grouped by gem type." buttonText="Browse gems" onClick={() => onNavigate("gems-catalogue")} />
+                </div>
+            </section>
+
+            <section className="info-overview-section">
+                <div className="info-overview-section-heading">
+                    <h2 className="header">Hero roster at a glance</h2>
+                    <p className="text">Distribution of the currently loaded hero data.</p>
+                </div>
+                <div className="info-overview-breakdown">
+                    <section className="info-overview-breakdown-card card">
+                        <h3 className="header">By element</h3>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("element", ELEMENT_DEFINITIONS))}</div>
+                    </section>
+                    <section className="info-overview-breakdown-card card">
+                        <h3 className="header">By role</h3>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("role", ROLE_DEFINITIONS))}</div>
+                    </section>
+                    <section className="info-overview-breakdown-card card">
+                        <h3 className="header">By rarity</h3>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("rarity", RARITY_DEFINITIONS))}</div>
+                    </section>
+                    <section className="info-overview-breakdown-card card">
+                        <h3 className="header">By main attribute</h3>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("mainAttribute", ATTRIBUTE_DEFINITIONS))}</div>
+                    </section>
+                </div>
+            </section>
+            <p className="catalogue-muted text">Counts reflect the data currently loaded in the project. Skills and talent entries are counted per hero, so repeated names are included.</p>
+        </section>
+    )
 }
 
 function PageInfos({ itemsRef, heroesRef, activeTab = "overview", onTabChange }) {
@@ -82,7 +150,7 @@ function PageInfos({ itemsRef, heroesRef, activeTab = "overview", onTabChange })
             </div>
         </div>
         <div id="page-info" className="page card w-100" ref={listRef} {...events} style={{ display:"flex", flexDirection:"column", alignItems:"stretch", flex:"1 1 0", minHeight:0, minWidth:0, overflowY:"auto", overflowX:"hidden", alignContent:"start" }}>
-            {activeTab === "overview" && <InfoOverview items={items} sets={sets} heroes={heroes} />}
+            {activeTab === "overview" && <InfoOverview items={items} sets={sets} heroes={heroes} onNavigate={setActiveTab} />}
             <Suspense fallback={<div className="card">Loading catalogue...</div>}>
                 {activeTab === "item-catalogue" && <CatalogueItem itemsRef={itemData} setsRef={sets} onViewChange={view => setActiveTab(view === "sets" ? "set-catalogue" : "item-catalogue")} />}
                 {activeTab === "set-catalogue" && <CatalogueItem itemsRef={itemData} setsRef={sets} initialView="sets" onViewChange={view => setActiveTab(view === "sets" ? "set-catalogue" : "item-catalogue")} />}
