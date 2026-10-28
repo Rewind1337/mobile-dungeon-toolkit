@@ -307,7 +307,6 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", onViewChange 
     const changeView = nextView => {
         setView(nextView)
         onViewChange?.(nextView)
-        commitSearch(search)
     }
     const [sourceFilter, setSourceFilter] = useState("all")
     const [slotFilter, setSlotFilter] = useState("all")
