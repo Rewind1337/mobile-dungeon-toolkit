@@ -1569,9 +1569,4 @@ export const resourceSprites = {
     water_shard_tier7: WaterShardTier7,
     water_shard_tier8: WaterShardTier8,
 
-    // These filenames contain a typo; expose correctly spelled resource keys as aliases.
-    uncommon_ascension_orb: UncommonAscensionOrb,
-    rare_ascension_orb: RareAscensionOrb,
-    epic_ascension_orb: EpicAscensionOrb,
-    legendary_ascension_orb: LegendaryAscensionOrb,
 }
