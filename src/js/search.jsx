@@ -2,6 +2,11 @@ import { useCallback, useEffect, useState } from "react"
 
 const SEARCH_PARAM = "search"
 
+/** Return true for object fields that store asset locations rather than searchable content. */
+export function isSearchAssetField(key) {
+    return /(?:src|sprites?|icons?|images?|urls?|paths?)$/i.test(String(key ?? ""))
+}
+
 /**
  * Match all ampersand-separated search terms against one searchable text corpus.
  * A leading "!" negates that term. Matching is case-insensitive substring matching.
