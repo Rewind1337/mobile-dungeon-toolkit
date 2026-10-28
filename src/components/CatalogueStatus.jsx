@@ -244,6 +244,41 @@ function getDetails(status) {
     return details
 }
 
+function matchesStatusSearch(status, rawQuery) {
+    const query = rawQuery.trim().toLowerCase()
+    if (!query) return true
+
+    const wantsNotMitigatable = /\b(?:not|non)[-\s]+mitigatable\b/.test(query)
+    const wantsNotRemovable = /\b(?:not|non)[-\s]+removable\b/.test(query)
+    const wantsMitigatable = !wantsNotMitigatable && /\bmitigatable\b/.test(query)
+    const wantsRemovable = !wantsNotRemovable && /\bremovable\b/.test(query)
+
+    // The catalogue treats an unspecified property the same as the positive chip.
+    if (wantsNotMitigatable && status.mitigatable !== false) return false
+    if (wantsMitigatable && status.mitigatable === false) return false
+    if (wantsNotRemovable && status.removable !== false) return false
+    if (wantsRemovable && status.removable === false) return false
+
+    const remainingQuery = query
+        .replace(/\b(?:not|non)[-\s]+mitigatable\b/g, " ")
+        .replace(/\b(?:not|non)[-\s]+removable\b/g, " ")
+        .replace(/\bmitigatable\b/g, " ")
+        .replace(/\bremovable\b/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+
+    if (!remainingQuery) return true
+
+    // Don't index these property names as plain text: they are handled as real filters above.
+    const { mitigatable, removable, ...searchableStatus } = status
+    const category = getCategory(status)
+    const description = STATUS_DESCRIPTIONS[status.name] ?? humanize(status.effectType ?? "effect")
+    const searchable = `${status.name} ${humanize(status.name)} ${category} ${description} ${status.effectType ?? ""} ${JSON.stringify(searchableStatus)}`.toLowerCase()
+
+    return searchable.includes(remainingQuery)
+}
+
+
 function StatusCard({ status }) {
     const category = getCategory(status)
     const sprite = statusSprites[status.name] ?? statusSprites[status.name.replace("critical_resistance", "critical_resist")]
@@ -288,9 +323,7 @@ function CatalogueStatus() {
         const query = search.trim().toLowerCase()
         return statuses.filter(status => {
             const category = getCategory(status)
-            const description = STATUS_DESCRIPTIONS[status.name] ?? humanize(status.effectType ?? "effect")
-            const searchable = `${status.name} ${humanize(status.name)} ${category} ${description} ${status.effectType ?? ""} ${JSON.stringify(status)}`.toLowerCase()
-            return (!query || searchable.includes(query))
+            return matchesStatusSearch(status, query)
                 && (categoryFilter === "all"
                     || (categoryFilter === "special"
                         ? category.startsWith("Special")
