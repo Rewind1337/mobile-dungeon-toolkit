@@ -9,7 +9,9 @@ const SEARCH_PARAM = "search"
 function getSearchFromLocation() {
     if (typeof window === "undefined") return ""
 
-    const rawParams = window.location.search.replace(/^\\?/, "").split(/[+&]/)
+    const rawParams = window.location.search.startsWith("?")
+        ? window.location.search.slice(1).split("&")
+        : window.location.search.split("&")
     for (const param of rawParams) {
         const separatorIndex = param.indexOf("=")
         const rawKey = separatorIndex === -1 ? param : param.slice(0, separatorIndex)
@@ -45,7 +47,7 @@ export function isSearchAssetField(key) {
 export function matchesSearchQuery(searchableValues, rawQuery, matchSpecialTerm) {
     const queryTerms = String(rawQuery ?? "")
         .toLowerCase()
-        .split("&")
+        .split(/[+&]/)
         .map(term => term.trim())
         .filter(Boolean)
 
