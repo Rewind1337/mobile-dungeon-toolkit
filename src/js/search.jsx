@@ -36,6 +36,24 @@ export function matchesSearchQuery(searchableValues, rawQuery, matchSpecialTerm)
 }
 
 /**
+ * Clear search from the current history entry before leaving its view.
+ * Replacing the current entry prevents Back from restoring an old search.
+ * The event clears the live search inputs even when their component stays mounted.
+ */
+export function clearSearchFromUrl() {
+    if (typeof window === "undefined") return
+
+    const url = new URL(window.location.href)
+    if (url.searchParams.has(SEARCH_PARAM)) {
+        url.searchParams.delete(SEARCH_PARAM)
+        const nextUrl = `${url.pathname}${url.search}${url.hash}`
+        window.history.replaceState(window.history.state, "", nextUrl)
+    }
+
+    window.dispatchEvent(new Event("search-reset"))
+}
+
+/**
  * Keep a search input in local state while typing, then synchronize it to the
  * URL with replaceState when the input blurs. replaceState avoids polluting
  * the browser's Back/Forward history for each search.
@@ -53,7 +71,11 @@ export function useUrlSearch() {
             setSearch(new URLSearchParams(window.location.search).get(SEARCH_PARAM) ?? "")
         }
         window.addEventListener("popstate", syncSearchFromUrl)
-        return () => window.removeEventListener("popstate", syncSearchFromUrl)
+        window.addEventListener("search-reset", syncSearchFromUrl)
+        return () => {
+            window.removeEventListener("popstate", syncSearchFromUrl)
+            window.removeEventListener("search-reset", syncSearchFromUrl)
+        }
     }, [])
 
     const commitSearch = useCallback(value => {
