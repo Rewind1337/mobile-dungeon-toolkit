@@ -286,8 +286,10 @@ function BannerCatalogueCard({ result, heroesById }) {
 
 function BannerCatalogueList({ heroesRef }) {
     const [search, setSearch] = useState("")
-    const heroes = Array.isArray(heroesRef) ? heroesRef : []
-    const heroesById = useMemo(() => new Map(heroes.map(hero => [hero.id, hero])), [heroes])
+    const heroesById = useMemo(() => {
+        const heroes = Array.isArray(heroesRef) ? heroesRef : []
+        return new Map(heroes.map(hero => [hero.id, hero]))
+    }, [heroesRef])
     const query = search.trim().toLowerCase()
 
     const filteredBanners = useMemo(() => {
