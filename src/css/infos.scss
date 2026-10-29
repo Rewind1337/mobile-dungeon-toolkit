@@ -257,19 +257,3 @@
   line-height: 1.4;
   opacity: 0.7;
 }
-
-.resource-location-filter {
-  display: flex;
-  flex: 0 1 250px;
-  flex-direction: column;
-  gap: V.$gap-small;
-  min-width: 180px;
-}
-
-
-@include M.media-query-max(V.$bp-mobile) {
-  .resource-location-filter {
-    width: 100%;
-    min-width: 0;
-  }
-}

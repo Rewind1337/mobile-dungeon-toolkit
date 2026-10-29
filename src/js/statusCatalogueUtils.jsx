@@ -1,4 +1,5 @@
 import { getStatusPolarity } from "./statusPolarity.jsx"
+import { humanize } from "./util.jsx"
 
 export const STATUS_DESCRIPTIONS = {
     attack_up: "Increases Attack.",
@@ -125,8 +126,6 @@ export const STATUS_DESCRIPTIONS = {
     hollowing: "When a buff is received, triggers damage based on the holder’s Defence.",
     miasma: "At 5 stacks, deals damage equal to 20% of own max HP at round end."
 }
-
-import { humanize } from "./util.jsx"
 
 // These are conservative classifications based on the recorded status mechanics.
 // Leave entries out when the data does not make the affected side clear.

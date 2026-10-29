@@ -1,5 +1,6 @@
 import { ATTRIBUTE_DEFINITIONS, DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
 import { statusSprites } from "../database/db_sprites.jsx"
+import { humanize } from "./util.jsx"
 
 export const SLOT_NAMES = Object.fromEntries(
     Object.values(EQUIPMENT_SLOT_DEFINITIONS).map(({ id, name }) => [id, name])
@@ -12,8 +13,6 @@ export const PERK_NAMES = Object.fromEntries(
 )
 export const SLOT_ICON_KEYS = { WEAPON: "weapons", HELMET: "helmets", ARMOR: "armors", NECKLACE: "necklaces", RING: "rings" }
 export const ATTRIBUTE_ICON_KEYS = { strength: 1, dexterity: 2, intelligence: 3 }
-
-import { humanize } from "./util.jsx"
 
 export function getLocations(item) {
     const raw = item?.dropLocation

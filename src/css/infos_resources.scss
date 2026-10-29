@@ -341,7 +341,6 @@
   .banner-catalogue-grid,
   .banner-catalogue-groups,
   .resource-catalogue-grid { grid-template-columns: minmax(0, 1fr); }
-  .resource-catalogue-filters { align-items: stretch; flex-direction: column; }
 }
 
 
@@ -376,8 +375,6 @@
 @include M.media-query-max(V.$bp-mobile) {
   .resource-catalogue-search-group { flex-basis: auto; }
   .resource-location-filter { width: 100%; min-width: 0; }
-  .banner-catalogue-list, .resource-catalogue { padding: 0; }
-  .gem-catalogue-grid { grid-template-columns: minmax(0, 1fr); }
   .banner-catalogue-hero-odds { max-width: 100%; white-space: normal; }
   .banner-catalogue-hero-grid { grid-template-columns: repeat(auto-fill, 116px); justify-content: space-evenly; }
   .banner-catalogue-card.card-dark { grid-column: 1 / -1; }
