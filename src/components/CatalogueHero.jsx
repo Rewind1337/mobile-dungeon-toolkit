@@ -518,19 +518,24 @@ function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
         <section className="hero-catalogue">
             <div className="catalogue-view-switch" aria-label="Hero catalogue sections">
                 <Button text="Heroes" color={5} active={initialView === "heroes"} onClick={() => onViewChange?.("heroes")} />
+                <Button text="Tier List" color={5} active={initialView === "tier-list"} onClick={() => onViewChange?.("tier-list")} />
                 <Button text="Banners" color={5} active={initialView === "banners"} onClick={() => onViewChange?.("banners")} />
             </div>
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
-                    <div className="catalogue-title header-big">{initialView === "banners" ? "Banner Catalogue" : "Hero Catalogue"}</div>
+                    <div className="catalogue-title header-big">{initialView === "banners" ? "Banner Catalogue" : initialView === "tier-list" ? "Hero Tier List" : "Hero Catalogue"}</div>
                     <p className="catalogue-description text">
                         {initialView === "banners"
                             ? "Browse the banner definitions and their included heroes. Filter by hero name, rarity, element, role, main attribute, and starred status."
-                            : "Search heroes, skills, talents, effects, attributes, rarity, element, role, and other stored hero data."}
+                            : initialView === "tier-list"
+                                ? "Tier List view. Tier placements are not currently defined in the project data."
+                                : "Search heroes, skills, talents, effects, attributes, rarity, element, role, and other stored hero data."}
                     </p>
                 </div>
             </header>
-            {initialView === "banners" ? (
+            {initialView === "tier-list" ? (
+                <div className="catalogue-empty card">No tier placements have been defined yet.</div>
+            ) : initialView === "banners" ? (
                 <BannerCatalogueList heroesRef={heroesRef} search={search} setSearch={setSearch} commitSearch={commitSearch} />
             ) : (
                 <>
