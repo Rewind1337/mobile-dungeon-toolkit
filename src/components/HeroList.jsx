@@ -8,23 +8,24 @@ import { filterSprites } from '../database/db_sprites.jsx'
 import HeroFilters from './HeroFilters.jsx';
 import BackToTopButton from './BackToTopButton.jsx';
 import { ATTRIBUTE_DEFINITIONS, ELEMENT_DEFINITIONS, RARITY_DEFINITIONS, ROLE_DEFINITIONS, getEnumNameById } from '../database/enums.jsx';
+import { isSearchAssetField, matchesSearchQuery, useUrlSearch } from '../js/search.jsx';
 
 function getSearchableValues(value, seen = new Set()) {
     if (value === null || value === undefined) return []
     if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return [String(value)]
     if (typeof value !== 'object' || seen.has(value)) return []
     seen.add(value)
-    return Object.entries(value).flatMap(([key, child]) => [key, ...getSearchableValues(child, seen)])
+    return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : [key, ...getSearchableValues(child, seen)])
 }
 function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId }) {
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
+    const [search, setSearch, commitSearch] = useUrlSearch();
     const [filters, setFilters] = useState({
         element: null,
         role: null,
         mainAttribute: null,
         rarity: null,
-        isStarred: null,
-        name: ""
+        isStarred: null
     });
     const [filtersAdvanced, setFiltersAdvanced] = useState(false)
     const [sortOrder, setSortOrder] = useState(0) // 0 alphabetical, 1 reverse alphabetical
@@ -37,7 +38,9 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
     };
 
     const clearFilters = () => {
-        setFilters({ element: null, role: null, mainAttribute: null, rarity: null, isStarred: null, name: "" });
+        setFilters({ element: null, role: null, mainAttribute: null, rarity: null, isStarred: null });
+        setSearch("");
+        commitSearch("");
     };
 
     const filteredHeroes = useMemo(() => {
@@ -47,18 +50,28 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
             (filters.mainAttribute === null || heroObj.mainAttribute === filters.mainAttribute) &&
             (filters.rarity === null || heroObj.rarity === filters.rarity) &&
             (filters.isStarred === null || heroObj.isStarred === filters.isStarred) &&
-            (!filters.name.trim() || (filters.name.trim().toLowerCase() === 'starred' ? heroObj.isStarred === true : filters.name.trim().toLowerCase() === 'not starred' ? heroObj.isStarred === false : [...getSearchableValues(heroObj), getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(heroObj.mainAttribute)) ?? '', getEnumNameById(ELEMENT_DEFINITIONS, Number(heroObj.element)) ?? '', getEnumNameById(RARITY_DEFINITIONS, Number(heroObj.rarity)) ?? '', getEnumNameById(ROLE_DEFINITIONS, Number(heroObj.role)) ?? ''].join(' ').toLowerCase().includes(filters.name.trim().toLowerCase())))
+            matchesSearchQuery([
+                ...getSearchableValues(heroObj),
+                getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(heroObj.mainAttribute)) ?? '',
+                getEnumNameById(ELEMENT_DEFINITIONS, Number(heroObj.element)) ?? '',
+                getEnumNameById(RARITY_DEFINITIONS, Number(heroObj.rarity)) ?? '',
+                getEnumNameById(ROLE_DEFINITIONS, Number(heroObj.role)) ?? '',
+            ], search, term => {
+                if (term === 'starred') return heroObj.isStarred === true;
+                if (term === 'not starred') return heroObj.isStarred === false;
+                return undefined;
+            })
         ));
 
         return result.sort((a, b) => {
             const comparison = a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
             return sortOrder === 0 ? comparison : -comparison;
         });
-    }, [heroesRef, filters, sortOrder]);
+    }, [heroesRef, filters, search, sortOrder]);
 
     return (<>
         <div className='flex-row'>
-            <HeroFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={(name) => setFilters((prev) => ({ ...prev, name }))} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} sortOrder={sortOrder} onToggleSort={() => setSortOrder(order => order === 0 ? 1 : 0)} />
+            <HeroFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={setSearch} onSearchBlur={() => commitSearch(search)} clearFilters={clearFilters} filters={{ ...filters, name: search }} filterSprites={filterSprites} sortOrder={sortOrder} onToggleSort={() => setSortOrder(order => order === 0 ? 1 : 0)} />
         </div>
         <div className='header-big'>{headerText}</div>
         <div className='list hero-list flex-row' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
@@ -67,16 +80,16 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
             ) : (
                 filteredHeroes.map((heroObj) => (
                     <Hero
-                        selected={heroObj.id === selectedHeroId}
+                        selected={(savedHeroes ? heroObj.saveId : heroObj.id) === selectedHeroId}
                         heroObj={heroObj}
                         key={heroObj.id + '-' + heroObj.saveId}
-                        level={null}
+                        level={savedHeroes ? (heroObj.level ?? null) : null}
                         onClick={() => setSelectedHeroId(savedHeroes ? heroObj.saveId : heroObj.id)}
                     />
                 ))
             )}
         </div>
-        <BackToTopButton scrollRef={listRef} />
+        <BackToTopButton scrollRef={listRef} className="hero-list-back-to-top" />
     </>
     )
 }

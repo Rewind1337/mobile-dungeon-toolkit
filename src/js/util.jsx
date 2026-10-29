@@ -19,3 +19,9 @@ export function formatNumber(n, decimals) {
 
     return formatted + suffix;
 }
+ 
+/** Convert enum-style identifiers into readable labels. */
+export const humanize = value => String(value ?? "")
+    .replaceAll("_", " ")
+    .toLowerCase()
+    .replace(/\b\w/g, letter => letter.toUpperCase())

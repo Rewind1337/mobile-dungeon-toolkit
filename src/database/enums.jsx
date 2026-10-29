@@ -610,7 +610,8 @@ export const STATUS_EFFECT_DEFINITIONS = {
         name: "shield",
         effectType: "damage_absorption",
         stacks: true,
-        removable: false
+        mitigatable: true,
+        removable: true
     },
 
     absorbing: {
@@ -1344,6 +1345,7 @@ export const STATUS_EFFECT_DEFINITIONS = {
         effectType: "death_skill_scaling",
         max_stacks: 9,
         stacks: true,
+        mitigatable: false,
         removable: false
     },
 
@@ -1583,6 +1585,7 @@ export const STATUS_EFFECT_DEFINITIONS = {
             "primary",
             "secondary"
         ],
+        mitigatable: false,
         removable: false
     },
 

@@ -40,6 +40,19 @@
     }
 }
 
+
+@include M.media-query-max(V.$bp-mobile, ()) {
+    .modal.modal-center.card {
+        width: calc(100vw - 24px);
+        max-width: calc(100vw - 24px);
+        max-height: calc(100vh - 36px);
+        max-height: calc(100dvh - 36px);
+        padding: 12px;
+        border-radius: V.$border-radius;
+        overflow: auto;
+    }
+}
+
 .modal-left {
     top: 86px;
     left: -75vw;

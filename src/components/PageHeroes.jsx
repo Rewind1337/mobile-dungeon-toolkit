@@ -6,9 +6,23 @@ import HeroPreview from "./HeroPreview.jsx"
 import Button from "./Button.jsx"
 import Modal from "./Modal.jsx"
 import { decodeHeroShareInput, restoreSharedHero } from "../utils/heroShare.js"
+import { clearSearchFromUrl } from "../js/search.jsx"
+import { ATTRIBUTE_DEFINITIONS } from "../database/enums.jsx"
+
+const isItemCompatibleWithHero = (item, hero) => {
+    if (!item || !hero) return false
+    const requirement = item.attributeRequirement
+    return requirement == null
+        || Number(requirement) === ATTRIBUTE_DEFINITIONS.NONE.id
+        || Number(requirement) === Number(hero.mainAttribute)
+}
 
 function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
     const [pageContent, setPageContent] = useState(0)
+    const switchListPage = nextPage => {
+        if (pageContent !== nextPage) clearSearchFromUrl()
+        setPageContent(nextPage)
+    }
     useEffect(() => { setPreviewFullWidth(false) }, [pageContent])
     const [previewFullWidth, setPreviewFullWidth] = useState(false)
     const [importModalVisible, setImportModalVisible] = useState(false)
@@ -46,7 +60,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
 
         savedHeroesRef.current = [...savedHeroesRef.current, savedHero]
         setSavedHeroesRevision(revision => revision + 1)
-        setPageContent(1)
+        switchListPage(1)
         setSelectedHeroId(null)
         setSelectedSavedHeroId(nextSaveId)
         setEquippedItems([...savedHero.items])
@@ -119,7 +133,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
             ))
             setSavedHeroesRevision(revision => revision + 1)
             setSelectedSavedHeroId(existingSaveId)
-            setPageContent(1)
+            switchListPage(1)
             if (manualSaveFunction) manualSaveFunction()
             return
         }
@@ -177,7 +191,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
 
     const equipSelectedItem = (itemObj) => {
         const targetSlot = itemSelectionType
-        if (targetSlot === null || !itemObj || itemObj.slot !== targetSlot) return
+        if (targetSlot === null || !itemObj || itemObj.slot !== targetSlot || !isItemCompatibleWithHero(itemObj, activeHero)) return
 
         const nextItems = [...equippedItems]
         nextItems[targetSlot] = { ...itemObj }
@@ -223,8 +237,8 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                     <Button text={"Your Saved Items"} color={1} onClick={() => setItemSelectionModalMode(1)} />
                 </div>
                 {itemSelectionModalMode === 0 ?
-/* NOT ACTIVE    */ <ItemList setsRef={itemsRef.current.ITEM_SETS} extraHeight={75} filtersOffset={"65px"} headerText={"All Items"} itemsRef={itemsRef.current.BASE_ITEMS} itemType={itemSelectionType} setSelectedItemId={setSelectedItemId} /> :
-                    <ItemList setsRef={itemsRef.current.ITEM_SETS} extraHeight={75} filtersOffset={"65px"} savedItems headerText={"Saved Items"} itemsRef={savedItemsRef.current} itemType={itemSelectionType} setSelectedItemId={setSelectedSavedItemId} />
+/* NOT ACTIVE    */ <ItemList setsRef={itemsRef.current.ITEM_SETS} extraHeight={75} filtersOffset={"65px"} headerText={"All Items"} itemsRef={itemsRef.current.BASE_ITEMS} itemType={itemSelectionType} heroAttributeRequirement={activeHero?.mainAttribute} setSelectedItemId={setSelectedItemId} /> :
+                    <ItemList setsRef={itemsRef.current.ITEM_SETS} extraHeight={75} filtersOffset={"65px"} savedItems headerText={"Saved Items"} itemsRef={savedItemsRef.current} itemType={itemSelectionType} heroAttributeRequirement={activeHero?.mainAttribute} setSelectedItemId={setSelectedSavedItemId} />
                 }
             </Modal>
             <Modal position="right" isVisible={selectedItemId.slot !== null || selectedSavedItemId.slot !== null} onClose={() => { setItemSelectionVisible(false); clearItemSelection(); }}>
@@ -237,8 +251,8 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
 
             <div className="sub-nav-bar flex-row">
                 <div className="pagination flex-row card w-100">
-                    <Button text={"All Heroes"} color={0} onClick={() => { setPageContent(0) }} />
-                    <Button text={"Saved Heroes"} color={0} onClick={() => { setPageContent(1) }} />
+                    <Button text={"All Heroes"} color={0} onClick={() => { switchListPage(0) }} />
+                    <Button text={"Saved Heroes"} color={0} onClick={() => { switchListPage(1) }} />
                     <Button text={"Import Hero"} color={0} onClick={() => setImportModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">

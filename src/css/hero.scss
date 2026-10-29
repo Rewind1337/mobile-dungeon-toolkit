@@ -139,10 +139,6 @@
     }
   }
 
-  .equipment {
-    flex-wrap: wrap;
-  }
-
   .flex-col.hero {
     width: max-content;
   }
@@ -193,6 +189,8 @@
 
     @include M.media-query-max(V.$bp-mobile, ()) {
       border-radius: 0;
+      width: 20px;
+      height: 20px;
     }
   }
 
@@ -218,6 +216,8 @@
 
     @include M.media-query-max(V.$bp-mobile, ()) {
       border-radius: 0;
+      width: 20px;
+      height: 20px;
     }
   }
 
@@ -233,7 +233,7 @@
       border-radius: 0;
     }
   }
-  
+
   .hero-sprite-img {
     width: 100%;
     height: 100%;
@@ -245,12 +245,17 @@
   }
 
   .text {
-    color: black;
-    font-family: V.$font-family-header;
+    box-sizing: border-box;
+    min-height: 30px;
+    color: inherit;
+    font-family: V.$font-family-stats;
     font-size: V.$font-size-button;
+    border: none;
     border-radius: V.$border-radius;
-    background-color: #fff;
+    background: rgba(0, 0, 0, 0.25);
+    margin-top: 6px;
     text-align: center;
+    text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black;
     margin-inline: auto;
     width: 100%;
     outline: 2px solid black;
@@ -300,7 +305,6 @@
 
 .hero .hero-sprite {
   width: V.$hero-sprite-width;
-  height: V.$hero-sprite-height;
   flex: 0 0 V.$hero-sprite-width;
   display: flex;
   align-items: center;
@@ -330,12 +334,15 @@
   gap: 6px;
   flex: 1 1 0;
 }
-.hero-preview .hero-metadata > .hero-metadata-name { flex: 1 1; }
-.hero-preview .hero-metadata img {
-  width: 48px;
-  height: 48px;
+.hero-preview .hero-metadata > .hero-metadata-name { 
+  flex: 1 1; 
+  font-size: V.$font-size-button-large;
+}
+.hero-preview .hero-metadata .catalogue-chip-icon {
+  width: 31px;
+  height: 31px;
   object-fit: contain;
-  flex: 0 0;
+  flex: 0 0 auto;
 }
 @include M.media-query-max(V.$bp-mobile, ()) {
   .hero-list .hero-sprite, .hero .hero-sprite {
@@ -343,20 +350,69 @@
     height: 85px;
     flex-basis: 60px;
   }
-  .hero-preview .flex-col.hero {
-    margin-top: 8px;
-  }
   .hero-preview .hero-metadata > .hero-metadata-name {
     order: -1;
     flex: 1 1 100%;
     width: 100%;
     flex-basis: 100%;
   }
-  .hero-preview .hero-metadata img { width: 32px; height: 32px; }
+  .hero-preview .hero-metadata-attribute,
+  .hero-preview .hero-metadata-role {
+    flex: 1 1 calc(50% - V.$gap-small);
+    min-width: 0;
+    justify-content: center;
+  }
+  .hero-preview .hero-metadata .catalogue-chip-icon { width: 31px; height: 31px; }
+  .hero-preview .hero-preview-skills-toggle { margin-top: V.$gap-small; }
 }
 
 
+.hero-preview .equipment {
+  display: grid;
+  grid-template-columns: repeat(6, calc(V.$item-sprite-width + 10px));
+  justify-content: center;
+  align-items: start;
+  gap: V.$gap-small;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.hero-preview .equipment > .item {
+  box-sizing: border-box;
+  width: calc(V.$item-sprite-width + 10px);
+  min-width: 0;
+  margin: 0;
+}
+
+@include M.media-query-max(V.$bp-tablet, ()) {
+  .hero-preview .equipment {
+    grid-template-columns: repeat(3, calc(V.$item-sprite-width + 10px));
+  }
+}
+
 @include M.media-query-max(V.$bp-mobile, ()) {
+  .hero-preview .equipment {
+    grid-template-columns: repeat(2, 70px);
+  }
+
+  .hero-preview .equipment > .item {
+    width: 70px;
+  }
+
+  .hero > .flex-col > .text {
+    border-radius: 0;
+    outline: 0;
+    margin-inline: -2px;
+    width: calc(100% + 4px);
+    border: 2px solid black;
+    margin-top: 0;
+  }
+}
+
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .filters-group-rarities { order: 1; }
+  .filters-starred-group { order: 2; }
   .hero-preview .calculated-stats-heading small { font-size:.75em; }
   .hero-preview .base-stats:not(.calculated-stats) { flex-direction:column; align-items:stretch; }
   .hero-preview .base-stats:not(.calculated-stats) > .card { width:100%; min-width:0; justify-content:flex-start; gap:8px; }
@@ -365,4 +421,68 @@
   .hero-preview .details { flex-direction:column; }
   .hero-preview .details > .flex-col { width:100%; min-width:0; }
   .hero-preview .hero-stat { min-width:0; gap:6px; }
+}
+
+
+/* Keep the skills/talents cards readable when the preview has a narrow viewport. */
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .hero-preview .skills-talents-layout {
+    flex-direction: column;
+    align-items: stretch;
+    gap: V.$gap;
+  }
+
+  .hero-preview .skills-talents-layout > .flex-col.hero {
+    order: -1;
+    align-self: center;
+    margin: V.$gap-small 0 0;
+    max-width: 100%;
+  }
+
+  .hero-preview .skills-talents-layout > .skills,
+  .hero-preview .skills-talents-layout > .talents {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .hero-preview .skills-talents-layout > .talents {
+    flex-wrap: wrap;
+  }
+
+  .hero-preview .talents .text-card.w-33 {
+    flex: 0 1 calc(50% - V.$gap-small);
+    width: calc(50% - V.$gap-small);
+    min-width: 0;
+  }
+
+  .hero-preview .talents .text-card.w-100 {
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+
+.back-to-top-button.hero-list-back-to-top {
+  right: 7px;
+  bottom: 6px;
+}
+
+@include M.media-query-max(V.$bp-small, ()) {
+  .back-to-top-button.hero-list-back-to-top {
+    right: 4px;
+    bottom: 4px;
+  }
+}
+
+.hero-preview .hero-sprite-container {
+  margin-bottom: -2px;
+}
+
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .hero-preview .equipment > .item:not([data-type]) .text {
+    width: 100%;
+    font-size: 16px;
+  }
 }

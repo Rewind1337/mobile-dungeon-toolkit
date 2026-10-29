@@ -8,23 +8,24 @@ import { filterSprites } from '../database/db_sprites.jsx'
 import ItemFilters from './ItemFilters.jsx'
 import BackToTopButton from './BackToTopButton.jsx'
 import { ATTRIBUTE_DEFINITIONS, DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
+import { isSearchAssetField, matchesSearchQuery, useUrlSearch } from '../js/search.jsx'
 
 function getSearchableValues(value, seen = new Set()) {
     if (value === null || value === undefined) return []
     if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return [String(value)]
     if (typeof value !== 'object' || seen.has(value)) return []
     seen.add(value)
-    return Object.entries(value).flatMap(([key, child]) => [key, ...getSearchableValues(child, seen)])
+    return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : [key, ...getSearchableValues(child, seen)])
 }
-function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, setsRef = [], itemType = null, setSelectedItemId }) {
+function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, setsRef = [], itemType = null, heroAttributeRequirement = null, setSelectedItemId }) {
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
+    const [search, setSearch, commitSearch] = useUrlSearch();
     const [filters, setFilters] = useState({
         set: null,
         unique: null,
         slot: null,
         attributeRequirement: null,
         rarity: null,
-        name: "",
     });
     const [filtersAdvanced, setFiltersAdvanced] = useState(false)
     const [sortOrder, setSortOrder] = useState(0) // 0 alphabetical, 1 reverse alphabetical
@@ -47,13 +48,20 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
     };
 
     const clearFilters = () => {
-        setFilters({ set: null, unique: null, slot: null, attributeRequirement: null, rarity: null, name: "" });
+        setFilters({ set: null, unique: null, slot: null, attributeRequirement: null, rarity: null });
+        setSearch("");
+        commitSearch("");
     };
 
     // Memoize filtered items
     const filteredItems = useMemo(() => {
         const result = allItems.filter((itemObj) => {
             const matchesItemType = itemType === null || itemObj.slot === itemType
+            const itemRequirement = itemObj.attributeRequirement
+            const matchesHeroAttribute = heroAttributeRequirement == null
+                || itemRequirement == null
+                || Number(itemRequirement) === ATTRIBUTE_DEFINITIONS.NONE.id
+                || Number(itemRequirement) === Number(heroAttributeRequirement)
             const hasSet = itemObj.set !== undefined && itemObj.set !== null && itemObj.set !== -1;
             const hasUnique = itemObj.unique !== undefined && itemObj.unique !== null && itemObj.unique !== 0 && itemObj.unique !== 'NOTHING';
             const matchesSet = filters.set === null || (filters.set === 'noSet' ? !hasSet : itemObj.iconType === filters.set);
@@ -70,22 +78,25 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                 itemObj.dropLocation ?? '', set?.name ?? '',
                 ...Object.entries(PERK_DEFINITIONS).flatMap(([key, perk]) => ([...(itemObj.fixedPerks ?? []), ...(itemObj.perks ?? [])].some(value => value && typeof value === 'object' ? value.id === perk.id : String(value).toUpperCase().replace(/\s/g, '_') === key || String(value) === String(perk.id)) ? [key, perk.name] : []))
             ].join(' ').toLowerCase()
-            const searchQuery = filters.name.trim().toLowerCase()
             const isUnique = hasUnique
-            const matchesName = !searchQuery || (searchQuery === 'unique' ? isUnique : searchQuery === 'not unique' ? !isUnique : searchable.includes(searchQuery));
+            const matchesName = matchesSearchQuery(searchable, search, term => {
+                if (term === 'unique') return isUnique;
+                if (term === 'not unique') return !isUnique;
+                return undefined;
+            });
 
-            return matchesItemType && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity && matchesName;
+            return matchesItemType && matchesHeroAttribute && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity && matchesName;
         });
 
         return result.sort((a, b) => {
             const comparison = a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
             return sortOrder === 0 ? comparison : -comparison;
         });
-    }, [allItems, filters, itemType, sortOrder, setsRef]);
+    }, [allItems, filters, search, itemType, heroAttributeRequirement, sortOrder, setsRef]);
 
     return (<>
         <div className='flex-row'>
-            <ItemFilters savedItems={savedItems} setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={(name) => setFilters((prev) => ({ ...prev, name }))} clearFilters={clearFilters} filters={filters} filterSprites={filterSprites} topOffset={filtersOffset} sortOrder={sortOrder} onToggleSort={() => setSortOrder(order => order === 0 ? 1 : 0)} />
+            <ItemFilters savedItems={savedItems} setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={setSearch} onSearchBlur={() => commitSearch(search)} clearFilters={clearFilters} filters={{ ...filters, name: search }} filterSprites={filterSprites} topOffset={filtersOffset} sortOrder={sortOrder} onToggleSort={() => setSortOrder(order => order === 0 ? 1 : 0)} />
         </div>
         <div className='header-big'>{headerText}</div>
 
@@ -103,7 +114,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                 ))
             )}
         </div>
-        <BackToTopButton scrollRef={listRef} />
+        <BackToTopButton scrollRef={listRef} className="item-list-back-to-top" />
     </>
     )
 }

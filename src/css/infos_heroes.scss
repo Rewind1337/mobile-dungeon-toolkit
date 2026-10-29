@@ -1,0 +1,207 @@
+@use './_variables.scss' as V;
+@use './mixins.scss' as M;
+
+/* Hero catalogue */
+
+.hero-catalogue-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.hero-catalogue-card {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap;
+  min-width: 0;
+  padding: V.$padding-card;
+  text-align: left;
+}
+
+.hero-catalogue-identity {
+  display: flex;
+  align-items: flex-start;
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.hero-catalogue-portrait {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.hero-catalogue-portrait .hero {
+  cursor: default;
+}
+
+.hero-catalogue-heading {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.hero-catalogue-name {
+  align-self: flex-start;
+  max-width: 100%;
+  margin: 0;
+  font-family: V.$font-family-stats;
+  font-size: V.$font-size-header;
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.hero-catalogue-name[data-rarity="1"] { color: #73d17c; }
+.hero-catalogue-name[data-rarity="2"] { color: #83b5ff; }
+.hero-catalogue-name[data-rarity="3"] { color: #d3a0ff; }
+.hero-catalogue-name[data-rarity="4"] { color: #ffc56e; }
+
+
+.hero-catalogue-meta-row {
+  display: flex; flex-wrap: wrap; align-items: center; gap: V.$gap-small; min-width: 0;
+}
+
+.hero-catalogue-section,
+.hero-catalogue-skills,
+.hero-catalogue-talents {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.hero-catalogue-skill,
+.hero-catalogue-talent {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.hero-catalogue-skill-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+  text-align: center;
+}
+
+.skill-catalogue-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+.skill-catalogue-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+.skill-catalogue-name { font-size: 24px; }
+.skill-catalogue-hero[data-rarity="1"] { border-color: rgba(80, 190, 100, 0.7); }
+.skill-catalogue-hero[data-rarity="2"] { border-color: rgba(80, 145, 245, 0.75); }
+.skill-catalogue-hero[data-rarity="3"] { border-color: rgba(180, 95, 235, 0.75); }
+.skill-catalogue-hero[data-rarity="4"] { border-color: rgba(235, 165, 55, 0.8); }
+.talent-catalogue-heading { justify-content: flex-start; }
+.talent-catalogue-name { font-size: 24px; font-weight: 700; text-align: left; }
+.skill-catalogue-description { align-self: stretch; margin: 0; text-align: left; white-space: normal; overflow-wrap: anywhere; }
+
+.talent-source-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+.talent-source-entry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: V.$border-radius-small;
+}
+.talent-source-hero { font-weight: 700; }
+.talent-source-position { font-size: V.$font-size-xsmall; }
+
+.talent-effect-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: V.$gap-small;
+  margin: 0;
+  padding: 0;
+}
+
+.talent-effect-entry {
+  display: flex;
+  flex: 1 1 30px;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 6px 9px;
+  border-radius: V.$border-radius-small;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.talent-effect-entry dt,
+.talent-effect-entry dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.talent-effect-entry dt {
+  opacity: 0.75;
+  font-size: V.$font-size-xsmall;
+}
+
+.talent-effect-entry dd {
+  font-weight: 600;
+}
+
+.hero-catalogue-details summary {
+  cursor: pointer;
+  font-size: V.$font-size-small;
+}
+
+.hero-catalogue-code {
+  max-width: 100%;
+  margin: V.$gap-small 0 0;
+  padding: V.$padding-card;
+  overflow-x: auto;
+  border-radius: V.$border-radius-small;
+  background: rgba(0, 0, 0, 0.25);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: monospace;
+  font-size: V.$font-size-xsmall;
+}
+
+.hero-catalogue-talent-effects {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: V.$gap-small 0 0;
+  padding-left: 1.2rem;
+  overflow-wrap: anywhere;
+}
+
+@include M.media-query(V.$bp-wide) {
+  .hero-catalogue-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@include M.media-query-max(V.$bp-mobile) {
+  .hero-catalogue-grid { grid-template-columns: minmax(0, 1fr); }
+  .hero-catalogue-name { border-radius: 0; }
+}

@@ -300,7 +300,7 @@ import SheepBrownSrc from '../sprites/heroes/sheep_brown.webp';
 import ScarabRedSrc from '../sprites/heroes/scarab_red.webp';
 import ScarabGreenSrc from '../sprites/heroes/scarab_green.webp';
 
-import NullSrc from '../sprites/null.webp';
+import QuestionmarkSrc from '../sprites/questionmark.webp';
 import AdventureExperienceScroll from '../sprites/resources/adventure_experience_scroll.webp';
 import AdventureThirst from '../sprites/resources/adventure_thirst.webp';
 import ArenaCoin from '../sprites/resources/arena_coin.webp';
@@ -347,6 +347,7 @@ import GuildhuntTicket from '../sprites/resources/guildhunt_ticket.webp';
 import HeroExperienceScroll from '../sprites/resources/hero_experience_scroll.webp';
 import LegendaryAscensionOrb from '../sprites/resources/legendary_ascension_orb.webp';
 import LegendaryBannerBooster from '../sprites/resources/legendary_banner_booster.webp';
+import NeutralBannerBooster from '../sprites/special/neutral_banner_booster.webp';
 import LegendaryEquipmentDust from '../sprites/resources/legendary_equipment_dust.webp';
 import LegendarySkillTome from '../sprites/resources/legendary_skill_tome.webp';
 import LegendaryWildcard from '../sprites/resources/legendary_wildcard.webp';
@@ -404,7 +405,7 @@ import WaterShardTier7 from '../sprites/resources/water_shard_tier7.webp';
 import WaterShardTier8 from '../sprites/resources/water_shard_tier8.webp';
 
 export const heroSprites = {
-    null: NullSrc,
+    null: QuestionmarkSrc,
 
     // LEGENDARIES
     thor: ThorSrc,
@@ -863,7 +864,7 @@ import MysticRingSrc from '../sprites/rings/sets/mystic.webp';
 import MysticNecklaceSrc from '../sprites/necklaces/sets/mystic.webp';
 
 export const itemSprites = {
-    null: NullSrc,
+    null: QuestionmarkSrc,
 
     pumpkin_scythe: PumpkinScytheSrc,
     hydras_bite: HydrasBiteSrc,
@@ -1061,7 +1062,7 @@ export const elementSprites = {
     6: SkyElementSrc,
 }
 
-import AgilityColorSrc from '../sprites/stats/agility.webp'
+import AgilityStatSrc from '../sprites/stats/agility.webp'
 import StrengthColorSrc from '../sprites/stats/strength.webp'
 import HealthColorSrc from '../sprites/stats/health.webp'
 import DefenseColorSrc from '../sprites/stats/defense.webp'
@@ -1079,8 +1080,6 @@ import HealingEfficiencySrc from '../sprites/perks/healing_efficiency.webp'
 import HealingReceivedSrc from '../sprites/perks/healing_received.webp'
 import LifeStealSrc from '../sprites/perks/life_steal.webp'
 import ResistanceSrc from '../sprites/perks/resistance.webp'
-import QuestionmarkSrc from '../sprites/questionmark.webp'
-
 export const perkSprites = {
     NOTHING: QuestionmarkSrc,
     MAIN_STAT_PERCENT: StrengthColorSrc,
@@ -1090,11 +1089,11 @@ export const perkSprites = {
     HEALTH_PERCENT: HealthColorSrc,
     ATTACK_PERCENT: StrengthColorSrc,
     DEFENCE_PERCENT: DefenseColorSrc,
-    AGILITY_PERCENT: AgilityColorSrc,
+    AGILITY_PERCENT: AgilityStatSrc,
     HEALTH_FLAT: HealthColorSrc,
     ATTACK_FLAT: StrengthColorSrc,
     DEFENCE_FLAT: DefenseColorSrc,
-    AGILITY_FLAT: AgilityColorSrc,
+    AGILITY_FLAT: AgilityStatSrc,
     CRIT_CHANCE: CritChanceSrc,
     CRIT_RESISTANCE: CritResistanceSrc,
     CRIT_DAMAGE: CritDamageSrc,
@@ -1122,13 +1121,13 @@ export const perkSprites = {
 
 import { ImCross } from "react-icons/im";
 import StrengthSrc from '../sprites/attributes/strength.webp'
-import AgilitySrc from '../sprites/attributes/agility.webp'
+import DexteritySrc from '../sprites/attributes/dexterity.webp'
 import IntelligenceSrc from '../sprites/attributes/intelligence.webp'
 
 export const attributeSprites = {
     0: <ImCross />,
     1: StrengthSrc,
-    2: AgilitySrc,
+    2: DexteritySrc,
     3: IntelligenceSrc,
 }
 
@@ -1180,7 +1179,7 @@ export const filterSprites = {
     12: ControlSrc,
     13: SupportSrc,
     20: StrengthSrc,
-    21: AgilitySrc,
+    21: DexteritySrc,
     22: IntelligenceSrc,
     30: <FaCircle />,
     31: <FaCircle />,
@@ -1466,7 +1465,7 @@ export const statusSprites = {
 }
 
 export const resourceSprites = {
-    null: NullSrc,
+    null: QuestionmarkSrc,
     adventure_experience_scroll: AdventureExperienceScroll,
     adventure_thirst: AdventureThirst,
     arena_coin: ArenaCoin,
@@ -1512,6 +1511,7 @@ export const resourceSprites = {
     guildhunt_ticket: GuildhuntTicket,
     hero_experience_scroll: HeroExperienceScroll,
     legendary_ascension_orb: LegendaryAscensionOrb,
+    neutral_banner_booster: NeutralBannerBooster,
     legendary_banner_booster: LegendaryBannerBooster,
     legendary_equipment_dust: LegendaryEquipmentDust,
     legendary_skill_tome: LegendarySkillTome,

@@ -8,70 +8,16 @@ import {
 } from "../database/enums.jsx"
 import Button from "./Button.jsx"
 import Hero from "./Hero.jsx"
-import { init_banner_db } from "../database/db_banners.jsx"
-import { getBannerLastLiveLabel } from "../database/bannerUtils.jsx"
 import { attributeSprites, roleSprites } from "../database/db_sprites.jsx"
+import { getSearchableValues, matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
+import { humanize } from "../js/util.jsx"
+import BannerCatalogueList from "./BannerCatalogueList.jsx"
+import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"
+import "../css/infos_heroes.scss"
 
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
     rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
 )
-
-const BANNERS = init_banner_db()
-const BANNER_HERO_ID_ALIASES = Object.freeze({
-    jack_o_lantern: "jack_o__lantern",
-    sphynx: "sphinx",
-    caotl: "coatl",
-})
-const humanize = value => String(value ?? "")
-    .replaceAll("_", " ")
-    .toLowerCase()
-    .replace(/\b\w/g, letter => letter.toUpperCase())
-
-function parseBannerDate(dateString) {
-    if (typeof dateString !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return null
-
-    const [year, month, day] = dateString.split("-").map(Number)
-    const timestamp = Date.UTC(year, month - 1, day)
-    const parsed = new Date(timestamp)
-    if (
-        parsed.getUTCFullYear() !== year
-        || parsed.getUTCMonth() !== month - 1
-        || parsed.getUTCDate() !== day
-    ) return null
-
-    return timestamp
-}
-
-// Prefer a recorded date. If it is missing, estimate it from the previous and next
-// banners only when both adjacent dates exist; until then the UI displays N/A.
-function getBannerLiveDateInfo(banners, index) {
-    const currentBanner = banners[index]
-    const currentTimestamp = parseBannerDate(currentBanner?.lastLiveDate)
-    if (currentTimestamp !== null) {
-        return { date: currentBanner.lastLiveDate, estimated: false }
-    }
-
-    const previousTimestamp = parseBannerDate(banners[index - 1]?.lastLiveDate)
-    const nextTimestamp = parseBannerDate(banners[index + 1]?.lastLiveDate)
-    if (previousTimestamp !== null && nextTimestamp !== null && nextTimestamp >= previousTimestamp) {
-        const estimatedTimestamp = Math.round((previousTimestamp + nextTimestamp) / 2)
-        return { date: new Date(estimatedTimestamp).toISOString().slice(0, 10), estimated: true }
-    }
-
-    return { date: null, estimated: false }
-}
-
-function hasValidBannerDate(banner) {
-    return parseBannerDate(banner?.lastLiveDate) !== null
-}
-
-function getSearchableValues(value, seen = new Set()) {
-    if (value === null || value === undefined) return []
-    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return [String(value)]
-    if (typeof value !== "object" || seen.has(value)) return []
-    seen.add(value)
-    return Object.values(value).flatMap(child => getSearchableValues(child, seen))
-}
 
 function formatEffect(effect) {
     if (effect === null || effect === undefined) return ""
@@ -112,7 +58,7 @@ function HeroCatalogueCard({ hero }) {
                     <Hero heroObj={hero} selected={false} level={null} onClick={() => {}} />
                 </div>
                 <div className="hero-catalogue-heading">
-                    <div className="hero-catalogue-name catalogue-chip header text" data-rarity={hero.rarity}>{hero.name}</div>
+                    <div className="hero-catalogue-name text" data-rarity={hero.rarity}>{hero.name}</div>
                     <div className="hero-catalogue-meta-row">
                         <span className="catalogue-chip catalogue-chip-rarity text" data-rarity={hero.rarity}>{humanize(rarity)}</span>
                         <span className={`catalogue-chip catalogue-chip-attribute catalogue-chip-attribute-${String(attribute).toLowerCase()} text`}>
@@ -178,217 +124,8 @@ function HeroCatalogueCard({ hero }) {
 }
 
 
-function resolveBannerHero(heroId, heroesById) {
-    const resolvedId = BANNER_HERO_ID_ALIASES[heroId] ?? heroId
-    return heroesById.get(resolvedId) ?? null
-}
-
-function matchesBannerHeroQuery(hero, query) {
-    if (!query) return true
-
-    // Keep the banner search consistent with the Hero Catalogue for these useful shortcuts.
-    if (query === "starred") return hero.isStarred === true
-    if (query === "not starred") return hero.isStarred !== true
-
-    const rarity = getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? ""
-    const attribute = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? ""
-    const element = getEnumNameById(ELEMENT_DEFINITIONS, Number(hero.element)) ?? ""
-    const role = getEnumNameById(ROLE_DEFINITIONS, Number(hero.role)) ?? ""
-    return [
-        ...getSearchableValues(hero),
-        rarity,
-        attribute,
-        element,
-        role,
-    ].join(" ").toLowerCase().includes(query)
-}
-
-function BannerHeroGroup({ title, heroes }) {
-    if (heroes.length === 0) return null
-    return (
-        <section className="banner-catalogue-rarity-group">
-            <h3 className="banner-catalogue-group-title text">{title} <span>({heroes.length})</span></h3>
-            <div className="banner-catalogue-hero-grid">
-                {heroes.map((hero, index) => (
-                    <div className="banner-catalogue-hero" key={`${hero.id}-${index}`} title={hero.name}>
-                        <Hero heroObj={hero} selected={false} level={null} onClick={() => {}} />
-                    </div>
-                ))}
-            </div>
-        </section>
-    )
-}
-
-function BannerCatalogueCard({ result, heroesById }) {
-    const { banner, heroes, conditionalHeroes, missingHeroCount, sourceIndex } = result
-    const isEverydayBanner = banner.id === "everyday_heroes"
-    const featuredHero = banner.featuredHeroId
-        ? resolveBannerHero(banner.featuredHeroId, heroesById)
-        : null
-    const liveDateInfo = getBannerLiveDateInfo(BANNERS, sourceIndex)
-    const lastLiveLabel = liveDateInfo.date ? getBannerLastLiveLabel(liveDateInfo.date) : ""
-    const liveDateText = liveDateInfo.date
-        ? `${liveDateInfo.estimated ? "~" : ""}${liveDateInfo.date}${lastLiveLabel}`
-        : "N/A"
-    const rarityGroups = [
-        ["Legendary Heroes", heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.LEGENDARY.id)],
-        ["Epic Heroes", heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.EPIC.id)],
-        ["Other Heroes", heroes.filter(hero => Number(hero.rarity) !== RARITY_DEFINITIONS.LEGENDARY.id && Number(hero.rarity) !== RARITY_DEFINITIONS.EPIC.id)],
-    ]
-
-    return (
-        <article className={`banner-catalogue-card card${isEverydayBanner ? " banner-catalogue-card--everyday" : ""}`}>
-            <header className="banner-catalogue-card-header">
-                <h2 className="banner-catalogue-name header">{banner.name}</h2>
-                <div className="banner-catalogue-meta">
-                    <span className="catalogue-chip text">{banner.heroIds.length} listed heroes</span>
-                    {banner.standardBanner && <span className="catalogue-chip text">Standard banner</span>}
-                    {featuredHero && <span className="catalogue-chip text">Featured: {featuredHero.name}</span>}
-                    <span
-                        className="catalogue-chip banner-catalogue-live-date text"
-                        title={liveDateInfo.estimated ? "Estimated from the previous and next banner dates" : "Recorded last-live date"}
-                    >
-                        Last live: {liveDateText}
-                    </span>
-                    {isEverydayBanner && <span className="catalogue-chip banner-catalogue-chip-permanent text">Always available</span>}
-                    {Array.isArray(banner.conditionalHeroIDs) && banner.conditionalHeroIDs.length > 0
-                        && <span className="catalogue-chip text">{banner.conditionalHeroIDs.length} conditional heroes</span>}
-                </div>
-            </header>
-
-            <div className="banner-catalogue-groups">
-                {rarityGroups.map(([title, groupHeroes]) => (
-                    <BannerHeroGroup key={title} title={title} heroes={groupHeroes} />
-                ))}
-            </div>
-
-            {conditionalHeroes.length > 0 && (
-                <section className="banner-catalogue-conditional">
-                    <h3 className="banner-catalogue-group-title text">Conditional Heroes ({conditionalHeroes.length})</h3>
-                    <div className="banner-catalogue-hero-grid">
-                        {conditionalHeroes.map((hero, index) => (
-                            <div className="banner-catalogue-hero" key={`${hero.id}-conditional-${index}`} title={hero.name}>
-                                <Hero heroObj={hero} selected={false} level={null} onClick={() => {}} />
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            )}
-
-            {missingHeroCount > 0 && (
-                <p className="banner-catalogue-missing text">
-                    {missingHeroCount} referenced {missingHeroCount === 1 ? "hero is" : "heroes are"} not defined in the hero database.
-                </p>
-            )}
-        </article>
-    )
-}
-
-function BannerCatalogueList({ heroesRef }) {
-    const [search, setSearch] = useState("")
-    const heroesById = useMemo(() => {
-        const heroes = Array.isArray(heroesRef) ? heroesRef : []
-        return new Map(heroes.map(hero => [hero.id, hero]))
-    }, [heroesRef])
-    const query = search.trim().toLowerCase()
-
-    const filteredBanners = useMemo(() => {
-        const allDated = BANNERS.every(banner =>
-            banner.id === "everyday_heroes" || hasValidBannerDate(banner)
-        )
-
-        return BANNERS.map((banner, sourceIndex) => {
-            const resolveList = ids => (Array.isArray(ids) ? ids : [])
-                .map(id => resolveBannerHero(id, heroesById))
-            const primaryRaw = resolveList(banner.heroIds)
-            const conditionalRaw = resolveList(banner.conditionalHeroIDs)
-            const missingHeroCount = primaryRaw.filter(hero => !hero).length
-                + conditionalRaw.filter(hero => !hero).length
-            const bannerMetadata = {
-                ...banner,
-                heroIds: [],
-                conditionalHeroIDs: [],
-                featuredHeroId: null,
-            }
-
-            // Search both banner metadata and the text represented by its visible detail chips.
-            // Hero data is searched separately so a matching hero doesn't expose unrelated heroes.
-            const liveDateInfo = getBannerLiveDateInfo(BANNERS, sourceIndex)
-            const searchableBannerMetadata = [
-                ...getSearchableValues(bannerMetadata),
-                banner.standardBanner ? "standard standard banner" : "event banner",
-                `${Array.isArray(banner.heroIds) ? banner.heroIds.length : 0} listed heroes`,
-                banner.featuredHeroId ? "featured featured hero" : "",
-                liveDateInfo.date ? `last live ${liveDateInfo.date}` : "last live n/a",
-                ...(Array.isArray(banner.conditionalHeroIDs) && banner.conditionalHeroIDs.length > 0
-                    ? ["conditional conditional heroes", `${banner.conditionalHeroIDs.length} conditional heroes`]
-                    : []),
-            ].join(" ").toLowerCase()
-            const bannerMatches = !query || searchableBannerMetadata.includes(query)
-            const visibleHeroes = primaryRaw.filter(
-                hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query))
-            )
-            const visibleConditionalHeroes = conditionalRaw.filter(
-                hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query))
-            )
-
-            return {
-                banner,
-                sourceIndex,
-                bannerMatches,
-                heroes: visibleHeroes,
-                conditionalHeroes: visibleConditionalHeroes,
-                missingHeroCount,
-            }
-        })
-            .filter(result =>
-                result.bannerMatches || result.heroes.length > 0 || result.conditionalHeroes.length > 0
-            )
-            .sort((a, b) => {
-                // The permanent Everyday Heroes banner always leads the catalogue.
-                if (a.banner.id === "everyday_heroes") return b.banner.id === "everyday_heroes" ? 0 : -1
-                if (b.banner.id === "everyday_heroes") return 1
-
-                // Once all event banners have dates, sort chronologically (oldest first).
-                // Until then preserve the curated source order, including the first special banner.
-                if (allDated) {
-                    return parseBannerDate(a.banner.lastLiveDate) - parseBannerDate(b.banner.lastLiveDate)
-                        || a.sourceIndex - b.sourceIndex
-                }
-                return a.sourceIndex - b.sourceIndex
-            })
-    }, [heroesById, query])
-
-    return (
-        <div className="banner-catalogue-list">
-            <label className="catalogue-search banner-catalogue-search">
-                <span className="catalogue-control-label text">Search banners, heroes, and banner details</span>
-                <input
-                    className="selectable catalogue-input"
-                    type="search"
-                    aria-label="Search all banner and hero details"
-                    placeholder="Search banners, heroes, and details..."
-                    value={search}
-                    onChange={event => setSearch(event.target.value)}
-                />
-                <span className="catalogue-result-count text">
-                    Showing {filteredBanners.length} of {BANNERS.length} banners
-                </span>
-            </label>
-            {filteredBanners.length === 0
-                ? <p className="catalogue-empty card">No banners match that search.</p>
-                : <div className="banner-catalogue-grid">
-                    {filteredBanners.map(result => (
-                        <BannerCatalogueCard key={result.banner.id} result={result} heroesById={heroesById} />
-                    ))}
-                </div>
-            }
-        </div>
-    )
-}
-
 function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
-    const [search, setSearch] = useState("")
+    const [search, setSearch, commitSearch] = useUrlSearch()
     const [rarityFilter, setRarityFilter] = useState("all")
     const [attributeFilter, setAttributeFilter] = useState("all")
     const [elementFilter, setElementFilter] = useState("all")
@@ -404,7 +141,6 @@ function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
     }, [heroesRef])
 
     const filteredHeroes = useMemo(() => {
-        const query = search.trim().toLowerCase()
         return catalogueHeroes.filter(hero => {
             const rarity = getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? ""
             const attribute = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? ""
@@ -423,7 +159,11 @@ function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
                 hero.isStarred ? "true" : "false"
             ].join(" ").toLowerCase()
 
-            const matchesSearch = !query || (query === "starred" ? hero.isStarred === true : searchable.includes(query))
+            const matchesSearch = matchesSearchQuery(searchable, search, term => {
+                if (term === "starred") return hero.isStarred === true
+                if (term === "not starred") return hero.isStarred !== true
+                return undefined
+            })
 
             return matchesSearch
                 && (rarityFilter === "all" || String(hero.rarity) === rarityFilter)
@@ -435,6 +175,7 @@ function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
 
     const clearFilters = () => {
         setSearch("")
+        commitSearch("")
         setRarityFilter("all")
         setAttributeFilter("all")
         setElementFilter("all")
@@ -443,22 +184,27 @@ function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
 
     return (
         <section className="hero-catalogue">
-            <div className="catalogue-view-switch" aria-label="Hero catalogue sections">
-                <Button text="Heroes" color={5} active={initialView === "heroes"} onClick={() => onViewChange?.("heroes")} />
-                <Button text="Banners" color={5} active={initialView === "banners"} onClick={() => onViewChange?.("banners")} />
-            </div>
+            <CatalogueViewSwitch ariaLabel="Hero catalogue sections" view={initialView} onViewChange={onViewChange} options={[
+                { label: "Heroes", value: "heroes" },
+                { label: "Tier List", value: "tier-list" },
+                { label: "Banners", value: "banners" },
+            ]} />
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
-                    <div className="catalogue-title header-big">{initialView === "banners" ? "Banner Catalogue" : "Hero Catalogue"}</div>
+                    <div className="catalogue-title header-big">{initialView === "banners" ? "Banner Catalogue" : initialView === "tier-list" ? "Hero Tier List" : "Hero Catalogue"}</div>
                     <p className="catalogue-description text">
                         {initialView === "banners"
                             ? "Browse the banner definitions and their included heroes. Filter by hero name, rarity, element, role, main attribute, and starred status."
-                            : "Search heroes, skills, talents, effects, attributes, rarity, element, role, and other stored hero data."}
+                            : initialView === "tier-list"
+                                ? "Tier List view. Tier placements are not currently defined in the project data."
+                                : "Search heroes, skills, talents, effects, attributes, rarity, element, role, and other stored hero data."}
                     </p>
                 </div>
             </header>
-            {initialView === "banners" ? (
-                <BannerCatalogueList heroesRef={heroesRef} />
+            {initialView === "tier-list" ? (
+                <div className="catalogue-empty card">No tier placements have been defined yet.</div>
+            ) : initialView === "banners" ? (
+                <BannerCatalogueList heroesRef={heroesRef} search={search} setSearch={setSearch} commitSearch={commitSearch} />
             ) : (
                 <>
             <div className="hero-catalogue-filters card">
@@ -469,7 +215,7 @@ function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
                         aria-label="Search hero catalogue"
                         placeholder="Name, skill, talent, effect, ID…"
                         value={search}
-                        onChange={event => setSearch(event.target.value)}
+                        onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)}
                     />
                 </label>
                 <label className="catalogue-filter">

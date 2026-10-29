@@ -8,11 +8,15 @@
   gap: V.$gap;
   width: 100%;
   min-width: 0;
+
+  .card {
+    height: 50px !important;
+  }
 }
 
 .reset-timers-row {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1fr);
   flex: 0 0 auto;
   gap: V.$gap;
   width: 100%;
@@ -28,6 +32,23 @@
   max-width: none;
   min-width: 0;
   padding: V.$gap-small V.$gap;
+}
+
+.reset-timer-clock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  min-width: 56px;
+  height: 50px;
+  padding: V.$gap-small;
+}
+
+.reset-timer-clock img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
 }
 
 .reset-timer-label {
@@ -112,6 +133,8 @@
 
 .under-construction-caption {
   color: rgba(255, 255, 255, 0.8);
+  font-family: V.$font-family-stats;
+  align-self: center;
   font-size: clamp(0.8rem, 1.1vw, 1rem);
 }
 
@@ -141,5 +164,37 @@
     flex-direction: column;
     align-items: center;
     gap: 2px;
+  }
+}
+
+
+@include M.media-query-max(V.$bp-mobile) {
+  .reset-timers-row {
+    grid-template-columns: minmax(0, 1fr) 42px minmax(0, 1fr);
+    gap: V.$gap-small;
+  }
+
+  .reset-timer-clock {
+    width: 42px;
+    min-width: 42px;
+    padding: 4px;
+  }
+
+  .reset-timer-clock img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .reset-timer {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+    padding: V.$gap-small;
+  }
+
+  .reset-timer-label,
+  .reset-timer-countdown {
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 }

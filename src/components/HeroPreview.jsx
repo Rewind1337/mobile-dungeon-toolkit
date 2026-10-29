@@ -496,8 +496,8 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
         return (
             <div ref={listRef} className='hero-preview flex-col' style={{ maxHeight: listHeight }}>
                 <div className='preview-top-row flex-row'>
-                    <Button className='preview-back-button preview-action-chip catalogue-chip' prefix={<img className="preview-direction-icon" src={ExpandSrc} alt="" style={{ transform: isFullWidth ? 'rotate(-90deg)' : 'rotate(90deg)' }} />} title={isFullWidth ? 'Show hero list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} />
-                    <Button className='preview-close-button preview-action-chip catalogue-chip' prefix={<img className="preview-close-icon" src={CrossSrc} alt="" />} title='Deselect this hero and close the preview' text='Deselect Hero' onClick={onClosePreview} color='cancel' />
+                    <Button className='preview-back-button preview-action-chip' prefix={<img className="preview-direction-icon" src={ExpandSrc} alt="" style={{ transform: isFullWidth ? 'rotate(-90deg)' : 'rotate(90deg)' }} />} title={isFullWidth ? 'Show hero list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} />
+                    <Button className='preview-close-button preview-action-chip' prefix={<img className="preview-close-icon" src={CrossSrc} alt="" />} title='Deselect this hero and close the preview' text='Deselect Hero' onClick={onClosePreview} color='cancel' />
                 </div>
                 <Modal position="center" isVisible={exportModalVisible} onClose={() => setExportModalVisible(false)}>
                     <div className="flex-col card w-100">
@@ -556,8 +556,8 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                 </div>}
 
                 <div className='flex-col'>
-                    {(heroObj.skills && heroObj.talents) && <Button color={0} text={"Skills & Talents"} onClick={() => { setShowSkillsAndTalents(!showSkillsAndTalents) }} />}
-                    <div className='flex-row'>
+                    {(heroObj.skills && heroObj.talents) && <Button className="hero-preview-skills-toggle" color={0} text={"Skills & Talents"} onClick={() => { setShowSkillsAndTalents(!showSkillsAndTalents) }} />}
+                    <div className='flex-row skills-talents-layout'>
                         {(showSkillsAndTalents && heroObj.skills) &&
                             <div className='flex-col skills'>
                                 {renderHeroSkills()}
@@ -577,7 +577,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                                 {heroObj.isStarred === true && <div className="hero-starred">
                                     <img src={iconSprites["is_starred"]} loading="eager" decoding="async" draggable={false} />
                                 </div>}
-                                <div className="flex-col">
+                                <div className="flex-col hero-sprite-container">
                                     <div className="hero-sprite">
                                         <img className="hero-sprite-img"
                                             src={heroObj.heroSrc ?? heroSprites[heroObj.id] ?? heroSprites["null"]}
@@ -612,7 +612,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                             const item = equippedItems[slot.id]
                             return item
                                 ? <Item key={slot.id} itemObj={item} level={item.level ?? 1} loading="eager" onClick={() => onItemClick(slot.id)} />
-                                : <EmptyItem key={slot.id} onClick={() => onItemClick(slot.id)} />
+                                : <EmptyItem key={slot.id} label={slot.name.charAt(0) + slot.name.slice(1).toLowerCase()} onClick={() => onItemClick(slot.id)} />
                         })}
                     </div>
                     <div className='header'>Main Stats</div>

@@ -1,0 +1,24 @@
+@use './_variables.scss' as V;
+@use './mixins.scss' as M;
+
+/* Perk catalogue */
+
+.perk-catalogue { display:flex; flex-direction:column; gap:V.$gap; width:100%; min-width:0; padding:V.$padding-card; }
+.perk-catalogue-list { display:grid; grid-template-columns:minmax(0,1fr); align-items:stretch; gap:V.$gap-small; min-width:0; }
+.perk-catalogue-row { display:flex; flex-direction:row; align-items:stretch; gap:V.$gap; padding:V.$padding-card; min-width:0; }
+.perk-catalogue-icon-wrap { display:flex; flex:0 0 68px; align-self:stretch; align-items:center; justify-content:center; min-width:0; min-height:64px;}
+.perk-catalogue-icon { display:block; flex:0 0 auto; aspect-ratio: 1; height: 60px; object-fit:contain; }
+.perk-catalogue-content { display:flex; flex:1 1 auto; flex-direction:column; justify-content:center; gap:V.$gap-small; min-width:0; }
+.perk-catalogue-heading { display:flex; align-items:center; gap:V.$gap-small; min-width:0; }
+.perk-catalogue-name { min-width:0; overflow-wrap:anywhere; }
+.perk-catalogue-slots { display:flex; flex-wrap:wrap; gap:V.$gap-small; min-width:0; overflow-wrap:anywhere; justify-content:flex-start; }
+
+@include M.media-query(V.$bp-tablet) {
+  .perk-catalogue-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@include M.media-query(V.$bp-wide) {
+  .perk-catalogue-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@include M.media-query-max(V.$bp-mobile) {
+  .perk-catalogue-row { gap: V.$gap-small; }
+}

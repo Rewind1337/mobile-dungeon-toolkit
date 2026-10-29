@@ -11,6 +11,7 @@ import './css/not-found.scss'
 
 import { init_hero_db } from './database/db_heroes.jsx'
 import { init_item_db } from './database/db_items.jsx'
+import { clearSearchFromUrl } from './js/search.jsx'
 
 const PageItems = lazy(() => import('./components/PageItems.jsx'))
 const PageHeroes = lazy(() => import('./components/PageHeroes.jsx'))
@@ -36,13 +37,14 @@ const INFO_TAB_TO_ROUTE = {
   'set-catalogue': '/info/item-catalogue/sets/',
   'perk-catalogue': '/info/perk-catalogue/',
   'hero-catalogue': '/info/hero-catalogue/heroes/',
+  'hero-tier-list-catalogue': '/info/hero-catalogue/tier-list/',
   'hero-banners-catalogue': '/info/hero-catalogue/banners/',
-  'resources-catalogue': '/info/resources-catalogue/resources/',
-  'gems-catalogue': '/info/resources-catalogue/gems/',
+  'resources-catalogue': '/info/resource-catalogue/resources/',
+  'gems-catalogue': '/info/resource-catalogue/gems/',
   'status-catalogue': '/info/status-catalogue/',
-  'skills-talents-catalogue': '/info/skills-talents-catalogue/skills/',
-  'skills-catalogue': '/info/skills-talents-catalogue/skills/',
-  'talents-catalogue': '/info/skills-talents-catalogue/talents/',
+  'skills-talents-catalogue': '/info/skill-catalogue/',
+  'skills-catalogue': '/info/skill-catalogue/',
+  'talents-catalogue': '/info/talent-catalogue/',
 };
 
 const normalizeRoute = (route) => {
@@ -87,15 +89,23 @@ const getInfoTabFromPath = () => {
     '/info/hero-catalogue': 'hero-catalogue',
     '/hero-catalogue': 'hero-catalogue',
     '/hero-catalogue/heroes': 'hero-catalogue',
+    '/hero-catalogue/tier-list': 'hero-tier-list-catalogue',
     '/hero-catalogue/banners': 'hero-banners-catalogue',
     '/info/skills-talents-catalogue': 'skills-catalogue',
     '/info/skills-talents-catalogue/skills': 'skills-catalogue',
+    '/info/skill-catalogue': 'skills-catalogue',
     '/info/skills-catalogue': 'skills-catalogue',
     '/skills-catalogue': 'skills-catalogue',
     '/info/skills-talents-catalogue/talents': 'talents-catalogue',
+    '/info/talent-catalogue': 'talents-catalogue',
     '/info/talents-catalogue': 'talents-catalogue',
     '/talents-catalogue': 'talents-catalogue',
+    '/info/resource-catalogue': 'resources-catalogue',
+    '/info/resource-catalogue/resources': 'resources-catalogue',
+    '/info/resource-catalogue/gems': 'gems-catalogue',
     '/info/resources-catalogue': 'resources-catalogue',
+    '/info/resources-catalogue/resources': 'resources-catalogue',
+    '/info/resources-catalogue/gems': 'gems-catalogue',
     '/resources-catalogue': 'resources-catalogue',
     '/resources-catalogue/resources': 'resources-catalogue',
     '/resources-catalogue/gems': 'gems-catalogue',
@@ -107,6 +117,11 @@ const getInfoTabFromPath = () => {
 const createDefaultState = () => ({
   pageContent: 'splash',
   savedHeroesRef: [],
+  savedTeamsRef: [
+    { id: 0, name: "Default Team", heroes: Array(5).fill(null) },
+    { id: 1, name: "Team A", heroes: Array(5).fill(null) },
+    { id: 2, name: "Team B", heroes: Array(5).fill(null) },
+  ],
   savedItemsRef: {
     WEAPONS: [],
     HELMETS: [],
@@ -146,6 +161,9 @@ const loadInitialState = () => {
       savedHeroesRef: Array.isArray(parsedState.savedHeroesRef)
         ? parsedState.savedHeroesRef.filter(isRecord)
         : defaults.savedHeroesRef,
+      savedTeamsRef: Array.isArray(parsedState.savedTeamsRef)
+        ? parsedState.savedTeamsRef.filter(isRecord)
+        : defaults.savedTeamsRef,
       savedItemsRef
     };
 
@@ -162,6 +180,7 @@ function App() {
 
   const heroesRef = useRef(BASE_HEROES)
   const savedHeroesRef = useRef(initialState.savedHeroesRef)
+  const savedTeamsRef = useRef(initialState.savedTeamsRef)
 
   const itemsRef = useRef(BASE_ITEMS)
   const savedItemsRef = useRef(initialState.savedItemsRef)
@@ -175,6 +194,7 @@ function App() {
     const saveState = {
         pageContent,
         savedHeroesRef: savedHeroesRef.current,
+        savedTeamsRef: savedTeamsRef.current,
         savedItemsRef: {
             ...savedItemsRef.current
         }
@@ -211,6 +231,7 @@ function App() {
     const destination = route === '/' ? baseUrl : `${baseUrl}${route.slice(1)}`;
 
     if (window.location.pathname !== destination) {
+      clearSearchFromUrl();
       window.history.pushState({}, '', destination);
     }
 
@@ -226,6 +247,7 @@ function App() {
     const destination = `${baseUrl}${route.slice(1)}`;
 
     if (window.location.pathname !== destination) {
+      clearSearchFromUrl();
       window.history.pushState({}, '', destination);
     }
 
@@ -267,6 +289,7 @@ function App() {
           <div id='page-splash' className='page flex-col w-100'>
             <section className="under-construction-row card" style={{height: "50px"}} aria-label="Under construction">
                 <div className="under-construction-sign">
+                    <span className="under-construction-caption">This site is</span>
                     <span className="under-construction-label">UNDER CONSTRUCTION</span>
                     <span className="under-construction-caption">More features are on the way</span>
                 </div>
@@ -314,38 +337,42 @@ function App() {
                 <Button text={"Take me there"} color={4} onMouseDown={() => { switchTabTo('simulator') }} />
               </div>
             </div>
-            <div className='flex-col'>
+            <div className='flex-col splash-footer-wrapper'>
               <div className='card footer flex-row'>
-                <a className="w-100" href='https://www.github.com/rewind1337/mobile-dungeon-toolkit'>
-                  <Button autoHeight text={"Source Code"} color={3} />
+                <a className="splash-source-code-link" href='https://www.github.com/rewind1337/mobile-dungeon-toolkit'>
+                  <Button className="splash-source-code-button" text={"Source Code"} color={3} />
                 </a>
-                <div className='text flex-row'>
-                  <div className='text flex-row'>
+                <div className='text flex-row splash-footer-ownership'>
+                  <div className='text flex-row splash-footer-inline'>
                     <div className="text">The Game </div>
-                    <a href="https://mobiledungeon.com/">
-                      <img height={50} src={MDLogo} alt='Mobile Dungeon' />
+                    <a className="splash-footer-logo" href="https://mobiledungeon.com/">
+                      <img className="splash-footer-logo-image" height={50} src={MDLogo} alt='Mobile Dungeon' />
+                      <span className="splash-footer-logo-text">Mobile Dungeon</span>
                     </a>
                   </div>
-                  <div className='text flex-row'>
+                  <div className='text flex-row splash-footer-inline'>
                     <div className="text">and all of the Images used here are owned by</div>
-                    <a href="https://www.playa-games.com/">
-                      <img height={50} src={PlayaLogo} alt='Playa Games' />
+                    <a className="splash-footer-logo" href="https://www.playa-games.com/">
+                      <img className="splash-footer-logo-image" height={50} src={PlayaLogo} alt='Playa Games' />
+                      <span className="splash-footer-logo-text">Playa Games</span>
                     </a>
                   </div>
                 </div>
-                <div className='text flex-row'>
-                  <div className='text flex-row'>
+                <div className='text flex-row splash-footer-inline splash-footer-affiliation'>
+                  <div className='text flex-row splash-footer-inline'>
                     <div className="text">This site is not affiliated with</div>
-                    <a href="https://www.playa-games.com/">
-                      <img height={50} src={PlayaLogo} alt='Playa Games' />
+                    <a className="splash-footer-logo" href="https://www.playa-games.com/">
+                      <img className="splash-footer-logo-image" height={50} src={PlayaLogo} alt='Playa Games' />
+                      <span className="splash-footer-logo-text">Playa Games</span>
                     </a>
                     <div className="text">in any way.</div>
                   </div>
                 </div>
-                <div className='text flex-row'>
+                <div className='text flex-row splash-footer-inline splash-footer-fonts'>
                   <div className="text">Fonts from</div>
-                  <a href="https://fonts.google.com/">
-                    <svg width="110" height="48" viewBox="0 0 190 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c508314537="" d="M130.3 18.7v7h-2V9.3h9.6v2h-7.6v5.4h6.8v2h-6.8ZM138.8 20.1a6 6 0 0 1 1.7-4.3 5.6 5.6 0 0 1 4.2-1.7c1.6 0 3 .6 4.1 1.7a6 6 0 0 1 1.7 4.3c0 1.8-.6 3.2-1.7 4.3a5.6 5.6 0 0 1-4.1 1.7c-1.7 0-3.1-.5-4.2-1.7a6 6 0 0 1-1.7-4.3Zm2.2 0a4 4 0 0 0 1 3c.7.7 1.6 1 2.7 1 1 0 1.9-.3 2.6-1a4 4 0 0 0 1-3 4 4 0 0 0-1-2.9 3.5 3.5 0 0 0-2.6-1.1c-1 0-2 .3-2.7 1.1a4 4 0 0 0-1 3ZM152.3 14.5h2V16h.1c.3-.6.8-1 1.5-1.4.7-.4 1.4-.6 2.1-.6 1.4 0 2.5.4 3.2 1.2.7.8 1.1 2 1.1 3.4v7h-2.1v-6.9c0-1.8-1-2.8-2.8-2.8-.8 0-1.6.4-2.1 1-.6.7-.9 1.6-.9 2.5v6.2h-2.1V14.5ZM168.9 26c-1 0-1.7-.3-2.3-1-.6-.5-1-1.3-1-2.3v-6.3h-2v-2h2V11h2.2v3.5h2.8v2h-2.8V22c0 .8.1 1.3.4 1.6.3.2.6.4 1 .4l.5-.1c.2 0 .3 0 .5-.2l.7 2a6 6 0 0 1-2 .2ZM181 22.6a3 3 0 0 1-1.3 2.5c-.9.7-2 1-3.3 1-1 0-2.1-.3-3-.9a4.9 4.9 0 0 1-1.8-2.3l1.9-.8c.3.7.7 1.2 1.2 1.6a3 3 0 0 0 1.8.5c.6 0 1.2-.1 1.7-.4.4-.3.6-.7.6-1 0-.8-.5-1.3-1.6-1.6l-2-.5C173 20 172 19 172 17.5a3 3 0 0 1 1.3-2.5c.8-.6 1.9-.9 3.2-.9 1 0 2 .2 2.7.7.8.5 1.4 1.1 1.7 2l-1.9.7c-.2-.5-.5-.8-1-1.1-.5-.3-1-.4-1.7-.4-.5 0-1 .1-1.5.4-.4.3-.6.6-.6 1 0 .6.6 1.1 1.8 1.4l1.7.4c2.3.6 3.4 1.7 3.4 3.4ZM55.3 26.1a9.5 9.5 0 0 1-9.5-9.3 9.5 9.5 0 0 1 16-6.7l-1.9 1.8a6.6 6.6 0 0 0-4.6-1.9c-3.8 0-6.8 3-6.8 6.8s3 6.8 6.8 6.8c2.4 0 3.8-1 4.7-1.9.8-.7 1.3-1.8 1.4-3.2h-6.1V16h8.6l.2 1.6c0 1.9-.5 4.2-2.2 6a8.7 8.7 0 0 1-6.6 2.5ZM77.4 20.1c0 3.5-2.6 6-6 6-3.2 0-5.9-2.5-5.9-6s2.7-6 6-6 6 2.5 6 6Zm-2.6 0c0-2.1-1.5-3.6-3.3-3.6-1.8 0-3.4 1.5-3.4 3.6s1.6 3.6 3.4 3.6c1.8 0 3.3-1.4 3.3-3.6ZM90.8 20.1c0 3.5-2.6 6-6 6-3.2 0-5.9-2.5-5.9-6s2.7-6 6-6c3.2 0 6 2.5 6 6Zm-2.6 0c0-2.1-1.5-3.6-3.3-3.6-1.8 0-3.4 1.5-3.4 3.6s1.6 3.6 3.4 3.6c1.8 0 3.3-1.4 3.3-3.6ZM103.9 14.5v10.8c0 4.4-2.7 6.2-5.8 6.2-3 0-4.7-2-5.3-3.5l2.3-1c.4 1 1.4 2.1 3 2.1 2 0 3.2-1.2 3.2-3.5v-.8c-.6.7-1.8 1.3-3.2 1.3a6 6 0 0 1-5.8-6 6 6 0 0 1 5.8-6c1.4 0 2.6.7 3.2 1.4v-1h2.6Zm-2.4 5.7c0-2.2-1.4-3.7-3.2-3.7-1.8 0-3.4 1.5-3.4 3.7 0 2 1.6 3.6 3.4 3.6 1.8 0 3.2-1.6 3.2-3.6ZM108.5 8.1v17.7H106V8h2.6ZM119 22.1l2 1.4a6 6 0 0 1-5 2.6c-3.4 0-6-2.6-6-6 0-3.5 2.6-6 5.7-6s4.7 2.5 5.2 3.9l.3.6L113 22a3 3 0 0 0 2.9 1.8c1.4 0 2.3-.7 3-1.7Zm-6.4-2.2 5.5-2.2c-.4-.7-1.2-1.2-2.3-1.2a3.3 3.3 0 0 0-3.2 3.4Z" fill="#C4C7C5"></path><path _ngcontent-ng-c508314537="" d="m16.7 20.7-4.4 6.6h-10L16.7 6v14.7ZM25.3 6h-8.6v21.3h8.6V6ZM6 14a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="#C4C7C5" strokeWidth="1.5" strokeLinejoin="round"></path><path _ngcontent-ng-c508314537="" d="M25.3 15.3a4.7 4.7 0 0 1 0-9.3m0 9.3V6m0 9.3a4.7 4.7 0 0 0 0-9.3" stroke="#C4C7C5" strokeWidth="1.5"></path><path _ngcontent-ng-c508314537="" d="M25.3 15.3a6 6 0 0 1 0 12" stroke="#C4C7C5" strokeWidth="1.5" strokeLinejoin="round"></path><path _ngcontent-ng-c508314537="" d="M25.3 27.3a6 6 0 0 1 0-12" stroke="#C4C7C5" strokeWidth="1.5"></path></svg>
+                  <a className="splash-footer-logo" href="https://fonts.google.com/">
+                    <svg className="splash-footer-logo-image" width="110" height="48" viewBox="0 0 190 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path _ngcontent-ng-c508314537="" d="M130.3 18.7v7h-2V9.3h9.6v2h-7.6v5.4h6.8v2h-6.8ZM138.8 20.1a6 6 0 0 1 1.7-4.3 5.6 5.6 0 0 1 4.2-1.7c1.6 0 3 .6 4.1 1.7a6 6 0 0 1 1.7 4.3c0 1.8-.6 3.2-1.7 4.3a5.6 5.6 0 0 1-4.1 1.7c-1.7 0-3.1-.5-4.2-1.7a6 6 0 0 1-1.7-4.3Zm2.2 0a4 4 0 0 0 1 3c.7.7 1.6 1 2.7 1 1 0 1.9-.3 2.6-1a4 4 0 0 0 1-3 4 4 0 0 0-1-2.9 3.5 3.5 0 0 0-2.6-1.1c-1 0-2 .3-2.7 1.1a4 4 0 0 0-1 3ZM152.3 14.5h2V16h.1c.3-.6.8-1 1.5-1.4.7-.4 1.4-.6 2.1-.6 1.4 0 2.5.4 3.2 1.2.7.8 1.1 2 1.1 3.4v7h-2.1v-6.9c0-1.8-1-2.8-2.8-2.8-.8 0-1.6.4-2.1 1-.6.7-.9 1.6-.9 2.5v6.2h-2.1V14.5ZM168.9 26c-1 0-1.7-.3-2.3-1-.6-.5-1-1.3-1-2.3v-6.3h-2v-2h2V11h2.2v3.5h2.8v2h-2.8V22c0 .8.1 1.3.4 1.6.3.2.6.4 1 .4l.5-.1c.2 0 .3 0 .5-.2l.7 2a6 6 0 0 1-2 .2ZM181 22.6a3 3 0 0 1-1.3 2.5c-.9.7-2 1-3.3 1-1 0-2.1-.3-3-.9a4.9 4.9 0 0 1-1.8-2.3l1.9-.8c.3.7.7 1.2 1.2 1.6a3 3 0 0 0 1.8.5c.6 0 1.2-.1 1.7-.4.4-.3.6-.7.6-1 0-.8-.5-1.3-1.6-1.6l-2-.5C173 20 172 19 172 17.5a3 3 0 0 1 1.3-2.5c.8-.6 1.9-.9 3.2-.9 1 0 2 .2 2.7.7.8.5 1.4 1.1 1.7 2l-1.9.7c-.2-.5-.5-.8-1-1.1-.5-.3-1-.4-1.7-.4-.5 0-1 .1-1.5.4-.4.3-.6.6-.6 1 0 .6.6 1.1 1.8 1.4l1.7.4c2.3.6 3.4 1.7 3.4 3.4ZM55.3 26.1a9.5 9.5 0 0 1-9.5-9.3 9.5 9.5 0 0 1 16-6.7l-1.9 1.8a6.6 6.6 0 0 0-4.6-1.9c-3.8 0-6.8 3-6.8 6.8s3 6.8 6.8 6.8c2.4 0 3.8-1 4.7-1.9.8-.7 1.3-1.8 1.4-3.2h-6.1V16h8.6l.2 1.6c0 1.9-.5 4.2-2.2 6a8.7 8.7 0 0 1-6.6 2.5ZM77.4 20.1c0 3.5-2.6 6-6 6-3.2 0-5.9-2.5-5.9-6s2.7-6 6-6 6 2.5 6 6Zm-2.6 0c0-2.1-1.5-3.6-3.3-3.6-1.8 0-3.4 1.5-3.4 3.6s1.6 3.6 3.4 3.6c1.8 0 3.3-1.4 3.3-3.6ZM90.8 20.1c0 3.5-2.6 6-6 6-3.2 0-5.9-2.5-5.9-6s2.7-6 6-6c3.2 0 6 2.5 6 6Zm-2.6 0c0-2.1-1.5-3.6-3.3-3.6-1.8 0-3.4 1.5-3.4 3.6s1.6 3.6 3.4 3.6c1.8 0 3.3-1.4 3.3-3.6ZM103.9 14.5v10.8c0 4.4-2.7 6.2-5.8 6.2-3 0-4.7-2-5.3-3.5l2.3-1c.4 1 1.4 2.1 3 2.1 2 0 3.2-1.2 3.2-3.5v-.8c-.6.7-1.8 1.3-3.2 1.3a6 6 0 0 1-5.8-6 6 6 0 0 1 5.8-6c1.4 0 2.6.7 3.2 1.4v-1h2.6Zm-2.4 5.7c0-2.2-1.4-3.7-3.2-3.7-1.8 0-3.4 1.5-3.4 3.7 0 2 1.6 3.6 3.4 3.6 1.8 0 3.2-1.6 3.2-3.6ZM108.5 8.1v17.7H106V8h2.6ZM119 22.1l2 1.4a6 6 0 0 1-5 2.6c-3.4 0-6-2.6-6-6 0-3.5 2.6-6 5.7-6s4.7 2.5 5.2 3.9l.3.6L113 22a3 3 0 0 0 2.9 1.8c1.4 0 2.3-.7 3-1.7Zm-6.4-2.2 5.5-2.2c-.4-.7-1.2-1.2-2.3-1.2a3.3 3.3 0 0 0-3.2 3.4Z" fill="#C4C7C5"></path><path _ngcontent-ng-c508314537="" d="m16.7 20.7-4.4 6.6h-10L16.7 6v14.7ZM25.3 6h-8.6v21.3h8.6V6ZM6 14a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="#C4C7C5" strokeWidth="1.5" strokeLinejoin="round"></path><path _ngcontent-ng-c508314537="" d="M25.3 15.3a4.7 4.7 0 0 1 0-9.3m0 9.3V6m0 9.3a4.7 4.7 0 0 0 0-9.3" stroke="#C4C7C5" strokeWidth="1.5"></path><path _ngcontent-ng-c508314537="" d="M25.3 15.3a6 6 0 0 1 0 12" stroke="#C4C7C5" strokeWidth="1.5" strokeLinejoin="round"></path><path _ngcontent-ng-c508314537="" d="M25.3 27.3a6 6 0 0 1 0-12" stroke="#C4C7C5" strokeWidth="1.5"></path></svg>
+                    <span className="splash-footer-logo-text">Google Fonts</span>
                   </a>
                 </div>
               </div>
@@ -357,7 +384,7 @@ function App() {
 
         {pageContent === 'items' && <PageItems itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} onImportStatusChange={setImportStatus} />}
 
-        {pageContent === 'teams' && <PageTeams itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
+        {pageContent === 'teams' && <PageTeams itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedTeamsRef={savedTeamsRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
 
         {pageContent === 'simulator' && <PageSimulators itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
 

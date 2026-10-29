@@ -4,12 +4,17 @@ import Button from "./Button.jsx"
 import ItemPreview from "./ItemPreview.jsx"
 import ItemPerk from "./ItemPerk.jsx"
 import { POSSIBLE_PERKS } from "../database/enums.jsx"
-import { createSavedItemRecord } from "../database/ids.jsx"
+import { createSavedItemRecord } from "../js/ids.jsx"
 import Modal from "./Modal.jsx"
 import { createItemShareToken, decodeItemShareInput, decodeItemsShareInput, restoreSharedItem, restoreSharedItems } from "../utils/heroShare.js"
+import { clearSearchFromUrl } from "../js/search.jsx"
 
 function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
     const [pageContent, setPageContent] = useState(0)
+    const switchListPage = nextPage => {
+        if (pageContent !== nextPage) clearSearchFromUrl()
+        setPageContent(nextPage)
+    }
     useEffect(() => { setPreviewFullWidth(false) }, [pageContent])
     const [previewFullWidth, setPreviewFullWidth] = useState(false)
     const [selectedItemId, setSelectedItemId] = useState({ slot: null, id: null })
@@ -266,8 +271,8 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
 
             <div className="sub-nav-bar flex-row">
                 <div className="pagination flex-row card w-100">
-                    <Button text={"All Items"} color={1} onClick={() => { setPageContent(0) }} />
-                    <Button text={"Your Saved Items"} color={1} onClick={() => { setPageContent(1) }} />
+                    <Button text={"All Items"} color={1} onClick={() => { switchListPage(0) }} />
+                    <Button text={"Your Saved Items"} color={1} onClick={() => { switchListPage(1) }} />
                     <Button text={"Import Item"} color={1} onClick={() => setItemImportModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">

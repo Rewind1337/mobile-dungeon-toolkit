@@ -10,14 +10,14 @@ function NavBar({ switchTabTo }) {
             <div className='nav-left flex-row'>
                 <Button onMouseDown={() => { switchTabTo("heroes") }} text={"Heroes"} color={0} />
                 <Button onMouseDown={() => { switchTabTo("items") }} text={"Items"} color={1} />
-                <Button disabled onMouseDown={() => { switchTabTo("teams") }} text={"Teams"} color={2} />
+                <Button onMouseDown={() => { switchTabTo("teams") }} text={"Teams"} color={2} />
             </div>
             <div className='nav-home flex-row'>
                 <Button className="nav-home-button" onMouseDown={() => { switchTabTo("splash") }} text={Logo} imgAsText color={6} title="Home" />
             </div>
             <div className='nav-right flex-row'>
-                <Button disabled text={"Disabled"} color={3} />
                 <Button disabled onMouseDown={() => { switchTabTo("simulator") }} text={"Simulators"} color={4} />
+                <Button disabled text={""} color={3} />
                 <Button onMouseDown={() => { switchTabTo("info") }} text={"Info"} color={5} />
             </div>
         </div>

@@ -1,12 +1,14 @@
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
+import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import { PERK_DEFINITIONS, POSSIBLE_PERKS } from "../database/enums.jsx"
 import { iconSprites, perkSprites } from "../database/db_sprites.jsx"
-import "../css/other.scss"
+import "../css/infos.scss"
+import "../css/infos_perks.scss"
 
 const perkLabel = key => PERK_DEFINITIONS[key]?.name ?? key.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())
 
 function CataloguePerk() {
-    const [search, setSearch] = useState("")
+    const [search, setSearch, commitSearch] = useUrlSearch()
     const entries = useMemo(() => {
         const slotsByPerk = new Map()
         for (const [slot, perkKeys] of Object.entries(POSSIBLE_PERKS)) {
@@ -19,7 +21,7 @@ function CataloguePerk() {
             .map(([key, slots]) => ({ key, name: perkLabel(key), slots: [...slots] }))
             .sort((a, b) => a.name.localeCompare(b.name))
     }, [])
-    const filtered = entries.filter(entry => `${entry.name} ${entry.key} ${entry.slots.join(" ")}`.toLowerCase().includes(search.trim().toLowerCase()))
+    const filtered = entries.filter(entry => matchesSearchQuery([entry.name, entry.key, entry.slots.join(" ")], search))
     return <section className="perk-catalogue">
         <header className="catalogue-header">
             <div className="catalogue-heading-copy">
@@ -29,7 +31,7 @@ function CataloguePerk() {
         </header>
         <label className="catalogue-search perk-catalogue-filters card">
             <span className="catalogue-control-label text">Search perks ({filtered.length} of {entries.length} perks)</span>
-            <input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} placeholder="Search perks or equipment slots…" />
+            <input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} placeholder="Search perks or equipment slots…" />
         </label>
         <div className="perk-catalogue-list">
             {filtered.map(entry => <article className="perk-catalogue-row card" key={entry.key}>
