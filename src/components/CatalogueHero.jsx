@@ -228,7 +228,7 @@ function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null, fe
                             {odds !== null && (
                                 <span className={`banner-catalogue-hero-odds catalogue-chip text${isFeaturedHero ? " banner-catalogue-hero-odds--featured" : ""}`}>
                                     {isFeaturedHero && <img className="banner-catalogue-booster" src={resourceSprites.neutral_banner_booster} alt="" loading="lazy" decoding="async" />}
-                                    {(odds * 100).toFixed(3)}% chance{isFeaturedHero ? " · Featured" : ""}
+                                    {(odds * 100).toFixed(3)}% chance
                                 </span>
                             )}
                         </div>

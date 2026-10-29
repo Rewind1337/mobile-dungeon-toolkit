@@ -6,7 +6,7 @@ function EmptyHero({ onClick }) {
     return (
         <div className={"hero card" + (hover ? " hover" : "")} onMouseEnter={() => { setHover(1) }} onMouseLeave={() => { setHover(0) }} onClick={() => { onClick() }}>
             <div className="flex-col">
-                <div className="hero-sprite"><img className="hero-sprite" src={itemSprites["null"]} draggable={false} /></div>
+                <div className="hero-sprite"><img className="hero-sprite-img" src={itemSprites["null"]} draggable={false} alt="" /></div>
                 <div className="text">?</div>
             </div>
         </div>

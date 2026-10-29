@@ -6,7 +6,7 @@ function EmptyItem({ onClick, label = "?" }) {
     return (
         <div className={"item card" + (hover ? " hover" : "")} onMouseEnter={() => { setHover(1) }} onMouseLeave={() => { setHover(0) }} onClick={() => { onClick() }}>
             <div className="flex-col">
-                <div className="item-sprite"><img className="item-sprite" src={itemSprites["null"]} draggable={false} /></div>
+                <div className="item-sprite"><img className="item-sprite-img" src={itemSprites["null"]} draggable={false} alt="" /></div>
                 <div className="text">{label}</div>
             </div>
         </div>

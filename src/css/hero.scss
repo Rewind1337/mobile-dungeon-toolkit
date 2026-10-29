@@ -400,13 +400,19 @@
     width: 70px;
   }
 
-  .hero .text {
+  .hero > .flex-col > .text {
     border-radius: 0;
+    outline: 0;
+    margin-inline: -2px;
+    width: calc(100% + 4px);
+    border: 2px solid black;
     margin-top: 0;
   }
 }
 
 @include M.media-query-max(V.$bp-mobile, ()) {
+  .filters-group-rarities { order: 1; }
+  .filters-starred-group { order: 2; }
   .hero-preview .calculated-stats-heading small { font-size:.75em; }
   .hero-preview .base-stats:not(.calculated-stats) { flex-direction:column; align-items:stretch; }
   .hero-preview .base-stats:not(.calculated-stats) > .card { width:100%; min-width:0; justify-content:flex-start; gap:8px; }

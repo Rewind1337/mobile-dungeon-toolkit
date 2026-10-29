@@ -17,7 +17,7 @@ function getSearchableValues(value, seen = new Set()) {
     seen.add(value)
     return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : [key, ...getSearchableValues(child, seen)])
 }
-function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, setsRef = [], itemType = null, setSelectedItemId }) {
+function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, setsRef = [], itemType = null, heroAttributeRequirement = null, setSelectedItemId }) {
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
     const [search, setSearch, commitSearch] = useUrlSearch();
     const [filters, setFilters] = useState({
@@ -57,6 +57,11 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
     const filteredItems = useMemo(() => {
         const result = allItems.filter((itemObj) => {
             const matchesItemType = itemType === null || itemObj.slot === itemType
+            const itemRequirement = itemObj.attributeRequirement
+            const matchesHeroAttribute = heroAttributeRequirement == null
+                || itemRequirement == null
+                || Number(itemRequirement) === ATTRIBUTE_DEFINITIONS.NONE.id
+                || Number(itemRequirement) === Number(heroAttributeRequirement)
             const hasSet = itemObj.set !== undefined && itemObj.set !== null && itemObj.set !== -1;
             const hasUnique = itemObj.unique !== undefined && itemObj.unique !== null && itemObj.unique !== 0 && itemObj.unique !== 'NOTHING';
             const matchesSet = filters.set === null || (filters.set === 'noSet' ? !hasSet : itemObj.iconType === filters.set);
@@ -80,14 +85,14 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                 return undefined;
             });
 
-            return matchesItemType && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity && matchesName;
+            return matchesItemType && matchesHeroAttribute && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity && matchesName;
         });
 
         return result.sort((a, b) => {
             const comparison = a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
             return sortOrder === 0 ? comparison : -comparison;
         });
-    }, [allItems, filters, search, itemType, sortOrder, setsRef]);
+    }, [allItems, filters, search, itemType, heroAttributeRequirement, sortOrder, setsRef]);
 
     return (<>
         <div className='flex-row'>

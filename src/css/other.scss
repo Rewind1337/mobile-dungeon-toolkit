@@ -449,7 +449,7 @@
   justify-content: flex-start;
   gap: V.$gap-small;
   min-width: 0;
-  padding: V.$padding-card;
+  padding: V.$padding-card 10px;
 }
 
 .catalogue-overview-slot > .text {
@@ -873,6 +873,7 @@
 }
 
 @include M.media-query-max(V.$bp-mobile) {
+  .catalogue-input, .catalogue-filter select { min-height: 32px; }
   .catalogue-entry-card { gap: V.$gap-small; }
   .catalogue-entry-icon-wrap { flex-basis: 48px; }
   .catalogue-entry-icon { max-width: 100%; }
@@ -1026,6 +1027,7 @@
 }
 
 .banner-catalogue-hero-odds--featured {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1034,6 +1036,8 @@
 }
 
 .banner-catalogue-booster {
+  position: absolute;
+  transform: translateX(-44px) scale(1.5);
   display: block;
   flex: 0 0 22px;
   width: 22px;
@@ -1316,7 +1320,11 @@
 }
 
 .info-overview-breakdown-card .catalogue-overview-slot-list {
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+}
+
+.info-overview-breakdown-card:nth-child(2) .catalogue-overview-slot-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .banner-catalogue-search {

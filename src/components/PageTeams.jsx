@@ -196,15 +196,13 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                                                 slot,
                                                 item: Array.isArray(hero?.items) ? hero.items[slot.id] ?? null : null,
                                             }))
-                                            const hasEquippedItems = equippedItems.some(({ item }) => item !== null)
                                             return (
-                                                <div className="team-hero-slot" key={`${team.id}-slot-${slotIndex}`}>
+                                                <div className="team-hero-slot card card-static" key={`${team.id}-slot-${slotIndex}`}>
                                                     <span className="team-slot-label text">Slot {slotIndex + 1}</span>
                                                     {hero
                                                         ? <>
                                                             <Hero heroObj={hero} selected={false} level={hero.level ?? null} onClick={() => openSlotPicker(team, slotIndex)} />
-                                                            {hasEquippedItems && (
-                                                                <div
+                                                            <div
                                                                     className="catalogue-chip team-equipped-items"
                                                                     aria-label={hero.name + "'s equipped items"}
                                                                     title={hero.name + "'s equipped items"}
@@ -227,8 +225,7 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                                                                             </span>
                                                                         ))}
                                                                     </div>
-                                                                </div>
-                                                            )}
+                                                            </div>
                                                         </>
                                                         : <EmptyHero onClick={() => openSlotPicker(team, slotIndex)} />
                                                     }
