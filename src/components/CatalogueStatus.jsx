@@ -6,6 +6,7 @@ import { statusSprites } from "../database/db_sprites.jsx"
 import CheckmarkSprite from "../sprites/checkmark.webp"
 import CrossSprite from "../sprites/cross.png"
 import Button from "./Button.jsx"
+import CatalogueEntryCard from "./CatalogueEntryCard.jsx"
 
 const STATUS_DESCRIPTIONS = {
     attack_up: "Increases Attack.",
@@ -22,7 +23,7 @@ const STATUS_DESCRIPTIONS = {
     preservation: "Prevents HP from dropping below 1 while active.",
     shroud: "Cannot be selected as the primary target, but can still be affected by area attacks.",
     guard: "Takes a share of damage intended for the protected ally.",
-    shield: "Absorbs incoming damage. Can stack and is marked as non-removable.",
+    shield: "Absorbs incoming damage. Can stack.",
     absorbing: "Restores HP based on damage dealt.",
     blessed: "Increases healing received.",
     attack_down: "Reduces Attack.",
@@ -213,30 +214,32 @@ function StatusCard({ status }) {
     const sprite = statusSprites[status.name] ?? statusSprites[status.name.replace("critical_resistance", "critical_resist")]
     const description = STATUS_DESCRIPTIONS[status.name]
         ?? `Special status effect (${humanize(status.effectType ?? "effect")}). Check its stored effect data for the exact behaviour.`
+    const details = getDetails(status)
+    const categoryClass = `status-category-${category.toLowerCase().replaceAll(" ", "-")}`
 
     return (
-        <article className="status-catalogue-card card" data-category={category.toLowerCase()}>
-            <div className="status-catalogue-identity">
-                <span className="catalogue-chip text status-catalogue-identity-chip">
-                    {sprite
-                        ? <img className="status-catalogue-icon" src={sprite} alt="" loading="lazy" draggable={false} />
-                        : <span className="status-catalogue-icon-fallback" aria-hidden="true">◆</span>
-                    }
-                    <span className="status-catalogue-name text-big">{humanize(status.name)}</span>
-                </span>
-                <span className={`catalogue-chip text status-catalogue-category status-category-${category.toLowerCase().replaceAll(" ", "-")}`}>{category}</span>
-            </div>
+        <CatalogueEntryCard className="status-catalogue-card" dataCategory={category.toLowerCase()} icon={sprite}>
+            <header className="catalogue-entry-heading status-catalogue-heading">
+                <h3 className="catalogue-entry-name text-big status-catalogue-name">{humanize(status.name)}</h3>
+            </header>
             <p className="status-catalogue-description text">{description}</p>
             <div className="status-polarity-row" aria-label="Status effect properties">
-                <span className={`catalogue-chip text status-polarity ${status.mitigatable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.mitigatable === false ? "Not mitigatable" : "Mitigatable"}><img className={`status-polarity-icon${status.mitigatable === false ? " is-negative" : ""}`} src={status.mitigatable === false ? CrossSprite : CheckmarkSprite} alt={status.mitigatable === false ? "No" : "Yes"} /><span>Mitigatable</span></span>
-                <span className={`catalogue-chip text status-polarity ${status.removable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.removable === false ? "Not removable" : "Removable"}><img className={`status-polarity-icon${status.removable === false ? " is-negative" : ""}`} src={status.removable === false ? CrossSprite : CheckmarkSprite} alt={status.removable === false ? "No" : "Yes"} /><span>Removable</span></span>
+                <span className={`catalogue-chip text status-catalogue-category ${categoryClass}`}>{category}</span>
+                <span className={`catalogue-chip text status-polarity ${status.mitigatable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.mitigatable === false ? "Not mitigatable" : "Mitigatable"}>
+                    <img className={`status-polarity-icon${status.mitigatable === false ? " is-negative" : ""}`} src={status.mitigatable === false ? CrossSprite : CheckmarkSprite} alt={status.mitigatable === false ? "No" : "Yes"} />
+                    <span>Mitigatable</span>
+                </span>
+                <span className={`catalogue-chip text status-polarity ${status.removable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.removable === false ? "Not removable" : "Removable"}>
+                    <img className={`status-polarity-icon${status.removable === false ? " is-negative" : ""}`} src={status.removable === false ? CrossSprite : CheckmarkSprite} alt={status.removable === false ? "No" : "Yes"} />
+                    <span>Removable</span>
+                </span>
             </div>
-            {getDetails(status).length > 0 && (
+            {details.length > 0 && (
                 <ul className="status-catalogue-details">
-                    {getDetails(status).map(detail => <li className="text" key={detail}>{detail}</li>)}
+                    {details.map(detail => <li className="text" key={detail}>{detail}</li>)}
                 </ul>
             )}
-        </article>
+        </CatalogueEntryCard>
     )
 }
 

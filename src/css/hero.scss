@@ -366,21 +366,40 @@
 
 .hero-preview .equipment {
   display: grid;
-  grid-template-columns: repeat(6, V.$item-sprite-width);
+  grid-template-columns: repeat(6, calc(V.$item-sprite-width + 10px));
   justify-content: center;
   align-items: start;
   gap: V.$gap-small;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.hero-preview .equipment > .item {
+  box-sizing: border-box;
+  width: calc(V.$item-sprite-width + 10px);
+  min-width: 0;
+  margin: 0;
 }
 
 @include M.media-query-max(V.$bp-tablet, ()) {
   .hero-preview .equipment {
-    grid-template-columns: repeat(3, V.$item-sprite-width);
+    grid-template-columns: repeat(3, calc(V.$item-sprite-width + 10px));
   }
 }
 
 @include M.media-query-max(V.$bp-mobile, ()) {
   .hero-preview .equipment {
-    grid-template-columns: repeat(2, 60px);
+    grid-template-columns: repeat(2, 70px);
+  }
+
+  .hero-preview .equipment > .item {
+    width: 70px;
+  }
+
+  .hero .text {
+    border-radius: 0;
+    margin-top: 0;
   }
 }
 

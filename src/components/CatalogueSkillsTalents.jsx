@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react"
 import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import Button from "./Button.jsx"
+import CatalogueEntryCard from "./CatalogueEntryCard.jsx"
 
 const stringify = value => {
     if (value == null) return ""
@@ -10,18 +11,18 @@ const stringify = value => {
 
 function SkillCard({ hero, skill, skillIndex }) {
     const skillType = ["Primary", "Secondary", "Ultimate"][skillIndex] ?? `Skill ${skillIndex + 1}`
-    return <article className="hero-catalogue-skill card">
-        <div className="skill-catalogue-heading">
-            <span className="catalogue-chip text skill-catalogue-name">{skill.name || "Unnamed skill"}</span>
+    return <CatalogueEntryCard className="skill-catalogue-entry">
+        <header className="skill-catalogue-heading">
+            <h3 className="catalogue-entry-name text-big skill-catalogue-name">{skill.name || "Unnamed skill"}</h3>
             <div className="skill-catalogue-meta">
                 <span className="catalogue-chip catalogue-chip-rarity text skill-catalogue-hero" data-rarity={hero.rarity}>{hero.name}</span>
                 <span className="catalogue-chip text skill-catalogue-type">{skillType}</span>
                 {skill.cooldown != null && <span className="catalogue-chip text skill-catalogue-cooldown">Cooldown: {skill.cooldown} Turns</span>}
             </div>
-        </div>
-        {skill.description && <p className="catalogue-chip text skill-catalogue-description">{skill.description}</p>}
+        </header>
+        {skill.description && <p className="text skill-catalogue-description">{skill.description}</p>}
         {skill.effect != null && <details className="hero-catalogue-details"><summary className="text">Effect data</summary><pre className="hero-catalogue-code text">{stringify(skill.effect)}</pre></details>}
-    </article>
+    </CatalogueEntryCard>
 }
 
 function getTalentPosition(talentId) {
@@ -47,10 +48,10 @@ function TalentEffect({ effect }) {
 }
 
 function TalentCard({ talent, sources }) {
-    return <article className="hero-catalogue-talent card">
-        <div className="hero-catalogue-skill-heading">
-            <div className="catalogue-chip text talent-catalogue-name">{talent.name || "Unnamed talent"}</div>
-        </div>
+    return <CatalogueEntryCard className="talent-catalogue-entry">
+        <header className="catalogue-entry-heading talent-catalogue-heading">
+            <h3 className="catalogue-entry-name text-big talent-catalogue-name">{talent.name || "Unnamed talent"}</h3>
+        </header>
         <div className="talent-source-list" aria-label="Heroes with this talent">
             {sources.map(({ hero, id }) => <div className="talent-source-entry" key={hero.id + "-" + id}>
                 <span className="catalogue-chip text talent-source-hero">{hero.name}</span>
@@ -58,7 +59,7 @@ function TalentCard({ talent, sources }) {
             </div>)}
         </div>
         {talent.effect != null && <TalentEffect effect={talent.effect} />}
-    </article>
+    </CatalogueEntryCard>
 }
 
 function CatalogueSkillsTalents({ heroes = [], initialView = "skills", onViewChange }) {

@@ -1190,6 +1190,51 @@ input[type="number"] {
 }
 
 
+/* Team equipped-item chips are always available; do not keep these in lazy-loaded other.scss. */
+.team-hero-slot { container-type: inline-size; }
+
+.team-equipped-items {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 5px;
+}
+
+.team-equipped-item-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  justify-items: center;
+  gap: 3px;
+  min-width: 0;
+}
+
+.team-equipped-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.team-equipped-item.is-empty { opacity: 0.28; }
+
+.team-equipped-item-icon {
+  display: block;
+  width: 28px;
+  height: 28px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+@container (min-width: 130px) {
+  .team-equipped-item-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@container (min-width: 195px) {
+  .team-equipped-item-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
 /* Teams */
 #page-teams {
   align-items: stretch;

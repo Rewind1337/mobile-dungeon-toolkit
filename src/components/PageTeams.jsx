@@ -32,6 +32,15 @@ const humanize = value => String(value ?? "")
     .toLowerCase()
     .replace(/\b\w/g, letter => letter.toUpperCase())
 
+const TEAM_EQUIPMENT_SLOTS = [
+    EQUIPMENT_SLOT_DEFINITIONS.WEAPON,
+    EQUIPMENT_SLOT_DEFINITIONS.HELMET,
+    EQUIPMENT_SLOT_DEFINITIONS.ARMOR,
+    EQUIPMENT_SLOT_DEFINITIONS.RING,
+    EQUIPMENT_SLOT_DEFINITIONS.NECKLACE,
+    EQUIPMENT_SLOT_DEFINITIONS.OTHER,
+]
+
 function getHeroStatusEffects(hero) {
     if (!hero) return []
     const skillEffects = (Array.isArray(hero.skills) ? hero.skills : []).map(skill => skill?.effect)
@@ -183,31 +192,42 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                                     <div className="team-hero-slots" aria-label={`${team.name} hero slots`}>
                                         {team.heroes.map((saveId, slotIndex) => {
                                             const hero = savedHeroes.find(savedHero => savedHero.saveId === saveId)
-                                            const weapon = Array.isArray(hero?.items)
-                                                ? hero.items[EQUIPMENT_SLOT_DEFINITIONS.WEAPON.id]
-                                                : null
+                                            const equippedItems = TEAM_EQUIPMENT_SLOTS.map(slot => ({
+                                                slot,
+                                                item: Array.isArray(hero?.items) ? hero.items[slot.id] ?? null : null,
+                                            }))
+                                            const hasEquippedItems = equippedItems.some(({ item }) => item !== null)
                                             return (
                                                 <div className="team-hero-slot" key={`${team.id}-slot-${slotIndex}`}>
                                                     <span className="team-slot-label text">Slot {slotIndex + 1}</span>
                                                     {hero
                                                         ? <>
                                                             <Hero heroObj={hero} selected={false} level={hero.level ?? null} onClick={() => openSlotPicker(team, slotIndex)} />
-                                                            {weapon && (
-                                                                <span
-                                                                    className="catalogue-chip text team-weapon-chip"
-                                                                    title={weapon.name ?? "Equipped weapon"}
-                                                                    aria-label={`${hero.name}'s equipped weapon`}
+                                                            {hasEquippedItems && (
+                                                                <div
+                                                                    className="catalogue-chip team-equipped-items"
+                                                                    aria-label={hero.name + "'s equipped items"}
+                                                                    title={hero.name + "'s equipped items"}
                                                                 >
-                                                                    <img
-                                                                        className="team-weapon-icon"
-                                                                        src={weapon.itemSrc || weapon.iconSrc || itemSprites["null"]}
-                                                                        alt=""
-                                                                        loading="lazy"
-                                                                        decoding="async"
-                                                                        draggable={false}
-                                                                    />
-                                                                    <span>{weapon.name ?? "Weapon"}</span>
-                                                                </span>
+                                                                    <div className="team-equipped-item-grid">
+                                                                        {equippedItems.map(({ slot, item }) => (
+                                                                            <span
+                                                                                className={"team-equipped-item" + (item ? "" : " is-empty")}
+                                                                                key={slot.id}
+                                                                                title={(item?.name ?? humanize(slot.name)) + " · " + humanize(slot.name)}
+                                                                            >
+                                                                                <img
+                                                                                    className="team-equipped-item-icon"
+                                                                                    src={item?.itemSrc || item?.iconSrc || itemSprites["null"]}
+                                                                                    alt=""
+                                                                                    loading="lazy"
+                                                                                    decoding="async"
+                                                                                    draggable={false}
+                                                                                />
+                                                                            </span>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
                                                             )}
                                                         </>
                                                         : <EmptyHero onClick={() => openSlotPicker(team, slotIndex)} />
