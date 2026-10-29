@@ -1234,11 +1234,24 @@ input[type="number"] {
   width: auto;
 }
 
+.team-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 1fr);
+  align-items: start;
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.team-heroes-column,
+.team-info-column {
+  min-width: 0;
+}
+
 .team-hero-slots {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   align-items: start;
-  gap: V.$gap;
+  gap: V.$gap-small;
   min-width: 0;
 }
 
@@ -1258,20 +1271,63 @@ input[type="number"] {
 .team-hero-slot > .hero,
 .team-hero-slot > .hero.card {
   cursor: pointer;
+  width: 100%;
   max-width: 100%;
+  min-width: 0;
 }
 
-.team-overview {
+.team-info-column {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap;
+}
+
+.team-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 0;
+  padding: V.$padding-card;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: V.$border-radius;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.team-info-heading {
+  margin: 0;
+  font-size: V.$font-size-small;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.8;
+}
+
+.team-info-chips {
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
   gap: V.$gap-small;
   min-width: 0;
 }
 
 .team-overview-chip {
-  flex: 1 1 300px;
+  flex: 0 1 auto;
+  max-width: 100%;
   white-space: normal;
   overflow-wrap: anywhere;
+}
+
+.team-attribute-chip {
+  justify-content: flex-start;
+}
+
+.team-status-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.team-overview-empty {
+  opacity: 0.7;
+  font-size: V.$font-size-small;
 }
 
 .team-new {
@@ -1294,7 +1350,14 @@ input[type="number"] {
 .team-hero-picker-header {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: V.$gap-small;
+  text-align: center;
+}
+
+.team-hero-picker .header-big {
+  width: 100%;
+  text-align: center;
 }
 
 .team-hero-picker-header h2,
@@ -1315,8 +1378,8 @@ input[type="number"] {
 }
 
 @include M.media-query-max(V.$bp-tablet) {
-  .team-hero-slots {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .team-content {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -1337,10 +1400,6 @@ input[type="number"] {
 
   .team-actions button {
     flex: 1 1 auto;
-  }
-
-  .team-overview-chip {
-    flex-basis: 100%;
   }
 
   .team-hero-picker-footer button {
