@@ -1062,7 +1062,7 @@ export const elementSprites = {
     6: SkyElementSrc,
 }
 
-import AgilityColorSrc from '../sprites/stats/agility.webp'
+import AgilityStatSrc from '../sprites/stats/agility.webp'
 import StrengthColorSrc from '../sprites/stats/strength.webp'
 import HealthColorSrc from '../sprites/stats/health.webp'
 import DefenseColorSrc from '../sprites/stats/defense.webp'
@@ -1091,11 +1091,11 @@ export const perkSprites = {
     HEALTH_PERCENT: HealthColorSrc,
     ATTACK_PERCENT: StrengthColorSrc,
     DEFENCE_PERCENT: DefenseColorSrc,
-    AGILITY_PERCENT: AgilityColorSrc,
+    AGILITY_PERCENT: AgilityStatSrc,
     HEALTH_FLAT: HealthColorSrc,
     ATTACK_FLAT: StrengthColorSrc,
     DEFENCE_FLAT: DefenseColorSrc,
-    AGILITY_FLAT: AgilityColorSrc,
+    AGILITY_FLAT: AgilityStatSrc,
     CRIT_CHANCE: CritChanceSrc,
     CRIT_RESISTANCE: CritResistanceSrc,
     CRIT_DAMAGE: CritDamageSrc,
@@ -1123,13 +1123,13 @@ export const perkSprites = {
 
 import { ImCross } from "react-icons/im";
 import StrengthSrc from '../sprites/attributes/strength.webp'
-import AgilitySrc from '../sprites/attributes/agility.webp'
+import DexteritySrc from '../sprites/attributes/dexterity.webp'
 import IntelligenceSrc from '../sprites/attributes/intelligence.webp'
 
 export const attributeSprites = {
     0: <ImCross />,
     1: StrengthSrc,
-    2: AgilitySrc,
+    2: DexteritySrc,
     3: IntelligenceSrc,
 }
 
@@ -1181,7 +1181,7 @@ export const filterSprites = {
     12: ControlSrc,
     13: SupportSrc,
     20: StrengthSrc,
-    21: AgilitySrc,
+    21: DexteritySrc,
     22: IntelligenceSrc,
     30: <FaCircle />,
     31: <FaCircle />,
