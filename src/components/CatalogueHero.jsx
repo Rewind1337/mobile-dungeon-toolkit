@@ -225,11 +225,11 @@ function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null }) 
                         : null
 
                     return (
-                        <div className="banner-catalogue-hero" key={`${hero.id}-${index}`} title={hero.name}>
-                            <Hero heroObj={hero} selected={false} level={null} onClick={() => {}} />
+                        <div className="banner-catalogue-hero card" key={`${hero.id}-${index}`} title={hero.name}>
+                            <Hero className="hero-static" heroObj={hero} selected={false} level={null} onClick={() => {}} />
                             {odds !== null && (
-                                <span className="banner-catalogue-hero-odds text">
-                                    {(odds * 100).toFixed(3)}% pull chance
+                                <span className="banner-catalogue-hero-odds catalogue-chip text">
+                                    {(odds * 100).toFixed(3)}% chance
                                 </span>
                             )}
                         </div>
@@ -275,20 +275,18 @@ function BannerCatalogueCard({ result, heroesById }) {
     return (
         <article className={`banner-catalogue-card card${isEverydayBanner ? " banner-catalogue-card--everyday" : ""}`}>
             <header className="banner-catalogue-card-header">
-                <h2 className="banner-catalogue-name header">{banner.name}</h2>
+                <h2 className="banner-catalogue-name header-big">{banner.name}</h2>
                 <div className="banner-catalogue-meta">
                     <span className="catalogue-chip text">{banner.heroIds.length} listed heroes</span>
                     {banner.standardBanner && <span className="catalogue-chip text">Standard banner</span>}
                     {featuredHero && <span className="catalogue-chip text">Featured: {featuredHero.name}</span>}
-                    <span
+                    {!isEverydayBanner &&  <span
                         className="catalogue-chip banner-catalogue-live-date text"
                         title={liveDateInfo.estimated ? "Estimated from the previous and next banner dates" : "Recorded last-live date"}
                     >
                         Last live: {liveDateText}
-                    </span>
+                    </span>}
                     {isEverydayBanner && <span className="catalogue-chip banner-catalogue-chip-permanent text">Always available</span>}
-                    {Array.isArray(banner.conditionalHeroIDs) && banner.conditionalHeroIDs.length > 0
-                        && <span className="catalogue-chip text">{banner.conditionalHeroIDs.length} conditional heroes</span>}
                 </div>
             </header>
 
@@ -312,7 +310,7 @@ function BannerCatalogueCard({ result, heroesById }) {
                             <div className="banner-catalogue-hero" key={`${hero.id}-conditional-${index}`} title={hero.name}>
                                 <Hero heroObj={hero} selected={false} level={null} onClick={() => {}} />
                                 <span className="banner-catalogue-hero-odds banner-catalogue-hero-odds--conditional text">
-                                    Conditional · odds not modeled
+                                    Conditional
                                 </span>
                             </div>
                         ))}
@@ -422,9 +420,6 @@ function BannerCatalogueList({ heroesRef, search, setSearch, commitSearch }) {
                     Showing {filteredBanners.length} of {BANNERS.length} banners
                 </span>
             </label>
-            <p className="catalogue-muted text banner-catalogue-odds-note">
-                Estimated odds use defined heroes listed on each banner: Legendary 1% and Epic 9%. Rare and Uncommon pulls make up the untracked remaining 90%. Starred heroes have one-third the pull weight of regular heroes; conditional heroes and missing hero references are not included in the estimate.
-            </p>
             {filteredBanners.length === 0
                 ? <p className="catalogue-empty card">No banners match that search.</p>
                 : <div className="banner-catalogue-grid">

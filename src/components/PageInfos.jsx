@@ -36,7 +36,7 @@ const humanize = value => String(value ?? "").replaceAll("_", " ").replace(/\b\w
 
 function Stat({ label, value }) {
     return (
-        <div className="catalogue-overview-stat card card-static">
+        <div className="catalogue-overview-stat card">
             <span className="text">{label}</span>
             <span className="header-big">{value}</span>
         </div>
@@ -95,7 +95,7 @@ function InfoOverview({ items, sets, heroes }) {
 
     return (
         <section className="info-overview">
-            <header className="info-overview-hero card">
+            <header className="info-overview-hero card card-static">
                 <h1 className="catalogue-title header-big">Information Hub</h1>
                 <p className="catalogue-description text">
                     Explore the heroes, banners, equipment, gems, resources, perks, skills, talents, and status effects tracked by the toolkit.

@@ -972,7 +972,7 @@
 
 .banner-catalogue-hero-odds {
   max-width: 100%;
-  font-size: V.$font-size-xsmall;
+  font-size: V.$font-size-small;
   line-height: 1.2;
   text-align: center;
   overflow-wrap: anywhere;
@@ -999,14 +999,11 @@
 
 .banner-catalogue-card--everyday {
   grid-column: 1 / -1;
-  border: 1px solid rgba(244, 195, 92, 0.75);
   background: linear-gradient(125deg, rgba(99, 66, 16, 0.44), rgba(20, 57, 54, 0.52) 52%, rgba(7, 15, 25, 0.86));
-  box-shadow: inset 0 0 0 1px rgba(255, 225, 160, 0.12), 0 0 16px rgba(231, 175, 65, 0.08);
 }
 
 .banner-catalogue-card--everyday .banner-catalogue-name {
   color: #ffe1a0;
-  text-shadow: 0 0 12px rgba(244, 195, 92, 0.2);
 }
 
 .banner-catalogue-chip-permanent {
