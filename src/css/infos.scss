@@ -1,0 +1,275 @@
+@use './_variables.scss' as V;
+@use './mixins.scss' as M;
+
+/*
+ * The shared .card, .header, .text, .flex-row and related utility classes
+ * live in global.scss. Keep this file focused on catalogue-specific layout.
+ */
+
+#page-info-layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  gap: 10px;
+}
+
+
+/* Shared catalogue layout */
+
+.item-catalogue,
+.hero-catalogue {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap;
+  width: 100%;
+  min-width: 0;
+  padding: V.$padding-card;
+}
+
+.catalogue-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: V.$gap;
+}
+
+.catalogue-heading-copy {
+  display: flex;
+  flex: 1 1 420px;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.catalogue-title,
+.catalogue-overview-title {
+  margin: 0;
+}
+
+
+.catalogue-description,
+.catalogue-result-count,
+.catalogue-item-meta,
+.catalogue-item-set,
+.catalogue-set-meta,
+.catalogue-set-locations,
+.catalogue-effect-description,
+.catalogue-muted,
+.catalogue-item-source,
+.catalogue-item-location,
+.hero-catalogue-name,
+.hero-catalogue-meta,
+.hero-catalogue-variant,
+.hero-catalogue-description {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.catalogue-result-count {
+  flex: 0 1 auto;
+  opacity: 0.85;
+}
+
+.catalogue-view-switch {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: V.$gap;
+}
+
+.catalogue-filters,
+.hero-catalogue-filters,
+.status-catalogue-filters,
+.perk-catalogue-filters,
+.skills-talents-catalogue-filters {
+  position: sticky;
+  top: V.$gap-small;
+  z-index: 100;
+  display: grid;
+  gap: V.$gap;
+  align-items: start;
+  padding: V.$padding-card;
+}
+
+.catalogue-filters {
+  grid-template-columns: minmax(260px, 2fr) repeat(3, minmax(145px, 1fr)) minmax(0, 1fr);
+}
+.catalogue-filters.is-set-view {
+  grid-template-columns: minmax(260px, 2fr) repeat(2, minmax(145px, 1fr)) minmax(0, 1fr);
+}
+
+.hero-catalogue-filters {
+  grid-template-columns: minmax(240px, 2fr) repeat(4, minmax(140px, 1fr)) auto;
+}
+
+.catalogue-search,
+.catalogue-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  text-align: left;
+}
+
+.catalogue-control-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px V.$gap-small;
+  padding-inline: 2px;
+  font-size: V.$font-size-small;
+  opacity: 0.85;
+}
+
+.catalogue-control-label .catalogue-result-count {
+  font-size: V.$font-size-small;
+}
+
+.catalogue-input,
+.catalogue-filter select {
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  font-family: V.$font-family-stats;
+}
+
+.catalogue-filter-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+
+  > button {
+    align-self: end; 
+  }
+}
+
+.catalogue-results {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: V.$gap;
+  min-width: 0;
+  height: auto;
+  max-height: none;
+  overflow: visible;
+}
+
+.catalogue-empty {
+  margin: 0;
+  padding: V.$gap;
+}
+
+/* Shared two-column entry cards for statuses, skills and talents. */
+.catalogue-entry-card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: V.$gap;
+  min-width: 0;
+  padding: V.$padding-card;
+  text-align: left;
+}
+
+.catalogue-entry-icon-wrap {
+  display: flex;
+  flex: 0 0 68px;
+  align-self: stretch;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 64px;
+}
+
+.catalogue-entry-icon {
+  display: block;
+  flex: 0 0 auto;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.catalogue-entry-content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.catalogue-entry-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.catalogue-entry-name {
+  margin: 0;
+  min-width: 0;
+  font-size: V.$font-size-header-small;
+  overflow-wrap: anywhere;
+}
+
+/* Shared responsive filter, view-switch, and entry-card layout. */
+@include M.media-query-max(V.$bp-tablet) {
+  .catalogue-filters, .hero-catalogue-filters, .status-catalogue-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .catalogue-filters.is-set-view { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .catalogue-search, .hero-catalogue-filters .catalogue-search, .status-catalogue-filters .catalogue-search {
+    grid-column: 1 / -1;
+  }
+  .catalogue-filter-actions { justify-content: flex-end; }
+}
+
+@include M.media-query-max(V.$bp-mobile) {
+  .catalogue-input, .catalogue-filter select { min-height: 32px; }
+  .catalogue-entry-card { gap: V.$gap-small; }
+  .catalogue-entry-icon-wrap { flex-basis: 48px; }
+  .catalogue-entry-icon { max-width: 100%; }
+  #page-info-layout, .catalogue-view-switch { gap: 0; }
+  .catalogue-filters, .hero-catalogue-filters, .status-catalogue-filters,
+  .perk-catalogue-filters, .skills-talents-catalogue-filters { top: 0; }
+  .item-catalogue, .hero-catalogue, .status-catalogue, .perk-catalogue { padding: 0; }
+  .catalogue-filters, .hero-catalogue-filters, .status-catalogue-filters,
+  .catalogue-filters.is-set-view { grid-template-columns: minmax(0, 1fr); }
+  .catalogue-search, .hero-catalogue-filters .catalogue-search, .status-catalogue-filters .catalogue-search { grid-column: auto; }
+  .catalogue-filter-actions { justify-content: flex-start; }
+  .catalogue-result-count { flex-basis: 100%; text-align: left; }
+}
+@include M.media-query(V.$bp-wide) {
+  .filters > .filter-group { margin-inline: V.$gap-small; }
+}
+/* Low-emphasis catalogue data-status notes */
+.catalogue-progress-note {
+  margin: V.$gap-small 0 0;
+  font-size: V.$font-size-small;
+  line-height: 1.4;
+  opacity: 0.7;
+}
+
+.resource-location-filter {
+  display: flex;
+  flex: 0 1 250px;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 180px;
+}
+
+
+@include M.media-query-max(V.$bp-mobile) {
+  .resource-location-filter {
+    width: 100%;
+    min-width: 0;
+  }
+}

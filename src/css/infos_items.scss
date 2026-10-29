@@ -1,0 +1,240 @@
+@use './_variables.scss' as V;
+@use './mixins.scss' as M;
+
+/* Item cards and set cards */
+
+.catalogue-item-grid,
+.catalogue-set-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.catalogue-item-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: V.$gap;
+  width: auto;
+  min-width: 0;
+  padding: V.$padding-card;
+  text-align: left;
+}
+
+.catalogue-set-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: V.$gap;
+  width: auto;
+  min-width: 0;
+  padding: V.$padding-card;
+  text-align: left;
+}
+
+.catalogue-item-identity {
+  display: flex;
+  align-items: flex-start;
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.catalogue-item-preview {
+  flex: 0 0 auto;
+}
+
+.catalogue-item-preview .item {
+  cursor: default;
+}
+
+.catalogue-item-heading {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px V.$gap-small;
+  min-width: 0;
+}
+
+.catalogue-item-name {
+  display: inline-flex;
+  flex: 0 1 auto;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0;
+  padding: 3px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: V.$border-radius-small;
+  background: rgba(0, 0, 0, 0.2);
+  font-size: V.$font-size-header-small;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.catalogue-item-meta,
+.catalogue-item-set,
+.catalogue-item-source,
+.catalogue-item-location {
+  flex: 1 1 100%;
+}
+
+.catalogue-item-meta-row,
+.catalogue-item-source-row {
+  display: flex;
+  flex: 1 1 100%;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px V.$gap-small;
+  min-width: 0;
+}
+
+.catalogue-item-meta-row .catalogue-item-meta,
+.catalogue-item-meta-row .catalogue-item-set,
+.catalogue-item-source-row .catalogue-item-source,
+.catalogue-item-source-row .catalogue-item-location {
+  display: flex;
+  flex: 0 1 auto;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.catalogue-item-meta { display: flex; flex-wrap: wrap; align-items: center; gap: V.$gap-small; }
+.catalogue-item-set { flex: 0 1 auto; align-items: center; }
+.catalogue-item-source .catalogue-chip,
+.catalogue-item-location .catalogue-chip { display: inline-flex; max-width: 100%; }
+
+
+.catalogue-statuses {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: V.$gap-small;
+}
+
+.catalogue-status-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.catalogue-effect,
+.catalogue-perks,
+.catalogue-set-pieces {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.catalogue-section-label {
+  align-self: center;
+  margin: 0;
+  font-size: V.$font-size-button;
+  font-weight: 700;
+
+  > * {
+    align-self: center;
+  }
+}
+
+.catalogue-effect-description {
+  white-space: normal;
+  text-align: center;
+}
+
+.catalogue-perk-list,
+.catalogue-piece-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: V.$gap-small;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.catalogue-perk {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 4px 7px;
+  border-radius: V.$border-radius-small;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.catalogue-perk-icon {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.catalogue-perk-name {
+  min-width: 0;
+  font-size: V.$font-size-small;
+  overflow-wrap: anywhere;
+}
+
+.catalogue-set-header {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.catalogue-set-name {
+  display: inline-flex;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 36px;
+  margin: 0;
+  text-align: center;
+  font-size: V.$font-size-header;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.catalogue-set-requirement {
+  margin-block: 0;
+  margin-inline: auto;
+}
+
+
+.catalogue-piece-list {
+  flex-direction: row;
+}
+
+.catalogue-piece {
+  display: flex;
+  flex: 0 1 49%;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+  padding: 3px 0;
+}
+
+.catalogue-piece-image {
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.catalogue-piece-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@include M.media-query(V.$bp-wide) {
+  .catalogue-item-grid, .catalogue-set-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@include M.media-query-max(V.$bp-mobile) {
+  .catalogue-item-grid, .catalogue-set-grid { grid-template-columns: minmax(0, 1fr); }
+  .catalogue-item-name { border-radius: 0; }
+}

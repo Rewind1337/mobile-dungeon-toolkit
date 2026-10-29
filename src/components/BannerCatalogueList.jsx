@@ -2,7 +2,8 @@ import { useMemo } from "react"
 import { matchesSearchQuery } from "../js/search.jsx"
 import { BANNERS, getBannerLiveDateInfo, hasValidBannerDate, getSearchableValues, matchesBannerHeroQuery, parseBannerDate } from "../js/bannerCatalogueUtils.jsx"
 import BannerCatalogueCard from "./BannerCatalogueCard.jsx"
-import "../css/other.scss"
+import "../css/infos.scss"
+import "../css/infos_resources.scss"
 
 export default function BannerCatalogueList({ heroesRef, search, setSearch, commitSearch }) {
     const heroesById = useMemo(() => {

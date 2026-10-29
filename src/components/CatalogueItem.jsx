@@ -9,7 +9,8 @@ import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"
 import Button from "./Button.jsx"
 
 import "../css/item.scss"
-import "../css/other.scss"
+import "../css/infos.scss"
+import "../css/infos_items.scss"
 
 function CatalogueFilters({
     search,

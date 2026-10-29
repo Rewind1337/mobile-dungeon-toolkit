@@ -1,0 +1,108 @@
+@use './_variables.scss' as V;
+@use './mixins.scss' as M;
+
+/* Status effect catalogue */
+
+.status-catalogue {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap;
+  width: 100%;
+  min-width: 0;
+  padding: V.$padding-card;
+}
+
+.status-catalogue-filters {
+  grid-template-columns: minmax(260px, 2fr) minmax(180px, 1fr) auto;
+  align-items: end;
+}
+
+.status-catalogue-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.status-catalogue-card {
+  padding: V.$padding-card;
+  text-align: left;
+}
+
+.status-catalogue-heading { display: block; min-width: 0; }
+.status-catalogue-name { display: block; margin: 0; font-size: V.$font-size-header-small; overflow-wrap: anywhere; }
+
+.status-catalogue-category {
+  flex: 0 0 auto;
+  font-size: V.$font-size-xsmall;
+  margin-top: 0;
+  white-space: nowrap;
+}
+.status-category-buff { border-color: rgba(80, 190, 100, 0.7); }
+.status-category-debuff { border-color: rgba(226, 105, 117, 0.75); }
+.status-category-special { border-color: rgba(174, 126, 224, 0.75); }
+.status-category-special-buff { border-color: rgba(66, 190, 183, 0.75); }
+.status-category-special-debuff { border-color: rgba(226, 105, 117, 0.75); }
+.status-polarity-positive { border-color: rgba(80, 190, 100, 0.7); }
+.status-polarity-negative { border-color: rgba(226, 105, 117, 0.75); }
+
+.status-catalogue-description {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.status-polarity-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.status-polarity {
+  display: inline-flex;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+  font-size: V.$font-size-xsmall;
+}
+
+.status-polarity-icon {
+  display: block;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.status-polarity-icon.is-negative {
+  flex-basis: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.status-catalogue-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px V.$gap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  opacity: 0.8;
+  font-size: V.$font-size-xsmall;
+}
+
+.status-catalogue-details li {
+  overflow-wrap: anywhere;
+}
+
+@include M.media-query(V.$bp-wide) {
+  .status-catalogue-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@include M.media-query-max(V.$bp-mobile) {
+  .status-catalogue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@include M.media-query-max(V.$bp-small) {
+  .status-catalogue-grid { grid-template-columns: minmax(0, 1fr); }
+}

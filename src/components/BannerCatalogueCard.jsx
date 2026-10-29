@@ -3,7 +3,8 @@ import { resourceSprites } from "../database/db_sprites.jsx"
 import { getBannerLastLiveLabel } from "../js/bannerUtils.jsx"
 import Hero from "./Hero.jsx"
 import { BANNERS, BANNER_RARITY_PULL_CHANCES, STARRED_HERO_PULL_WEIGHT, FEATURED_HERO_PULL_CHANCE, getBannerLiveDateInfo } from "../js/bannerCatalogueUtils.jsx"
-import "../css/other.scss"
+import "../css/infos.scss"
+import "../css/infos_resources.scss"
 
 function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null, featuredHero = null }) {
     if (heroes.length === 0) return null

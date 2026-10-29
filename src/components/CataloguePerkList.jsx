@@ -1,6 +1,7 @@
 import { perkSprites } from "../database/db_sprites.jsx"
 import { getPerkKey, getPerkLabel } from "../js/catalogueItemUtils.jsx"
-import "../css/other.scss"
+import "../css/infos.scss"
+import "../css/infos_items.scss"
 
 export default function CataloguePerkList({ perks, label = "Perks" }) {
     const visiblePerks = (perks ?? []).filter(perk => {
