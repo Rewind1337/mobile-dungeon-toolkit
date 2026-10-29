@@ -28,6 +28,7 @@ const normalizeTeams = teams => Array.isArray(teams)
 
 const humanize = value => String(value ?? "")
     .replaceAll("_", " ")
+    .toLowerCase()
     .replace(/\b\w/g, letter => letter.toUpperCase())
 
 function getHeroStatusEffects(hero) {
