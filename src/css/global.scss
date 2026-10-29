@@ -1253,7 +1253,7 @@ input[type="number"] {
   .team-equipped-item-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
-@container (min-width: 195px) {
+@container (min-width: 250px) {
   .team-equipped-item-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 }
 
