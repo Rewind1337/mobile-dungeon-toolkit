@@ -10,7 +10,7 @@ import Button from "./Button.jsx"
 import Hero from "./Hero.jsx"
 import { init_banner_db } from "../database/db_banners.jsx"
 import { getBannerLastLiveLabel } from "../database/bannerUtils.jsx"
-import { attributeSprites, roleSprites } from "../database/db_sprites.jsx"
+import { attributeSprites, roleSprites, resourceSprites } from "../database/db_sprites.jsx"
 import { isSearchAssetField, matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
@@ -24,12 +24,6 @@ const BANNER_RARITY_PULL_CHANCES = {
 }
 const STARRED_HERO_PULL_WEIGHT = 1 / 3
 const FEATURED_HERO_PULL_CHANCE = 0.005
-const FEATURED_HERO_BOOSTER_SRC = "../sprites/special/neutral_banner_booster.webp"
-const BANNER_HERO_ID_ALIASES = Object.freeze({
-    jack_o_lantern: "jack_o__lantern",
-    sphynx: "sphinx",
-    caotl: "coatl",
-})
 const humanize = value => String(value ?? "")
     .replaceAll("_", " ")
     .toLowerCase()
@@ -186,11 +180,6 @@ function HeroCatalogueCard({ hero }) {
 }
 
 
-function resolveBannerHero(heroId, heroesById) {
-    const resolvedId = BANNER_HERO_ID_ALIASES[heroId] ?? heroId
-    return heroesById.get(resolvedId) ?? null
-}
-
 function matchesBannerHeroQuery(hero, query) {
     const rarity = getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? ""
     const attribute = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? ""
@@ -238,7 +227,7 @@ function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null, fe
                             <Hero className="hero-static" heroObj={hero} selected={false} level={null} onClick={() => {}} />
                             {odds !== null && (
                                 <span className={`banner-catalogue-hero-odds catalogue-chip text${isFeaturedHero ? " banner-catalogue-hero-odds--featured" : ""}`}>
-                                    {isFeaturedHero && <img className="banner-catalogue-booster" src={FEATURED_HERO_BOOSTER_SRC} alt="" loading="lazy" decoding="async" />}
+                                    {isFeaturedHero && <img className="banner-catalogue-booster" src={resourceSprites.neutral_banner_booster} alt="" loading="lazy" decoding="async" />}
                                     {(odds * 100).toFixed(3)}% chance{isFeaturedHero ? " · Featured" : ""}
                                 </span>
                             )}
@@ -254,7 +243,7 @@ function BannerCatalogueCard({ result, heroesById }) {
     const { banner, heroes, allHeroes = heroes, conditionalHeroes, missingHeroCount, sourceIndex } = result
     const isEverydayBanner = banner.id === "everyday_heroes"
     const featuredHero = banner.featuredHeroId
-        ? resolveBannerHero(banner.featuredHeroId, heroesById)
+        ? (heroesById.get(banner.featuredHeroId) ?? null)
         : null
     const liveDateInfo = getBannerLiveDateInfo(BANNERS, sourceIndex)
     const lastLiveLabel = liveDateInfo.date ? getBannerLastLiveLabel(liveDateInfo.date) : ""
@@ -366,7 +355,7 @@ function BannerCatalogueList({ heroesRef, search, setSearch, commitSearch }) {
 
         return BANNERS.map((banner, sourceIndex) => {
             const resolveList = ids => (Array.isArray(ids) ? ids : [])
-                .map(id => resolveBannerHero(id, heroesById))
+                .map(id => heroesById.get(id) ?? null)
             const primaryRaw = resolveList(banner.heroIds)
             const conditionalRaw = resolveList(banner.conditionalHeroIDs)
             const missingHeroCount = primaryRaw.filter(hero => !hero).length
