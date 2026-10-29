@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import "../css/reset-timers.scss"
+import Clock from "../sprites/special/clock.webp"
 
 function getNextDailyReset(now = new Date()) {
     const reset = new Date(now)
@@ -42,6 +43,9 @@ function ResetTimers() {
                 <div className="reset-timer card" style={{height: "50px"}}>
                     <span className="reset-timer-label header">Daily Reset</span>
                     <span className="reset-timer-countdown text-big">{formatRemaining(dailyReset.getTime() - now)}</span>
+                </div>
+                <div className="reset-timer-clock card" aria-label="Clock">
+                    <img src={Clock} alt="" draggable={false} />
                 </div>
                 <div className="reset-timer card" style={{height: "50px"}}>
                     <span className="reset-timer-label header">Weekly Reset</span>
