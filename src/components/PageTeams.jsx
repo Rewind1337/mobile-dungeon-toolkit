@@ -5,6 +5,7 @@ import EmptyHero from "./EmptyHero.jsx"
 import Button from "./Button.jsx"
 import Modal from "./Modal.jsx"
 import { ATTRIBUTE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
+import { attributeSprites, statusSprites } from "../database/db_sprites.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 
 const createDefaultTeams = () => [
@@ -40,21 +41,50 @@ function getHeroStatusEffects(hero) {
 
 function TeamOverview({ team, savedHeroes }) {
     const teamHeroes = team.heroes.map(saveId => savedHeroes.find(hero => hero.saveId === saveId) ?? null)
-    const attributes = teamHeroes.map((hero, index) => {
-        if (!hero) return `Slot ${index + 1}: Empty`
-        const attribute = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute))
-        return `Slot ${index + 1}: ${humanize(attribute ?? "Unknown")}`
+    const attributes = teamHeroes.flatMap((hero, index) => {
+        if (!hero) return []
+        const name = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? "Unknown"
+        return [{
+            hero,
+            index,
+            name: humanize(name),
+            icon: attributeSprites[Number(hero.mainAttribute)],
+        }]
     })
     const statusEffects = [...new Set(teamHeroes.flatMap(getHeroStatusEffects))].sort((a, b) => a.localeCompare(b))
 
     return (
-        <div className="team-overview">
-            <span className="catalogue-chip text team-overview-chip" title="Main attribute of each team slot, in slot order">
-                Attributes: {attributes.join(" · ")}
-            </span>
-            <span className="catalogue-chip text team-overview-chip" title="Status effect names found in the saved heroes' skill and talent data">
-                Status effects: {statusEffects.length > 0 ? statusEffects.map(humanize).join(" · ") : "None detected"}
-            </span>
+        <div className="team-info-column">
+            <section className="team-info-section">
+                <h3 className="team-info-heading header">Attributes</h3>
+                <div className="team-info-chips">
+                    {attributes.map(({ hero, index, name, icon }) => (
+                        <span
+                            className={`catalogue-chip text team-overview-chip team-attribute-chip catalogue-chip-attribute-${name.toLowerCase()}`}
+                            key={`attribute-${hero.saveId ?? hero.id}-${index}`}
+                            title={`${hero.name} · Slot ${index + 1}`}
+                        >
+                            {typeof icon === "string"
+                                ? <img className="catalogue-chip-icon" src={icon} alt="" />
+                                : icon}
+                            {name}
+                        </span>
+                    ))}
+                    {attributes.length === 0 && <span className="text team-overview-empty">No heroes assigned yet.</span>}
+                </div>
+            </section>
+            <section className="team-info-section">
+                <h3 className="team-info-heading header">Status Effects</h3>
+                <div className="team-info-chips">
+                    {statusEffects.map(effect => (
+                        <span className="catalogue-chip text team-overview-chip team-status-chip" key={effect}>
+                            {statusSprites[effect] && <img className="catalogue-chip-icon team-status-icon" src={statusSprites[effect]} alt="" />}
+                            {humanize(effect)}
+                        </span>
+                    ))}
+                    {statusEffects.length === 0 && <span className="text team-overview-empty">No status effects detected.</span>}
+                </div>
+            </section>
         </div>
     )
 }
@@ -122,21 +152,25 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                                     <Button text="Delete Team" autoHeight color={5} onClick={() => deleteTeam(team.id)} />
                                 </div>
                             </header>
-                            <div className="team-hero-slots" aria-label={`${team.name} hero slots`}>
-                                {team.heroes.map((saveId, slotIndex) => {
-                                    const hero = savedHeroes.find(savedHero => savedHero.saveId === saveId)
-                                    return (
-                                        <div className="team-hero-slot" key={`${team.id}-slot-${slotIndex}`}>
-                                            <span className="team-slot-label text">Slot {slotIndex + 1}</span>
-                                            {hero
-                                                ? <Hero heroObj={hero} selected={false} level={null} onClick={() => openSlotPicker(team, slotIndex)} />
-                                                : <EmptyHero onClick={() => openSlotPicker(team, slotIndex)} />
-                                            }
-                                        </div>
-                                    )
-                                })}
+                            <div className="team-content">
+                                <div className="team-heroes-column">
+                                    <div className="team-hero-slots" aria-label={`${team.name} hero slots`}>
+                                        {team.heroes.map((saveId, slotIndex) => {
+                                            const hero = savedHeroes.find(savedHero => savedHero.saveId === saveId)
+                                            return (
+                                                <div className="team-hero-slot" key={`${team.id}-slot-${slotIndex}`}>
+                                                    <span className="team-slot-label text">Slot {slotIndex + 1}</span>
+                                                    {hero
+                                                        ? <Hero heroObj={hero} selected={false} level={hero.level ?? null} onClick={() => openSlotPicker(team, slotIndex)} />
+                                                        : <EmptyHero onClick={() => openSlotPicker(team, slotIndex)} />
+                                                    }
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                                <TeamOverview team={team} savedHeroes={savedHeroes} />
                             </div>
-                            <TeamOverview team={team} savedHeroes={savedHeroes} />
                         </article>
                     ))}
                     <div className="team team-new card flex-row">
