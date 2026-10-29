@@ -39,6 +39,15 @@ export function isSearchAssetField(key) {
     return /(?:src|sprites?|icons?|images?|urls?|paths?)$/i.test(String(key ?? ""))
 }
 
+/** Recursively flatten searchable primitive values while skipping asset-path fields. */
+export function getSearchableValues(value, seen = new Set()) {
+    if (value === null || value === undefined) return []
+    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return [String(value)]
+    if (typeof value !== "object" || seen.has(value)) return []
+    seen.add(value)
+    return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : getSearchableValues(child, seen))
+}
+
 /**
  * Match all plus-separated search terms against one searchable text corpus.
  * "&" remains accepted as a separator for older search URLs. A leading "!"

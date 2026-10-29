@@ -9,19 +9,14 @@ import {
 import Button from "./Button.jsx"
 import Hero from "./Hero.jsx"
 import { attributeSprites, roleSprites } from "../database/db_sprites.jsx"
-import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
-import { getSearchableValues } from "../js/bannerCatalogueUtils.jsx"
+import { getSearchableValues, matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
+import { humanize } from "../js/util.jsx"
 import BannerCatalogueList from "./BannerCatalogueList.jsx"
 import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"
 
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
     rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
 )
-
-const humanize = value => String(value ?? "")
-    .replaceAll("_", " ")
-    .toLowerCase()
-    .replace(/\b\w/g, letter => letter.toUpperCase())
 
 function formatEffect(effect) {
     if (effect === null || effect === undefined) return ""

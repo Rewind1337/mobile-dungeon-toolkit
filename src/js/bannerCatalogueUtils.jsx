@@ -1,6 +1,6 @@
 import { ATTRIBUTE_DEFINITIONS, ELEMENT_DEFINITIONS, RARITY_DEFINITIONS, ROLE_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
 import { init_banner_db } from "../database/db_banners.jsx"
-import { isSearchAssetField, matchesSearchQuery } from "./search.jsx"
+import { matchesSearchQuery } from "./search.jsx"
 
 export const BANNERS = init_banner_db()
 export const BANNER_RARITY_PULL_CHANCES = {
@@ -46,14 +46,6 @@ export function getBannerLiveDateInfo(banners, index) {
 
 export function hasValidBannerDate(banner) {
     return parseBannerDate(banner?.lastLiveDate) !== null
-}
-
-export function getSearchableValues(value, seen = new Set()) {
-    if (value === null || value === undefined) return []
-    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return [String(value)]
-    if (typeof value !== "object" || seen.has(value)) return []
-    seen.add(value)
-    return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : getSearchableValues(child, seen))
 }
 
 export function matchesBannerHeroQuery(hero, query) {

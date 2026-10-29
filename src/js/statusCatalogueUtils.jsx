@@ -126,10 +126,7 @@ export const STATUS_DESCRIPTIONS = {
     miasma: "At 5 stacks, deals damage equal to 20% of own max HP at round end."
 }
 
-export const humanize = value => String(value ?? "")
-    .replaceAll("_", " ")
-    .toLowerCase()
-    .replace(/\b\w/g, letter => letter.toUpperCase())
+import { humanize } from "./util.jsx"
 
 // These are conservative classifications based on the recorded status mechanics.
 // Leave entries out when the data does not make the affected side clear.

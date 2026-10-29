@@ -1,6 +1,6 @@
 import { useMemo } from "react"
-import { matchesSearchQuery } from "../js/search.jsx"
-import { BANNERS, getBannerLiveDateInfo, hasValidBannerDate, getSearchableValues, matchesBannerHeroQuery, parseBannerDate } from "../js/bannerCatalogueUtils.jsx"
+import { getSearchableValues, matchesSearchQuery } from "../js/search.jsx"
+import { BANNERS, getBannerLiveDateInfo, hasValidBannerDate, matchesBannerHeroQuery, parseBannerDate } from "../js/bannerCatalogueUtils.jsx"
 import BannerCatalogueCard from "./BannerCatalogueCard.jsx"
 import "../css/infos.scss"
 import "../css/infos_resources.scss"

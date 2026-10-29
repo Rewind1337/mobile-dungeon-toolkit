@@ -1,5 +1,4 @@
 import { ATTRIBUTE_DEFINITIONS, DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
-import { isSearchAssetField } from "./search.jsx"
 import { statusSprites } from "../database/db_sprites.jsx"
 
 export const SLOT_NAMES = Object.fromEntries(
@@ -14,10 +13,7 @@ export const PERK_NAMES = Object.fromEntries(
 export const SLOT_ICON_KEYS = { WEAPON: "weapons", HELMET: "helmets", ARMOR: "armors", NECKLACE: "necklaces", RING: "rings" }
 export const ATTRIBUTE_ICON_KEYS = { strength: 1, dexterity: 2, intelligence: 3 }
 
-export const humanize = value => String(value ?? "")
-    .replaceAll("_", " ")
-    .toLowerCase()
-    .replace(/\b\w/g, letter => letter.toUpperCase())
+import { humanize } from "./util.jsx"
 
 export function getLocations(item) {
     const raw = item?.dropLocation
@@ -68,14 +64,6 @@ export function getPerkKey(perk) {
 export function getPerkLabel(perk) {
     const key = getPerkKey(perk)
     return PERK_NAMES[key] ?? (typeof perk === "string" ? humanize(perk) : "")
-}
-
-export function getSearchableValues(value, seen = new Set()) {
-    if (value === null || value === undefined) return []
-    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return [String(value)]
-    if (typeof value !== "object" || seen.has(value)) return []
-    seen.add(value)
-    return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : getSearchableValues(child, seen))
 }
 
 const STATUS_ALIASES = [

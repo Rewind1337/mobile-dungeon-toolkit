@@ -3,7 +3,8 @@ import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import { STATUS_EFFECT_DEFINITIONS } from "../database/enums.jsx"
 import Button from "./Button.jsx"
 import StatusCatalogueCard from "./StatusCatalogueCard.jsx"
-import { STATUS_DESCRIPTIONS, humanize, getCategory } from "../js/statusCatalogueUtils.jsx"
+import { STATUS_DESCRIPTIONS, getCategory } from "../js/statusCatalogueUtils.jsx"
+import { humanize } from "../js/util.jsx"
 
 function matchesStatusSearch(status, rawQuery) {
     // Polarity flags are handled as query predicates instead of searching their property names.
