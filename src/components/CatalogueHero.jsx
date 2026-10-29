@@ -385,7 +385,7 @@ function BannerCatalogueList({ heroesRef, search, setSearch, commitSearch }) {
                 hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query))
             )
             const featuredHero = banner.featuredHeroId
-                ? resolveBannerHero(banner.featuredHeroId, heroesById)
+                ? (heroesById.get(banner.featuredHeroId) ?? null)
                 : null
             const featuredHeroMatches = featuredHero
                 && (bannerMatches || matchesBannerHeroQuery(featuredHero, query))
