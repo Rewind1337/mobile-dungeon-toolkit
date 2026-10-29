@@ -24,7 +24,7 @@ export function init_banner_db() {
     BASE_BANNERS = []
 
     add_banner("Everyday Heroes", null, [
-        "lilith", "thor", "murdering_mass", "undead_dragon", "prellbog", "jack_o_lantern", "valkyre",
+        "lilith", "thor", "murdering_mass", "undead_dragon", "prellbog", "jack_o__lantern", "valkyre",
         "siren", "monk", "pele", "medusa",
 
         "lotte", "unicorn", "joanne", "gondolf", "robyn", "monika", "banshee",
@@ -34,7 +34,7 @@ export function init_banner_db() {
     ], false, true, [ "shakes", "fidget" ])
 
     add_banner("Banner 1", null, [
-        "sphynx", "anubis", "bastet", "monk", "undead_dragon", "lilith", "lucifer",
+        "sphinx", "anubis", "bastet", "monk", "undead_dragon", "lilith", "lucifer",
         "cleo", "djinn", "unicorn", "alien", "scourge", "taurus", "construct"
     ])
 
@@ -59,7 +59,7 @@ export function init_banner_db() {
     ])
 
     add_banner("Festive Legends", null, [
-        "bastet", "lucifer", "sphynx", "krampus", "medusa", "black_skull_overlord", "isolde",
+        "bastet", "lucifer", "sphinx", "krampus", "medusa", "black_skull_overlord", "isolde",
         "badgerer", "djinn", "candy_elemental", "legba", "rudolph", "black_skull_mage", "black_skull_warrior"
     ], false)
 
@@ -69,7 +69,7 @@ export function init_banner_db() {
     ])
 
     add_banner("Next Evolution", null, [
-        "buster", "gravitator", "cornelius_prime", "professor", "anubis", "bastet", "sphynx",
+        "buster", "gravitator", "cornelius_prime", "professor", "anubis", "bastet", "sphinx",
         "mirage", "buzzfreak", "desert_ranger", "doctress", "gnarler", "black_skull_mage", "cleo"
     ])
 
@@ -89,7 +89,7 @@ export function init_banner_db() {
     ])
 
     add_banner("Blinding Presence", null, [
-        "ra", "mary", "mercy", "anubis", "sphynx", "headless_horseman", "arachnotaur",
+        "ra", "mary", "mercy", "anubis", "sphinx", "headless_horseman", "arachnotaur",
         "butcher", "vena", "desert_ranger", "cleo", "alice", "witch", "assassin"
     ])
 
@@ -125,7 +125,7 @@ export function init_banner_db() {
 
     add_banner("Timely Order", null, [
         "hizumi_exe", "aeterna", "itzala", "bastet", "capn__h__ollow", "black_skull_overlord", "dracula",
-        "jellica", "clockmaster", "cybacker", "caotl", "frankenstein", "doctress", "black_skull_mage"
+        "jellica", "clockmaster", "cybacker", "coatl", "frankenstein", "doctress", "black_skull_mage"
     ])
 
     add_banner("Weight of the Deep", null, [
