@@ -353,6 +353,9 @@ function CatalogueStatus() {
                     <p className="catalogue-description text">
                         A searchable reference for the status effects currently defined in the project, including their recorded mechanics.
                     </p>
+                    <p className="catalogue-progress-note catalogue-progress-note--caution text">
+                        Some status-effect values and mechanics are not yet interpreted or verified correctly. Treat these details as provisional; the underlying values have not been changed.
+                    </p>
                 </div>
             </header>
 
