@@ -1,7 +1,8 @@
 import CatalogueEntryCard from "./CatalogueEntryCard.jsx"
-import { getTalentPosition, TalentEffect } from "../js/skillsTalentsUtils.jsx"
+import { getTalentPosition } from "../js/skillsTalentsUtils.jsx"
+import TalentEffect from "./TalentEffect.jsx"
 import "../css/infos.scss"
-import "../css/infos_status.scss"
+import "../css/infos_heroes.scss"
 
 export default function TalentCatalogueCard({ talent, sources }) {
     return <CatalogueEntryCard className="talent-catalogue-entry">

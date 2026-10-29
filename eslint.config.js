@@ -31,6 +31,13 @@ export default [
     },
   },
   {
+    // Utility modules are not React Fast Refresh boundaries; keep this rule for component files.
+    files: ['src/js/**/*.{js,jsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
+  {
     files: ['src/database/enums.jsx'],
     rules: {
       'react-refresh/only-export-components': 'off',

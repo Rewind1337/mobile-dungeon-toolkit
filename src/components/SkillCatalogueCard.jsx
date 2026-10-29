@@ -1,7 +1,7 @@
 import CatalogueEntryCard from "./CatalogueEntryCard.jsx"
 import { stringify } from "../js/skillsTalentsUtils.jsx"
 import "../css/infos.scss"
-import "../css/infos_status.scss"
+import "../css/infos_heroes.scss"
 
 export default function SkillCatalogueCard({ hero, skill, skillIndex }) {
     const skillType = ["Primary", "Secondary", "Ultimate"][skillIndex] ?? `Skill ${skillIndex + 1}`
