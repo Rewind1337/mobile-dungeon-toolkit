@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import HeroList from "./HeroList.jsx"
 import Hero from "./Hero.jsx"
 import EmptyHero from "./EmptyHero.jsx"
@@ -64,7 +64,6 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
     const [selectedSaveId, setSelectedSaveId] = useState(null)
 
     const selectedTeam = slotPicker ? teams.find(team => team.id === slotPicker.teamId) : null
-    const selectedSlotHeroId = slotPicker && selectedTeam ? selectedTeam.heroes[slotPicker.slotIndex] : null
 
     const commitTeams = nextTeams => {
         setTeams(nextTeams)
@@ -94,7 +93,7 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
         commitTeams([...teams, { id, name: `Team ${id + 1}`, heroes: Array(5).fill(null) }])
     }
 
-    const modalHeroes = useMemo(() => savedHeroes, [savedHeroes])
+    const modalHeroes = savedHeroes
 
     return (
         <>
