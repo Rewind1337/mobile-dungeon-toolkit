@@ -2,7 +2,7 @@ import { useMemo } from "react"
 import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import Button from "./Button.jsx"
 import { init_resource_db } from "../database/db_resources.jsx"
-import { RARITY_DEFINITIONS } from "../database/enums.jsx"
+import { RARITY_DEFINITIONS, RESOURCE_LOCATIONS } from "../database/enums.jsx"
 
 const RESOURCE_DATA = init_resource_db()
 const GEM_RESOURCE_IDS = new Set(["ruby", "sapphire", "emerald", "diamond"])
@@ -38,6 +38,7 @@ function ResourceCard({ resource }) {
 
 function CatalogueResources({ initialView = "resources", onViewChange }) {
     const [search, setSearch, commitSearch] = useUrlSearch()
+    const [locationFilter, setLocationFilter] = useState("all")
     const isGemsView = initialView === "gems"
 
     const sourceResources = useMemo(() => isGemsView
@@ -48,8 +49,21 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
     const filteredResources = useMemo(() => {
         return sourceResources
             .filter(resource => matchesSearchQuery([resource.name, resource.description, resource.gemType, resource.rarity?.name], search))
+            .filter(resource => {
+                if (isGemsView || locationFilter === "all") return true
+                const locations = Array.isArray(resource.locations)
+                    ? resource.locations
+                    : resource.location == null ? [] : [resource.location]
+                return locations.some(location =>
+                    location === locationFilter
+                    || RESOURCE_LOCATIONS[location] === locationFilter
+                    || Object.entries(RESOURCE_LOCATIONS).some(([key, label]) =>
+                        label === locationFilter && (key === location || label === location)
+                    )
+                )
+            })
             .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }))
-    }, [sourceResources, search])
+    }, [sourceResources, search, isGemsView, locationFilter])
 
     const gemGroups = useMemo(() => GEM_BASES.map(gem => ({
         ...gem,
@@ -59,6 +73,7 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
     const clearSearch = () => {
         setSearch("")
         commitSearch("")
+        setLocationFilter("all")
     }
 
     return (
@@ -90,6 +105,7 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                             ? "Browse every defined rarity of each gem, grouped by gem type."
                             : "Browse defined resources. Search matches resource names and descriptions."}
                     </p>
+                    <p className="catalogue-progress-note text">This section is still in progress; entries and descriptions may be incomplete.</p>
                 </div>
             </header>
 
@@ -109,8 +125,19 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                         Showing {filteredResources.length} of {sourceResources.length} {isGemsView ? "gems" : "resources"}
                     </span>
                 </label>
+                {!isGemsView && (
+                    <label className="catalogue-filter resource-location-filter">
+                        <span className="catalogue-control-label text">Location</span>
+                        <select aria-label="Filter resources by location" value={locationFilter} onChange={event => setLocationFilter(event.target.value)}>
+                            <option value="all">All locations</option>
+                            {Object.entries(RESOURCE_LOCATIONS).map(([key, label]) => (
+                                <option key={key} value={label}>{label}</option>
+                            ))}
+                        </select>
+                    </label>
+                )}
                 <div className="catalogue-filter-actions">
-                    <Button text="Clear search" color={"cancel"} onClick={clearSearch} />
+                    <Button text="Clear filters" color={"cancel"} onClick={clearSearch} />
                 </div>
             </div>
 
