@@ -347,6 +347,7 @@ import GuildhuntTicket from '../sprites/resources/guildhunt_ticket.webp';
 import HeroExperienceScroll from '../sprites/resources/hero_experience_scroll.webp';
 import LegendaryAscensionOrb from '../sprites/resources/legendary_ascension_orb.webp';
 import LegendaryBannerBooster from '../sprites/resources/legendary_banner_booster.webp';
+import NeutralBannerBooster from '../sprites/special/neutral_banner_booster.webp';
 import LegendaryEquipmentDust from '../sprites/resources/legendary_equipment_dust.webp';
 import LegendarySkillTome from '../sprites/resources/legendary_skill_tome.webp';
 import LegendaryWildcard from '../sprites/resources/legendary_wildcard.webp';
@@ -1512,6 +1513,7 @@ export const resourceSprites = {
     guildhunt_ticket: GuildhuntTicket,
     hero_experience_scroll: HeroExperienceScroll,
     legendary_ascension_orb: LegendaryAscensionOrb,
+    neutral_banner_booster: NeutralBannerBooster,
     legendary_banner_booster: LegendaryBannerBooster,
     legendary_equipment_dust: LegendaryEquipmentDust,
     legendary_skill_tome: LegendarySkillTome,
