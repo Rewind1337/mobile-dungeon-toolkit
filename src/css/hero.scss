@@ -338,11 +338,11 @@
   flex: 1 1; 
   font-size: V.$font-size-button-large;
 }
-.hero-preview .hero-metadata img {
-  width: 48px;
-  height: 48px;
+.hero-preview .hero-metadata .catalogue-chip-icon {
+  width: 16px;
+  height: 16px;
   object-fit: contain;
-  flex: 0 0;
+  flex: 0 0 auto;
 }
 @include M.media-query-max(V.$bp-mobile, ()) {
   .hero-list .hero-sprite, .hero .hero-sprite {
@@ -362,7 +362,7 @@
     min-width: 0;
     justify-content: center;
   }
-  .hero-preview .hero-metadata img { width: 32px; height: 32px; }
+  .hero-preview .hero-metadata .catalogue-chip-icon { width: 16px; height: 16px; }
   .hero-preview .hero-preview-skills-toggle { margin-top: V.$gap-small; }
 }
 
