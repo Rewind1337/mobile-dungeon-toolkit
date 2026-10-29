@@ -462,3 +462,27 @@
     min-width: 0;
   }
 }
+
+
+.back-to-top-button.hero-list-back-to-top {
+  right: 7px;
+  bottom: 6px;
+}
+
+@include M.media-query-max(V.$bp-small, ()) {
+  .back-to-top-button.hero-list-back-to-top {
+    right: 4px;
+    bottom: 4px;
+  }
+}
+
+.hero-preview .hero-sprite-container {
+  margin-bottom: -2px;
+}
+
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .hero-preview .equipment > .item:not([data-type]) .text {
+    width: 100%;
+    font-size: 16px;
+  }
+}

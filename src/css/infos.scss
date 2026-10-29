@@ -257,3 +257,18 @@
   line-height: 1.4;
   opacity: 0.7;
 }
+
+
+.catalogue-view-label-compact {
+  display: none;
+}
+
+@include M.media-query-max(V.$bp-mobile) {
+  .catalogue-view-label-full {
+    display: none;
+  }
+
+  .catalogue-view-label-compact {
+    display: inline;
+  }
+}

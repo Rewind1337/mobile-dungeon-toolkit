@@ -577,7 +577,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                                 {heroObj.isStarred === true && <div className="hero-starred">
                                     <img src={iconSprites["is_starred"]} loading="eager" decoding="async" draggable={false} />
                                 </div>}
-                                <div className="flex-col">
+                                <div className="flex-col hero-sprite-container">
                                     <div className="hero-sprite">
                                         <img className="hero-sprite-img"
                                             src={heroObj.heroSrc ?? heroSprites[heroObj.id] ?? heroSprites["null"]}

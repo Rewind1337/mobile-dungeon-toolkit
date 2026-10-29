@@ -212,11 +212,19 @@
   padding: V.$padding-card;
 }
 
-.resource-catalogue-filters.is-resource-view .resource-location-filter,
-.resource-catalogue-filters.is-resource-view .catalogue-filter-actions {
+.resource-catalogue-filters.is-resource-view .resource-location-filter {
   align-self: flex-start;
   height: auto;
   flex: 0 0 auto;
+}
+
+.resource-catalogue-filters.is-resource-view .catalogue-filter-actions {
+  align-self: flex-end;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: auto;
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
 .resource-catalogue-search-group {
@@ -287,6 +295,7 @@
 
 .resource-catalogue-name {
   margin: 0;
+  font-size: 20px;
   overflow-wrap: anywhere;
 }
 

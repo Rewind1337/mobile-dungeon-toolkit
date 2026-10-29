@@ -1608,3 +1608,44 @@ input[type="number"] {
     gap: 3px;
   }
 }
+
+
+/* Keep the splash sections together at the top and use the footer to fill the remaining space. */
+#page-splash {
+  justify-content: flex-start;
+  gap: V.$gap;
+}
+
+#page-splash > .splash-footer-wrapper {
+  margin-top: auto;
+}
+
+#page-splash .footer {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: V.$gap-small;
+}
+
+#page-splash .footer > .splash-source-code-link {
+  display: flex;
+  flex: 0 0 auto;
+  align-self: center;
+  width: auto;
+  max-width: 140px;
+}
+
+#page-splash .footer .splash-source-code-button {
+  flex: 0 0 auto;
+  width: 130px;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+}
+
+@include M.media-query-max(V.$bp-tablet, ()) {
+  #page-splash .footer .splash-footer-ownership {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+}

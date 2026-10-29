@@ -114,7 +114,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                 ))
             )}
         </div>
-        <BackToTopButton scrollRef={listRef} />
+        <BackToTopButton scrollRef={listRef} className="item-list-back-to-top" />
     </>
     )
 }

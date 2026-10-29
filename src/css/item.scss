@@ -362,3 +362,16 @@
     margin-top: 0;
   }
 }
+
+
+.back-to-top-button.item-list-back-to-top {
+  right: 7px;
+  bottom: 6px;
+}
+
+@include M.media-query-max(V.$bp-small, ()) {
+  .back-to-top-button.item-list-back-to-top {
+    right: 4px;
+    bottom: 4px;
+  }
+}

@@ -39,12 +39,12 @@ const INFO_TAB_TO_ROUTE = {
   'hero-catalogue': '/info/hero-catalogue/heroes/',
   'hero-tier-list-catalogue': '/info/hero-catalogue/tier-list/',
   'hero-banners-catalogue': '/info/hero-catalogue/banners/',
-  'resources-catalogue': '/info/resources-catalogue/resources/',
-  'gems-catalogue': '/info/resources-catalogue/gems/',
+  'resources-catalogue': '/info/resource-catalogue/resources/',
+  'gems-catalogue': '/info/resource-catalogue/gems/',
   'status-catalogue': '/info/status-catalogue/',
-  'skills-talents-catalogue': '/info/skills-talents-catalogue/skills/',
-  'skills-catalogue': '/info/skills-talents-catalogue/skills/',
-  'talents-catalogue': '/info/skills-talents-catalogue/talents/',
+  'skills-talents-catalogue': '/info/skill-catalogue/',
+  'skills-catalogue': '/info/skill-catalogue/',
+  'talents-catalogue': '/info/talent-catalogue/',
 };
 
 const normalizeRoute = (route) => {
@@ -93,12 +93,19 @@ const getInfoTabFromPath = () => {
     '/hero-catalogue/banners': 'hero-banners-catalogue',
     '/info/skills-talents-catalogue': 'skills-catalogue',
     '/info/skills-talents-catalogue/skills': 'skills-catalogue',
+    '/info/skill-catalogue': 'skills-catalogue',
     '/info/skills-catalogue': 'skills-catalogue',
     '/skills-catalogue': 'skills-catalogue',
     '/info/skills-talents-catalogue/talents': 'talents-catalogue',
+    '/info/talent-catalogue': 'talents-catalogue',
     '/info/talents-catalogue': 'talents-catalogue',
     '/talents-catalogue': 'talents-catalogue',
+    '/info/resource-catalogue': 'resources-catalogue',
+    '/info/resource-catalogue/resources': 'resources-catalogue',
+    '/info/resource-catalogue/gems': 'gems-catalogue',
     '/info/resources-catalogue': 'resources-catalogue',
+    '/info/resources-catalogue/resources': 'resources-catalogue',
+    '/info/resources-catalogue/gems': 'gems-catalogue',
     '/resources-catalogue': 'resources-catalogue',
     '/resources-catalogue/resources': 'resources-catalogue',
     '/resources-catalogue/gems': 'gems-catalogue',
@@ -330,10 +337,10 @@ function App() {
                 <Button text={"Take me there"} color={4} onMouseDown={() => { switchTabTo('simulator') }} />
               </div>
             </div>
-            <div className='flex-col'>
+            <div className='flex-col splash-footer-wrapper'>
               <div className='card footer flex-row'>
-                <a className="w-100" href='https://www.github.com/rewind1337/mobile-dungeon-toolkit'>
-                  <Button autoHeight text={"Source Code"} color={3} />
+                <a className="splash-source-code-link" href='https://www.github.com/rewind1337/mobile-dungeon-toolkit'>
+                  <Button className="splash-source-code-button" text={"Source Code"} color={3} />
                 </a>
                 <div className='text flex-row splash-footer-ownership'>
                   <div className='text flex-row splash-footer-inline'>

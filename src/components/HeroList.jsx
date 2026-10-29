@@ -89,7 +89,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
                 ))
             )}
         </div>
-        <BackToTopButton scrollRef={listRef} />
+        <BackToTopButton scrollRef={listRef} className="hero-list-back-to-top" />
     </>
     )
 }
