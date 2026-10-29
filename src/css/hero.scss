@@ -366,3 +366,43 @@
   .hero-preview .details > .flex-col { width:100%; min-width:0; }
   .hero-preview .hero-stat { min-width:0; gap:6px; }
 }
+
+
+/* Keep the skills/talents cards readable when the preview has a narrow viewport. */
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .hero-preview .skills-talents-layout {
+    flex-direction: column;
+    align-items: stretch;
+    gap: V.$gap;
+  }
+
+  .hero-preview .skills-talents-layout > .flex-col.hero {
+    order: -1;
+    align-self: center;
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .hero-preview .skills-talents-layout > .skills,
+  .hero-preview .skills-talents-layout > .talents {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .hero-preview .skills-talents-layout > .talents {
+    flex-wrap: wrap;
+  }
+
+  .hero-preview .talents .text-card.w-33 {
+    flex: 0 1 calc(50% - V.$gap-small);
+    width: calc(50% - V.$gap-small);
+    min-width: 0;
+  }
+
+  .hero-preview .talents .text-card.w-100 {
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+  }
+}
