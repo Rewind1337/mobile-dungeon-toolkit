@@ -1,4 +1,4 @@
-import "../css/other.scss"
+import "../css/infos.scss"
 import QuestionmarkSrc from "../sprites/questionmark.webp"
 
 function CatalogueEntryCard({ className = "", icon, dataCategory, children }) {

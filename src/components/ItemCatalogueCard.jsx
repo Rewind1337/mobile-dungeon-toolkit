@@ -3,7 +3,8 @@ import Item from "./Item.jsx"
 import CataloguePerkList from "./CataloguePerkList.jsx"
 import { ATTRIBUTE_ICON_KEYS, SLOT_ICON_KEYS, getAttributeRequirementLabel, getDropSourceLabel, getEffectStatuses, getLocations, humanize } from "../js/catalogueItemUtils.jsx"
 import "../css/item.scss"
-import "../css/other.scss"
+import "../css/infos.scss"
+import "../css/infos_items.scss"
 
 export default function ItemCatalogueCard({ item, set }) {
     const statuses = getEffectStatuses(item)

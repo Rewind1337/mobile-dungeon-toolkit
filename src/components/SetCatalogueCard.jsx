@@ -2,7 +2,8 @@ import { attributeSprites } from "../database/db_sprites.jsx"
 import CataloguePerkList from "./CataloguePerkList.jsx"
 import { ATTRIBUTE_ICON_KEYS, getAttributeRequirementLabel, getDropSourceLabel, getSetLocations } from "../js/catalogueItemUtils.jsx"
 import "../css/item.scss"
-import "../css/other.scss"
+import "../css/infos.scss"
+import "../css/infos_items.scss"
 
 export default function SetCatalogueCard({ set, pieces }) {
     const locations = getSetLocations(set, pieces)

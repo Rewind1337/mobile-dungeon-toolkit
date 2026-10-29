@@ -1,4 +1,5 @@
-import "../css/other.scss"
+import "../css/infos.scss"
+import "../css/infos_resources.scss"
 
 export default function ResourceCatalogueCard({ resource }) {
     return (

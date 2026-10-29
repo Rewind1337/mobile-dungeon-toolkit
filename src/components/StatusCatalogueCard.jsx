@@ -3,7 +3,8 @@ import CheckmarkSprite from "../sprites/checkmark.webp"
 import CrossSprite from "../sprites/cross.png"
 import CatalogueEntryCard from "./CatalogueEntryCard.jsx"
 import { STATUS_DESCRIPTIONS, humanize, getCategory, getDetails } from "../js/statusCatalogueUtils.jsx"
-import "../css/other.scss"
+import "../css/infos.scss"
+import "../css/infos_status.scss"
 
 export default function StatusCatalogueCard({ status }) {
     const category = getCategory(status)
