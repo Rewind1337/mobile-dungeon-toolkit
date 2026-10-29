@@ -112,6 +112,8 @@
 
 .under-construction-caption {
   color: rgba(255, 255, 255, 0.8);
+  font-family: V.$font-family-stats;
+  align-self: center;
   font-size: clamp(0.8rem, 1.1vw, 1rem);
 }
 

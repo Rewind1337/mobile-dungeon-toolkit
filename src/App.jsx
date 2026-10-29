@@ -270,6 +270,7 @@ function App() {
           <div id='page-splash' className='page flex-col w-100'>
             <section className="under-construction-row card" style={{height: "50px"}} aria-label="Under construction">
                 <div className="under-construction-sign">
+                    <span className="under-construction-caption">This site is</span>
                     <span className="under-construction-label">UNDER CONSTRUCTION</span>
                     <span className="under-construction-caption">More features are on the way</span>
                 </div>
