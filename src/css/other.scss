@@ -985,7 +985,9 @@
 .banner-catalogue-hero > .hero.hero-static:hover,
 .banner-catalogue-hero > .hero.hero-static.hover {
   transition: none;
-  transform: none;
+  // Keep the transform as a containing block for the absolutely positioned
+  // element and starred indicators, but cancel the hover lift.
+  transform: translate(0, 0);
 }
 
 .banner-catalogue-hero-odds {
