@@ -30,7 +30,7 @@ const TABS = [
     ["perk-catalogue", "Perk Catalogue"],
     ["skills-talents-catalogue", "Skills & Talents"],
     ["status-catalogue", "Status Catalogue"],
-    ["resources-catalogue", "Resources"],
+    ["resources-catalogue", "Resources & Gems"],
 ]
 
 const humanize = value => String(value ?? "").replaceAll("_", " ").replace(/\b\w/g, letter => letter.toUpperCase())

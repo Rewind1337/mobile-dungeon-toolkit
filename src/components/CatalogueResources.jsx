@@ -62,8 +62,8 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
     return (
         <section className="resource-catalogue">
             <CatalogueViewSwitch ariaLabel="Resources catalogue sections" view={initialView} onViewChange={onViewChange} options={[
-                { label: "Resources", value: "resources" },
-                { label: "Gems", value: "gems" },
+                { label: "Resource Catalogue", value: "resources" },
+                { label: "Gem Catalogue", value: "gems" },
             ]} />
 
             <header className="catalogue-header">

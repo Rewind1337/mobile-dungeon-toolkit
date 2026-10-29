@@ -36,8 +36,8 @@ function CatalogueSkillsTalents({ heroes = [], initialView = "skills", onViewCha
     })
     return <section className="hero-catalogue">
         <CatalogueViewSwitch ariaLabel="Skills and talents sections" view={view} onViewChange={changeView} options={[
-            { label: "Skills", value: "skills" },
-            { label: "Talents", value: "talents" },
+            { label: "Skill Catalogue", value: "skills" },
+            { label: "Talent Catalogue", value: "talents" },
         ]} />
         <header className="catalogue-header"><div className="catalogue-heading-copy"><div className="catalogue-title header-big">{view === "skills" ? "Skills Catalogue" : "Talents Catalogue"}</div><p className="catalogue-description text">{view === "skills" ? "Every skill currently present in the hero database, with its source hero." : "Every unique talent currently present in the hero database, with its source hero and position. Shared talents list all source heroes."}</p><p className="catalogue-progress-note text">This section is still in progress; some skill and talent data may be incomplete.</p></div></header>
         <label className="catalogue-search skills-talents-catalogue-filters card"><span className="catalogue-control-label text">Search {view} ({filtered.length} of {entries.length} {view === "skills" ? "skills" : "talents"})</span><input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} placeholder="Name, hero, effect…" /></label>
