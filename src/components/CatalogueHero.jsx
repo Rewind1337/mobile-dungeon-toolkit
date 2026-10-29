@@ -23,6 +23,8 @@ const BANNER_RARITY_PULL_CHANCES = {
     [RARITY_DEFINITIONS.EPIC.id]: 0.09,
 }
 const STARRED_HERO_PULL_WEIGHT = 1 / 3
+const FEATURED_HERO_PULL_CHANCE = 0.005
+const FEATURED_HERO_BOOSTER_SRC = "../sprites/special/neutral_banner_booster.webp"
 const BANNER_HERO_ID_ALIASES = Object.freeze({
     jack_o_lantern: "jack_o__lantern",
     sphynx: "sphinx",
@@ -207,9 +209,10 @@ function matchesBannerHeroQuery(hero, query) {
     })
 }
 
-function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null }) {
+function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null, featuredHero = null }) {
     if (heroes.length === 0) return null
-    const totalPoolWeight = oddsPool.reduce(
+    const regularPool = oddsPool.filter(hero => hero.id !== featuredHero?.id)
+    const totalPoolWeight = regularPool.reduce(
         (total, hero) => total + (hero.isStarred === true ? STARRED_HERO_PULL_WEIGHT : 1),
         0
     )
@@ -219,17 +222,24 @@ function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null }) 
             <h3 className="banner-catalogue-group-title text">{title} <span>({heroes.length})</span></h3>
             <div className="banner-catalogue-hero-grid">
                 {heroes.map((hero, index) => {
+                    const isFeaturedHero = featuredHero?.id === hero.id
                     const heroWeight = hero.isStarred === true ? STARRED_HERO_PULL_WEIGHT : 1
-                    const odds = rarityChance !== null && totalPoolWeight > 0
-                        ? rarityChance * heroWeight / totalPoolWeight
-                        : null
+                    const remainingRarityChance = featuredHero && Number(featuredHero.rarity) === Number(hero.rarity)
+                        ? Math.max(0, (rarityChance ?? 0) - FEATURED_HERO_PULL_CHANCE)
+                        : rarityChance
+                    const odds = isFeaturedHero
+                        ? FEATURED_HERO_PULL_CHANCE
+                        : remainingRarityChance !== null && remainingRarityChance !== undefined && totalPoolWeight > 0
+                            ? remainingRarityChance * heroWeight / totalPoolWeight
+                            : null
 
                     return (
                         <div className="banner-catalogue-hero card" key={`${hero.id}-${index}`} title={hero.name}>
                             <Hero className="hero-static" heroObj={hero} selected={false} level={null} onClick={() => {}} />
                             {odds !== null && (
-                                <span className="banner-catalogue-hero-odds catalogue-chip text">
-                                    {(odds * 100).toFixed(3)}% chance
+                                <span className={`banner-catalogue-hero-odds catalogue-chip text${isFeaturedHero ? " banner-catalogue-hero-odds--featured" : ""}`}>
+                                    {isFeaturedHero && <img className="banner-catalogue-booster" src={FEATURED_HERO_BOOSTER_SRC} alt="" loading="lazy" decoding="async" />}
+                                    {(odds * 100).toFixed(3)}% chance{isFeaturedHero ? " · Featured" : ""}
                                 </span>
                             )}
                         </div>
@@ -298,6 +308,7 @@ function BannerCatalogueCard({ result, heroesById }) {
                         heroes={groupHeroes}
                         oddsPool={oddsPool}
                         rarityChance={rarityChance}
+                        featuredHero={featuredHero}
                     />
                 ))}
             </div>
