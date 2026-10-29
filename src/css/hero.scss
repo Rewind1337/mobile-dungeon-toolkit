@@ -375,7 +375,7 @@
 
 @include M.media-query-max(V.$bp-tablet, ()) {
   .hero-preview .equipment {
-    grid-template-columns: repeat(3, 60px);
+    grid-template-columns: repeat(3, V.$item-sprite-width);
   }
 }
 
