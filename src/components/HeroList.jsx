@@ -80,7 +80,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
             ) : (
                 filteredHeroes.map((heroObj) => (
                     <Hero
-                        selected={heroObj.id === selectedHeroId}
+                        selected={(savedHeroes ? heroObj.saveId : heroObj.id) === selectedHeroId}
                         heroObj={heroObj}
                         key={heroObj.id + '-' + heroObj.saveId}
                         level={null}
