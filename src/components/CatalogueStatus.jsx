@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react"
 import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import { STATUS_EFFECT_DEFINITIONS } from "../database/enums.jsx"
+import { getStatusPolarity } from "../js/statusPolarity.jsx"
 import { statusSprites } from "../database/db_sprites.jsx"
 import CheckmarkSprite from "../sprites/checkmark.webp"
 import CrossSprite from "../sprites/cross.png"
@@ -139,98 +140,11 @@ const humanize = value => String(value ?? "")
 
 // These are conservative classifications based on the recorded status mechanics.
 // Leave entries out when the data does not make the affected side clear.
-const SPECIAL_STATUS_POLARITY = {
-    hellfire: "Buff",
-    hellfire_mode: "Buff",
-    frozen_heart: "Buff",
-    heating_up: "Buff",
-    mjoellnir: "Debuff",
-    anubis_seal: "Debuff",
-    soulmate: "Buff",
-    sphinx_curse: "Debuff",
-    styx: "Debuff",
-    burrow: "Buff",
-    defense_drone: "Buff",
-    divine_shield: "Buff",
-    ferryman: "Buff",
-    feral: "Buff",
-    wildfire: "Buff",
-    fury: "Buff",
-    hivemind: "Buff",
-    hot_saw: "Buff",
-    loa: "Buff",
-    the_moon: "Buff",
-    the_star: "Buff",
-    the_sun: "Buff",
-    wind_up: "Buff",
-    war_forge: "Buff",
-    drumbeat: "Buff",
-    foresight: "Buff",
-    ap_resistance: "Buff",
-    arachnid: "Buff",
-    bloodrage: "Buff",
-    bunny: "Buff",
-    pain_fueled: "Buff",
-    blood_transfusion: "Buff",
-    soul_harvest: "Buff",
-    buzz_meter: "Buff",
-    biomass: "Buff",
-    ignited_ego: "Buff",
-    life_after_death: "Buff",
-    sludge: "Debuff",
-    echo: "Debuff",
-    ionize: "Buff",
-    detonator: "Debuff",
-    courage: "Buff",
-    smoke: "Buff",
-    mana_shield: "Buff",
-    fracture: "Buff",
-    irradiate: "Buff",
-    rift_step: "Buff",
-    blacklist: "Debuff",
-    rooted: "Debuff",
-    ash: "Debuff",
-    phoenix_feather: "Buff",
-    luck: "Buff",
-    soul_core: "Buff",
-    tempered: "Buff",
-    soaked: "Buff",
-    spectral_shield: "Buff",
-    wither: "Debuff",
-    backup_drone: "Buff",
-    reflect: "Buff",
-    momentum: "Buff",
-    dawn: "Buff",
-    zenith: "Buff",
-    dusk: "Buff",
-    tender: "Debuff",
-    sealed: "Debuff",
-    lifeblood: "Debuff",
-    ghost_crew: "Buff",
-    terror: "Debuff",
-    feast: "Debuff",
-    pin: "Debuff",
-    puppet: "Debuff",
-    buzzkill: "Buff",
-    plagued: "Debuff",
-    encore: "Buff",
-    contaminated: "Debuff",
-    cruelty: "Debuff",
-    portal: "Buff",
-    critical_condition: "Debuff",
-    hellforge: "Buff",
-    spotlight: "Debuff",
-    emission: "Buff",
-    flare: "Buff",
-    hollowing: "Debuff",
-    miasma: "Debuff",
-}
 
 function getCategory(status) {
-    if (status.id <= 16) return "Buff"
-    if (status.id <= 38) return "Debuff"
-    const polarity = SPECIAL_STATUS_POLARITY[status.name]
-    return polarity ? `Special ${polarity}` : "Special"
+    if (status.id <= 38) return getStatusPolarity(status).replace(/^./, letter => letter.toUpperCase())
+    const polarity = getStatusPolarity(status)
+    return polarity === "special" ? "Special" : `Special ${polarity.replace(/^./, letter => letter.toUpperCase())}`
 }
 
 function getDetails(status) {
