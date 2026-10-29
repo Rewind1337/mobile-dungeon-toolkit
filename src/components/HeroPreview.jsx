@@ -557,7 +557,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
 
                 <div className='flex-col'>
                     {(heroObj.skills && heroObj.talents) && <Button color={0} text={"Skills & Talents"} onClick={() => { setShowSkillsAndTalents(!showSkillsAndTalents) }} />}
-                    <div className='flex-row'>
+                    <div className='flex-row skills-talents-layout'>
                         {(showSkillsAndTalents && heroObj.skills) &&
                             <div className='flex-col skills'>
                                 {renderHeroSkills()}
