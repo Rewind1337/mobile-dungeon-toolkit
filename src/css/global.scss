@@ -1180,13 +1180,13 @@ input[type="number"] {
 .hero-metadata { display: flex; flex-wrap: wrap; align-items: center; gap: V.$gap-small; min-width: 0; }
 .hero-metadata-name,
 .item-preview-name { max-width: 100%; min-height: 30px; align-self: center; padding: 5px 10px; font-family: V.$font-family-stats; font-weight: 700; line-height: 1.2; overflow-wrap: anywhere; }
-.hero-metadata-name { font-size: V.$font-size-header-small; }
-.item-preview-name { font-size: V.$font-size-header-small; }
+.hero-metadata-name { font-size: V.$font-size-header; }
+.item-preview-name { font-size: V.$font-size-header; }
 .hero-preview .hero-metadata > .catalogue-chip,
 .item-preview-metadata > .catalogue-chip { min-height: 30px; padding: 5px 10px; }
 .item-preview-metadata { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: space-between; gap: V.$gap-small; min-width: 0; }
 .item-preview-name { flex: 1 1 0; width: auto; text-align: center; justify-content: center; }
-.item-preview-slot, .item-preview-attribute { flex: 0 1 auto; }
+.item-preview-slot, .item-preview-attribute { flex: 0 1 auto; font-size: V.$font-size-small; }
 .item-preview-metadata .catalogue-chip { flex-shrink: 1; }
 .preview-top-row .preview-action-chip { display: inline-flex; flex: 0 1 auto; align-items: center; justify-content: center; gap: V.$gap-small; min-width: 0; min-height: 24px; padding: 3px 7px; border: 1px solid rgba(255,255,255,.14); border-radius: V.$border-radius-small; background: rgba(0,0,0,.2); box-shadow: none; }
 .preview-top-row .preview-action-chip .icon-left { display: inline-flex; flex: 0 0 auto; align-items: center; }
