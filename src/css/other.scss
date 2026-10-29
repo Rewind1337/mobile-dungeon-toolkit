@@ -1355,3 +1355,11 @@
   gap: V.$gap-small;
   min-width: 180px;
 }
+
+
+@include M.media-query-max(V.$bp-mobile) {
+  .resource-location-filter {
+    width: 100%;
+    min-width: 0;
+  }
+}
