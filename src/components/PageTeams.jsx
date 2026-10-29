@@ -31,7 +31,10 @@ const humanize = value => String(value ?? "")
 
 function getHeroStatusEffects(hero) {
     if (!hero) return []
-    const skillText = JSON.stringify([hero.skills ?? [], hero.talents ?? {}]).toLowerCase()
+    const skillEffects = (Array.isArray(hero.skills) ? hero.skills : []).map(skill => skill?.effect)
+    const talentEffects = Object.values(hero.talents && typeof hero.talents === "object" ? hero.talents : {})
+        .map(talent => talent?.effect)
+    const skillText = JSON.stringify([skillEffects, talentEffects]).toLowerCase()
     return Object.keys(STATUS_EFFECT_DEFINITIONS).filter(name => skillText.includes(name.toLowerCase()))
 }
 
