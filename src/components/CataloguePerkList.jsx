@@ -1,5 +1,5 @@
 import { perkSprites } from "../database/db_sprites.jsx"
-import { getPerkKey, getPerkLabel } from "./catalogueItemUtils.jsx"
+import { getPerkKey, getPerkLabel } from "../js/catalogueItemUtils.jsx"
 import "../css/other.scss"
 
 export default function CataloguePerkList({ perks, label = "Perks" }) {

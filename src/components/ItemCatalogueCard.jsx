@@ -1,7 +1,7 @@
 import { attributeSprites, iconSprites } from "../database/db_sprites.jsx"
 import Item from "./Item.jsx"
 import CataloguePerkList from "./CataloguePerkList.jsx"
-import { ATTRIBUTE_ICON_KEYS, SLOT_ICON_KEYS, getAttributeRequirementLabel, getDropSourceLabel, getEffectStatuses, getLocations, humanize } from "./catalogueItemUtils.jsx"
+import { ATTRIBUTE_ICON_KEYS, SLOT_ICON_KEYS, getAttributeRequirementLabel, getDropSourceLabel, getEffectStatuses, getLocations, humanize } from "../js/catalogueItemUtils.jsx"
 import "../css/item.scss"
 import "../css/other.scss"
 

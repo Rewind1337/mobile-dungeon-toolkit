@@ -2,7 +2,7 @@ import { useMemo, useState } from "react"
 
 import { EQUIPMENT_SLOT_DEFINITIONS } from "../database/enums.jsx"
 import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
-import { SLOT_NAMES, RARITY_NAMES, getLocations, getSetLocations, getSourceName, getAttributeRequirementLabel, getPerkKey, getPerkLabel, getSearchableValues, getEffectStatuses, isUniqueItem, humanize } from "./catalogueItemUtils.jsx"
+import { SLOT_NAMES, RARITY_NAMES, getLocations, getSetLocations, getSourceName, getAttributeRequirementLabel, getPerkKey, getPerkLabel, getSearchableValues, getEffectStatuses, isUniqueItem, humanize } from "../js/catalogueItemUtils.jsx"
 import ItemCatalogueCard from "./ItemCatalogueCard.jsx"
 import SetCatalogueCard from "./SetCatalogueCard.jsx"
 import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"

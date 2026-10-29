@@ -1,7 +1,7 @@
 import { ATTRIBUTE_DEFINITIONS, RARITY_DEFINITIONS, PERK_DEFINITIONS, UNIQUE_WEAPON_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PRIMARY_STAT_DEFINITIONS, DROP_SOURCE_DEFINITIONS, getItemPerkCount } from "./enums"
 import { itemSprites, iconSprites } from "./db_sprites";
 
-import { normalizeStableName } from "./ids.jsx"
+import { normalizeStableName } from "../js/ids.jsx"
 
 let ITEM_SETS = []
 let BASE_ITEMS = {
