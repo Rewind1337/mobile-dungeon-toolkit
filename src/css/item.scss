@@ -136,12 +136,17 @@
   }
 
   .text {
-    color: black;
-    font-family: V.$font-family-header;
+    box-sizing: border-box;
+    min-height: 30px;
+    padding: 4px;
+    color: inherit;
+    font-family: V.$font-family-stats;
     font-size: V.$font-size-button;
+    border: none;
     border-radius: V.$border-radius;
-    background-color: #fff;
+    background: rgba(0, 0, 0, 0.25);
     text-align: center;
+    text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black;
     margin-inline: auto;
     width: 100%;
     outline: 2px solid black;
