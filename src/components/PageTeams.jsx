@@ -7,6 +7,7 @@ import Modal from "./Modal.jsx"
 import { ATTRIBUTE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
 import { attributeSprites, statusSprites } from "../database/db_sprites.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
+import { getStatusPolarity } from "../js/statusPolarity.jsx"
 
 const createDefaultTeams = () => [
     { id: 0, name: "Default Team", heroes: Array(5).fill(null) },
@@ -52,7 +53,21 @@ function TeamOverview({ team, savedHeroes }) {
             icon: attributeSprites[Number(hero.mainAttribute)],
         }]
     })
-    const statusEffects = [...new Set(teamHeroes.flatMap(getHeroStatusEffects))].sort((a, b) => a.localeCompare(b))
+    const statusEffects = [...new Set(teamHeroes.flatMap(getHeroStatusEffects))]
+        .map(name => ({ name, polarity: getStatusPolarity(STATUS_EFFECT_DEFINITIONS[name]) }))
+        .sort((a, b) => a.name.localeCompare(b.name))
+    const groupedStatusEffects = {
+        buffs: statusEffects.filter(effect => effect.polarity === "buff"),
+        debuffs: statusEffects.filter(effect => effect.polarity === "debuff"),
+        special: statusEffects.filter(effect => effect.polarity === "special"),
+    }
+
+    const renderStatusChips = effects => effects.map(({ name, polarity }) => (
+        <span className={`catalogue-chip text team-overview-chip team-status-chip team-status-chip--${polarity}`} key={name}>
+            {statusSprites[name] && <img className="catalogue-chip-icon team-status-icon" src={statusSprites[name]} alt="" />}
+            {humanize(name)}
+        </span>
+    ))
 
     return (
         <div className="team-info-column">
@@ -76,15 +91,23 @@ function TeamOverview({ team, savedHeroes }) {
             </section>
             <section className="team-info-section">
                 <h3 className="team-info-heading header">Status Effects</h3>
-                <div className="team-info-chips">
-                    {statusEffects.map(effect => (
-                        <span className="catalogue-chip text team-overview-chip team-status-chip" key={effect}>
-                            {statusSprites[effect] && <img className="catalogue-chip-icon team-status-icon" src={statusSprites[effect]} alt="" />}
-                            {humanize(effect)}
-                        </span>
-                    ))}
-                    {statusEffects.length === 0 && <span className="text team-overview-empty">No status effects detected.</span>}
-                </div>
+                {statusEffects.length === 0
+                    ? <span className="text team-overview-empty">No status effects detected.</span>
+                    : <>
+                        {groupedStatusEffects.buffs.length > 0 && <div className="team-status-group">
+                            <h4 className="team-status-group-heading">Buffs</h4>
+                            <div className="team-info-chips">{renderStatusChips(groupedStatusEffects.buffs)}</div>
+                        </div>}
+                        {groupedStatusEffects.debuffs.length > 0 && <div className="team-status-group">
+                            <h4 className="team-status-group-heading">Debuffs</h4>
+                            <div className="team-info-chips">{renderStatusChips(groupedStatusEffects.debuffs)}</div>
+                        </div>}
+                        {groupedStatusEffects.special.length > 0 && <div className="team-status-group">
+                            <h4 className="team-status-group-heading">Other / unclassified</h4>
+                            <div className="team-info-chips">{renderStatusChips(groupedStatusEffects.special)}</div>
+                        </div>}
+                    </>
+                }
             </section>
         </div>
     )
@@ -133,7 +156,9 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
         <>
             <div className="sub-nav-bar flex-row">
                 <div className="pagination flex-row card w-100">
-                    <Button text="Your Teams" color={2} />
+                    <Button text="Saved Teams" color={2} />
+                    <Button text="Recommended Teams" color={5} disabled />
+                    <Button text="Import Team" color={5} disabled />
                 </div>
                 <div className="options flex-row card">
                     <Button text="Manual Save" color={5} onClick={manualSaveFunction} />
@@ -142,15 +167,15 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
 
             <main id="page-teams" className="page flex-col w-100">
                 <section ref={listRef} className="teams-list card flex-col" style={{ maxHeight: listHeight }}>
-                    <header className="header-big">Your Teams</header>
+                    <header className="header-big">Saved Teams</header>
                     {teams.length === 0 && <p className="text">No teams yet. Create one to get started.</p>}
                     {teams.map(team => (
                         <article className="team card flex-col" key={team.id}>
                             <header className="team-header">
                                 <h2 className="header-big">{team.name}</h2>
                                 <div className="team-actions">
-                                    <Button text="Clear Team" autoHeight color={4} onClick={() => clearTeam(team.id)} />
-                                    <Button text="Delete Team" autoHeight color={5} onClick={() => deleteTeam(team.id)} />
+                                    <Button text="Clear Team" color={4} onClick={() => clearTeam(team.id)} />
+                                    <Button text="Delete Team" color="cancel" onClick={() => deleteTeam(team.id)} />
                                 </div>
                             </header>
                             <div className="team-content">
@@ -175,7 +200,7 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                         </article>
                     ))}
                     <div className="team team-new card flex-row">
-                        <Button text="Create New Team" autoHeight color={2} onClick={createTeam} />
+                        <Button text="Create New Team" color="confirm" onClick={createTeam} />
                     </div>
                 </section>
             </main>
@@ -207,7 +232,7 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                     )}
                     <footer className="team-hero-picker-footer">
                         <Button text="Cancel" color="cancel" onClick={() => { setSlotPicker(null); setSelectedSaveId(null) }} />
-                        <Button text="Confirm" color={2} disabled={selectedSaveId === null} onClick={confirmSlotSelection} />
+                        <Button text="Confirm" color="confirm" disabled={selectedSaveId === null} onClick={confirmSlotSelection} />
                     </footer>
                 </section>
             </Modal>
