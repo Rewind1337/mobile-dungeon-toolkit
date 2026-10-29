@@ -68,7 +68,7 @@ function TeamOverview({ team, savedHeroes }) {
                             {typeof icon === "string"
                                 ? <img className="catalogue-chip-icon" src={icon} alt="" />
                                 : icon && <span className="catalogue-chip-icon team-attribute-icon" aria-hidden="true">{icon}</span>}
-                            {name}
+                            Slot {index + 1} · {name}
                         </span>
                     ))}
                     {attributes.length === 0 && <span className="text team-overview-empty">No heroes assigned yet.</span>}
