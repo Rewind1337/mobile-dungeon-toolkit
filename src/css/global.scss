@@ -210,6 +210,10 @@ body::after {
       transform: translate(0, 0);
     }
   }
+
+  &.card-dark {
+    background: linear-gradient(125deg, rgba(99, 66, 16, 0.44), rgba(20, 57, 54, 0.52) 52%, rgba(7, 15, 25, 0.86));
+  }
 }
 
 .header {

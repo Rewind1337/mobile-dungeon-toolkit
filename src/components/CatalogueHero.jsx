@@ -273,7 +273,7 @@ function BannerCatalogueCard({ result, heroesById }) {
     ]
 
     return (
-        <article className={`banner-catalogue-card card${isEverydayBanner ? " banner-catalogue-card--everyday" : ""}`}>
+        <article className={`banner-catalogue-card card${isEverydayBanner ? " card-dark" : ""}`}>
             <header className="banner-catalogue-card-header">
                 <h2 className="banner-catalogue-name header-big">{banner.name}</h2>
                 <div className="banner-catalogue-meta">

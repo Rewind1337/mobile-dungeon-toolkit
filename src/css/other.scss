@@ -991,19 +991,14 @@
 }
 
 .banner-catalogue-hero .hero {
-  flex: 0 0 auto;
-  width: max-content;
-  max-width: 100%;
   cursor: default;
 }
 
-.banner-catalogue-card--everyday {
+.banner-catalogue-card.card-dark {
   grid-column: 1 / -1;
-  background: linear-gradient(125deg, rgba(99, 66, 16, 0.44), rgba(20, 57, 54, 0.52) 52%, rgba(7, 15, 25, 0.86));
-}
-
-.banner-catalogue-card--everyday .banner-catalogue-name {
-  color: #ffe1a0;
+  .banner-catalogue-name {
+    color: #ffe1a0;
+  }
 }
 
 .banner-catalogue-chip-permanent {
