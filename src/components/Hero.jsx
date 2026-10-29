@@ -5,7 +5,7 @@ import Button from './Button.jsx'
 function Hero({ heroObj, selected, level, onClick, className = "" }) {
     const [hover, setHover] = useState(false);
     return (
-        <div className={["hero", "card", hover ? "hover" : "", selected ? "selected" : "", className].filter(Boolean).join(" ")} data-rarity={heroObj.rarity} data-element={heroObj.element} onMouseEnter={() => { setHover(1) }} onMouseLeave={() => { setHover(0) }} onClick={() => { onClick() }}>
+        <div className={["hero", "card", hover ? "hover" : "", selected ? "selected" : "", className].filter(Boolean).join(" ")} data-rarity={heroObj.rarity} data-element={heroObj.element} onMouseEnter={() => { setHover(1) }} onMouseLeave={() => { setHover(0) }} title={heroObj.name} onClick={() => { onClick() }}>
             <div className="hero-element">
                 <img
                     src={heroObj.elementSrc ?? elementSprites[heroObj.element]}
