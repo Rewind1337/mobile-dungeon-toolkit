@@ -1,6 +1,6 @@
 let BASE_BANNERS = []
 
-function add_banner(name, date, heroIDs, hasFeaturedHero = true, standardBanner = false, conditionalHeroIDs) {
+function add_banner(name, date, heroIDs, hasFeaturedHero = true, standardBanner = false, conditionalHeroIDs, conditionalHeroCondition = null) {
     const id = name.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "")
     if (BASE_BANNERS.some(banner => banner.id === id)) {
         throw new Error(`Duplicate stable banner ID "${id}". Give the banner a distinct name.`)
@@ -14,7 +14,8 @@ function add_banner(name, date, heroIDs, hasFeaturedHero = true, standardBanner 
         heroIds: heroIds,
         featuredHeroId: (hasFeaturedHero ? heroIds[0] : null),
         standardBanner,
-        conditionalHeroIDs
+        conditionalHeroIDs,
+        conditionalHeroCondition,
     })
 }
 
@@ -31,7 +32,7 @@ export function init_banner_db() {
         "bandit_captain", "werewolf", "construct", "ragnor", "yulamb", "golem", "alien",
         "scourge", "taurus", "margrethe", "cornelius", "sylvanna", "aqualon", "dr__pestilence",
         "mirage", "nerissa", "badgerer"
-    ], false, true, [ "shakes", "fidget" ])
+    ], false, true, [ "shakes", "fidget" ], "Unlocked after beating Chapter 15 - Dungeon 2")
 
     add_banner("Banner 1", null, [
         "sphinx", "anubis", "bastet", "monk", "undead_dragon", "lilith", "lucifer",

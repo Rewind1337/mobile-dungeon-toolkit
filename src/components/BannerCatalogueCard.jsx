@@ -126,7 +126,7 @@ export default function BannerCatalogueCard({ result, heroesById }) {
 
             {conditionalHeroes.length > 0 && (
                 <section className="banner-catalogue-conditional">
-                    <h3 className="banner-catalogue-group-title text">Conditional Heroes ({conditionalHeroes.length})</h3>
+                    <h3 className="banner-catalogue-group-title text">{banner.conditionalHeroCondition ?? "Conditional Heroes"} ({conditionalHeroes.length})</h3>
                     <div className="banner-catalogue-hero-grid">
                         {conditionalHeroes.map((hero, index) => (
                             <div className="banner-catalogue-hero" key={`${hero.id}-conditional-${index}`} title={hero.name}>

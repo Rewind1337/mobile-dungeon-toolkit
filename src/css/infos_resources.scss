@@ -78,6 +78,18 @@
   background: rgba(0, 0, 0, 0.12);
 }
 
+.banner-catalogue-conditional {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  align-items: center;
+}
+
+.banner-catalogue-conditional .banner-catalogue-hero-grid {
+  grid-template-columns: repeat(2, minmax(0, 116px));
+  justify-content: center;
+}
+
 .banner-catalogue-group-title {
   margin: 0;
   text-align: center;
@@ -373,6 +385,10 @@
   .gem-catalogue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @include M.media-query-max(V.$bp-mobile) {
+  .banner-catalogue-conditional .banner-catalogue-hero-grid {
+    grid-template-columns: repeat(2, minmax(0, 116px));
+    justify-content: center;
+  }
   .resource-catalogue-search-group { flex-basis: auto; }
   .resource-location-filter { width: 100%; min-width: 0; }
   .banner-catalogue-hero-odds { max-width: 100%; white-space: normal; }

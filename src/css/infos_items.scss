@@ -59,16 +59,18 @@
 }
 
 .catalogue-item-name {
-  display: inline-flex;
+  display: block;
   flex: 0 1 auto;
   width: fit-content;
   max-width: 100%;
   margin: 0;
-  padding: 3px 8px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: V.$border-radius-small;
-  background: rgba(0, 0, 0, 0.2);
-  font-size: V.$font-size-header-small;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-family: V.$font-family-stats;
+  font-size: V.$font-size-header;
+  font-weight: 700;
   line-height: 1.2;
   overflow-wrap: anywhere;
 }

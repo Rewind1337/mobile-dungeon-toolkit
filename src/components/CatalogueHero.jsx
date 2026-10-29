@@ -13,6 +13,7 @@ import { getSearchableValues, matchesSearchQuery, useUrlSearch } from "../js/sea
 import { humanize } from "../js/util.jsx"
 import BannerCatalogueList from "./BannerCatalogueList.jsx"
 import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"
+import "../css/infos_heroes.scss"
 
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
     rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
@@ -57,7 +58,7 @@ function HeroCatalogueCard({ hero }) {
                     <Hero heroObj={hero} selected={false} level={null} onClick={() => {}} />
                 </div>
                 <div className="hero-catalogue-heading">
-                    <div className="hero-catalogue-name catalogue-chip header text" data-rarity={hero.rarity}>{hero.name}</div>
+                    <div className="hero-catalogue-name text" data-rarity={hero.rarity}>{hero.name}</div>
                     <div className="hero-catalogue-meta-row">
                         <span className="catalogue-chip catalogue-chip-rarity text" data-rarity={hero.rarity}>{humanize(rarity)}</span>
                         <span className={`catalogue-chip catalogue-chip-attribute catalogue-chip-attribute-${String(attribute).toLowerCase()} text`}>

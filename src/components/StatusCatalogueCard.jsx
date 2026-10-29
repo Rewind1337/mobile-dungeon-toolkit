@@ -1,6 +1,8 @@
 import { statusSprites } from "../database/db_sprites.jsx"
 import CheckmarkSprite from "../sprites/checkmark.webp"
 import CrossSprite from "../sprites/cross.png"
+import CollapseSrc from "../sprites/collapse.webp"
+import ExpandSrc from "../sprites/expand.webp"
 import CatalogueEntryCard from "./CatalogueEntryCard.jsx"
 import { STATUS_DESCRIPTIONS, getCategory, getDetails } from "../js/statusCatalogueUtils.jsx"
 import { humanize } from "../js/util.jsx"
@@ -14,6 +16,11 @@ export default function StatusCatalogueCard({ status }) {
         ?? `Special status effect (${humanize(status.effectType ?? "effect")}). Check its stored effect data for the exact behaviour.`
     const details = getDetails(status)
     const categoryClass = `status-category-${category.toLowerCase().replaceAll(" ", "-")}`
+    const categoryIcon = category.toLowerCase().endsWith("debuff")
+        ? ExpandSrc
+        : category.toLowerCase().endsWith("buff")
+            ? CollapseSrc
+            : null
 
     return (
         <CatalogueEntryCard className="status-catalogue-card" dataCategory={category.toLowerCase()} icon={sprite}>
@@ -22,7 +29,10 @@ export default function StatusCatalogueCard({ status }) {
             </header>
             <p className="status-catalogue-description text">{description}</p>
             <div className="status-polarity-row" aria-label="Status effect properties">
-                <span className={`catalogue-chip text status-catalogue-category ${categoryClass}`}>{category}</span>
+                <span className={`catalogue-chip text status-catalogue-category ${categoryClass}`}>
+                    {categoryIcon && <img className="status-polarity-icon" src={categoryIcon} alt="" />}
+                    {category}
+                </span>
                 <span className={`catalogue-chip text status-polarity ${status.mitigatable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.mitigatable === false ? "Not mitigatable" : "Mitigatable"}>
                     <img className={`status-polarity-icon${status.mitigatable === false ? " is-negative" : ""}`} src={status.mitigatable === false ? CrossSprite : CheckmarkSprite} alt={status.mitigatable === false ? "No" : "Yes"} />
                     <span>Mitigatable</span>

@@ -1523,3 +1523,88 @@ input[type="number"] {
     flex: 1 1 0;
   }
 }
+
+
+/* Splash page: keep each disclaimer phrase intact while footer groups themselves may wrap. */
+#page-splash .under-construction-caption {
+  display: inline;
+}
+
+#page-splash .footer .splash-footer-ownership,
+#page-splash .footer .splash-footer-inline {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: max-content;
+  max-width: 100%;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+#page-splash .footer .splash-footer-ownership {
+  flex: 0 1 auto;
+  gap: V.$gap-small;
+}
+
+#page-splash .footer .splash-footer-inline > .text {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: none;
+  white-space: nowrap;
+}
+
+#page-splash .footer .splash-footer-logo {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  width: auto;
+  max-width: none;
+  white-space: nowrap;
+}
+
+#page-splash .footer .splash-footer-logo-text {
+  display: none;
+  white-space: nowrap;
+}
+
+@include M.media-query-max(V.$bp-mobile, ()) {
+  #page-splash .under-construction-caption {
+    display: none;
+  }
+}
+
+@include M.media-query-max(V.$bp-tablet, ()) {
+  #page-splash .footer .splash-footer-ownership,
+  #page-splash .footer .splash-footer-inline {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-self: center;
+    width: max-content;
+    max-width: 100%;
+    white-space: nowrap;
+  }
+
+  #page-splash .footer .splash-footer-ownership {
+    flex: 0 1 auto;
+  }
+}
+
+@include M.media-query-max(V.$bp-small, ()) {
+  #page-splash .footer .splash-footer-logo-image {
+    display: none;
+  }
+
+  #page-splash .footer .splash-footer-logo-text {
+    display: inline;
+    font-size: inherit;
+  }
+
+  #page-splash .footer .splash-footer-ownership,
+  #page-splash .footer .splash-footer-inline {
+    font-size: clamp(8px, 2.2vw, 11px);
+    gap: 3px;
+  }
+}

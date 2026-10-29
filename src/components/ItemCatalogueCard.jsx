@@ -18,7 +18,7 @@ export default function ItemCatalogueCard({ item, set }) {
                     <Item itemObj={item} selected={false} level={null} />
                 </div>
                 <div className="catalogue-item-heading">
-                    <div className="catalogue-item-name catalogue-chip catalogue-chip-name header text">{item.name}</div>
+                    <div className="catalogue-item-name text">{item.name}</div>
                     <div className="catalogue-item-meta-row">
                         <div className="catalogue-item-meta text">
                             <span className="catalogue-chip text">

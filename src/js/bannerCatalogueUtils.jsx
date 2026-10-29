@@ -1,6 +1,6 @@
 import { ATTRIBUTE_DEFINITIONS, ELEMENT_DEFINITIONS, RARITY_DEFINITIONS, ROLE_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
 import { init_banner_db } from "../database/db_banners.jsx"
-import { matchesSearchQuery } from "./search.jsx"
+import { getSearchableValues, matchesSearchQuery } from "./search.jsx"
 
 export const BANNERS = init_banner_db()
 export const BANNER_RARITY_PULL_CHANCES = {
