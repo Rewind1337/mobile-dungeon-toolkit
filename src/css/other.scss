@@ -1483,3 +1483,26 @@
   }
 }
 
+
+/* Low-emphasis catalogue data-status notes */
+.catalogue-progress-note {
+  margin: V.$gap-small 0 0;
+  font-size: V.$font-size-small;
+  line-height: 1.4;
+  opacity: 0.72;
+}
+
+.catalogue-progress-note--caution {
+  padding: V.$gap-small V.$gap;
+  border-left: 2px solid rgba(235, 165, 55, 0.65);
+  background: rgba(99, 66, 16, 0.16);
+  opacity: 0.9;
+}
+
+.resource-location-filter {
+  display: flex;
+  flex: 0 1 250px;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 180px;
+}
