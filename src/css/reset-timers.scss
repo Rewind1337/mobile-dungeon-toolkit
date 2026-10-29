@@ -8,6 +8,10 @@
   gap: V.$gap;
   width: 100%;
   min-width: 0;
+
+  .card {
+    height: 50px !important;
+  }
 }
 
 .reset-timers-row {

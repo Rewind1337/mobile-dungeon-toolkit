@@ -40,14 +40,14 @@ function ResetTimers() {
     return (
         <div className="splash-status-panel" style={{height: "50px"}}>
             <section className="reset-timers-row" aria-label="Reset timers">
-                <div className="reset-timer card" style={{height: "50px"}}>
+                <div className="reset-timer card">
                     <span className="reset-timer-label header">Daily Reset</span>
                     <span className="reset-timer-countdown text-big">{formatRemaining(dailyReset.getTime() - now)}</span>
                 </div>
                 <div className="reset-timer-clock card" aria-label="Clock">
                     <img src={Clock} alt="" draggable={false} />
                 </div>
-                <div className="reset-timer card" style={{height: "50px"}}>
+                <div className="reset-timer card">
                     <span className="reset-timer-label header">Weekly Reset</span>
                     <span className="reset-timer-countdown text-big">{formatRemaining(weeklyReset.getTime() - now)}</span>
                 </div>
