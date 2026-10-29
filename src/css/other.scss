@@ -953,7 +953,7 @@
 .banner-catalogue-hero-grid {
   display: grid;
   // Keep each hero card fixed-width; only the number of columns changes with available space.
-  grid-template-columns: repeat(auto-fill, 106px);
+  grid-template-columns: repeat(auto-fill, 116px);
   justify-content: start;
   align-items: start;
   justify-items: center;
@@ -967,10 +967,10 @@
   align-items: center;
   justify-content: flex-start;
   gap: V.$gap-small;
-  flex: 0 0 106px;
-  width: 106px;
-  min-width: 106px;
-  max-width: 106px;
+  flex: 0 0 116px;
+  width: 116px;
+  min-width: 116px;
+  max-width: 116px;
   overflow: visible;
 }
 
