@@ -1098,6 +1098,13 @@
   padding: V.$padding-card;
 }
 
+.resource-catalogue-filters.is-resource-view .resource-location-filter,
+.resource-catalogue-filters.is-resource-view .catalogue-filter-actions {
+  align-self: flex-start;
+  height: auto;
+  flex: 0 0 auto;
+}
+
 .resource-catalogue-search-group {
   display: flex;
   flex: 1 1 300px;

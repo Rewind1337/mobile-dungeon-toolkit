@@ -1243,8 +1243,8 @@ input[type="number"] {
 
 .team-equipped-item-icon {
   display: block;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   max-width: 100%;
   object-fit: contain;
 }
@@ -1318,7 +1318,7 @@ input[type="number"] {
 
 .team-hero-slots {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 132px), 1fr));
   align-items: start;
   gap: V.$gap-small;
   min-width: 0;
@@ -1501,7 +1501,7 @@ input[type="number"] {
 
 @include M.media-query-max(V.$bp-mobile) {
   .team-hero-slots {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 132px), 1fr));
     gap: V.$gap-small;
   }
 

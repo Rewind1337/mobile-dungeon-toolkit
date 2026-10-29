@@ -1,164 +1,9 @@
 import { useMemo, useState } from "react"
 import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import { STATUS_EFFECT_DEFINITIONS } from "../database/enums.jsx"
-import { getStatusPolarity } from "../js/statusPolarity.jsx"
-import { statusSprites } from "../database/db_sprites.jsx"
-import CheckmarkSprite from "../sprites/checkmark.webp"
-import CrossSprite from "../sprites/cross.png"
 import Button from "./Button.jsx"
-import CatalogueEntryCard from "./CatalogueEntryCard.jsx"
-
-const STATUS_DESCRIPTIONS = {
-    attack_up: "Increases Attack.",
-    defense_up: "Increases Defence.",
-    critical_chance_up: "Increases Critical Chance.",
-    critical_damage_up: "Increases Critical Damage.",
-    accuracy_up: "Increases Accuracy.",
-    resistance_up: "Increases Resistance.",
-    agility_up: "Increases Agility.",
-    critical_resistance: "Reduces the chance of receiving a critical hit.",
-    invincibility: "Prevents damage.",
-    immunity: "Prevents debuffs from being applied.",
-    recovery: "Restores HP over time.",
-    preservation: "Prevents HP from dropping below 1 while active.",
-    shroud: "Cannot be selected as the primary target, but can still be affected by area attacks.",
-    guard: "Takes a share of damage intended for the protected ally.",
-    shield: "Absorbs incoming damage. Can stack.",
-    absorbing: "Restores HP based on damage dealt.",
-    blessed: "Increases healing received.",
-    attack_down: "Reduces Attack.",
-    defense_down: "Reduces Defence.",
-    critical_chance_down: "Reduces Critical Chance.",
-    accuracy_down: "Reduces Accuracy.",
-    resistance_down: "Reduces Resistance.",
-    agility_down: "Reduces Agility.",
-    blind: "Causes attacks to have a chance to miss.",
-    marked: "Causes the target to take increased damage.",
-    sick: "Prevents healing.",
-    cursed: "Prevents buffs from being applied.",
-    stunned: "Prevents actions.",
-    sleep: "Reduces AP regeneration.",
-    freeze: "Prevents cooldown reduction.",
-    petrified: "Makes the next hit received a guaranteed critical hit; consumed when triggered.",
-    burn: "Deals damage when the affected target is attacked.",
-    poison: "Deals damage over time at the start of a turn.",
-    bleeding: "Deals damage over time at the start of a turn, based on the caster's Attack.",
-    mute: "Restricts skills to the basic attack.",
-    bound: "Disables passive abilities.",
-    taunt: "Restricts targeting to the taunter and limits the affected unit to basic attacks.",
-    confused: "Causes the primary target to be ignored.",
-    cursed_flame: "Converts a portion of healing into damage.",
-    hellfire: "Special status that grants Hellfire Mode.",
-    hellfire_mode: "Increases Attack and Agility.",
-    frozen_heart: "Stores a revive HP bonus that can stack up to 5 times.",
-    heating_up: "Increases skill damage with stacks; above 3 stacks, the effect can apply Burn.",
-    mjoellnir: "Deals delayed damage: an initial hit followed by return damage.",
-    anubis_seal: "Triggers damage against the enemy team when its holder dies.",
-    soulmate: "Converts a portion of damage dealt into healing.",
-    sphinx_curse: "Applies a special target marker.",
-    styx: "Reduces maximum HP; stacks up to 3 times and is removed when Hades dies.",
-    burrow: "Stores a stack that enhances a skill.",
-    defense_drone: "Increases Defence per stack, up to 10 stacks.",
-    divine_shield: "Provides a special damage-resistance effect.",
-    ferryman: "Stacks to enhance the Cerberus skill.",
-    feral: "Each stack increases damage and Agility, up to 6 stacks.",
-    wildfire: "Each stack increases damage and Critical Damage, up to 20 stacks.",
-    fury: "Each stack increases Critical Chance; counterattacking consumes a stack.",
-    hivemind: "Each stack increases Agility, up to 6 stacks.",
-    hot_saw: "Primary attacks have a chance to inflict Burn.",
-    loa: "Each stack increases Resistance, up to 5 stacks.",
-    the_moon: "Attacks can inflict Blind; also grants a shield to the ally with the lowest HP.",
-    the_star: "Attacks can inflict Mute.",
-    the_sun: "Attacks can apply Marked.",
-    wind_up: "Each stack increases damage and Critical Damage, up to 6 stacks.",
-    war_forge: "Increases Attack and Defence and can stack with Attack Up and Defence Up.",
-    drumbeat: "Each stack increases Agility, up to 4 stacks.",
-    foresight: "Each stack grants damage resistance, up to 4 stacks.",
-    ap_resistance: "Prevents AP reduction.",
-    arachnid: "A stacking status that enhances a skill, up to 5 stacks.",
-    bloodrage: "A special status that enhances a skill.",
-    bunny: "Increases Agility and allows the bonus to affect skills.",
-    pain_fueled: "A stacking status that enhances a skill, up to 5 stacks.",
-    blood_transfusion: "Each stack increases maximum HP, up to 4 stacks.",
-    soul_harvest: "Each stack increases Critical Chance and Agility, up to 6 stacks.",
-    buzz_meter: "Each stack increases Attack, up to 4 stacks.",
-    biomass: "Each stack increases maximum HP, up to 5 stacks.",
-    ignited_ego: "Enhances a skill using maximum HP.",
-    life_after_death: "Can survive a lethal hit at low HP, gains a shield, then dies when the shield breaks or after its active turn.",
-    sludge: "When Burn is present, deals conditional damage and removes itself.",
-    detonator: "Builds stacks that cause secondary skills to deal exploding-stack true damage.",
-    courage: "Grants an extra turn when an enemy is killed.",
-    smoke: "Each stack increases Life Steal, up to 3 stacks.",
-    mana_shield: "Reduces damage taken.",
-    echo: "Deals delayed damage when the status duration ends.",
-    ionize: "Makes the next turn's hit a guaranteed critical hit.",
-    fracture: "Each stack increases Ultimate skill Critical Chance, up to 4 stacks.",
-    irradiate: "Reflects true damage and ignores shields.",
-    rift_step: "Increases Critical Chance.",
-    blacklist: "Applies a conditional debuff triggered by a primary attack or Ultimate.",
-    rooted: "Prevents gaining extra AP or extra turns.",
-    ash: "A stacking status that scales a death skill, up to 9 stacks.",
-    phoenix_feather: "Each stack increases maximum HP, up to 9 stacks.",
-    luck: "Each stack increases Critical Chance, up to 3 stacks.",
-    soul_core: "Provides damage resistance.",
-    tempered: "Reduces damage from area-of-effect attacks.",
-    soaked: "Primary attacks inflict Poison.",
-    spectral_shield: "Reduces damage taken; the reduction depends on how many turns remain.",
-    wither: "Each stack reduces Attack, Defence, and Agility. Removed when High Cleric Aureus dies.",
-    backup_drone: "When HP falls below 50%, each stack heals 10% (up to 3 stacks).",
-    reflect: "Reflects 50% of damage.",
-    momentum: "Each stack increases Defence, up to 5 stacks.",
-    dawn: "Increases maximum HP by 10%.",
-    zenith: "Increases Agility by 10%.",
-    dusk: "Increases Attack by 10%.",
-    tender: "Each stack reduces Defence; can stack up to 3 times.",
-    sealed: "When a buff is received, triggers damage based on Mary’s Defence and then removes itself.",
-    lifeblood: "Each stack reduces Agility; can stack up to 3 times.",
-    ghost_crew: "Each stack reduces area-of-effect damage taken, up to 4 stacks.",
-    terror: "At the start of each turn, reduces buff durations by 1, except Invincibility and Preservation.",
-    feast: "Increases damage taken by Countess Mortana’s enemies.",
-    pin: "Each stack reduces Defence; can stack up to 4 times.",
-    puppet: "Reduces Resistance.",
-    buzzkill: "Enhances primary and secondary skills with an Agility bonus and AP damage.",
-    plagued: "Each stack reduces Accuracy. At 3 stacks, heals the caster’s team for 5% max HP at turn end and clears the stacks.",
-    encore: "Increases damage dealt.",
-    contaminated: "When damage is received, deals AP damage equal to 5% of current AP and consumes one stack; up to 3 stacks.",
-    cruelty: "Each stack increases damage taken, up to 3 stacks.",
-    portal: "Each stack increases Attack, up to 5 stacks.",
-    critical_condition: "Increases damage taken from damage-over-time effects.",
-    hellforge: "Each stack increases Defence, up to 5 stacks.",
-    spotlight: "Each stack reduces Agility.",
-    emission: "At 5 stacks summons a Lunar Seeker; at 10 stacks triggers the united Ultimate, Eclipse.",
-    flare: "At 5 stacks summons a Sun Seeker; at 10 stacks triggers the united Ultimate, Eclipse.",
-    hollowing: "When a buff is received, triggers damage based on the holder’s Defence.",
-    miasma: "At 5 stacks, deals damage equal to 20% of own max HP at round end."
-}
-
-const humanize = value => String(value ?? "")
-    .replaceAll("_", " ")
-    .toLowerCase()
-    .replace(/\b\w/g, letter => letter.toUpperCase())
-
-// These are conservative classifications based on the recorded status mechanics.
-// Leave entries out when the data does not make the affected side clear.
-
-function getCategory(status) {
-    if (status.id <= 38) return getStatusPolarity(status).replace(/^./, letter => letter.toUpperCase())
-    const polarity = getStatusPolarity(status)
-    return polarity === "special" ? "Special" : `Special ${polarity.replace(/^./, letter => letter.toUpperCase())}`
-}
-
-function getDetails(status) {
-    const details = []
-    if (status.value !== undefined) details.push(`Value: ${status.value}`)
-    if (status.per_stack !== undefined) details.push(`Per stack: ${status.per_stack}`)
-    if (status.max_stacks !== undefined) details.push(`Max stacks: ${status.max_stacks}`)
-    if (status.duration !== undefined) details.push(`Duration: ${status.duration} turn(s)`)
-    if (status.interval !== undefined) details.push(`Tick: ${humanize(status.interval)}`)
-    if (status.stat !== undefined) details.push(`Stat: ${humanize(status.stat)}`)
-
-    return details
-}
+import StatusCatalogueCard from "./StatusCatalogueCard.jsx"
+import { STATUS_DESCRIPTIONS, humanize, getCategory } from "./statusCatalogueUtils.jsx"
 
 function matchesStatusSearch(status, rawQuery) {
     // Polarity flags are handled as query predicates instead of searching their property names.
@@ -208,40 +53,6 @@ function matchesStatusSearch(status, rawQuery) {
     })
 }
 
-
-function StatusCard({ status }) {
-    const category = getCategory(status)
-    const sprite = statusSprites[status.name] ?? statusSprites[status.name.replace("critical_resistance", "critical_resist")]
-    const description = STATUS_DESCRIPTIONS[status.name]
-        ?? `Special status effect (${humanize(status.effectType ?? "effect")}). Check its stored effect data for the exact behaviour.`
-    const details = getDetails(status)
-    const categoryClass = `status-category-${category.toLowerCase().replaceAll(" ", "-")}`
-
-    return (
-        <CatalogueEntryCard className="status-catalogue-card" dataCategory={category.toLowerCase()} icon={sprite}>
-            <header className="catalogue-entry-heading status-catalogue-heading">
-                <h3 className="catalogue-entry-name text-big status-catalogue-name">{humanize(status.name)}</h3>
-            </header>
-            <p className="status-catalogue-description text">{description}</p>
-            <div className="status-polarity-row" aria-label="Status effect properties">
-                <span className={`catalogue-chip text status-catalogue-category ${categoryClass}`}>{category}</span>
-                <span className={`catalogue-chip text status-polarity ${status.mitigatable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.mitigatable === false ? "Not mitigatable" : "Mitigatable"}>
-                    <img className={`status-polarity-icon${status.mitigatable === false ? " is-negative" : ""}`} src={status.mitigatable === false ? CrossSprite : CheckmarkSprite} alt={status.mitigatable === false ? "No" : "Yes"} />
-                    <span>Mitigatable</span>
-                </span>
-                <span className={`catalogue-chip text status-polarity ${status.removable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.removable === false ? "Not removable" : "Removable"}>
-                    <img className={`status-polarity-icon${status.removable === false ? " is-negative" : ""}`} src={status.removable === false ? CrossSprite : CheckmarkSprite} alt={status.removable === false ? "No" : "Yes"} />
-                    <span>Removable</span>
-                </span>
-            </div>
-            {details.length > 0 && (
-                <ul className="status-catalogue-details">
-                    {details.map(detail => <li className="text" key={detail}>{detail}</li>)}
-                </ul>
-            )}
-        </CatalogueEntryCard>
-    )
-}
 
 function CatalogueStatus() {
     const [search, setSearch, commitSearch] = useUrlSearch()
@@ -305,7 +116,7 @@ function CatalogueStatus() {
             {filteredStatuses.length === 0
                 ? <p className="catalogue-empty card">No status effects match these filters.</p>
                 : <div className="status-catalogue-grid">
-                    {filteredStatuses.map(status => <StatusCard key={status.id} status={status} />)}
+                    {filteredStatuses.map(status => <StatusCatalogueCard key={status.id} status={status} />)}
                 </div>
             }
         </section>

@@ -8,72 +8,20 @@ import {
 } from "../database/enums.jsx"
 import Button from "./Button.jsx"
 import Hero from "./Hero.jsx"
-import { init_banner_db } from "../database/db_banners.jsx"
-import { getBannerLastLiveLabel } from "../database/bannerUtils.jsx"
-import { attributeSprites, roleSprites, resourceSprites } from "../database/db_sprites.jsx"
-import { isSearchAssetField, matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
+import { attributeSprites, roleSprites } from "../database/db_sprites.jsx"
+import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
+import { getSearchableValues } from "./bannerCatalogueUtils.jsx"
+import BannerCatalogueList from "./BannerCatalogueList.jsx"
+import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"
 
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
     rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
 )
 
-const BANNERS = init_banner_db()
-const BANNER_RARITY_PULL_CHANCES = {
-    [RARITY_DEFINITIONS.LEGENDARY.id]: 0.01,
-    [RARITY_DEFINITIONS.EPIC.id]: 0.09,
-}
-const STARRED_HERO_PULL_WEIGHT = 1 / 3
-const FEATURED_HERO_PULL_CHANCE = 0.005
 const humanize = value => String(value ?? "")
     .replaceAll("_", " ")
     .toLowerCase()
     .replace(/\b\w/g, letter => letter.toUpperCase())
-
-function parseBannerDate(dateString) {
-    if (typeof dateString !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return null
-
-    const [year, month, day] = dateString.split("-").map(Number)
-    const timestamp = Date.UTC(year, month - 1, day)
-    const parsed = new Date(timestamp)
-    if (
-        parsed.getUTCFullYear() !== year
-        || parsed.getUTCMonth() !== month - 1
-        || parsed.getUTCDate() !== day
-    ) return null
-
-    return timestamp
-}
-
-// Prefer a recorded date. If it is missing, estimate it from the previous and next
-// banners only when both adjacent dates exist; until then the UI displays N/A.
-function getBannerLiveDateInfo(banners, index) {
-    const currentBanner = banners[index]
-    const currentTimestamp = parseBannerDate(currentBanner?.lastLiveDate)
-    if (currentTimestamp !== null) {
-        return { date: currentBanner.lastLiveDate, estimated: false }
-    }
-
-    const previousTimestamp = parseBannerDate(banners[index - 1]?.lastLiveDate)
-    const nextTimestamp = parseBannerDate(banners[index + 1]?.lastLiveDate)
-    if (previousTimestamp !== null && nextTimestamp !== null && nextTimestamp >= previousTimestamp) {
-        const estimatedTimestamp = Math.round((previousTimestamp + nextTimestamp) / 2)
-        return { date: new Date(estimatedTimestamp).toISOString().slice(0, 10), estimated: true }
-    }
-
-    return { date: null, estimated: false }
-}
-
-function hasValidBannerDate(banner) {
-    return parseBannerDate(banner?.lastLiveDate) !== null
-}
-
-function getSearchableValues(value, seen = new Set()) {
-    if (value === null || value === undefined) return []
-    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return [String(value)]
-    if (typeof value !== "object" || seen.has(value)) return []
-    seen.add(value)
-    return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : getSearchableValues(child, seen))
-}
 
 function formatEffect(effect) {
     if (effect === null || effect === undefined) return ""
@@ -180,282 +128,6 @@ function HeroCatalogueCard({ hero }) {
 }
 
 
-function matchesBannerHeroQuery(hero, query) {
-    const rarity = getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? ""
-    const attribute = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? ""
-    const element = getEnumNameById(ELEMENT_DEFINITIONS, Number(hero.element)) ?? ""
-    const role = getEnumNameById(ROLE_DEFINITIONS, Number(hero.role)) ?? ""
-    return matchesSearchQuery([
-        ...getSearchableValues(hero),
-        rarity,
-        attribute,
-        element,
-        role,
-    ], query, term => {
-        if (term === "starred") return hero.isStarred === true
-        if (term === "not starred") return hero.isStarred !== true
-        return undefined
-    })
-}
-
-function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null, featuredHero = null }) {
-    if (heroes.length === 0) return null
-    const regularPool = oddsPool.filter(hero => hero.id !== featuredHero?.id)
-    const totalPoolWeight = regularPool.reduce(
-        (total, hero) => total + (hero.isStarred === true ? STARRED_HERO_PULL_WEIGHT : 1),
-        0
-    )
-
-    return (
-        <section className="banner-catalogue-rarity-group">
-            <h3 className="banner-catalogue-group-title text">{title} <span>({heroes.length})</span></h3>
-            <div className="banner-catalogue-hero-grid">
-                {heroes.map((hero, index) => {
-                    const isFeaturedHero = featuredHero?.id === hero.id
-                    const heroWeight = hero.isStarred === true ? STARRED_HERO_PULL_WEIGHT : 1
-                    const remainingRarityChance = featuredHero && Number(featuredHero.rarity) === Number(hero.rarity)
-                        ? Math.max(0, (rarityChance ?? 0) - FEATURED_HERO_PULL_CHANCE)
-                        : rarityChance
-                    const odds = isFeaturedHero
-                        ? FEATURED_HERO_PULL_CHANCE
-                        : remainingRarityChance !== null && remainingRarityChance !== undefined && totalPoolWeight > 0
-                            ? remainingRarityChance * heroWeight / totalPoolWeight
-                            : null
-
-                    return (
-                        <div className="banner-catalogue-hero card" key={`${hero.id}-${index}`} title={hero.name}>
-                            <Hero className="hero-static" heroObj={hero} selected={false} level={null} onClick={() => {}} />
-                            {odds !== null && (
-                                <span className={`banner-catalogue-hero-odds catalogue-chip text${isFeaturedHero ? " banner-catalogue-hero-odds--featured" : ""}`}>
-                                    {isFeaturedHero && <img className="banner-catalogue-booster" src={resourceSprites.neutral_banner_booster} alt="" loading="lazy" decoding="async" />}
-                                    {(odds * 100).toFixed(3)}% chance
-                                </span>
-                            )}
-                        </div>
-                    )
-                })}
-            </div>
-        </section>
-    )
-}
-
-function BannerCatalogueCard({ result, heroesById }) {
-    const { banner, heroes, allHeroes = heroes, conditionalHeroes, missingHeroCount, sourceIndex } = result
-    const isEverydayBanner = banner.id === "everyday_heroes"
-    const featuredHero = banner.featuredHeroId
-        ? (heroesById.get(banner.featuredHeroId) ?? null)
-        : null
-    const liveDateInfo = getBannerLiveDateInfo(BANNERS, sourceIndex)
-    const lastLiveLabel = liveDateInfo.date ? getBannerLastLiveLabel(liveDateInfo.date) : ""
-    const liveDateText = liveDateInfo.date
-        ? `${liveDateInfo.estimated ? "~" : ""}${liveDateInfo.date}${lastLiveLabel}`
-        : "N/A"
-    const rarityGroups = [
-        {
-            title: "Legendary Heroes",
-            heroes: [
-                ...heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.LEGENDARY.id),
-                ...(featuredHero
-                    && Number(featuredHero.rarity) === RARITY_DEFINITIONS.LEGENDARY.id
-                    && !heroes.some(hero => hero.id === featuredHero.id)
-                    ? [featuredHero]
-                    : []),
-            ],
-            oddsPool: allHeroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.LEGENDARY.id),
-            rarityChance: BANNER_RARITY_PULL_CHANCES[RARITY_DEFINITIONS.LEGENDARY.id],
-        },
-        {
-            title: "Epic Heroes",
-            heroes: [
-                ...heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.EPIC.id),
-                ...(featuredHero
-                    && Number(featuredHero.rarity) === RARITY_DEFINITIONS.EPIC.id
-                    && !heroes.some(hero => hero.id === featuredHero.id)
-                    ? [featuredHero]
-                    : []),
-            ],
-            oddsPool: allHeroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.EPIC.id),
-            rarityChance: BANNER_RARITY_PULL_CHANCES[RARITY_DEFINITIONS.EPIC.id],
-        },
-        {
-            title: "Other Heroes",
-            heroes: heroes.filter(hero => Number(hero.rarity) !== RARITY_DEFINITIONS.LEGENDARY.id && Number(hero.rarity) !== RARITY_DEFINITIONS.EPIC.id),
-            oddsPool: [],
-            rarityChance: null,
-        },
-    ]
-
-    return (
-        <article className={`banner-catalogue-card card${isEverydayBanner ? " card-dark" : ""}`}>
-            <header className="banner-catalogue-card-header">
-                <h2 className="banner-catalogue-name header-big">{banner.name}</h2>
-                <div className="banner-catalogue-meta">
-                    <span className="catalogue-chip text">{banner.heroIds.length} listed heroes</span>
-                    {banner.standardBanner && <span className="catalogue-chip text">Standard banner</span>}
-                    {featuredHero && <span className="catalogue-chip text">Featured: {featuredHero.name}</span>}
-                    {!isEverydayBanner &&  <span
-                        className="catalogue-chip banner-catalogue-live-date text"
-                        title={liveDateInfo.estimated ? "Estimated from the previous and next banner dates" : "Recorded last-live date"}
-                    >
-                        Last live: {liveDateText}
-                    </span>}
-                    {isEverydayBanner && <span className="catalogue-chip banner-catalogue-chip-permanent text">Always available</span>}
-                </div>
-            </header>
-
-            <div className="banner-catalogue-groups">
-                {rarityGroups.map(({ title, heroes: groupHeroes, oddsPool, rarityChance }) => (
-                    <BannerHeroGroup
-                        key={title}
-                        title={title}
-                        heroes={groupHeroes}
-                        oddsPool={oddsPool}
-                        rarityChance={rarityChance}
-                        featuredHero={featuredHero}
-                    />
-                ))}
-            </div>
-
-            {conditionalHeroes.length > 0 && (
-                <section className="banner-catalogue-conditional">
-                    <h3 className="banner-catalogue-group-title text">Conditional Heroes ({conditionalHeroes.length})</h3>
-                    <div className="banner-catalogue-hero-grid">
-                        {conditionalHeroes.map((hero, index) => (
-                            <div className="banner-catalogue-hero" key={`${hero.id}-conditional-${index}`} title={hero.name}>
-                                <Hero heroObj={hero} selected={false} level={null} onClick={() => {}} />
-                                <span className="banner-catalogue-hero-odds banner-catalogue-hero-odds--conditional text">
-                                    Conditional
-                                </span>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            )}
-
-            {missingHeroCount > 0 && (
-                <p className="banner-catalogue-missing text">
-                    {missingHeroCount} referenced {missingHeroCount === 1 ? "hero is" : "heroes are"} not defined in the hero database.
-                </p>
-            )}
-        </article>
-    )
-}
-
-function BannerCatalogueList({ heroesRef, search, setSearch, commitSearch }) {
-    const heroesById = useMemo(() => {
-        const heroes = Array.isArray(heroesRef) ? heroesRef : []
-        return new Map(heroes.map(hero => [hero.id, hero]))
-    }, [heroesRef])
-    const query = search.trim().toLowerCase()
-
-    const filteredBanners = useMemo(() => {
-        const allDated = BANNERS.every(banner =>
-            banner.id === "everyday_heroes" || hasValidBannerDate(banner)
-        )
-
-        return BANNERS.map((banner, sourceIndex) => {
-            const resolveList = ids => (Array.isArray(ids) ? ids : [])
-                .map(id => heroesById.get(id) ?? null)
-            const primaryRaw = resolveList(banner.heroIds)
-            const conditionalRaw = resolveList(banner.conditionalHeroIDs)
-            const missingHeroCount = primaryRaw.filter(hero => !hero).length
-                + conditionalRaw.filter(hero => !hero).length
-            const bannerMetadata = {
-                ...banner,
-                heroIds: [],
-                conditionalHeroIDs: [],
-                featuredHeroId: null,
-            }
-
-            // Search both banner metadata and the text represented by its visible detail chips.
-            // Hero data is searched separately so a matching hero doesn't expose unrelated heroes.
-            const liveDateInfo = getBannerLiveDateInfo(BANNERS, sourceIndex)
-            const searchableBannerMetadata = [
-                ...getSearchableValues(bannerMetadata),
-                banner.standardBanner ? "standard standard banner" : "event banner",
-                `${Array.isArray(banner.heroIds) ? banner.heroIds.length : 0} listed heroes`,
-                banner.featuredHeroId ? "featured featured hero" : "",
-                liveDateInfo.date ? `last live ${liveDateInfo.date}` : "last live n/a",
-                ...(Array.isArray(banner.conditionalHeroIDs) && banner.conditionalHeroIDs.length > 0
-                    ? ["conditional conditional heroes", `${banner.conditionalHeroIDs.length} conditional heroes`]
-                    : []),
-            ].join(" ").toLowerCase()
-            const bannerMatches = matchesSearchQuery(searchableBannerMetadata, query)
-            const visibleHeroes = primaryRaw.filter(
-                hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query))
-            )
-            const featuredHero = banner.featuredHeroId
-                ? (heroesById.get(banner.featuredHeroId) ?? null)
-                : null
-            const featuredHeroMatches = featuredHero
-                && (bannerMatches || matchesBannerHeroQuery(featuredHero, query))
-            if (featuredHeroMatches && !visibleHeroes.some(hero => hero.id === featuredHero.id)) {
-                visibleHeroes.push(featuredHero)
-            }
-            const visibleConditionalHeroes = conditionalRaw.filter(
-                hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query))
-            )
-
-            return {
-                banner,
-                sourceIndex,
-                bannerMatches,
-                // Keep the complete known pool for odds; search should only hide cards,
-                // not change the probability assigned to the heroes that remain visible.
-                allHeroes: primaryRaw.filter(Boolean),
-                heroes: visibleHeroes,
-                conditionalHeroes: visibleConditionalHeroes,
-                missingHeroCount,
-            }
-        })
-            .filter(result =>
-                result.bannerMatches || result.heroes.length > 0 || result.conditionalHeroes.length > 0
-            )
-            .sort((a, b) => {
-                // The permanent Everyday Heroes banner always leads the catalogue.
-                if (a.banner.id === "everyday_heroes") return b.banner.id === "everyday_heroes" ? 0 : -1
-                if (b.banner.id === "everyday_heroes") return 1
-
-                // Once all event banners have dates, sort chronologically (oldest first).
-                // Until then preserve the curated source order, including the first special banner.
-                if (allDated) {
-                    return parseBannerDate(a.banner.lastLiveDate) - parseBannerDate(b.banner.lastLiveDate)
-                        || a.sourceIndex - b.sourceIndex
-                }
-                return a.sourceIndex - b.sourceIndex
-            })
-    }, [heroesById, query])
-
-    return (
-        <div className="banner-catalogue-list">
-            <label className="catalogue-search banner-catalogue-search card">
-                <span className="catalogue-control-label text">
-                    Search banners, heroes, and banner details
-                    <span className="catalogue-result-count text">
-                        Showing {filteredBanners.length} of {BANNERS.length} banners
-                    </span>
-                </span>
-                <input
-                    className="selectable catalogue-input"
-                    type="search"
-                    aria-label="Search all banner and hero details"
-                    placeholder="Search banners, heroes, and details..."
-                    value={search}
-                    onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)}
-                />
-            </label>
-            {filteredBanners.length === 0
-                ? <p className="catalogue-empty card">No banners match that search.</p>
-                : <div className="banner-catalogue-grid">
-                    {filteredBanners.map(result => (
-                        <BannerCatalogueCard key={result.banner.id} result={result} heroesById={heroesById} />
-                    ))}
-                </div>
-            }
-        </div>
-    )
-}
-
 function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
     const [search, setSearch, commitSearch] = useUrlSearch()
     const [rarityFilter, setRarityFilter] = useState("all")
@@ -516,11 +188,11 @@ function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
 
     return (
         <section className="hero-catalogue">
-            <div className="catalogue-view-switch" aria-label="Hero catalogue sections">
-                <Button text="Heroes" color={5} active={initialView === "heroes"} onClick={() => onViewChange?.("heroes")} />
-                <Button text="Tier List" color={5} active={initialView === "tier-list"} onClick={() => onViewChange?.("tier-list")} />
-                <Button text="Banners" color={5} active={initialView === "banners"} onClick={() => onViewChange?.("banners")} />
-            </div>
+            <CatalogueViewSwitch ariaLabel="Hero catalogue sections" view={initialView} onViewChange={onViewChange} options={[
+                { label: "Heroes", value: "heroes" },
+                { label: "Tier List", value: "tier-list" },
+                { label: "Banners", value: "banners" },
+            ]} />
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
                     <div className="catalogue-title header-big">{initialView === "banners" ? "Banner Catalogue" : initialView === "tier-list" ? "Hero Tier List" : "Hero Catalogue"}</div>

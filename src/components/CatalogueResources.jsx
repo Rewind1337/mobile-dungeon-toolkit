@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react"
 import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import Button from "./Button.jsx"
+import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"
+import ResourceCatalogueCard from "./ResourceCatalogueCard.jsx"
 import { init_resource_db } from "../database/db_resources.jsx"
 import { RARITY_DEFINITIONS, RESOURCE_LOCATIONS } from "../database/enums.jsx"
 
@@ -16,25 +18,6 @@ const GEM_VARIANTS = GEM_BASES.flatMap(gem => GEM_RARITIES.map(rarity => ({
     isGem: true,
     gemType: gem.name,
 })))
-
-function ResourceCard({ resource }) {
-    return (
-        <article className="resource-catalogue-card card">
-            <img className="resource-catalogue-icon" src={resource.spriteSrc} alt="" loading="lazy" decoding="async" draggable={false} />
-            <div className="resource-catalogue-details">
-                <div className="resource-catalogue-title-row">
-                    <h2 className="resource-catalogue-name text-big">{resource.name}</h2>
-                    {resource.isGem && (
-                        <span className="catalogue-chip resource-catalogue-rarity text" data-rarity={resource.rarity.id}>
-                            {resource.rarity.name.charAt(0)}{resource.rarity.name.slice(1).toLowerCase()}
-                        </span>
-                    )}
-                </div>
-                <p className="resource-catalogue-description text">{resource.description || "No description recorded."}</p>
-            </div>
-        </article>
-    )
-}
 
 function CatalogueResources({ initialView = "resources", onViewChange }) {
     const [search, setSearch, commitSearch] = useUrlSearch()
@@ -78,24 +61,10 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
 
     return (
         <section className="resource-catalogue">
-            <div className="catalogue-view-switch" aria-label="Resources catalogue sections">
-                <Button
-                    text="Resources"
-                    color={5}
-                    active={!isGemsView}
-                    onClick={() => {
-                        onViewChange?.("resources")
-                    }}
-                />
-                <Button
-                    text="Gems"
-                    color={5}
-                    active={isGemsView}
-                    onClick={() => {
-                        onViewChange?.("gems")
-                    }}
-                />
-            </div>
+            <CatalogueViewSwitch ariaLabel="Resources catalogue sections" view={initialView} onViewChange={onViewChange} options={[
+                { label: "Resources", value: "resources" },
+                { label: "Gems", value: "gems" },
+            ]} />
 
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
@@ -109,7 +78,7 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                 </div>
             </header>
 
-            <div className="resource-catalogue-filters card">
+            <div className={`resource-catalogue-filters card${!isGemsView ? " is-resource-view" : ""}`}>
                 <div className="resource-catalogue-search-group">
                     <label className="catalogue-search">
                         <span className="catalogue-control-label text">
@@ -154,13 +123,13 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                                     <span className="catalogue-chip text">{group.variants.length} rarities</span>
                                 </header>
                                 <div className="resource-catalogue-grid gem-catalogue-grid">
-                                    {group.variants.map(resource => <ResourceCard key={resource.id} resource={resource} />)}
+                                    {group.variants.map(resource => <ResourceCatalogueCard key={resource.id} resource={resource} />)}
                                 </div>
                             </section>
                         ))}
                     </div>
                     : <div className="resource-catalogue-grid">
-                        {filteredResources.map(resource => <ResourceCard key={resource.id} resource={resource} />)}
+                        {filteredResources.map(resource => <ResourceCatalogueCard key={resource.id} resource={resource} />)}
                     </div>
             }
         </section>
