@@ -201,6 +201,15 @@ body::after {
     padding: 3px;
     border-radius: 0;
   }
+
+  // Add alongside .card for display-only cards that should not lift on hover.
+  &.card-static {
+    transition: none;
+
+    &:hover {
+      transform: translate(0, 0);
+    }
+  }
 }
 
 .header {
@@ -845,6 +854,44 @@ a {
 
       @include M.media-query-max(V.$bp-mobile, ()) {
         gap: 0;
+      }
+    }
+
+    @include M.media-query-max(V.$bp-tablet, ()) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: stretch;
+      gap: V.$gap-small;
+
+      > a {
+        width: 100%;
+        max-width: 360px;
+        align-self: center;
+      }
+
+      > .text {
+        flex-direction: column;
+        width: 100%;
+        min-width: 0;
+        text-align: center;
+        white-space: normal;
+      }
+
+      .flex-row {
+        flex-wrap: wrap;
+        gap: V.$gap-small;
+      }
+
+      .text {
+        justify-content: center;
+        text-align: center;
+        white-space: normal;
+      }
+
+      img {
+        height: clamp(22px, 5vw, 32px);
+        max-width: 100%;
+        object-fit: contain;
       }
     }
   }
