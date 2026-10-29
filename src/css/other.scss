@@ -952,8 +952,9 @@
 
 .banner-catalogue-hero-grid {
   display: grid;
-  // Hero sprites are 96px wide on desktop; include the Hero card's 10px horizontal padding.
-  grid-template-columns: repeat(auto-fill, minmax(106px, 1fr));
+  // Keep each hero card fixed-width; only the number of columns changes with available space.
+  grid-template-columns: repeat(auto-fill, 106px);
+  justify-content: start;
   align-items: start;
   justify-items: center;
   gap: V.$gap-small;
@@ -966,8 +967,25 @@
   align-items: center;
   justify-content: flex-start;
   gap: V.$gap-small;
-  width: 100%;
-  min-width: 0;
+  flex: 0 0 106px;
+  width: 106px;
+  min-width: 106px;
+  max-width: 106px;
+  overflow: visible;
+}
+
+.banner-catalogue-hero > .hero {
+  flex: 0 0 auto;
+  width: 96px;
+  max-width: 96px;
+}
+
+/* Only the nested Hero card in banner odds stays still; the surrounding odds card can hover. */
+.banner-catalogue-hero > .hero.hero-static,
+.banner-catalogue-hero > .hero.hero-static:hover,
+.banner-catalogue-hero > .hero.hero-static.hover {
+  transition: none;
+  transform: none;
 }
 
 .banner-catalogue-hero-odds {
@@ -980,6 +998,22 @@
 
 .banner-catalogue-hero-odds--conditional {
   opacity: 0.7;
+}
+
+.banner-catalogue-hero-odds--featured {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.banner-catalogue-booster {
+  display: block;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 
 .banner-catalogue-odds-note {
