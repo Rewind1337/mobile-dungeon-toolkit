@@ -363,11 +363,6 @@
   }
   .hero-preview .hero-metadata img { width: 32px; height: 32px; }
   .hero-preview .hero-preview-skills-toggle { margin-top: V.$gap-small; }
-  .hero-preview .equipment {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: V.$gap-small;
-  }
 }
 
 
@@ -380,6 +375,12 @@
 @include M.media-query-max(V.$bp-tablet, ()) {
   .hero-preview .equipment {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .hero-preview .equipment {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
