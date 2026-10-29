@@ -395,6 +395,14 @@ function BannerCatalogueList({ heroesRef, search, setSearch, commitSearch }) {
             const visibleHeroes = primaryRaw.filter(
                 hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query))
             )
+            const featuredHero = banner.featuredHeroId
+                ? resolveBannerHero(banner.featuredHeroId, heroesById)
+                : null
+            const featuredHeroMatches = featuredHero
+                && (bannerMatches || matchesBannerHeroQuery(featuredHero, query))
+            if (featuredHeroMatches && !visibleHeroes.some(hero => hero.id === featuredHero.id)) {
+                visibleHeroes.push(featuredHero)
+            }
             const visibleConditionalHeroes = conditionalRaw.filter(
                 hero => hero && (bannerMatches || matchesBannerHeroQuery(hero, query))
             )
