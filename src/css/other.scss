@@ -974,12 +974,6 @@
   overflow: visible;
 }
 
-.banner-catalogue-hero > .hero {
-  flex: 0 0 auto;
-  width: 96px;
-  max-width: 96px;
-}
-
 /* Only the nested Hero card in banner odds stays still; the surrounding odds card can hover. */
 .banner-catalogue-hero > .hero.hero-static,
 .banner-catalogue-hero > .hero.hero-static:hover,
