@@ -18,6 +18,11 @@ const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
 )
 
 const BANNERS = init_banner_db()
+const BANNER_RARITY_PULL_CHANCES = {
+    [RARITY_DEFINITIONS.LEGENDARY.id]: 0.01,
+    [RARITY_DEFINITIONS.EPIC.id]: 0.09,
+}
+const STARRED_HERO_PULL_WEIGHT = 1 / 3
 const BANNER_HERO_ID_ALIASES = Object.freeze({
     jack_o_lantern: "jack_o__lantern",
     sphynx: "sphinx",
@@ -202,24 +207,41 @@ function matchesBannerHeroQuery(hero, query) {
     })
 }
 
-function BannerHeroGroup({ title, heroes }) {
+function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null }) {
     if (heroes.length === 0) return null
+    const totalPoolWeight = oddsPool.reduce(
+        (total, hero) => total + (hero.isStarred === true ? STARRED_HERO_PULL_WEIGHT : 1),
+        0
+    )
+
     return (
         <section className="banner-catalogue-rarity-group">
             <h3 className="banner-catalogue-group-title text">{title} <span>({heroes.length})</span></h3>
             <div className="banner-catalogue-hero-grid">
-                {heroes.map((hero, index) => (
-                    <div className="banner-catalogue-hero" key={`${hero.id}-${index}`} title={hero.name}>
-                        <Hero heroObj={hero} selected={false} level={null} onClick={() => {}} />
-                    </div>
-                ))}
+                {heroes.map((hero, index) => {
+                    const heroWeight = hero.isStarred === true ? STARRED_HERO_PULL_WEIGHT : 1
+                    const odds = rarityChance !== null && totalPoolWeight > 0
+                        ? rarityChance * heroWeight / totalPoolWeight
+                        : null
+
+                    return (
+                        <div className="banner-catalogue-hero" key={`${hero.id}-${index}`} title={hero.name}>
+                            <Hero heroObj={hero} selected={false} level={null} onClick={() => {}} />
+                            {odds !== null && (
+                                <span className="banner-catalogue-hero-odds text">
+                                    {(odds * 100).toFixed(3)}% pull chance
+                                </span>
+                            )}
+                        </div>
+                    )
+                })}
             </div>
         </section>
     )
 }
 
 function BannerCatalogueCard({ result, heroesById }) {
-    const { banner, heroes, conditionalHeroes, missingHeroCount, sourceIndex } = result
+    const { banner, heroes, allHeroes = heroes, conditionalHeroes, missingHeroCount, sourceIndex } = result
     const isEverydayBanner = banner.id === "everyday_heroes"
     const featuredHero = banner.featuredHeroId
         ? resolveBannerHero(banner.featuredHeroId, heroesById)
@@ -230,9 +252,24 @@ function BannerCatalogueCard({ result, heroesById }) {
         ? `${liveDateInfo.estimated ? "~" : ""}${liveDateInfo.date}${lastLiveLabel}`
         : "N/A"
     const rarityGroups = [
-        ["Legendary Heroes", heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.LEGENDARY.id)],
-        ["Epic Heroes", heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.EPIC.id)],
-        ["Other Heroes", heroes.filter(hero => Number(hero.rarity) !== RARITY_DEFINITIONS.LEGENDARY.id && Number(hero.rarity) !== RARITY_DEFINITIONS.EPIC.id)],
+        {
+            title: "Legendary Heroes",
+            heroes: heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.LEGENDARY.id),
+            oddsPool: allHeroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.LEGENDARY.id),
+            rarityChance: BANNER_RARITY_PULL_CHANCES[RARITY_DEFINITIONS.LEGENDARY.id],
+        },
+        {
+            title: "Epic Heroes",
+            heroes: heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.EPIC.id),
+            oddsPool: allHeroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.EPIC.id),
+            rarityChance: BANNER_RARITY_PULL_CHANCES[RARITY_DEFINITIONS.EPIC.id],
+        },
+        {
+            title: "Other Heroes",
+            heroes: heroes.filter(hero => Number(hero.rarity) !== RARITY_DEFINITIONS.LEGENDARY.id && Number(hero.rarity) !== RARITY_DEFINITIONS.EPIC.id),
+            oddsPool: [],
+            rarityChance: null,
+        },
     ]
 
     return (
@@ -256,8 +293,14 @@ function BannerCatalogueCard({ result, heroesById }) {
             </header>
 
             <div className="banner-catalogue-groups">
-                {rarityGroups.map(([title, groupHeroes]) => (
-                    <BannerHeroGroup key={title} title={title} heroes={groupHeroes} />
+                {rarityGroups.map(({ title, heroes: groupHeroes, oddsPool, rarityChance }) => (
+                    <BannerHeroGroup
+                        key={title}
+                        title={title}
+                        heroes={groupHeroes}
+                        oddsPool={oddsPool}
+                        rarityChance={rarityChance}
+                    />
                 ))}
             </div>
 
@@ -268,6 +311,9 @@ function BannerCatalogueCard({ result, heroesById }) {
                         {conditionalHeroes.map((hero, index) => (
                             <div className="banner-catalogue-hero" key={`${hero.id}-conditional-${index}`} title={hero.name}>
                                 <Hero heroObj={hero} selected={false} level={null} onClick={() => {}} />
+                                <span className="banner-catalogue-hero-odds banner-catalogue-hero-odds--conditional text">
+                                    Conditional · odds not modeled
+                                </span>
                             </div>
                         ))}
                     </div>
@@ -334,6 +380,9 @@ function BannerCatalogueList({ heroesRef, search, setSearch, commitSearch }) {
                 banner,
                 sourceIndex,
                 bannerMatches,
+                // Keep the complete known pool for odds; search should only hide cards,
+                // not change the probability assigned to the heroes that remain visible.
+                allHeroes: primaryRaw.filter(Boolean),
                 heroes: visibleHeroes,
                 conditionalHeroes: visibleConditionalHeroes,
                 missingHeroCount,
@@ -373,6 +422,9 @@ function BannerCatalogueList({ heroesRef, search, setSearch, commitSearch }) {
                     Showing {filteredBanners.length} of {BANNERS.length} banners
                 </span>
             </label>
+            <p className="catalogue-muted text banner-catalogue-odds-note">
+                Estimated odds use defined heroes listed on each banner: Legendary 1% and Epic 9%. Rare and Uncommon pulls make up the untracked remaining 90%. Starred heroes have one-third the pull weight of regular heroes; conditional heroes and missing hero references are not included in the estimate.
+            </p>
             {filteredBanners.length === 0
                 ? <p className="catalogue-empty card">No banners match that search.</p>
                 : <div className="banner-catalogue-grid">
