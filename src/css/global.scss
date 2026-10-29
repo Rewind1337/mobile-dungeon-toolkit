@@ -1324,6 +1324,35 @@ input[type="number"] {
   height: 20px;
 }
 
+.team-status-group {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.team-status-group-heading {
+  margin: 0;
+  font-size: V.$font-size-small;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.team-status-chip--buff {
+  border-color: rgba(80, 190, 100, 0.7);
+  background: rgba(34, 110, 50, 0.18);
+}
+
+.team-status-chip--debuff {
+  border-color: rgba(226, 105, 117, 0.75);
+  background: rgba(130, 35, 48, 0.18);
+}
+
+.team-status-chip--special {
+  border-color: rgba(174, 126, 224, 0.75);
+  background: rgba(100, 65, 140, 0.18);
+}
+
 .team-attribute-icon {
   align-items: center;
   justify-content: center;
@@ -1377,7 +1406,7 @@ input[type="number"] {
 
 .team-hero-picker-footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-around;
   gap: V.$gap;
   padding-top: V.$gap;
   border-top: 1px solid rgba(255, 255, 255, 0.14);
