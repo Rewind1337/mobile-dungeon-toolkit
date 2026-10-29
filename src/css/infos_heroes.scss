@@ -107,13 +107,13 @@
   gap: V.$gap-small;
   min-width: 0;
 }
-.skill-catalogue-name { font-size: V.$font-size-header-small; }
+.skill-catalogue-name { font-size: 24px; }
 .skill-catalogue-hero[data-rarity="1"] { border-color: rgba(80, 190, 100, 0.7); }
 .skill-catalogue-hero[data-rarity="2"] { border-color: rgba(80, 145, 245, 0.75); }
 .skill-catalogue-hero[data-rarity="3"] { border-color: rgba(180, 95, 235, 0.75); }
 .skill-catalogue-hero[data-rarity="4"] { border-color: rgba(235, 165, 55, 0.8); }
 .talent-catalogue-heading { justify-content: flex-start; }
-.talent-catalogue-name { font-weight: 700; text-align: left; }
+.talent-catalogue-name { font-size: 24px; font-weight: 700; text-align: left; }
 .skill-catalogue-description { align-self: stretch; margin: 0; text-align: left; white-space: normal; overflow-wrap: anywhere; }
 
 .talent-source-list {
