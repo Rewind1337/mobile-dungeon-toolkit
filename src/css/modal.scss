@@ -49,6 +49,7 @@
         max-height: calc(100dvh - 36px);
         padding: 12px;
         border-radius: V.$border-radius;
+        overflow: auto;
     }
 }
 
