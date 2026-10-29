@@ -113,10 +113,7 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                 <div className="resource-catalogue-search-group">
                     <label className="catalogue-search">
                         <span className="catalogue-control-label text">
-                            Search by name or description
-                            <span className="catalogue-result-count text">
-                                Showing {filteredResources.length} of {sourceResources.length} {isGemsView ? "gems" : "resources"}
-                            </span>
+                            Search by name or description (showing {filteredResources.length} of {sourceResources.length} {isGemsView ? "gems" : "resources"})
                         </span>
                         <input
                             className="selectable catalogue-input"

@@ -212,7 +212,7 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                                                                             <span
                                                                                 className={"team-equipped-item" + (item ? "" : " is-empty")}
                                                                                 key={slot.id}
-                                                                                title={(item?.name ?? humanize(slot.name)) + " · " + humanize(slot.name)}
+                                                                                title={item?.name ?? humanize(slot.name)}
                                                                             >
                                                                                 <img
                                                                                     className="team-equipped-item-icon"

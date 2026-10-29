@@ -908,8 +908,10 @@
   gap: V.$gap;
   width: 100%;
   min-width: 0;
-  padding: V.$padding-card;
 }
+
+.banner-catalogue-list { padding: 0; }
+.resource-catalogue { padding: V.$padding-card; }
 
 .banner-catalogue-list .filters {
   width: 100%;
