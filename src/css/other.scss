@@ -1310,13 +1310,176 @@
   .info-overview-breakdown-card:first-child .catalogue-overview-slot-list {
     grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
   }
-  .banner-catalogue-hero-odds { max-width: 84px; white-space: normal; }
-  // The shared Hero component uses a 60px sprite plus 10px of card padding on mobile.
-  .banner-catalogue-hero-grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); }
-  .banner-catalogue-card--everyday { grid-column: 1 / -1; }
+  .banner-catalogue-hero-odds { max-width: 100%; white-space: normal; }
+  // Keep banner heroes at their fixed width on mobile; allow the grid to wrap into one column instead of shrinking cards.
+  .banner-catalogue-hero-grid { grid-template-columns: repeat(auto-fill, 116px); justify-content: space-evenly; }
+  .banner-catalogue-card.card-dark { grid-column: 1 / -1; }
   .resource-catalogue-filters { align-items: stretch; flex-direction: column; }
 }
 
 @include M.media-query-max(V.$bp-small) {
   .catalogue-overview-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+
+/* Teams */
+#page-teams {
+  align-items: stretch;
+  min-width: 0;
+}
+
+.teams-list {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap;
+  width: 100%;
+  min-width: 0;
+  overflow: auto;
+}
+
+.team {
+  width: 100%;
+  min-width: 0;
+  gap: V.$gap;
+}
+
+.team-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.team-header .header-big {
+  margin: 0;
+  flex: 1 1 auto;
+}
+
+.team-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: V.$gap-small;
+}
+
+.team-actions button {
+  width: auto;
+}
+
+.team-hero-slots {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: start;
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.team-hero-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.team-slot-label {
+  font-size: V.$font-size-small;
+  opacity: 0.75;
+}
+
+.team-hero-slot > .hero,
+.team-hero-slot > .hero.card {
+  cursor: pointer;
+  max-width: 100%;
+}
+
+.team-overview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.team-overview-chip {
+  flex: 1 1 300px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.team-new {
+  justify-content: center;
+  align-items: center;
+  min-height: 48px;
+}
+
+.team-new button {
+  width: auto;
+}
+
+.team-hero-picker {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.team-hero-picker-header {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+}
+
+.team-hero-picker-header h2,
+.team-hero-picker-header p {
+  margin: 0;
+}
+
+.team-hero-picker-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: V.$gap;
+  padding-top: V.$gap;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.team-hero-picker-footer button {
+  min-width: 110px;
+}
+
+@include M.media-query-max(V.$bp-tablet) {
+  .team-hero-slots {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@include M.media-query-max(V.$bp-mobile) {
+  .team-hero-slots {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: V.$gap-small;
+  }
+
+  .team-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .team-actions {
+    width: 100%;
+  }
+
+  .team-actions button {
+    flex: 1 1 auto;
+  }
+
+  .team-overview-chip {
+    flex-basis: 100%;
+  }
+
+  .team-hero-picker-footer button {
+    min-width: 0;
+    flex: 1 1 0;
+  }
+}
+
