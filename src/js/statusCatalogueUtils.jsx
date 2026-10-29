@@ -1,4 +1,4 @@
-import { getStatusPolarity } from "../js/statusPolarity.jsx"
+import { getStatusPolarity } from "./statusPolarity.jsx"
 
 export const STATUS_DESCRIPTIONS = {
     attack_up: "Increases Attack.",

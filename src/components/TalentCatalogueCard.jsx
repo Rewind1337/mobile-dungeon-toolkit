@@ -1,5 +1,5 @@
 import CatalogueEntryCard from "./CatalogueEntryCard.jsx"
-import { getTalentPosition, TalentEffect } from "./skillsTalentsUtils.jsx"
+import { getTalentPosition, TalentEffect } from "../js/skillsTalentsUtils.jsx"
 import "../css/other.scss"
 
 export default function TalentCatalogueCard({ talent, sources }) {

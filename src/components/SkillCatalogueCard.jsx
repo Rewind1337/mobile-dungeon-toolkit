@@ -1,5 +1,5 @@
 import CatalogueEntryCard from "./CatalogueEntryCard.jsx"
-import { stringify } from "./skillsTalentsUtils.jsx"
+import { stringify } from "../js/skillsTalentsUtils.jsx"
 import "../css/other.scss"
 
 export default function SkillCatalogueCard({ hero, skill, skillIndex }) {

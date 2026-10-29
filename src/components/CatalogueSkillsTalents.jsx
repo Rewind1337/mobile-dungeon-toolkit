@@ -3,7 +3,7 @@ import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"
 import SkillCatalogueCard from "./SkillCatalogueCard.jsx"
 import TalentCatalogueCard from "./TalentCatalogueCard.jsx"
-import { stringify, getTalentPosition } from "./skillsTalentsUtils.jsx"
+import { stringify, getTalentPosition } from "../js/skillsTalentsUtils.jsx"
 
 function CatalogueSkillsTalents({ heroes = [], initialView = "skills", onViewChange }) {
     const [view, setView] = useState(initialView)

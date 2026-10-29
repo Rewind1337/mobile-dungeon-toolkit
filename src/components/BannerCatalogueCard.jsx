@@ -1,8 +1,8 @@
 import { RARITY_DEFINITIONS } from "../database/enums.jsx"
 import { resourceSprites } from "../database/db_sprites.jsx"
-import { getBannerLastLiveLabel } from "../database/bannerUtils.jsx"
+import { getBannerLastLiveLabel } from "../js/bannerUtils.jsx"
 import Hero from "./Hero.jsx"
-import { BANNERS, BANNER_RARITY_PULL_CHANCES, STARRED_HERO_PULL_WEIGHT, FEATURED_HERO_PULL_CHANCE, getBannerLiveDateInfo } from "./bannerCatalogueUtils.jsx"
+import { BANNERS, BANNER_RARITY_PULL_CHANCES, STARRED_HERO_PULL_WEIGHT, FEATURED_HERO_PULL_CHANCE, getBannerLiveDateInfo } from "../js/bannerCatalogueUtils.jsx"
 import "../css/other.scss"
 
 function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null, featuredHero = null }) {

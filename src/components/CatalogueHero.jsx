@@ -10,7 +10,7 @@ import Button from "./Button.jsx"
 import Hero from "./Hero.jsx"
 import { attributeSprites, roleSprites } from "../database/db_sprites.jsx"
 import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
-import { getSearchableValues } from "./bannerCatalogueUtils.jsx"
+import { getSearchableValues } from "../js/bannerCatalogueUtils.jsx"
 import BannerCatalogueList from "./BannerCatalogueList.jsx"
 import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"
 

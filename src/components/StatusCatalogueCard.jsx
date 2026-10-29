@@ -2,7 +2,7 @@ import { statusSprites } from "../database/db_sprites.jsx"
 import CheckmarkSprite from "../sprites/checkmark.webp"
 import CrossSprite from "../sprites/cross.png"
 import CatalogueEntryCard from "./CatalogueEntryCard.jsx"
-import { STATUS_DESCRIPTIONS, humanize, getCategory, getDetails } from "./statusCatalogueUtils.jsx"
+import { STATUS_DESCRIPTIONS, humanize, getCategory, getDetails } from "../js/statusCatalogueUtils.jsx"
 import "../css/other.scss"
 
 export default function StatusCatalogueCard({ status }) {

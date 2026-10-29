@@ -1,5 +1,5 @@
 import { ATTRIBUTE_DEFINITIONS, DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
-import { isSearchAssetField } from "../js/search.jsx"
+import { isSearchAssetField } from "./search.jsx"
 import { statusSprites } from "../database/db_sprites.jsx"
 
 export const SLOT_NAMES = Object.fromEntries(
