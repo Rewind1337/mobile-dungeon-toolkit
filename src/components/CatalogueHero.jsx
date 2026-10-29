@@ -264,13 +264,27 @@ function BannerCatalogueCard({ result, heroesById }) {
     const rarityGroups = [
         {
             title: "Legendary Heroes",
-            heroes: heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.LEGENDARY.id),
+            heroes: [
+                ...heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.LEGENDARY.id),
+                ...(featuredHero
+                    && Number(featuredHero.rarity) === RARITY_DEFINITIONS.LEGENDARY.id
+                    && !heroes.some(hero => hero.id === featuredHero.id)
+                    ? [featuredHero]
+                    : []),
+            ],
             oddsPool: allHeroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.LEGENDARY.id),
             rarityChance: BANNER_RARITY_PULL_CHANCES[RARITY_DEFINITIONS.LEGENDARY.id],
         },
         {
             title: "Epic Heroes",
-            heroes: heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.EPIC.id),
+            heroes: [
+                ...heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.EPIC.id),
+                ...(featuredHero
+                    && Number(featuredHero.rarity) === RARITY_DEFINITIONS.EPIC.id
+                    && !heroes.some(hero => hero.id === featuredHero.id)
+                    ? [featuredHero]
+                    : []),
+            ],
             oddsPool: allHeroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.EPIC.id),
             rarityChance: BANNER_RARITY_PULL_CHANCES[RARITY_DEFINITIONS.EPIC.id],
         },
