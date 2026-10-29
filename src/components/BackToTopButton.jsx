@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import Button from "./Button.jsx"
-import { MdOpenInFull } from "react-icons/md"
+import CollapseSrc from "../sprites/collapse.webp"
 
 function BackToTopButton({ scrollRef }) {
     const [visible, setVisible] = useState(false)
@@ -13,6 +13,6 @@ function BackToTopButton({ scrollRef }) {
         return () => element.removeEventListener("scroll", updateVisibility)
     }, [scrollRef])
     if (!visible) return null
-    return <Button className="back-to-top-button" prefix={<MdOpenInFull aria-hidden="true" />} text="Back to top" title="Scroll this list back to the top" color={5} onClick={() => scrollRef?.current?.scrollTo({ top: 0, behavior: "smooth" })} />
+    return <Button className="back-to-top-button" prefix={<img className="back-to-top-icon" src={CollapseSrc} alt="" aria-hidden="true" />} text="Back to top" title="Scroll this list back to the top" color={5} onClick={() => scrollRef?.current?.scrollTo({ top: 0, behavior: "smooth" })} />
 }
 export default BackToTopButton

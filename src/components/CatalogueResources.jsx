@@ -112,7 +112,12 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
             <div className="resource-catalogue-filters card">
                 <div className="resource-catalogue-search-group">
                     <label className="catalogue-search">
-                        <span className="catalogue-control-label text">Search by name or description</span>
+                        <span className="catalogue-control-label text">
+                            Search by name or description
+                            <span className="catalogue-result-count text">
+                                Showing {filteredResources.length} of {sourceResources.length} {isGemsView ? "gems" : "resources"}
+                            </span>
+                        </span>
                         <input
                             className="selectable catalogue-input"
                             type="search"
@@ -123,9 +128,6 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                             onBlur={() => commitSearch(search)}
                         />
                     </label>
-                    <span className="catalogue-result-count text">
-                        Showing {filteredResources.length} of {sourceResources.length} {isGemsView ? "gems" : "resources"}
-                    </span>
                 </div>
                 {!isGemsView && (
                     <label className="catalogue-filter resource-location-filter">

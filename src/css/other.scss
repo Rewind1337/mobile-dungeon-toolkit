@@ -117,9 +117,18 @@
 }
 
 .catalogue-control-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px V.$gap-small;
   padding-inline: 2px;
   font-size: V.$font-size-small;
   opacity: 0.85;
+}
+
+.catalogue-control-label .catalogue-result-count {
+  font-size: V.$font-size-small;
 }
 
 .catalogue-input,
@@ -723,9 +732,27 @@
 
 .status-catalogue-identity {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: V.$gap;
+  gap: V.$gap-small;
   min-width: 0;
+}
+
+.status-catalogue-identity-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: V.$gap-small;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.status-catalogue-identity-chip .status-catalogue-name {
+  min-width: 0;
+}
+
+.status-catalogue-identity-chip .status-catalogue-icon,
+.status-catalogue-identity-chip .status-catalogue-icon-fallback {
+  flex: 0 0 42px;
 }
 
 .status-catalogue-icon,
@@ -1053,6 +1080,9 @@
 }
 
 .resource-catalogue-filters {
+  position: sticky;
+  top: V.$gap-small;
+  z-index: 100;
   display: flex;
   align-items: flex-start;
   gap: V.$gap;
@@ -1288,12 +1318,43 @@
 }
 
 .banner-catalogue-search {
+  position: sticky;
+  top: V.$gap-small;
+  z-index: 100;
   width: 100%;
   gap: V.$gap-small;
+  padding: V.$padding-card;
+}
+
+.resource-catalogue-search-group .catalogue-control-label,
+.banner-catalogue-search .catalogue-control-label {
+  width: 100%;
+}
+
+.team-equipped-items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 100%;
+  min-width: 0;
+}
+
+.team-equipped-items img {
+  display: block;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: V.$border-radius-small;
+  background: rgba(0, 0, 0, 0.24);
 }
 
 @include M.media-query(V.$bp-wide) {
   .gem-catalogue-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .filters > .filter-group { margin-inline: V.$gap-small; }
 }
 
 @include M.media-query(V.$bp-ultra) {

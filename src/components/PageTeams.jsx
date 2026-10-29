@@ -4,7 +4,7 @@ import Hero from "./Hero.jsx"
 import EmptyHero from "./EmptyHero.jsx"
 import Button from "./Button.jsx"
 import Modal from "./Modal.jsx"
-import { ATTRIBUTE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
+import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
 import { attributeSprites, statusSprites } from "../database/db_sprites.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import { getStatusPolarity } from "../js/statusPolarity.jsx"
@@ -187,7 +187,29 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                                                 <div className="team-hero-slot" key={`${team.id}-slot-${slotIndex}`}>
                                                     <span className="team-slot-label text">Slot {slotIndex + 1}</span>
                                                     {hero
-                                                        ? <Hero heroObj={hero} selected={false} level={hero.level ?? null} onClick={() => openSlotPicker(team, slotIndex)} />
+                                                        ? <>
+                                                            <Hero heroObj={hero} selected={false} level={hero.level ?? null} onClick={() => openSlotPicker(team, slotIndex)} />
+                                                            {Array.isArray(hero.items) && hero.items.some(Boolean) && (
+                                                                <div className="team-equipped-items" aria-label={`${hero.name} equipped items`}>
+                                                                    {Object.values(EQUIPMENT_SLOT_DEFINITIONS).map(slot => {
+                                                                        const item = hero.items[slot.id]
+                                                                        if (!item || !(item.iconSrc || item.itemSrc)) return null
+                                                                        const slotName = slot.name.charAt(0) + slot.name.slice(1).toLowerCase()
+                                                                        return (
+                                                                            <img
+                                                                                key={slot.id}
+                                                                                src={item.iconSrc || item.itemSrc}
+                                                                                alt=""
+                                                                                title={`${slotName}: ${item.name ?? "Equipped item"}`}
+                                                                                loading="lazy"
+                                                                                decoding="async"
+                                                                                draggable={false}
+                                                                            />
+                                                                        )
+                                                                    })}
+                                                                </div>
+                                                            )}
+                                                        </>
                                                         : <EmptyHero onClick={() => openSlotPicker(team, slotIndex)} />
                                                     }
                                                 </div>

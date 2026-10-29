@@ -556,7 +556,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                 </div>}
 
                 <div className='flex-col'>
-                    {(heroObj.skills && heroObj.talents) && <Button color={0} text={"Skills & Talents"} onClick={() => { setShowSkillsAndTalents(!showSkillsAndTalents) }} />}
+                    {(heroObj.skills && heroObj.talents) && <Button className="hero-preview-skills-toggle" color={0} text={"Skills & Talents"} onClick={() => { setShowSkillsAndTalents(!showSkillsAndTalents) }} />}
                     <div className='flex-row skills-talents-layout'>
                         {(showSkillsAndTalents && heroObj.skills) &&
                             <div className='flex-col skills'>
@@ -612,7 +612,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                             const item = equippedItems[slot.id]
                             return item
                                 ? <Item key={slot.id} itemObj={item} level={item.level ?? 1} loading="eager" onClick={() => onItemClick(slot.id)} />
-                                : <EmptyItem key={slot.id} onClick={() => onItemClick(slot.id)} />
+                                : <EmptyItem key={slot.id} label={slot.name.charAt(0) + slot.name.slice(1).toLowerCase()} onClick={() => onItemClick(slot.id)} />
                         })}
                     </div>
                     <div className='header'>Main Stats</div>

@@ -428,8 +428,13 @@ function BannerCatalogueList({ heroesRef, search, setSearch, commitSearch }) {
 
     return (
         <div className="banner-catalogue-list">
-            <label className="catalogue-search banner-catalogue-search">
-                <span className="catalogue-control-label text">Search banners, heroes, and banner details</span>
+            <label className="catalogue-search banner-catalogue-search card">
+                <span className="catalogue-control-label text">
+                    Search banners, heroes, and banner details
+                    <span className="catalogue-result-count text">
+                        Showing {filteredBanners.length} of {BANNERS.length} banners
+                    </span>
+                </span>
                 <input
                     className="selectable catalogue-input"
                     type="search"
@@ -438,9 +443,6 @@ function BannerCatalogueList({ heroesRef, search, setSearch, commitSearch }) {
                     value={search}
                     onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)}
                 />
-                <span className="catalogue-result-count text">
-                    Showing {filteredBanners.length} of {BANNERS.length} banners
-                </span>
             </label>
             {filteredBanners.length === 0
                 ? <p className="catalogue-empty card">No banners match that search.</p>

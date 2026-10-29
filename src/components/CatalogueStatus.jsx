@@ -217,14 +217,14 @@ function StatusCard({ status }) {
     return (
         <article className="status-catalogue-card card" data-category={category.toLowerCase()}>
             <div className="status-catalogue-identity">
-                {sprite
-                    ? <img className="status-catalogue-icon" src={sprite} alt="" loading="lazy" draggable={false} />
-                    : <span className="status-catalogue-icon-fallback" aria-hidden="true">◆</span>
-                }
-                <div className="status-catalogue-heading">
-                    <div className="status-catalogue-name text-big">{humanize(status.name)}</div>
-                    <span className={`catalogue-chip text status-catalogue-category status-category-${category.toLowerCase().replaceAll(" ", "-")}`}>{category}</span>
-                </div>
+                <span className="catalogue-chip text status-catalogue-identity-chip">
+                    {sprite
+                        ? <img className="status-catalogue-icon" src={sprite} alt="" loading="lazy" draggable={false} />
+                        : <span className="status-catalogue-icon-fallback" aria-hidden="true">◆</span>
+                    }
+                    <span className="status-catalogue-name text-big">{humanize(status.name)}</span>
+                </span>
+                <span className={`catalogue-chip text status-catalogue-category status-category-${category.toLowerCase().replaceAll(" ", "-")}`}>{category}</span>
             </div>
             <p className="status-catalogue-description text">{description}</p>
             <div className="status-polarity-row" aria-label="Status effect properties">

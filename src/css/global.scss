@@ -1304,6 +1304,7 @@ input[type="number"] {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
+  justify-content: center;
   gap: V.$gap-small;
   min-width: 0;
 }
@@ -1322,6 +1323,13 @@ input[type="number"] {
 .team-status-icon {
   width: 20px;
   height: 20px;
+}
+
+.back-to-top-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }
 
 .team-status-group {
