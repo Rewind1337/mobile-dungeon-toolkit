@@ -350,6 +350,10 @@
   .item-perk > .flex-col { flex: 1 1 100px; }
   .item .text {
     border-radius: 0;
+    outline: 0;
+    margin-inline: -2px;
+    width: calc(100% + 4px);
+    border: 2px solid black;
     margin-top: 0;
   }
 }

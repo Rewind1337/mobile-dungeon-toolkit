@@ -990,24 +990,25 @@ a {
   align-items: center;
   min-width: 50px;
   max-width: 350px;
+}
 
-  input[type="text"] {
-    min-width: 0;
-    height: 40px;
-    padding: 4px 8px;
-    color: inherit;
-    background: rgba(0, 0, 0, 0.25);
-    outline: 2px solid black;
-    border: none;
-    border-radius: V.$border-radius;
-    font-family: V.$font-family-stats;
-    font-size: V.$font-size-button;
-    text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black;
-    user-select: text;
+input[type="text"] {
+  min-width: 0;
+  height: 40px;
+  padding: 4px 8px;
+  color: inherit;
+  background: rgba(0, 0, 0, 0.25);
+  outline: 2px solid black;
+  border: none;
+  border-radius: V.$border-radius;
+  font-family: V.$font-family-stats;
+  font-size: V.$font-size-button;
+  text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black;
+  user-select: text;
 
-    @include M.media-query-max(V.$bp-mobile, ()) {
-      height: 32px;
-    }
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    height: 32px;
+    border-radius: 0;
   }
 }
 
@@ -1033,6 +1034,11 @@ input[type="number"] {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: textfield;
+
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    height: 32px;
+    border-radius: 0;
+  }
 }
 
 .mobile-filter-control {
@@ -1044,6 +1050,11 @@ input[type="number"] {
     color: inherit; background: rgba(0, 0, 0, 0.25); outline: 2px solid black; border: none;
     border-radius: V.$border-radius; font-family: V.$font-family-stats; font-size: V.$font-size-button;
     text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black; user-select: text;
+  
+    @include M.media-query-max(V.$bp-mobile, ()) {
+      height: 32px;
+      border-radius: 0;
+    }
   }
   @include M.media-query-max(V.$bp-mobile, ()) { gap: 6px; select { min-height: 32px; } }
 }
@@ -1161,7 +1172,7 @@ input[type="number"] {
 .hero-metadata-name,
 .item-preview-name { max-width: 100%; min-height: 30px; align-self: center; padding: 5px 10px; font-family: V.$font-family-stats; font-weight: 700; line-height: 1.2; overflow-wrap: anywhere; }
 .hero-metadata-name { font-size: V.$font-size-header-small; }
-.item-preview-name { font-size: V.$font-size-button; }
+.item-preview-name { font-size: V.$font-size-button-large; }
 .item-preview-metadata { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: space-between; gap: V.$gap-small; min-width: 0; }
 .item-preview-name { flex: 1 1 0; width: auto; text-align: center; justify-content: center; }
 .item-preview-slot, .item-preview-attribute { flex: 0 1 auto; }

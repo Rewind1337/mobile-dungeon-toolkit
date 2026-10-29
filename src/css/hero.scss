@@ -334,7 +334,10 @@
   gap: 6px;
   flex: 1 1 0;
 }
-.hero-preview .hero-metadata > .hero-metadata-name { flex: 1 1; }
+.hero-preview .hero-metadata > .hero-metadata-name { 
+  flex: 1 1; 
+  font-size: V.$font-size-button-large;
+}
 .hero-preview .hero-metadata img {
   width: 48px;
   height: 48px;
