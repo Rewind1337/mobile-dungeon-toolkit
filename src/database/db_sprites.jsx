@@ -300,7 +300,7 @@ import SheepBrownSrc from '../sprites/heroes/sheep_brown.webp';
 import ScarabRedSrc from '../sprites/heroes/scarab_red.webp';
 import ScarabGreenSrc from '../sprites/heroes/scarab_green.webp';
 
-import NullSrc from '../sprites/null.webp';
+import QuestionmarkSrc from '../sprites/questionmark.webp';
 import AdventureExperienceScroll from '../sprites/resources/adventure_experience_scroll.webp';
 import AdventureThirst from '../sprites/resources/adventure_thirst.webp';
 import ArenaCoin from '../sprites/resources/arena_coin.webp';
@@ -405,7 +405,7 @@ import WaterShardTier7 from '../sprites/resources/water_shard_tier7.webp';
 import WaterShardTier8 from '../sprites/resources/water_shard_tier8.webp';
 
 export const heroSprites = {
-    null: NullSrc,
+    null: QuestionmarkSrc,
 
     // LEGENDARIES
     thor: ThorSrc,
@@ -864,7 +864,7 @@ import MysticRingSrc from '../sprites/rings/sets/mystic.webp';
 import MysticNecklaceSrc from '../sprites/necklaces/sets/mystic.webp';
 
 export const itemSprites = {
-    null: NullSrc,
+    null: QuestionmarkSrc,
 
     pumpkin_scythe: PumpkinScytheSrc,
     hydras_bite: HydrasBiteSrc,
@@ -1080,8 +1080,6 @@ import HealingEfficiencySrc from '../sprites/perks/healing_efficiency.webp'
 import HealingReceivedSrc from '../sprites/perks/healing_received.webp'
 import LifeStealSrc from '../sprites/perks/life_steal.webp'
 import ResistanceSrc from '../sprites/perks/resistance.webp'
-import QuestionmarkSrc from '../sprites/questionmark.webp'
-
 export const perkSprites = {
     NOTHING: QuestionmarkSrc,
     MAIN_STAT_PERCENT: StrengthColorSrc,
@@ -1467,7 +1465,7 @@ export const statusSprites = {
 }
 
 export const resourceSprites = {
-    null: NullSrc,
+    null: QuestionmarkSrc,
     adventure_experience_scroll: AdventureExperienceScroll,
     adventure_thirst: AdventureThirst,
     arena_coin: ArenaCoin,

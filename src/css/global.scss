@@ -1159,7 +1159,9 @@ input[type="number"] {
 .catalogue-chip-icon { display: block; flex: 0 0 auto; width: 16px; height: 16px; object-fit: contain; }
 .hero-metadata { display: flex; flex-wrap: wrap; align-items: center; gap: V.$gap-small; min-width: 0; }
 .hero-metadata-name,
-.item-preview-name { max-width: 100%; min-height: 30px; align-self: center; padding: 5px 10px; font-size: V.$font-size-button; font-family: V.$font-family-stats; font-weight: 700; line-height: 1.2; overflow-wrap: anywhere; }
+.item-preview-name { max-width: 100%; min-height: 30px; align-self: center; padding: 5px 10px; font-family: V.$font-family-stats; font-weight: 700; line-height: 1.2; overflow-wrap: anywhere; }
+.hero-metadata-name { font-size: V.$font-size-header-small; }
+.item-preview-name { font-size: V.$font-size-button; }
 .item-preview-metadata { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: space-between; gap: V.$gap-small; min-width: 0; }
 .item-preview-name { flex: 1 1 0; width: auto; text-align: center; justify-content: center; }
 .item-preview-slot, .item-preview-attribute { flex: 0 1 auto; }

@@ -1331,25 +1331,26 @@
   width: 100%;
 }
 
-.team-equipped-items {
-  display: flex;
-  flex-wrap: wrap;
+.team-weapon-chip {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  width: 100%;
+  gap: V.$gap-small;
+  max-width: 100%;
   min-width: 0;
 }
 
-.team-equipped-items img {
+.team-weapon-chip > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.team-weapon-icon {
   display: block;
   flex: 0 0 24px;
   width: 24px;
   height: 24px;
   object-fit: contain;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: V.$border-radius-small;
-  background: rgba(0, 0, 0, 0.24);
 }
 
 @include M.media-query(V.$bp-wide) {
