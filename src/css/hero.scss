@@ -193,6 +193,8 @@
 
     @include M.media-query-max(V.$bp-mobile, ()) {
       border-radius: 0;
+      width: 20px;
+      height: 20px;
     }
   }
 
@@ -218,6 +220,8 @@
 
     @include M.media-query-max(V.$bp-mobile, ()) {
       border-radius: 0;
+      width: 20px;
+      height: 20px;
     }
   }
 
