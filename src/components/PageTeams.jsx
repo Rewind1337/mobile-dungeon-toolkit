@@ -67,7 +67,7 @@ function TeamOverview({ team, savedHeroes }) {
                         >
                             {typeof icon === "string"
                                 ? <img className="catalogue-chip-icon" src={icon} alt="" />
-                                : icon}
+                                : icon && <span className="catalogue-chip-icon team-attribute-icon" aria-hidden="true">{icon}</span>}
                             {name}
                         </span>
                     ))}
