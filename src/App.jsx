@@ -108,6 +108,11 @@ const getInfoTabFromPath = () => {
 const createDefaultState = () => ({
   pageContent: 'splash',
   savedHeroesRef: [],
+  savedTeamsRef: [
+    { id: 0, name: "Default Team", heroes: Array(5).fill(null) },
+    { id: 1, name: "Team A", heroes: Array(5).fill(null) },
+    { id: 2, name: "Team B", heroes: Array(5).fill(null) },
+  ],
   savedItemsRef: {
     WEAPONS: [],
     HELMETS: [],
@@ -147,6 +152,9 @@ const loadInitialState = () => {
       savedHeroesRef: Array.isArray(parsedState.savedHeroesRef)
         ? parsedState.savedHeroesRef.filter(isRecord)
         : defaults.savedHeroesRef,
+      savedTeamsRef: Array.isArray(parsedState.savedTeamsRef)
+        ? parsedState.savedTeamsRef.filter(isRecord)
+        : defaults.savedTeamsRef,
       savedItemsRef
     };
 
@@ -163,6 +171,7 @@ function App() {
 
   const heroesRef = useRef(BASE_HEROES)
   const savedHeroesRef = useRef(initialState.savedHeroesRef)
+  const savedTeamsRef = useRef(initialState.savedTeamsRef)
 
   const itemsRef = useRef(BASE_ITEMS)
   const savedItemsRef = useRef(initialState.savedItemsRef)
@@ -176,6 +185,7 @@ function App() {
     const saveState = {
         pageContent,
         savedHeroesRef: savedHeroesRef.current,
+        savedTeamsRef: savedTeamsRef.current,
         savedItemsRef: {
             ...savedItemsRef.current
         }
@@ -361,7 +371,7 @@ function App() {
 
         {pageContent === 'items' && <PageItems itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} onImportStatusChange={setImportStatus} />}
 
-        {pageContent === 'teams' && <PageTeams itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
+        {pageContent === 'teams' && <PageTeams itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedTeamsRef={savedTeamsRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
 
         {pageContent === 'simulator' && <PageSimulators itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
 
