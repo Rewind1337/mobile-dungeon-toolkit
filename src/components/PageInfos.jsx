@@ -180,11 +180,7 @@ function InfoOverview({ items, sets, heroes }) {
                         <p className="catalogue-muted text">Dungeon drops include Any Dungeon and unspecified drops, including the General set.</p>
                     </section>
                 </div>
-            </section>
 
-            <p className="catalogue-muted text">Counts reflect the data currently loaded in the project. Skills and talent entries are counted per hero, so repeated names are included.</p>
-
-        </section>
             </section>
 
             <p className="catalogue-muted text">Counts reflect the data currently loaded in the project. Skills and talent entries are counted per hero, so repeated names are included.</p>
