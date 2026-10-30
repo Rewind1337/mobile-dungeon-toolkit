@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
-import { EQUIPMENT_SLOT_DEFINITIONS } from "../database/enums.jsx"
+import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS } from "../database/enums.jsx"
 import { getSearchableValues, matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import { humanize } from "../js/util.jsx"
 import { SLOT_NAMES, RARITY_NAMES, getLocations, getSetLocations, getSourceName, getAttributeRequirementLabel, getPerkKey, getPerkLabel, getEffectStatuses, isUniqueItem } from "../js/catalogueItemUtils.jsx"
@@ -20,6 +20,8 @@ function CatalogueFilters({
     setSourceFilter,
     slotFilter,
     setSlotFilter,
+    attributeFilter,
+    setAttributeFilter,
     locationFilter,
     setLocationFilter,
     allSources,
@@ -67,6 +69,15 @@ function CatalogueFilters({
                         )}
                     </select>
                 </label>
+                <label className="catalogue-filter">
+                    <span className="catalogue-control-label text">Main attribute</span>
+                    <select aria-label="Filter by main attribute" value={attributeFilter} onChange={event => setAttributeFilter(event.target.value)}>
+                        <option value="all">All attributes</option>
+                        {Object.values(ATTRIBUTE_DEFINITIONS).map(attribute =>
+                            <option key={attribute.id} value={String(attribute.id)}>{humanize(attribute.name)}</option>
+                        )}
+                    </select>
+                </label>
             </>}
             <div className="catalogue-filter-actions">
                 <Button text="Clear filters" color={"cancel"} onClick={clearFilters} />
@@ -75,7 +86,7 @@ function CatalogueFilters({
     )
 }
 
-function CatalogueItem({ itemsRef, setsRef, initialView = "items", onViewChange }) {
+function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter = null, onViewChange }) {
     const [view, setView] = useState(initialView)
     const [search, setSearch, commitSearch] = useUrlSearch()
     const changeView = nextView => {
@@ -84,7 +95,14 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", onViewChange 
     }
     const [sourceFilter, setSourceFilter] = useState("all")
     const [slotFilter, setSlotFilter] = useState("all")
+    const [attributeFilter, setAttributeFilter] = useState("all")
     const [locationFilter, setLocationFilter] = useState("all")
+
+    useEffect(() => {
+        if (!initialFilter) return
+        if (initialFilter.slot !== undefined) setSlotFilter(String(initialFilter.slot))
+        if (initialFilter.attribute !== undefined) setAttributeFilter(String(initialFilter.attribute))
+    }, [initialFilter])
 
     const setsById = useMemo(() => new Map((setsRef ?? []).map(set => [set.id, set])), [setsRef])
 
@@ -149,9 +167,10 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", onViewChange 
         })
         const matchesSource = sourceFilter === "all" || sourceName === sourceFilter
         const matchesSlot = slotFilter === "all" || String(item.slot) === slotFilter
+        const matchesAttribute = attributeFilter === "all" || String(item.mainAttribute) === attributeFilter
         const matchesLocation = locationFilter === "all" || getLocations(item).includes(locationFilter)
-        return matchesSearch && matchesSource && matchesSlot && matchesLocation
-    }), [allItems, search, sourceFilter, slotFilter, locationFilter])
+        return matchesSearch && matchesSource && matchesSlot && matchesAttribute && matchesLocation
+    }), [allItems, search, sourceFilter, slotFilter, attributeFilter, locationFilter])
 
     const itemsBySet = useMemo(() => {
         const grouped = new Map()
@@ -197,6 +216,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", onViewChange 
         commitSearch("")
         setSourceFilter("all")
         setSlotFilter("all")
+        setAttributeFilter("all")
         setLocationFilter("all")
     }
 
@@ -226,6 +246,8 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", onViewChange 
                 setSourceFilter={setSourceFilter}
                 slotFilter={slotFilter}
                 setSlotFilter={setSlotFilter}
+                attributeFilter={attributeFilter}
+                setAttributeFilter={setAttributeFilter}
                 locationFilter={locationFilter}
                 setLocationFilter={setLocationFilter}
                 allSources={allSources}

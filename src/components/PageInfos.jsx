@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo } from "react"
+import { lazy, Suspense, useEffect, useMemo, useState } from "react"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import Button from "./Button.jsx"
 
@@ -44,7 +44,7 @@ function Stat({ label, value }) {
     )
 }
 
-function InfoOverview({ items, sets, heroes }) {
+function InfoOverview({ items, sets, heroes, onNavigate }) {
     const itemCount = Array.isArray(items) ? items.length : Object.values(items).reduce((total, list) => total + (Array.isArray(list) ? list.length : 0), 0)
     const heroCountBy = (key, definitions, preferredOrder = []) => {
         const counts = new Map()
@@ -85,7 +85,7 @@ function InfoOverview({ items, sets, heroes }) {
 
     const skillCount = heroes.reduce((total, hero) => total + (Array.isArray(hero.skills) ? hero.skills.length : 0), 0)
     const talentCount = heroes.reduce((total, hero) => total + (hero.talents && typeof hero.talents === "object" ? Object.keys(hero.talents).length : 0), 0)
-    const rows = (values, iconType) => values.map(({ label, count, id }) => {
+    const rows = (values, iconType, onSelect) => values.map(({ label, count, id }) => {
         const iconSrc = iconType === "element"
             ? elementSprites[id]
             : iconType === "role"
@@ -93,9 +93,25 @@ function InfoOverview({ items, sets, heroes }) {
                 : iconType === "attribute"
                     ? attributeSprites[id]
                     : null
+        const isClickable = typeof onSelect === "function" && Number.isFinite(Number(id))
+        const activateWithKeyboard = event => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault()
+                onSelect(id)
+            }
+        }
 
         return (
-            <div className="catalogue-overview-slot card" key={label}>
+            <div
+                className="catalogue-overview-slot card"
+                key={label}
+                role={isClickable ? "button" : undefined}
+                tabIndex={isClickable ? 0 : undefined}
+                aria-label={isClickable ? `${label}: ${count}. Open the matching catalogue entries.` : undefined}
+                title={isClickable ? `Show ${label} entries in the catalogue` : undefined}
+                onClick={isClickable ? () => onSelect(id) : undefined}
+                onKeyDown={isClickable ? activateWithKeyboard : undefined}
+            >
                 {iconType === "rarity" ? (
                     <span className="catalogue-overview-slot-icon catalogue-overview-rarity-icon" data-rarity={id} aria-hidden="true" />
                 ) : typeof iconSrc === "string" ? (
@@ -140,19 +156,19 @@ function InfoOverview({ items, sets, heroes }) {
                 <div className="info-overview-breakdown info-overview-hero-breakdown">
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By element</h3>
-                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("element", ELEMENT_DEFINITIONS, ["Fire", "Water", "Nature", "Light", "Shadow"]), "element")}</div>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("element", ELEMENT_DEFINITIONS, ["Fire", "Water", "Nature", "Light", "Shadow"]), "element", id => onNavigate?.("hero-catalogue", { element: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By rarity</h3>
-                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("rarity", RARITY_DEFINITIONS, ["Uncommon", "Rare", "Epic", "Legendary"]), "rarity")}</div>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("rarity", RARITY_DEFINITIONS, ["Uncommon", "Rare", "Epic", "Legendary"]), "rarity", id => onNavigate?.("hero-catalogue", { rarity: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By role</h3>
-                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("role", ROLE_DEFINITIONS), "role")}</div>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("role", ROLE_DEFINITIONS), "role", id => onNavigate?.("hero-catalogue", { role: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By main attribute</h3>
-                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("mainAttribute", ATTRIBUTE_DEFINITIONS), "attribute")}</div>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("mainAttribute", ATTRIBUTE_DEFINITIONS), "attribute", id => onNavigate?.("hero-catalogue", { attribute: id }))}</div>
                     </section>
                 </div>
             </section>
@@ -165,11 +181,11 @@ function InfoOverview({ items, sets, heroes }) {
                 <div className="info-overview-breakdown info-overview-item-breakdown">
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By slot</h3>
-                        <div className="catalogue-overview-slot-list">{rows(itemCountBy("slot", EQUIPMENT_SLOT_DEFINITIONS), "slot")}</div>
+                        <div className="catalogue-overview-slot-list">{rows(itemCountBy("slot", EQUIPMENT_SLOT_DEFINITIONS), "slot", id => onNavigate?.("item-catalogue", { slot: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By main attribute</h3>
-                        <div className="catalogue-overview-slot-list">{rows(itemCountBy("mainAttribute", ATTRIBUTE_DEFINITIONS), "attribute")}</div>
+                        <div className="catalogue-overview-slot-list">{rows(itemCountBy("mainAttribute", ATTRIBUTE_DEFINITIONS), "attribute", id => onNavigate?.("item-catalogue", { attribute: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By drop source</h3>
@@ -190,7 +206,15 @@ function InfoOverview({ items, sets, heroes }) {
 }
 
 function PageInfos({ itemsRef, heroesRef, activeTab = "overview", onTabChange }) {
-    const setActiveTab = tab => onTabChange?.(tab)
+    const [overviewFilter, setOverviewFilter] = useState(null)
+    const setActiveTab = tab => {
+        setOverviewFilter(null)
+        onTabChange?.(tab)
+    }
+    const navigateFromOverview = (tab, filter) => {
+        setOverviewFilter({ tab, ...filter })
+        onTabChange?.(tab)
+    }
     const { listRef, events } = useDynamicList(0)
     const itemData = itemsRef?.current?.BASE_ITEMS ?? EMPTY_ITEM_DATA
     const sets = itemsRef?.current?.ITEM_SETS ?? []
@@ -207,12 +231,12 @@ function PageInfos({ itemsRef, heroesRef, activeTab = "overview", onTabChange })
             </div>
         </div>
         <div id="page-info" className="page card w-100" ref={listRef} {...events} style={{ display:"flex", flexDirection:"column", alignItems:"stretch", flex:"1 1 0", minHeight:0, minWidth:0, overflowY:"auto", overflowX:"hidden", alignContent:"start" }}>
-            {activeTab === "overview" && <InfoOverview items={items} sets={sets} heroes={heroes} onNavigate={setActiveTab} />}
+            {activeTab === "overview" && <InfoOverview items={items} sets={sets} heroes={heroes} onNavigate={navigateFromOverview} />}
             <Suspense fallback={<div className="card">Loading catalogue...</div>}>
-                {activeTab === "item-catalogue" && <CatalogueItem itemsRef={itemData} setsRef={sets} onViewChange={view => setActiveTab(view === "sets" ? "set-catalogue" : "item-catalogue")} />}
+                {activeTab === "item-catalogue" && <CatalogueItem itemsRef={itemData} setsRef={sets} initialFilter={overviewFilter?.tab === "item-catalogue" ? overviewFilter : null} onViewChange={view => setActiveTab(view === "sets" ? "set-catalogue" : "item-catalogue")} />}
                 {activeTab === "set-catalogue" && <CatalogueItem itemsRef={itemData} setsRef={sets} initialView="sets" onViewChange={view => setActiveTab(view === "sets" ? "set-catalogue" : "item-catalogue")} />}
                 {activeTab === "perk-catalogue" && <CataloguePerk items={items} sets={sets} />}
-                {(activeTab === "hero-catalogue" || activeTab === "hero-tier-list-catalogue" || activeTab === "hero-banners-catalogue") && <CatalogueHero heroesRef={heroes} initialView={activeTab === "hero-tier-list-catalogue" ? "tier-list" : activeTab === "hero-banners-catalogue" ? "banners" : "heroes"} onViewChange={view => setActiveTab(view === "tier-list" ? "hero-tier-list-catalogue" : view === "banners" ? "hero-banners-catalogue" : "hero-catalogue")} />}
+                {(activeTab === "hero-catalogue" || activeTab === "hero-tier-list-catalogue" || activeTab === "hero-banners-catalogue") && <CatalogueHero heroesRef={heroes} initialFilter={overviewFilter?.tab === "hero-catalogue" ? overviewFilter : null} initialView={activeTab === "hero-tier-list-catalogue" ? "tier-list" : activeTab === "hero-banners-catalogue" ? "banners" : "heroes"} onViewChange={view => setActiveTab(view === "tier-list" ? "hero-tier-list-catalogue" : view === "banners" ? "hero-banners-catalogue" : "hero-catalogue")} />}
                 {(activeTab === "resources-catalogue" || activeTab === "gems-catalogue") && <CatalogueResources initialView={activeTab === "gems-catalogue" ? "gems" : "resources"} onViewChange={view => setActiveTab(view === "gems" ? "gems-catalogue" : "resources-catalogue")} />}
                 {(activeTab === "skills-catalogue" || activeTab === "talents-catalogue") && <CatalogueSkillsTalents heroes={heroes} initialView={activeTab === "talents-catalogue" ? "talents" : "skills"} onViewChange={view => setActiveTab(view === "talents" ? "talents-catalogue" : "skills-catalogue")} />}
                 {activeTab === "skills-talents-catalogue" && <CatalogueSkillsTalents heroes={heroes} initialView="skills" onViewChange={view => setActiveTab(view === "talents" ? "talents-catalogue" : "skills-catalogue")} />}

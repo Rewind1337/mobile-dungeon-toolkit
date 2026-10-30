@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import {
     ATTRIBUTE_DEFINITIONS,
     ELEMENT_DEFINITIONS,
@@ -80,12 +80,20 @@ function HeroCatalogueCard({ hero }) {
 }
 
 
-function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
+function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null, onViewChange }) {
     const [search, setSearch, commitSearch] = useUrlSearch()
     const [rarityFilter, setRarityFilter] = useState("all")
     const [attributeFilter, setAttributeFilter] = useState("all")
     const [elementFilter, setElementFilter] = useState("all")
     const [roleFilter, setRoleFilter] = useState("all")
+
+    useEffect(() => {
+        if (!initialFilter) return
+        if (initialFilter.rarity !== undefined) setRarityFilter(String(initialFilter.rarity))
+        if (initialFilter.attribute !== undefined) setAttributeFilter(String(initialFilter.attribute))
+        if (initialFilter.element !== undefined) setElementFilter(String(initialFilter.element))
+        if (initialFilter.role !== undefined) setRoleFilter(String(initialFilter.role))
+    }, [initialFilter])
 
     const catalogueHeroes = useMemo(() => {
         const heroes = Array.isArray(heroesRef) ? heroesRef : []
