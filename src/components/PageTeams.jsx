@@ -11,8 +11,6 @@ import { getStatusPolarity } from "../js/statusPolarity.jsx"
 
 const createDefaultTeams = () => [
     { id: 0, name: "Default Team", heroes: Array(5).fill(null) },
-    { id: 1, name: "Team A", heroes: Array(5).fill(null) },
-    { id: 2, name: "Team B", heroes: Array(5).fill(null) },
 ]
 
 const normalizeTeams = teams => Array.isArray(teams)
@@ -126,6 +124,7 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
     const { listHeight, listRef, events } = useDynamicList(165, true)
     const savedHeroes = Array.isArray(savedHeroesRef.current) ? savedHeroesRef.current : []
     const [teams, setTeams] = useState(() => normalizeTeams(savedTeamsRef.current))
+    const [collapsedTeamIds, setCollapsedTeamIds] = useState(() => new Set())
     const [slotPicker, setSlotPicker] = useState(null)
     const [selectedSaveId, setSelectedSaveId] = useState(null)
 
@@ -153,10 +152,41 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
     }
 
     const clearTeam = teamId => commitTeams(teams.map(team => team.id === teamId ? { ...team, heroes: Array(5).fill(null) } : team))
-    const deleteTeam = teamId => commitTeams(teams.filter(team => team.id !== teamId))
+    const renameTeam = (teamId, name) => commitTeams(teams.map(team => team.id === teamId ? { ...team, name } : team))
+    const toggleTeamCollapsed = teamId => setCollapsedTeamIds(current => {
+        const next = new Set(current)
+        if (next.has(teamId)) next.delete(teamId)
+        else next.add(teamId)
+        return next
+    })
+    const deleteTeam = teamId => {
+        commitTeams(teams.filter(team => team.id !== teamId))
+        setCollapsedTeamIds(current => {
+            const next = new Set(current)
+            next.delete(teamId)
+            return next
+        })
+    }
     const createTeam = () => {
         const id = teams.reduce((max, team) => Math.max(max, team.id), -1) + 1
         commitTeams([...teams, { id, name: `Team ${id + 1}`, heroes: Array(5).fill(null) }])
+    }
+    const duplicateTeam = teamId => {
+        const source = teams.find(team => team.id === teamId)
+        if (!source) return
+
+        const id = teams.reduce((max, team) => Math.max(max, team.id), -1) + 1
+        const baseName = `${source.name} (Copy)`
+        let name = baseName
+        let copyNumber = 2
+        while (teams.some(team => team.name.toLowerCase() === name.toLowerCase())) {
+            name = `${source.name} (Copy ${copyNumber})`
+            copyNumber += 1
+        }
+
+        const sourceIndex = teams.findIndex(team => team.id === teamId)
+        const duplicate = { ...source, id, name, heroes: [...source.heroes] }
+        commitTeams([...teams.slice(0, sourceIndex + 1), duplicate, ...teams.slice(sourceIndex + 1)])
     }
 
     const modalHeroes = savedHeroes
@@ -181,12 +211,50 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                     {teams.map(team => (
                         <article className="team card flex-col" key={team.id}>
                             <header className="team-header">
-                                <h2 className="header-big">{team.name}</h2>
+                                <Button
+                                    className="team-collapse-button"
+                                    text={collapsedTeamIds.has(team.id) ? "Expand" : "Collapse"}
+                                    title={collapsedTeamIds.has(team.id) ? "Expand team details" : "Collapse team details"}
+                                    color={5}
+                                    onClick={() => toggleTeamCollapsed(team.id)}
+                                />
+                                <h2 className="team-name-heading header-big">
+                                    <input
+                                        className="team-name-input"
+                                        type="text"
+                                        aria-label={`Team name for ${team.name}`}
+                                        value={team.name}
+                                        onChange={event => renameTeam(team.id, event.target.value)}
+                                        onBlur={() => {
+                                            if (!team.name.trim()) {
+                                                const teamIndex = teams.findIndex(entry => entry.id === team.id)
+                                                renameTeam(team.id, `Team ${teamIndex + 1}`)
+                                            }
+                                        }}
+                                    />
+                                </h2>
                                 <div className="team-actions">
                                     <Button text="Clear Team" color={4} onClick={() => clearTeam(team.id)} />
+                                    <Button text="Duplicate" color={5} onClick={() => duplicateTeam(team.id)} />
                                     <Button text="Delete Team" color="cancel" onClick={() => deleteTeam(team.id)} />
                                 </div>
                             </header>
+                            {collapsedTeamIds.has(team.id) ? (
+                                <div className="team-collapsed-preview" aria-label={`${team.name} hero lineup`}>
+                                    {team.heroes.map((saveId, slotIndex) => {
+                                        const hero = savedHeroes.find(savedHero => savedHero.saveId === saveId)
+                                        return (
+                                            <div className="team-collapsed-slot" key={`${team.id}-collapsed-slot-${slotIndex}`}>
+                                                {hero
+                                                    ? <Hero heroObj={hero} selected={false} level={null} className="team-collapsed-hero" onClick={() => openSlotPicker(team, slotIndex)} />
+                                                    : <EmptyHero className="team-collapsed-hero" onClick={() => openSlotPicker(team, slotIndex)} />
+                                                }
+                                                <span className="team-collapsed-slot-label text">Slot {slotIndex + 1}</span>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            ) : (
                             <div className="team-content">
                                 <div className="team-heroes-column">
                                     <div className="team-hero-slots" aria-label={`${team.name} hero slots`}>
@@ -236,7 +304,7 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                                 </div>
                                 <TeamOverview team={team} savedHeroes={savedHeroes} />
                             </div>
-                        </article>
+                            )}
                     ))}
                     <div className="team team-new card flex-row">
                         <Button text="Create New Team" color="confirm" onClick={createTeam} />

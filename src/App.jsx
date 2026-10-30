@@ -119,8 +119,6 @@ const createDefaultState = () => ({
   savedHeroesRef: [],
   savedTeamsRef: [
     { id: 0, name: "Default Team", heroes: Array(5).fill(null) },
-    { id: 1, name: "Team A", heroes: Array(5).fill(null) },
-    { id: 2, name: "Team B", heroes: Array(5).fill(null) },
   ],
   savedItemsRef: {
     WEAPONS: [],
@@ -146,6 +144,19 @@ const loadInitialState = () => {
 
     const defaults = createDefaultState();
     const savedItems = isRecord(parsedState.savedItemsRef) ? parsedState.savedItemsRef : {};
+    const savedTeams = Array.isArray(parsedState.savedTeamsRef)
+      ? parsedState.savedTeamsRef.filter(isRecord)
+      : defaults.savedTeamsRef;
+    const isUntouchedLegacyStarterSet = savedTeams.length === 3
+      && ["Default Team", "Team A", "Team B"].every((name, index) => {
+        const team = savedTeams[index];
+        return team?.id === index
+          && team?.name === name
+          && Array.isArray(team.heroes)
+          && team.heroes.length === 5
+          && team.heroes.every(hero => hero == null);
+      });
+    const savedTeamsRef = isUntouchedLegacyStarterSet ? [savedTeams[0]] : savedTeams;
     const savedItemsRef = Object.fromEntries(
       Object.keys(defaults.savedItemsRef).map(slot => [
         slot,
@@ -161,9 +172,7 @@ const loadInitialState = () => {
       savedHeroesRef: Array.isArray(parsedState.savedHeroesRef)
         ? parsedState.savedHeroesRef.filter(isRecord)
         : defaults.savedHeroesRef,
-      savedTeamsRef: Array.isArray(parsedState.savedTeamsRef)
-        ? parsedState.savedTeamsRef.filter(isRecord)
-        : defaults.savedTeamsRef,
+      savedTeamsRef,
       savedItemsRef
     };
 
