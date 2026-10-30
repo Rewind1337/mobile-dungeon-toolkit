@@ -97,7 +97,7 @@
 }
 
 .catalogue-filters {
-  grid-template-columns: minmax(260px, 2fr) repeat(3, minmax(145px, 1fr)) minmax(0, 1fr);
+  grid-template-columns: minmax(240px, 2fr) repeat(4, minmax(120px, 1fr)) auto;
 }
 .catalogue-filters.is-set-view {
   grid-template-columns: minmax(260px, 2fr) repeat(2, minmax(145px, 1fr)) minmax(0, 1fr);

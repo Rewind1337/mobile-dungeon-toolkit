@@ -375,3 +375,17 @@
     bottom: 4px;
   }
 }
+
+
+/* Preview item sprites retain their full-size footprint on every viewport. */
+.item-preview .item .item-sprite,
+.catalogue-item-preview .item .item-sprite {
+  width: V.$item-sprite-width;
+  height: V.$item-sprite-height;
+  flex: 0 0 V.$item-sprite-width;
+}
+.item-preview .item .item-sprite-img,
+.catalogue-item-preview .item .item-sprite-img {
+  width: 100%;
+  height: 100%;
+}

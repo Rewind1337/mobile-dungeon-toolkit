@@ -1266,37 +1266,69 @@ input[type="number"] {
 .teams-list {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   gap: V.$gap;
   width: 100%;
   min-width: 0;
+  min-height: 0;
   overflow: auto;
 }
 
 .team {
+  flex: 0 0 auto;
+  align-self: stretch;
   width: 100%;
   min-width: 0;
   gap: V.$gap;
 }
 
 .team-header {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
   gap: V.$gap-small;
   min-width: 0;
 }
 
-.team-header .header-big {
+.team-name-heading {
+  min-width: 0;
   margin: 0;
-  flex: 1 1 auto;
+}
+
+.team-header .team-collapse-button {
+  width: auto;
+}
+
+.team-header .team-name-input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-shadow: inherit;
+}
+
+.team-header .team-name-input:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.65);
+  outline-offset: 3px;
 }
 
 .team-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-end;
   gap: V.$gap-small;
+  min-width: 0;
 }
 
 .team-actions button {
@@ -1305,7 +1337,7 @@ input[type="number"] {
 
 .team-content {
   display: grid;
-  grid-template-columns: minmax(520px, 1.5fr) minmax(260px, 1fr);
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
   align-items: start;
   gap: V.$gap;
   min-width: 0;
@@ -1314,6 +1346,50 @@ input[type="number"] {
 .team-heroes-column,
 .team-info-column {
   min-width: 0;
+}
+
+.team-collapsed-preview {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.team-collapsed-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.team-collapsed-hero {
+  width: fit-content;
+  max-width: 100%;
+  min-width: 0;
+  padding: 4px;
+}
+
+.team-collapsed-hero .hero-sprite {
+  width: 54px;
+  height: 68px;
+  flex: 0 0 54px;
+}
+
+.team-collapsed-hero .hero-sprite-img {
+  width: 100%;
+  height: 100%;
+}
+
+.team-collapsed-hero .text {
+  display: none;
+}
+
+.team-collapsed-slot-label {
+  font-size: V.$font-size-xsmall;
+  opacity: 0.7;
 }
 
 .team-hero-slots {
@@ -1493,9 +1569,18 @@ input[type="number"] {
   min-width: 110px;
 }
 
-@include M.media-query-max(V.$bp-mobile) {
+@include M.media-query-max(V.$bp-tablet) {
   .team-content {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .team-header {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .team-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
   }
 }
 
@@ -1506,16 +1591,17 @@ input[type="number"] {
   }
 
   .team-header {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: start;
   }
 
   .team-actions {
     width: 100%;
+    justify-content: stretch;
   }
 
   .team-actions button {
-    flex: 1 1 auto;
+    flex: 1 1 0;
+    min-width: 0;
   }
 
   .team-hero-picker-footer button {

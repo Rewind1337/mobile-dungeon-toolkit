@@ -205,3 +205,15 @@
   .hero-catalogue-grid { grid-template-columns: minmax(0, 1fr); }
   .hero-catalogue-name { border-radius: 0; }
 }
+
+
+.hero-catalogue-collapsible > summary {
+  cursor: pointer;
+  list-style-position: inside;
+  text-align: center;
+  padding: 2px 0;
+}
+
+.hero-catalogue-collapsible[open] > summary {
+  margin-bottom: V.$gap-small;
+}

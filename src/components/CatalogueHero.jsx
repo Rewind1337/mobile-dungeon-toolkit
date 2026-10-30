@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import {
     ATTRIBUTE_DEFINITIONS,
     ELEMENT_DEFINITIONS,
@@ -13,33 +13,13 @@ import { getSearchableValues, matchesSearchQuery, useUrlSearch } from "../js/sea
 import { humanize } from "../js/util.jsx"
 import BannerCatalogueList from "./BannerCatalogueList.jsx"
 import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"
+import SkillCatalogueCard from "./SkillCatalogueCard.jsx"
+import TalentCatalogueCard from "./TalentCatalogueCard.jsx"
 import "../css/infos_heroes.scss"
 
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
     rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
 )
-
-function formatEffect(effect) {
-    if (effect === null || effect === undefined) return ""
-    if (typeof effect === "string") return effect
-    try {
-        return JSON.stringify(effect, null, 2)
-    } catch {
-        return String(effect)
-    }
-}
-
-function formatTalentEffects(effect) {
-    if (effect === null || effect === undefined) return []
-    const effects = Array.isArray(effect) ? effect : [effect]
-    return effects.flatMap(entry => {
-        if (!entry || typeof entry !== "object") return [String(entry)]
-        return Object.entries(entry).map(([key, value]) => {
-            const displayValue = typeof value === "number" ? Number(value.toPrecision(12)) : value
-            return `${key} : x${displayValue}`
-        })
-    })
-}
 
 function HeroCatalogueCard({ hero }) {
     const rarity = getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? "Unknown rarity"
@@ -75,61 +55,45 @@ function HeroCatalogueCard({ hero }) {
             </header>
 
             {skills.length > 0 && (
-                <section className="hero-catalogue-section card">
-                    <div className="catalogue-section-label text">Skills ({skills.length})</div>
+                <details className="hero-catalogue-section hero-catalogue-collapsible card">
+                    <summary className="catalogue-section-label text">Skills</summary>
                     <div className="hero-catalogue-skills">
                         {skills.map((skill, index) => (
-                            <article className="hero-catalogue-skill" key={skill.name ?? index}>
-                                <div className="hero-catalogue-skill-heading">
-                                    <strong className="text">{skill.name ?? `Skill ${index + 1}`}</strong>
-                                    <span className="hero-catalogue-skill-meta text">
-                                        {skill.level !== undefined && `Lv. ${skill.level}`}
-                                        {skill.cooldown !== undefined && ` · Cooldown ${skill.cooldown}`}
-                                    </span>
-                                </div>
-                                {skill.description && <p className="hero-catalogue-description text">{skill.description}</p>}
-                                {skill.effect && (
-                                    <details className="hero-catalogue-details">
-                                        <summary className="text">Effect data</summary>
-                                        <pre className="hero-catalogue-code text">{formatEffect(skill.effect)}</pre>
-                                    </details>
-                                )}
-                            </article>
+                            <SkillCatalogueCard key={hero.id + "-skill-" + index} hero={hero} skill={skill} skillIndex={index} />
                         ))}
                     </div>
-                </section>
+                </details>
             )}
 
             {talents.length > 0 && (
-                <section className="hero-catalogue-section card">
-                    <div className="catalogue-section-label text">Talents ({talents.length})</div>
+                <details className="hero-catalogue-section hero-catalogue-collapsible card">
+                    <summary className="catalogue-section-label text">Talents</summary>
                     <div className="hero-catalogue-talents">
-                        {talents.map(([key, talent]) => (
-                            <article className="hero-catalogue-talent" key={key}>
-                                <strong className="text">{talent?.name ?? `Talent ${key}`}</strong>
-                                {talent?.effect !== undefined && (
-                                    <ul className="hero-catalogue-talent-effects">
-                                        {formatTalentEffects(talent.effect).map((effectLine, index) => (
-                                            <li className="text" key={`${key}-effect-${index}`}>{effectLine}</li>
-                                        ))}
-                                    </ul>
-                                )}
-                            </article>
+                        {talents.map(([id, talent]) => (
+                            <TalentCatalogueCard key={hero.id + "-talent-" + id} talent={talent} sources={[{ hero, id }]} />
                         ))}
                     </div>
-                </section>
+                </details>
             )}
         </article>
     )
 }
 
 
-function CatalogueHero({ heroesRef, initialView = "heroes", onViewChange }) {
+function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null, onViewChange }) {
     const [search, setSearch, commitSearch] = useUrlSearch()
     const [rarityFilter, setRarityFilter] = useState("all")
     const [attributeFilter, setAttributeFilter] = useState("all")
     const [elementFilter, setElementFilter] = useState("all")
     const [roleFilter, setRoleFilter] = useState("all")
+
+    useEffect(() => {
+        if (!initialFilter) return
+        if (initialFilter.rarity !== undefined) setRarityFilter(String(initialFilter.rarity))
+        if (initialFilter.attribute !== undefined) setAttributeFilter(String(initialFilter.attribute))
+        if (initialFilter.element !== undefined) setElementFilter(String(initialFilter.element))
+        if (initialFilter.role !== undefined) setRoleFilter(String(initialFilter.role))
+    }, [initialFilter])
 
     const catalogueHeroes = useMemo(() => {
         const heroes = Array.isArray(heroesRef) ? heroesRef : []
