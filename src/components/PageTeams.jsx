@@ -305,6 +305,7 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                                 <TeamOverview team={team} savedHeroes={savedHeroes} />
                             </div>
                             )}
+                        </article>
                     ))}
                     <div className="team team-new card flex-row">
                         <Button text="Create New Team" color="confirm" onClick={createTeam} />
