@@ -6,7 +6,7 @@ import BackToTopButton from "./BackToTopButton.jsx"
 import "../css/infos.scss"
 import "../css/infos_overview.scss"
 import "../css/hero.scss"
-import { ATTRIBUTE_DEFINITIONS, ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS, PERK_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, DROP_SOURCE_DEFINITIONS } from "../database/enums.jsx"
+import { ATTRIBUTE_DEFINITIONS, ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS, PERK_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, DROP_SOURCE_DEFINITIONS, PRIMARY_STAT_DEFINITIONS } from "../database/enums.jsx"
 import { init_banner_db } from "../database/db_banners.jsx"
 import { init_resource_db } from "../database/db_resources.jsx"
 import { attributeSprites, elementSprites, roleSprites } from "../database/db_sprites.jsx"
@@ -185,7 +185,7 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By main attribute</h3>
-                        <div className="catalogue-overview-slot-list">{rows(itemCountBy("mainAttribute", ATTRIBUTE_DEFINITIONS), "attribute", id => onNavigate?.("item-catalogue", { attribute: id }))}</div>
+                        <div className="catalogue-overview-slot-list">{rows(itemCountBy("mainAttribute", PRIMARY_STAT_DEFINITIONS), "primary-stat", id => onNavigate?.("item-catalogue", { attribute: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By drop source</h3>

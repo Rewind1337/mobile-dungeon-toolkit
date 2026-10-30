@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 
-import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS } from "../database/enums.jsx"
+import { EQUIPMENT_SLOT_DEFINITIONS, PRIMARY_STAT_DEFINITIONS } from "../database/enums.jsx"
 import { getSearchableValues, matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import { humanize } from "../js/util.jsx"
 import { SLOT_NAMES, RARITY_NAMES, getLocations, getSetLocations, getSourceName, getAttributeRequirementLabel, getPerkKey, getPerkLabel, getEffectStatuses, isUniqueItem } from "../js/catalogueItemUtils.jsx"
@@ -73,7 +73,7 @@ function CatalogueFilters({
                     <span className="catalogue-control-label text">Main attribute</span>
                     <select aria-label="Filter by main attribute" value={attributeFilter} onChange={event => setAttributeFilter(event.target.value)}>
                         <option value="all">All attributes</option>
-                        {Object.values(ATTRIBUTE_DEFINITIONS).map(attribute =>
+                        {Object.values(PRIMARY_STAT_DEFINITIONS).map(attribute =>
                             <option key={attribute.id} value={String(attribute.id)}>{humanize(attribute.name)}</option>
                         )}
                     </select>
