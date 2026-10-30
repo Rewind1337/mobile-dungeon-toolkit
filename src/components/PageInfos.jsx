@@ -6,7 +6,7 @@ import BackToTopButton from "./BackToTopButton.jsx"
 import "../css/infos.scss"
 import "../css/infos_overview.scss"
 import "../css/hero.scss"
-import { ATTRIBUTE_DEFINITIONS, ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS, PERK_DEFINITIONS, STATUS_EFFECT_DEFINITIONS } from "../database/enums.jsx"
+import { ATTRIBUTE_DEFINITIONS, ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS, PERK_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, DROP_SOURCE_DEFINITIONS } from "../database/enums.jsx"
 import { init_banner_db } from "../database/db_banners.jsx"
 import { init_resource_db } from "../database/db_resources.jsx"
 import { attributeSprites, elementSprites, roleSprites } from "../database/db_sprites.jsx"
@@ -68,6 +68,21 @@ function InfoOverview({ items, sets, heroes }) {
             return a.label.localeCompare(b.label)
         })
     }
+    const itemCountBy = (key, definitions) => {
+        const counts = new Map()
+        for (const item of items) {
+            const id = Number(item[key])
+            const definition = Object.values(definitions).find(entry => entry.id === id)
+            const label = humanize(definition?.name ?? "unknown")
+            const current = counts.get(label) ?? { label, id, count: 0 }
+            current.count += 1
+            counts.set(label, current)
+        }
+        return [...counts.values()].sort((a, b) => a.label.localeCompare(b.label))
+    }
+    const guildHuntCount = items.filter(item => Number(item.dropSource) === DROP_SOURCE_DEFINITIONS.GUILD_HUNT.id).length
+    const dungeonDropCount = items.length - guildHuntCount
+
     const skillCount = heroes.reduce((total, hero) => total + (Array.isArray(hero.skills) ? hero.skills.length : 0), 0)
     const talentCount = heroes.reduce((total, hero) => total + (hero.talents && typeof hero.talents === "object" ? Object.keys(hero.talents).length : 0), 0)
     const rows = (values, iconType) => values.map(({ label, count, id }) => {
@@ -122,7 +137,7 @@ function InfoOverview({ items, sets, heroes }) {
                     <h2 className="header">Hero Overview</h2>
                     <p className="text">Distribution of the currently loaded hero data.</p>
                 </div>
-                <div className="info-overview-breakdown">
+                <div className="info-overview-breakdown info-overview-hero-breakdown">
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By element</h3>
                         <div className="catalogue-overview-slot-list">{rows(heroCountBy("element", ELEMENT_DEFINITIONS, ["Fire", "Water", "Nature", "Light", "Shadow"]), "element")}</div>
@@ -140,6 +155,36 @@ function InfoOverview({ items, sets, heroes }) {
                         <div className="catalogue-overview-slot-list">{rows(heroCountBy("mainAttribute", ATTRIBUTE_DEFINITIONS), "attribute")}</div>
                     </section>
                 </div>
+            </section>
+
+            <section className="info-overview-section">
+                <div className="info-overview-section-heading">
+                    <h2 className="header">Item Overview</h2>
+                    <p className="text">Distribution of the currently loaded item database.</p>
+                </div>
+                <div className="info-overview-breakdown info-overview-item-breakdown">
+                    <section className="info-overview-breakdown-card card card-static">
+                        <h3 className="header">By slot</h3>
+                        <div className="catalogue-overview-slot-list">{rows(itemCountBy("slot", EQUIPMENT_SLOT_DEFINITIONS), "slot")}</div>
+                    </section>
+                    <section className="info-overview-breakdown-card card card-static">
+                        <h3 className="header">By main attribute</h3>
+                        <div className="catalogue-overview-slot-list">{rows(itemCountBy("mainAttribute", ATTRIBUTE_DEFINITIONS), "attribute")}</div>
+                    </section>
+                    <section className="info-overview-breakdown-card card card-static">
+                        <h3 className="header">By drop source</h3>
+                        <div className="catalogue-overview-slot-list">
+                            <div className="catalogue-overview-slot card"><span className="text">Dungeon drops</span><span className="header">{dungeonDropCount}</span></div>
+                            <div className="catalogue-overview-slot card"><span className="text">Guild Hunt drops</span><span className="header">{guildHuntCount}</span></div>
+                        </div>
+                        <p className="catalogue-muted text">Dungeon drops include Any Dungeon and unspecified drops, including the General set.</p>
+                    </section>
+                </div>
+            </section>
+
+            <p className="catalogue-muted text">Counts reflect the data currently loaded in the project. Skills and talent entries are counted per hero, so repeated names are included.</p>
+
+        </section>
             </section>
 
             <p className="catalogue-muted text">Counts reflect the data currently loaded in the project. Skills and talent entries are counted per hero, so repeated names are included.</p>

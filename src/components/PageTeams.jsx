@@ -123,7 +123,7 @@ function TeamOverview({ team, savedHeroes }) {
 }
 
 function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
-    const { listHeight, listRef } = useDynamicList(165, true)
+    const { listHeight, listRef, events } = useDynamicList(165, true)
     const savedHeroes = Array.isArray(savedHeroesRef.current) ? savedHeroesRef.current : []
     const [teams, setTeams] = useState(() => normalizeTeams(savedTeamsRef.current))
     const [slotPicker, setSlotPicker] = useState(null)
@@ -175,7 +175,7 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
             </div>
 
             <main id="page-teams" className="page flex-col w-100">
-                <section ref={listRef} className="teams-list card flex-col" style={{ maxHeight: listHeight }}>
+                <section ref={listRef} {...events} className="teams-list card flex-col" style={{ maxHeight: listHeight }}>
                     <header className="header-big">Saved Teams</header>
                     {teams.length === 0 && <p className="text">No teams yet. Create one to get started.</p>}
                     {teams.map(team => (
