@@ -1,5 +1,3 @@
-import Button from './Button.jsx'
-
 const SIMULATOR_LINKS = [
     { id: 'adventure', title: 'Adventure Chapters', description: 'Browse the regular and Shadow World chapter entries.', color: 0, className: 'chapters' },
     { id: 'towers', title: 'Towers', description: 'Browse tower entries and their available stages.', color: 1, className: 'towers' },
