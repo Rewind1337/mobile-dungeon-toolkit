@@ -13,14 +13,19 @@ const EQUIPMENT_SLOTS = [
     EQUIPMENT_SLOT_DEFINITIONS.OTHER,
 ]
 
-function CombatTeamCard({ team, savedHeroes, title }) {
+function CombatTeamCard({ team, teams, selectedId, onTeamChange, savedHeroes, title }) {
     const teamHeroes = team.heroes.map(saveId => savedHeroes.find(hero => hero.saveId === saveId) ?? null)
 
     return (
         <section className="team card flex-col custom-combat-team">
             <header className="team-header custom-combat-team-header">
                 <h2 className="header-big">{title}</h2>
-                <span className="text custom-combat-team-name">{team.name}</span>
+                <label className="custom-combat-team-picker">
+                    <span className="text">Saved Team</span>
+                    <select aria-label={title + " selection"} value={selectedId} onChange={event => onTeamChange(event.target.value)}>
+                        {teams.map(entry => <option key={entry.id} value={String(entry.id)}>{entry.name}</option>)}
+                    </select>
+                </label>
             </header>
             <div className="team-content">
                 <div className="team-heroes-column">
@@ -60,19 +65,6 @@ function CombatTeamCard({ team, savedHeroes, title }) {
     )
 }
 
-function TeamPicker({ label, teams, selectedId, onChange }) {
-    return (
-        <label className="custom-combat-team-picker card">
-            <span className="header">{label}</span>
-            <select value={selectedId} onChange={event => onChange(event.target.value)} disabled={teams.length === 0}>
-                {teams.length === 0
-                    ? <option value="">No saved teams available</option>
-                    : teams.map(team => <option key={team.id} value={String(team.id)}>{team.name}</option>)}
-            </select>
-        </label>
-    )
-}
-
 function SubPageCustomCombat({ savedHeroesRef, savedTeamsRef }) {
     const savedHeroes = Array.isArray(savedHeroesRef.current) ? savedHeroesRef.current : []
     const teams = Array.isArray(savedTeamsRef.current) ? savedTeamsRef.current : []
@@ -94,16 +86,13 @@ function SubPageCustomCombat({ savedHeroesRef, savedTeamsRef }) {
                 <h1 className="header-big">Custom Combat</h1>
                 <p className="text">Choose the two saved teams that should face each other. The same team can be selected for both sides.</p>
             </header>
-            <div className="custom-combat-pickers">
-                <TeamPicker label="Combat Team 1" teams={teams} selectedId={teamOneId} onChange={setTeamOneId} />
-                <div className="custom-combat-versus" aria-hidden="true">VS</div>
-                <TeamPicker label="Combat Team 2" teams={teams} selectedId={teamTwoId} onChange={setTeamTwoId} />
-            </div>
             {teamOne && teamTwo ? (
                 <div className="custom-combat-matchup">
-                    <CombatTeamCard team={teamOne} savedHeroes={savedHeroes} title="Combat Team 1" />
+                    <CombatTeamCard team={teamOne} teams={teams} selectedId={teamOneId} onTeamChange={setTeamOneId}
+                        savedHeroes={savedHeroes} title="Combat Team 1" />
                     <div className="custom-combat-vs" aria-hidden="true">VS</div>
-                    <CombatTeamCard team={teamTwo} savedHeroes={savedHeroes} title="Combat Team 2" />
+                    <CombatTeamCard team={teamTwo} teams={teams} selectedId={teamTwoId} onTeamChange={setTeamTwoId}
+                        savedHeroes={savedHeroes} title="Combat Team 2" />
                 </div>
             ) : (
                 <div className="card text">Create a saved team on the Teams page to use it in Custom Combat.</div>
