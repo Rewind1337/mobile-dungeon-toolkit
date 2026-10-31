@@ -17,7 +17,7 @@ const PageItems = lazy(() => import('./components/PageItems.jsx'))
 const PageHeroes = lazy(() => import('./components/PageHeroes.jsx'))
 const PageSimulators = lazy(() => import('./components/PageSimulators.jsx'))
 const PageTeams = lazy(() => import('./components/PageTeams.jsx'))
-const PageWiki = lazy(() => import('./components/PageInfos.jsx'))
+const PageWiki = lazy(() => import('./components/PageWiki.jsx'))
 
 
 const BASE_HEROES = init_hero_db()
