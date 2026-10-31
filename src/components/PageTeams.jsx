@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import HeroList from "./HeroList.jsx"
 import Hero from "./Hero.jsx"
 import EmptyHero from "./EmptyHero.jsx"
@@ -8,6 +8,7 @@ import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, STATUS_EFFECT_DEFINI
 import { attributeSprites, heroSprites, itemSprites, statusSprites } from "../database/db_sprites.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import { getStatusPolarity } from "../js/statusPolarity.jsx"
+import { createTeamShareToken, decodeTeamShareInput, restoreSharedTeam } from "../utils/heroShare.js"
 
 const createDefaultTeams = () => [
     { id: 0, name: "Default Team", heroes: Array(5).fill(null) },
@@ -48,7 +49,7 @@ function getHeroStatusEffects(hero) {
     return Object.keys(STATUS_EFFECT_DEFINITIONS).filter(name => skillText.includes(name.toLowerCase()))
 }
 
-function TeamOverview({ team, savedHeroes }) {
+export function TeamOverview({ team, savedHeroes }) {
     const teamHeroes = team.heroes.map(saveId => savedHeroes.find(hero => hero.saveId === saveId) ?? null)
     const attributes = teamHeroes.flatMap((hero, index) => {
         if (!hero) return []
@@ -120,13 +121,19 @@ function TeamOverview({ team, savedHeroes }) {
     )
 }
 
-function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
+function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
     const { listHeight, listRef, events } = useDynamicList(165, true)
     const savedHeroes = Array.isArray(savedHeroesRef.current) ? savedHeroesRef.current : []
     const [teams, setTeams] = useState(() => normalizeTeams(savedTeamsRef.current))
     const [collapsedTeamIds, setCollapsedTeamIds] = useState(() => new Set())
     const [slotPicker, setSlotPicker] = useState(null)
     const [selectedSaveId, setSelectedSaveId] = useState(null)
+    const [exportTeam, setExportTeam] = useState(null)
+    const [exportItemsOnHeroes, setExportItemsOnHeroes] = useState(false)
+    const [teamShareUrl, setTeamShareUrl] = useState("")
+    const [teamShareLinkCopied, setTeamShareLinkCopied] = useState(false)
+    const [importTeamModalVisible, setImportTeamModalVisible] = useState(false)
+    const [teamImportInput, setTeamImportInput] = useState("")
 
     const selectedTeam = slotPicker ? teams.find(team => team.id === slotPicker.teamId) : null
 
@@ -189,6 +196,99 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
         commitTeams([...teams.slice(0, sourceIndex + 1), duplicate, ...teams.slice(sourceIndex + 1)])
     }
 
+    const buildTeamShareUrl = (team, includeItems) => {
+        const baseUrl = import.meta.env.BASE_URL
+        const basePath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`
+        const url = new URL(`${basePath}teams/`, window.location.origin)
+        url.searchParams.set("team", createTeamShareToken(team, savedHeroes, { includeItems }))
+        return url.toString()
+    }
+
+    const openExportTeam = team => {
+        try {
+            setExportTeam(team)
+            setExportItemsOnHeroes(false)
+            setTeamShareLinkCopied(false)
+            setTeamShareUrl(buildTeamShareUrl(team, false))
+        } catch (error) {
+            window.alert(error.message || "Could not export this team.")
+        }
+    }
+
+    const handleExportItemsToggle = event => {
+        const includeItems = event.target.checked
+        setExportItemsOnHeroes(includeItems)
+        setTeamShareLinkCopied(false)
+        if (!exportTeam) return
+        try {
+            setTeamShareUrl(buildTeamShareUrl(exportTeam, includeItems))
+        } catch (error) {
+            setExportItemsOnHeroes(false)
+            window.alert(error.message || "Could not export this team's heroes.")
+        }
+    }
+
+    const handleCopyTeamLink = async () => {
+        if (!teamShareUrl) return
+        try {
+            await navigator.clipboard.writeText(teamShareUrl)
+            setTeamShareLinkCopied(true)
+        } catch {
+            window.alert("Copying was blocked by your browser. Select and copy the link manually.")
+        }
+    }
+
+    const importTeamFromToken = token => {
+        const payload = decodeTeamShareInput(token)
+        const restoredTeam = restoreSharedTeam(payload, heroesRef.current, itemsRef.current.BASE_ITEMS)
+        const nextSavedHeroes = [...(savedHeroesRef.current ?? [])]
+        let nextSaveId = Math.max(-1, ...nextSavedHeroes.map(hero => Number(hero.saveId)).filter(Number.isFinite))
+        const savedHeroIds = restoredTeam.heroes.map(hero => {
+            if (!hero) return null
+            nextSaveId += 1
+            nextSavedHeroes.push({
+                ...hero,
+                saveId: nextSaveId,
+                items: Array.isArray(hero.items) ? [...hero.items] : []
+            })
+            return nextSaveId
+        })
+        savedHeroesRef.current = nextSavedHeroes
+
+        const id = teams.reduce((max, team) => Math.max(max, team.id), -1) + 1
+        let name = restoredTeam.name || "Imported Team"
+        let copyNumber = 2
+        while (teams.some(team => team.name.toLowerCase() === name.toLowerCase())) {
+            name = `${restoredTeam.name || "Imported Team"} (${copyNumber})`
+            copyNumber += 1
+        }
+        commitTeams([...teams, { id, name, heroes: savedHeroIds }])
+    }
+
+    const handleImportTeam = (input = teamImportInput) => {
+        if (!String(input ?? "").trim()) return
+        try {
+            importTeamFromToken(input)
+            setImportTeamModalVisible(false)
+            setTeamImportInput("")
+        } catch (error) {
+            window.alert(error.message || "Could not import this team.")
+        }
+    }
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search)
+        const token = params.get("team")
+        if (!token) return
+        handleImportTeam(token)
+        params.delete("team")
+        const query = params.toString()
+        const cleanUrl = window.location.pathname + (query ? `?${query}` : "") + window.location.hash
+        window.history.replaceState({}, "", cleanUrl)
+    // This effect intentionally handles a team share token only once on page load.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     const modalHeroes = savedHeroes
 
     return (
@@ -197,7 +297,7 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                 <div className="pagination flex-row card w-100">
                     <Button text="Saved Teams" color={2} />
                     <Button text="Recommended Teams" color={5} disabled />
-                    <Button text="Import Team" color={5} disabled />
+                    <Button text="Import Team" color={5} onClick={() => setImportTeamModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">
                     <Button text="Manual Save" color={5} onClick={manualSaveFunction} />
@@ -219,24 +319,29 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                                     onClick={() => toggleTeamCollapsed(team.id)}
                                 />
                                 <h2 className="team-name-heading header-big">
-                                    <input
-                                        className="team-name-input"
-                                        type="text"
-                                        aria-label={`Team name for ${team.name}`}
-                                        value={team.name}
-                                        onChange={event => renameTeam(team.id, event.target.value)}
-                                        onBlur={() => {
-                                            if (!team.name.trim()) {
-                                                const teamIndex = teams.findIndex(entry => entry.id === team.id)
-                                                renameTeam(team.id, `Team ${teamIndex + 1}`)
-                                            }
-                                        }}
-                                    />
+                                    {collapsedTeamIds.has(team.id) ? (
+                                        <span className="team-name-display">{team.name}</span>
+                                    ) : (
+                                        <input
+                                            className="team-name-input"
+                                            type="text"
+                                            aria-label={`Team name for ${team.name}`}
+                                            value={team.name}
+                                            onChange={event => renameTeam(team.id, event.target.value)}
+                                            onBlur={() => {
+                                                if (!team.name.trim()) {
+                                                    const teamIndex = teams.findIndex(entry => entry.id === team.id)
+                                                    renameTeam(team.id, `Team ${teamIndex + 1}`)
+                                                }
+                                            }}
+                                        />
+                                    )}
                                 </h2>
                                 {!collapsedTeamIds.has(team.id) && (
                                     <div className="team-actions">
                                         <Button text="Clear Team" color={4} onClick={() => clearTeam(team.id)} />
                                         <Button text="Duplicate" color={5} onClick={() => duplicateTeam(team.id)} />
+                                        <Button text="Export Team" color={0} onClick={() => openExportTeam(team)} />
                                         <Button text="Delete Team" color="cancel" onClick={() => deleteTeam(team.id)} />
                                     </div>
                                 )}
@@ -247,15 +352,14 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                                         const hero = savedHeroes.find(savedHero => savedHero.saveId === saveId)
                                         if (!hero) return null
                                         return (
-                                            <button type="button" className="catalogue-chip text team-collapsed-hero-chip"
+                                            <span className="catalogue-chip text team-collapsed-hero-chip"
                                                 key={`${team.id}-collapsed-hero-${slotIndex}`}
-                                                title={`${hero.name} · Slot ${slotIndex + 1}`}
-                                                onClick={() => openSlotPicker(team, slotIndex)}>
+                                                title={`${hero.name} · Slot ${slotIndex + 1}`}>
                                                 <img className="catalogue-chip-icon"
                                                     src={hero.heroSrc ?? heroSprites[hero.id] ?? heroSprites["null"]}
                                                     alt="" loading="lazy" decoding="async" draggable={false} />
                                                 <span>{hero.name}</span>
-                                            </button>
+                                            </span>
                                         )
                                     })}
                                 </div>
@@ -318,6 +422,41 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                 </section>
             </main>
 
+            <Modal
+                isVisible={Boolean(exportTeam)}
+                position="center"
+                onClose={() => { setExportTeam(null); setTeamShareUrl(""); setTeamShareLinkCopied(false) }}
+            >
+                <div className="flex-col card w-100">
+                    <div className="header-big margin-auto">Export Team</div>
+                    <label className="flex-row text margin-auto export-items-checkbox-label">
+                        <input type="checkbox" checked={exportItemsOnHeroes} onChange={handleExportItemsToggle} />
+                        <span className="header">Include equipped items on heroes</span>
+                    </label>
+                    <p className="text margin-auto">Share this link to import the team and its saved heroes.</p>
+                    <textarea rows={3} value={teamShareUrl} readOnly onFocus={event => event.target.select()} aria-label="Team share link" />
+                    <div className="flex-row">
+                        <Button className="w-25" text={teamShareLinkCopied ? "Team Link Copied!" : "Copy Team Link"} color="confirm" onClick={handleCopyTeamLink} />
+                        <Button className="w-25" text="Close" color="cancel" onClick={() => { setExportTeam(null); setTeamShareUrl(""); setTeamShareLinkCopied(false) }} />
+                    </div>
+                </div>
+            </Modal>
+            <Modal
+                isVisible={importTeamModalVisible}
+                position="center"
+                onClose={() => { setImportTeamModalVisible(false); setTeamImportInput("") }}
+            >
+                <div className="flex-col card w-100">
+                    <div className="header-big margin-auto">Import Team</div>
+                    <p className="text margin-auto">Paste a team share link or its encoded data.</p>
+                    <textarea rows={3} value={teamImportInput} onChange={event => setTeamImportInput(event.target.value)}
+                        placeholder="https://…/teams/?team=…" aria-label="Team share link" />
+                    <div className="flex-row">
+                        <Button className="w-25" text="Import Team" color="confirm" onClick={() => handleImportTeam()} />
+                        <Button className="w-25" text="Cancel" color="cancel" onClick={() => { setImportTeamModalVisible(false); setTeamImportInput("") }} />
+                    </div>
+                </div>
+            </Modal>
             <Modal
                 isVisible={Boolean(slotPicker)}
                 position="center"
