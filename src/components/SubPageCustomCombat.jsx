@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { EQUIPMENT_SLOT_DEFINITIONS } from "../database/enums.jsx"
 import { itemSprites } from "../database/db_sprites.jsx"
 import Hero from "./Hero.jsx"
@@ -75,7 +75,7 @@ function TeamPicker({ label, teams, selectedId, onChange }) {
 
 function SubPageCustomCombat({ savedHeroesRef, savedTeamsRef }) {
     const savedHeroes = Array.isArray(savedHeroesRef.current) ? savedHeroesRef.current : []
-    const teams = useMemo(() => Array.isArray(savedTeamsRef.current) ? savedTeamsRef.current : [], [savedTeamsRef])
+    const teams = Array.isArray(savedTeamsRef.current) ? savedTeamsRef.current : []
     const firstTeamId = teams.length > 0 ? String(teams[0].id) : ""
     const [teamOneId, setTeamOneId] = useState(firstTeamId)
     const [teamTwoId, setTeamTwoId] = useState(firstTeamId)
