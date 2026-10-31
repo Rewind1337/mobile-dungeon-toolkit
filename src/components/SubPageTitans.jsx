@@ -1,14 +1,14 @@
 import { useState } from "react"
 import { elementSprites } from "../database/db_sprites.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
-import SimulatorEntryList from "./SimulatorEntryList.jsx"
+import { SimulatorEntryDetails } from "./SimulatorEntryList.jsx"
 
 const TITANS = [
-    { id: 0, name: "Scorchwing", stages: [] },
-    { id: 1, name: "Azuretide", stages: [] },
-    { id: 2, name: "Mossquake", stages: [] },
-    { id: 3, name: "Throne", stages: [] },
-    { id: 4, name: "Shadowmaw", stages: [] },
+    { id: 0, name: "Scorchwing" },
+    { id: 1, name: "Azuretide" },
+    { id: 2, name: "Mossquake" },
+    { id: 3, name: "Throne" },
+    { id: 4, name: "Shadowmaw" },
 ]
 
 function SubPageTitans() {
@@ -32,8 +32,7 @@ function SubPageTitans() {
             <section className="card w-100 simulator-selection-detail">
                 {selectedTitan ? (
                     <>
-                        <div className="header-big">{selectedTitan.name}</div>
-                        <SimulatorEntryList entries={selectedTitan.stages} entryLabel="Stage" />
+                        <SimulatorEntryDetails entry={selectedTitan} entryLabel="Titan" />
                     </>
                 ) : (
                     <div className="header-big">Select a Titan</div>
