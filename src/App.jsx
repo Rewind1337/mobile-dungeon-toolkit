@@ -17,7 +17,7 @@ const PageItems = lazy(() => import('./components/PageItems.jsx'))
 const PageHeroes = lazy(() => import('./components/PageHeroes.jsx'))
 const PageSimulators = lazy(() => import('./components/PageSimulators.jsx'))
 const PageTeams = lazy(() => import('./components/PageTeams.jsx'))
-const PageInfos = lazy(() => import('./components/PageInfos.jsx'))
+const PageWiki = lazy(() => import('./components/PageInfos.jsx'))
 
 
 const BASE_HEROES = init_hero_db()
@@ -28,10 +28,10 @@ const PAGE_TO_ROUTE = {
   items: '/items/',
   teams: '/teams/',
   simulator: '/simulators/',
-  info: '/wiki/',
+  wiki: '/wiki/',
 };
 
-const INFO_TAB_TO_ROUTE = {
+const WIKI_TAB_TO_ROUTE = {
   overview: '/wiki/',
   'item-catalogue': '/wiki/item-catalogue/items/',
   'set-catalogue': '/wiki/item-catalogue/sets/',
@@ -72,49 +72,30 @@ const getPathWithoutBase = () => {
 
 const getPageFromPath = () => {
   const pathname = getPathWithoutBase();
-
-  // Catalogue subroutes are views within the Wiki page. Keep legacy /info and short aliases working too.
-  if (pathname === '/wiki' || pathname.startsWith('/wiki/') || pathname === '/info' || pathname.startsWith('/info/') || pathname === '/other' || pathname.startsWith('/other/')
-      || pathname === '/hero-catalogue' || pathname.startsWith('/hero-catalogue/')
-      || pathname === '/resources-catalogue' || pathname.startsWith('/resources-catalogue/')
-      || pathname === '/skills-catalogue' || pathname.startsWith('/skills-catalogue/')
-      || pathname === '/talents-catalogue' || pathname.startsWith('/talents-catalogue/')) return 'info';
-
+  if (pathname === '/wiki' || pathname.startsWith('/wiki/')) return 'wiki';
+  if (pathname === '/simulators' || pathname.startsWith('/simulators/')) return 'simulator';
   return ROUTE_TO_PAGE[pathname] ?? 'notFound';
 };
 
-const getInfoTabFromPath = () => {
-  const rawPathname = getPathWithoutBase();
-  const pathname = rawPathname === '/info' || rawPathname.startsWith('/info/')
-    ? rawPathname.replace(/^\/info(?=\/|$)/, '/wiki')
-    : rawPathname;
-  const aliases = {
-    '/wiki/hero-catalogue': 'hero-catalogue',
-    '/hero-catalogue': 'hero-catalogue',
-    '/hero-catalogue/heroes': 'hero-catalogue',
-    '/hero-catalogue/tier-list': 'hero-tier-list-catalogue',
-    '/hero-catalogue/banners': 'hero-banners-catalogue',
-    '/wiki/skills-talents-catalogue': 'skills-catalogue',
-    '/wiki/skills-talents-catalogue/skills': 'skills-catalogue',
-    '/wiki/skill-catalogue': 'skills-catalogue',
-    '/wiki/skills-catalogue': 'skills-catalogue',
-    '/skills-catalogue': 'skills-catalogue',
-    '/wiki/skills-talents-catalogue/talents': 'talents-catalogue',
-    '/wiki/talent-catalogue': 'talents-catalogue',
-    '/wiki/talents-catalogue': 'talents-catalogue',
-    '/talents-catalogue': 'talents-catalogue',
-    '/wiki/resource-catalogue': 'resources-catalogue',
-    '/wiki/resource-catalogue/resources': 'resources-catalogue',
-    '/wiki/resource-catalogue/gems': 'gems-catalogue',
-    '/wiki/resources-catalogue': 'resources-catalogue',
-    '/wiki/resources-catalogue/resources': 'resources-catalogue',
-    '/wiki/resources-catalogue/gems': 'gems-catalogue',
-    '/resources-catalogue': 'resources-catalogue',
-    '/resources-catalogue/resources': 'resources-catalogue',
-    '/resources-catalogue/gems': 'gems-catalogue',
-  };
-  if (aliases[pathname]) return aliases[pathname];
-  return Object.entries(INFO_TAB_TO_ROUTE).find(([, route]) => normalizeRoute(route) === pathname || normalizeRoute(route.replace('/wiki/', '/other/')) === pathname)?.[0] ?? 'overview';
+const getWikiTabFromPath = () => {
+  const pathname = getPathWithoutBase();
+  return Object.entries(WIKI_TAB_TO_ROUTE)
+    .find(([, route]) => normalizeRoute(route) === pathname)?.[0] ?? 'overview';
+};
+
+const SIMULATOR_TAB_TO_ROUTE = {
+  overview: '/simulators/',
+  adventure: '/simulators/adventure/',
+  towers: '/simulators/towers/',
+  titans: '/simulators/titans/',
+  'guild-hunt': '/simulators/guild-hunt/',
+  custom: '/simulators/custom/',
+};
+
+const getSimulatorTabFromPath = () => {
+  const pathname = getPathWithoutBase();
+  return Object.entries(SIMULATOR_TAB_TO_ROUTE)
+    .find(([, route]) => normalizeRoute(route) === pathname)?.[0] ?? 'overview';
 };
 
 const createDefaultState = () => ({
@@ -197,7 +178,8 @@ function App() {
 
   // app related
   const [pageContent, setPageContent] = useState(getPageFromPath)
-  const [activeInfoTab, setActiveInfoTab] = useState(getInfoTabFromPath)
+  const [activeWikiTab, setActiveWikiTab] = useState(getWikiTabFromPath)
+  const [activeSimulatorTab, setActiveSimulatorTab] = useState(getSimulatorTabFromPath)
   const [importStatus, setImportStatus] = useState("")
 
   const saveToLocalStorage = useCallback(() => {
@@ -224,7 +206,8 @@ function App() {
   useEffect(() => {
     const handlePopState = () => {
       setPageContent(getPageFromPath());
-      setActiveInfoTab(getInfoTabFromPath());
+      setActiveWikiTab(getWikiTabFromPath());
+      setActiveSimulatorTab(getSimulatorTabFromPath());
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -245,12 +228,13 @@ function App() {
       window.history.pushState({}, '', destination);
     }
 
-    if (page === 'info') setActiveInfoTab('overview');
+    if (page === 'wiki') setActiveWikiTab('overview');
+    if (page === 'simulator') setActiveSimulatorTab('overview');
     setPageContent(page);
   };
 
-  const switchInfoCatalogueTo = (tab) => {
-    const route = INFO_TAB_TO_ROUTE[tab];
+  const switchWikiCatalogueTo = (tab) => {
+    const route = WIKI_TAB_TO_ROUTE[tab];
     if (!route) return;
 
     const baseUrl = import.meta.env.BASE_URL;
@@ -261,8 +245,21 @@ function App() {
       window.history.pushState({}, '', destination);
     }
 
-    setActiveInfoTab(tab);
-    setPageContent('info');
+    setActiveWikiTab(tab);
+    setPageContent('wiki');
+  }
+
+  const switchSimulatorTo = (tab) => {
+    const route = SIMULATOR_TAB_TO_ROUTE[tab];
+    if (!route) return;
+    const baseUrl = import.meta.env.BASE_URL;
+    const destination = `${baseUrl}${route.slice(1)}`;
+    if (window.location.pathname !== destination) {
+      clearSearchFromUrl();
+      window.history.pushState({}, '', destination);
+    }
+    setActiveSimulatorTab(tab);
+    setPageContent('simulator');
   }
 
   return (
@@ -289,7 +286,8 @@ function App() {
                 <Button className="not-found-link" text="Teams" color={2} onClick={() => switchTabTo('teams')} />
                 <Button className="not-found-link" text="Home" color={3} onClick={() => switchTabTo('splash')} />
                 <Button className="not-found-link" text="Simulators" color={4} onClick={() => switchTabTo('simulator')} />
-                <Button className="not-found-link" text="Wiki" color={5} onClick={() => switchTabTo('info')} />
+                <Button className="not-found-link" text="Coming Soon" color={3} disabled />
+                <Button className="not-found-link" text="Wiki" color={5} onClick={() => switchTabTo('wiki')} />
               </nav>
             </section>
           </main>
@@ -322,23 +320,23 @@ function App() {
               </div>
             </div>
             <div className='flex-row bottom'>
-              <div className='card simulations flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Simulations" onClick={() => switchTabTo('simulator')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchTabTo('simulator'); } }}>
+              <div className='card simulations flex-col'>
                 <div className='header-big'>Simulations</div>
                 <div className='flex-row'>
-                  <div className='card chapters flex-col'>
-                    <div className='header'>Chapters</div>
+                  <div className='card chapters flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Adventure Chapters" onClick={() => switchSimulatorTo('adventure')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('adventure'); } }}>
+                    <div className='header'>Adventure Chapters</div>
                   </div>
-
-                  <div className='card titans flex-col'>
-                    <div className='header'>Titans</div>
-                  </div>
-
-                  <div className='card towers flex-col'>
+                  <div className='card towers flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Towers" onClick={() => switchSimulatorTo('towers')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('towers'); } }}>
                     <div className='header'>Towers</div>
                   </div>
-
-                  <div className='card guildbosses flex-col'>
-                    <div className='header'>Guildbosses</div>
+                  <div className='card titans flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Titans" onClick={() => switchSimulatorTo('titans')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('titans'); } }}>
+                    <div className='header'>Titans</div>
+                  </div>
+                  <div className='card guildbosses flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Guild Hunt" onClick={() => switchSimulatorTo('guild-hunt')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('guild-hunt'); } }}>
+                    <div className='header'>Guild Hunt</div>
+                  </div>
+                  <div className='card custom-combat flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Custom Combat" onClick={() => switchSimulatorTo('custom')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('custom'); } }}>
+                    <div className='header'>Custom Combat</div>
                   </div>
                 </div>
               </div>
@@ -392,14 +390,14 @@ function App() {
 
         {pageContent === 'teams' && <PageTeams itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedTeamsRef={savedTeamsRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
 
-        {pageContent === 'simulator' && <PageSimulators itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
+        {pageContent === 'simulator' && <PageSimulators activeTab={activeSimulatorTab} onTabChange={switchSimulatorTo} itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedTeamsRef={savedTeamsRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
 
-        {pageContent === 'info' && (
-          <PageInfos
+        {pageContent === 'wiki' && (
+          <PageWiki
             itemsRef={itemsRef}
             heroesRef={heroesRef}
-            activeTab={activeInfoTab}
-            onTabChange={switchInfoCatalogueTo}
+            activeTab={activeWikiTab}
+            onTabChange={switchWikiCatalogueTo}
           />
         )}
 
