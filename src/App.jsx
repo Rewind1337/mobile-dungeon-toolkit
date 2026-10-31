@@ -28,23 +28,23 @@ const PAGE_TO_ROUTE = {
   items: '/items/',
   teams: '/teams/',
   simulator: '/simulators/',
-  info: '/info/',
+  info: '/wiki/',
 };
 
 const INFO_TAB_TO_ROUTE = {
-  overview: '/info/',
-  'item-catalogue': '/info/item-catalogue/items/',
-  'set-catalogue': '/info/item-catalogue/sets/',
-  'perk-catalogue': '/info/perk-catalogue/',
-  'hero-catalogue': '/info/hero-catalogue/heroes/',
-  'hero-tier-list-catalogue': '/info/hero-catalogue/tier-list/',
-  'hero-banners-catalogue': '/info/hero-catalogue/banners/',
-  'resources-catalogue': '/info/resource-catalogue/resources/',
-  'gems-catalogue': '/info/resource-catalogue/gems/',
-  'status-catalogue': '/info/status-catalogue/',
-  'skills-talents-catalogue': '/info/skill-catalogue/',
-  'skills-catalogue': '/info/skill-catalogue/',
-  'talents-catalogue': '/info/talent-catalogue/',
+  overview: '/wiki/',
+  'item-catalogue': '/wiki/item-catalogue/items/',
+  'set-catalogue': '/wiki/item-catalogue/sets/',
+  'perk-catalogue': '/wiki/perk-catalogue/',
+  'hero-catalogue': '/wiki/hero-catalogue/heroes/',
+  'hero-tier-list-catalogue': '/wiki/hero-catalogue/tier-list/',
+  'hero-banners-catalogue': '/wiki/hero-catalogue/banners/',
+  'resources-catalogue': '/wiki/resource-catalogue/resources/',
+  'gems-catalogue': '/wiki/resource-catalogue/gems/',
+  'status-catalogue': '/wiki/status-catalogue/',
+  'skills-talents-catalogue': '/wiki/skill-catalogue/',
+  'skills-catalogue': '/wiki/skill-catalogue/',
+  'talents-catalogue': '/wiki/talent-catalogue/',
 };
 
 const normalizeRoute = (route) => {
@@ -73,8 +73,8 @@ const getPathWithoutBase = () => {
 const getPageFromPath = () => {
   const pathname = getPathWithoutBase();
 
-  // Catalogue subroutes are views within the existing Info page. Keep short root-level aliases working too.
-  if (pathname === '/info' || pathname.startsWith('/info/') || pathname === '/other' || pathname.startsWith('/other/')
+  // Catalogue subroutes are views within the Wiki page. Keep legacy /info and short aliases working too.
+  if (pathname === '/wiki' || pathname.startsWith('/wiki/') || pathname === '/info' || pathname.startsWith('/info/') || pathname === '/other' || pathname.startsWith('/other/')
       || pathname === '/hero-catalogue' || pathname.startsWith('/hero-catalogue/')
       || pathname === '/resources-catalogue' || pathname.startsWith('/resources-catalogue/')
       || pathname === '/skills-catalogue' || pathname.startsWith('/skills-catalogue/')
@@ -84,34 +84,37 @@ const getPageFromPath = () => {
 };
 
 const getInfoTabFromPath = () => {
-  const pathname = getPathWithoutBase();
+  const rawPathname = getPathWithoutBase();
+  const pathname = rawPathname === '/info' || rawPathname.startsWith('/info/')
+    ? rawPathname.replace(/^\/info(?=\/|$)/, '/wiki')
+    : rawPathname;
   const aliases = {
-    '/info/hero-catalogue': 'hero-catalogue',
+    '/wiki/hero-catalogue': 'hero-catalogue',
     '/hero-catalogue': 'hero-catalogue',
     '/hero-catalogue/heroes': 'hero-catalogue',
     '/hero-catalogue/tier-list': 'hero-tier-list-catalogue',
     '/hero-catalogue/banners': 'hero-banners-catalogue',
-    '/info/skills-talents-catalogue': 'skills-catalogue',
-    '/info/skills-talents-catalogue/skills': 'skills-catalogue',
-    '/info/skill-catalogue': 'skills-catalogue',
-    '/info/skills-catalogue': 'skills-catalogue',
+    '/wiki/skills-talents-catalogue': 'skills-catalogue',
+    '/wiki/skills-talents-catalogue/skills': 'skills-catalogue',
+    '/wiki/skill-catalogue': 'skills-catalogue',
+    '/wiki/skills-catalogue': 'skills-catalogue',
     '/skills-catalogue': 'skills-catalogue',
-    '/info/skills-talents-catalogue/talents': 'talents-catalogue',
-    '/info/talent-catalogue': 'talents-catalogue',
-    '/info/talents-catalogue': 'talents-catalogue',
+    '/wiki/skills-talents-catalogue/talents': 'talents-catalogue',
+    '/wiki/talent-catalogue': 'talents-catalogue',
+    '/wiki/talents-catalogue': 'talents-catalogue',
     '/talents-catalogue': 'talents-catalogue',
-    '/info/resource-catalogue': 'resources-catalogue',
-    '/info/resource-catalogue/resources': 'resources-catalogue',
-    '/info/resource-catalogue/gems': 'gems-catalogue',
-    '/info/resources-catalogue': 'resources-catalogue',
-    '/info/resources-catalogue/resources': 'resources-catalogue',
-    '/info/resources-catalogue/gems': 'gems-catalogue',
+    '/wiki/resource-catalogue': 'resources-catalogue',
+    '/wiki/resource-catalogue/resources': 'resources-catalogue',
+    '/wiki/resource-catalogue/gems': 'gems-catalogue',
+    '/wiki/resources-catalogue': 'resources-catalogue',
+    '/wiki/resources-catalogue/resources': 'resources-catalogue',
+    '/wiki/resources-catalogue/gems': 'gems-catalogue',
     '/resources-catalogue': 'resources-catalogue',
     '/resources-catalogue/resources': 'resources-catalogue',
     '/resources-catalogue/gems': 'gems-catalogue',
   };
   if (aliases[pathname]) return aliases[pathname];
-  return Object.entries(INFO_TAB_TO_ROUTE).find(([, route]) => normalizeRoute(route) === pathname || normalizeRoute(route.replace('/info/', '/other/')) === pathname)?.[0] ?? 'overview';
+  return Object.entries(INFO_TAB_TO_ROUTE).find(([, route]) => normalizeRoute(route) === pathname || normalizeRoute(route.replace('/wiki/', '/other/')) === pathname)?.[0] ?? 'overview';
 };
 
 const createDefaultState = () => ({
@@ -286,7 +289,7 @@ function App() {
                 <Button className="not-found-link" text="Teams" color={2} onClick={() => switchTabTo('teams')} />
                 <Button className="not-found-link" text="Home" color={3} onClick={() => switchTabTo('splash')} />
                 <Button className="not-found-link" text="Simulators" color={4} onClick={() => switchTabTo('simulator')} />
-                <Button className="not-found-link" text="Info" color={5} onClick={() => switchTabTo('info')} />
+                <Button className="not-found-link" text="Wiki" color={5} onClick={() => switchTabTo('info')} />
               </nav>
             </section>
           </main>
@@ -306,23 +309,20 @@ function App() {
               <div className='card management flex-col'>
                 <div className='header-big'>Management</div>
                 <div className='flex-row'>
-                  <div className='card heroes flex-col'>
+                  <div className='card heroes flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Hero Management" onClick={() => switchTabTo('heroes')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchTabTo('heroes'); } }}>
                     <div className='header'>Hero Management</div>
-                    <Button text={"Take me there"} color={0} onMouseDown={() => { switchTabTo('heroes') }} />
                   </div>
-                  <div className='card items flex-col'>
+                  <div className='card items flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Item Management" onClick={() => switchTabTo('items')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchTabTo('items'); } }}>
                     <div className='header'>Item Management</div>
-                    <Button text={"Take me there"} color={1} onMouseDown={() => { switchTabTo('items') }} />
                   </div>
-                  <div className='card teams flex-col'>
+                  <div className='card teams flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Team Management" onClick={() => switchTabTo('teams')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchTabTo('teams'); } }}>
                     <div className='header'>Team Management</div>
-                    <Button text={"Take me there"} color={2} onMouseDown={() => { switchTabTo('teams') }} />
                   </div>
                 </div>
               </div>
             </div>
             <div className='flex-row bottom'>
-              <div className='card simulations flex-col'>
+              <div className='card simulations flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Simulations" onClick={() => switchTabTo('simulator')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchTabTo('simulator'); } }}>
                 <div className='header-big'>Simulations</div>
                 <div className='flex-row'>
                   <div className='card chapters flex-col'>
@@ -341,7 +341,6 @@ function App() {
                     <div className='header'>Guildbosses</div>
                   </div>
                 </div>
-                <Button text={"Take me there"} color={4} onMouseDown={() => { switchTabTo('simulator') }} />
               </div>
             </div>
             <div className='flex-col splash-footer-wrapper'>
