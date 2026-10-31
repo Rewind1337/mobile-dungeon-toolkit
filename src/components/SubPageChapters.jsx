@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
-import SimulatorEntryList from "./SimulatorEntryList.jsx"
+import { SimulatorEntryDetails } from "./SimulatorEntryList.jsx"
 
 const CHAPTERS = [
     { id: 0, name: "Maerwynn", stages: [] },
@@ -81,13 +81,12 @@ function SubPageChapters() {
             <section className="card w-100 simulator-selection-detail">
                 {selectedChapter ? (
                     <>
-                        <div className="header-big">
-                            {selectedChapter.chapter.name}
-                            {selectedChapter.threshold > 0
-                                ? ` · SW ${selectedChapter.threshold} (Threshold ${selectedChapter.threshold})`
-                                : ""}
-                        </div>
-                        <SimulatorEntryList entries={selectedChapter.chapter.stages} entryLabel="Stage" />
+                        <SimulatorEntryDetails
+                            entry={selectedChapter.chapter}
+                            entryLabel={selectedChapter.threshold > 0
+                                ? `Shadow World ${selectedChapter.threshold} · Threshold ${selectedChapter.threshold}`
+                                : "Chapter"}
+                        />
                     </>
                 ) : (
                     <div className="header-big">Select a Chapter</div>
