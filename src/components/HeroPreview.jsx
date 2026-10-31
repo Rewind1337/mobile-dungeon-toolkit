@@ -296,7 +296,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
     ))
 
     const renderHeroTalents = () => Object.entries(heroObj.talents ?? {})
-        .filter(([id]) => /^\\d+$/.test(id))
+        .filter(([id]) => /^\d+$/.test(id))
         .sort(([idA], [idB]) => {
             const rowA = Math.floor(Number(idA) / 10)
             const rowB = Math.floor(Number(idB) / 10)
