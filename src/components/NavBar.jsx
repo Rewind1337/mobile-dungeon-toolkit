@@ -1,5 +1,4 @@
 import Button from './Button.jsx'
-import MDSkull from '../sprites/favicon.png'
 import Logo from '../sprites/logo.webp'
 import "../css/navbar.scss"
 

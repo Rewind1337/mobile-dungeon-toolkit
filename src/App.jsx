@@ -117,9 +117,7 @@ const getInfoTabFromPath = () => {
 const createDefaultState = () => ({
   pageContent: 'splash',
   savedHeroesRef: [],
-  savedTeamsRef: [
-    { id: 0, name: "Default Team", heroes: Array(5).fill(null) },
-  ],
+  savedTeamsRef: [],
   savedItemsRef: {
     WEAPONS: [],
     HELMETS: [],
