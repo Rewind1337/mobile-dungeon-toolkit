@@ -121,6 +121,19 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
         setPreviewFullWidth(false)
     }
 
+    useEffect(() => {
+        const handleEscape = event => {
+            if (event.key !== "Escape" || event.defaultPrevented || document.querySelector(".modal-backdrop.visible")) return
+            if (selectedHeroId === null && selectedSavedHeroId === null) return
+            setSelectedHeroId(null)
+            setSelectedSavedHeroId(null)
+            setEquippedItems([])
+            setPreviewFullWidth(false)
+        }
+        window.addEventListener("keydown", handleEscape)
+        return () => window.removeEventListener("keydown", handleEscape)
+    }, [selectedHeroId, selectedSavedHeroId])
+
     const saveHero = (heroObj) => {
         const existingSaveId = heroObj?.saveId
         const existingIndex = savedHeroesRef.current.findIndex(hero => hero.saveId === existingSaveId)
