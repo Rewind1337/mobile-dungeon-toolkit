@@ -5,7 +5,7 @@ import EmptyHero from "./EmptyHero.jsx"
 import Button from "./Button.jsx"
 import Modal from "./Modal.jsx"
 import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
-import { attributeSprites, itemSprites, statusSprites } from "../database/db_sprites.jsx"
+import { attributeSprites, heroSprites, itemSprites, statusSprites } from "../database/db_sprites.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import { getStatusPolarity } from "../js/statusPolarity.jsx"
 
@@ -210,7 +210,7 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                     {teams.length === 0 && <p className="text">No teams yet. Create one to get started.</p>}
                     {teams.map(team => (
                         <article className="team card flex-col" key={team.id}>
-                            <header className="team-header">
+                            <header className={"team-header" + (collapsedTeamIds.has(team.id) ? " is-collapsed" : "")}>
                                 <Button
                                     className="team-collapse-button"
                                     text={collapsedTeamIds.has(team.id) ? "Expand" : "Collapse"}
@@ -233,24 +233,29 @@ function PageTeams({ savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
                                         }}
                                     />
                                 </h2>
-                                <div className="team-actions">
-                                    <Button text="Clear Team" color={4} onClick={() => clearTeam(team.id)} />
-                                    <Button text="Duplicate" color={5} onClick={() => duplicateTeam(team.id)} />
-                                    <Button text="Delete Team" color="cancel" onClick={() => deleteTeam(team.id)} />
-                                </div>
+                                {!collapsedTeamIds.has(team.id) && (
+                                    <div className="team-actions">
+                                        <Button text="Clear Team" color={4} onClick={() => clearTeam(team.id)} />
+                                        <Button text="Duplicate" color={5} onClick={() => duplicateTeam(team.id)} />
+                                        <Button text="Delete Team" color="cancel" onClick={() => deleteTeam(team.id)} />
+                                    </div>
+                                )}
                             </header>
                             {collapsedTeamIds.has(team.id) ? (
-                                <div className="team-collapsed-preview" aria-label={`${team.name} hero lineup`}>
+                                <div className="team-collapsed-heroes" aria-label={`${team.name} heroes`}>
                                     {team.heroes.map((saveId, slotIndex) => {
                                         const hero = savedHeroes.find(savedHero => savedHero.saveId === saveId)
+                                        if (!hero) return null
                                         return (
-                                            <div className="team-collapsed-slot" key={`${team.id}-collapsed-slot-${slotIndex}`}>
-                                                {hero
-                                                    ? <Hero heroObj={hero} selected={false} level={null} className="team-collapsed-hero" onClick={() => openSlotPicker(team, slotIndex)} />
-                                                    : <EmptyHero className="team-collapsed-hero" onClick={() => openSlotPicker(team, slotIndex)} />
-                                                }
-                                                <span className="team-collapsed-slot-label text">Slot {slotIndex + 1}</span>
-                                            </div>
+                                            <button type="button" className="catalogue-chip text team-collapsed-hero-chip"
+                                                key={`${team.id}-collapsed-hero-${slotIndex}`}
+                                                title={`${hero.name} · Slot ${slotIndex + 1}`}
+                                                onClick={() => openSlotPicker(team, slotIndex)}>
+                                                <img className="catalogue-chip-icon"
+                                                    src={hero.heroSrc ?? heroSprites[hero.id] ?? heroSprites["null"]}
+                                                    alt="" loading="lazy" decoding="async" draggable={false} />
+                                                <span>{hero.name}</span>
+                                            </button>
                                         )
                                     })}
                                 </div>
