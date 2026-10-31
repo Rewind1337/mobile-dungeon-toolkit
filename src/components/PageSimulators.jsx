@@ -1,38 +1,51 @@
-import { lazy, Suspense, useState } from 'react'
+import { lazy, Suspense } from 'react'
 import Button from './Button.jsx'
+import SimulatorOverview from './SimulatorOverview.jsx'
 
 const SubPageGuildBoss = lazy(() => import('./SubPageGuildBoss.jsx'))
 const SubPageTitans = lazy(() => import('./SubPageTitans.jsx'))
 const SubPageTowers = lazy(() => import('./SubPageTowers.jsx'))
 const SubPageChapters = lazy(() => import('./SubPageChapters.jsx'))
+const SubPageCustomCombat = lazy(() => import('./SubPageCustomCombat.jsx'))
 
+const SIMULATOR_TABS = [
+    ['adventure', 'Adventure Chapters', 0],
+    ['towers', 'Towers', 1],
+    ['titans', 'Titans', 2],
+    ['guild-hunt', 'Guild Hunt', 3],
+    ['custom', 'Custom Combat', 4],
+]
 
-function PageSimulators({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction }) {
-    const [pageContent, setPageContent] = useState(0)
+function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedHeroesRef, itemsRef, savedTeamsRef, savedItemsRef, manualSaveFunction }) {
+    if (activeTab === 'overview') {
+        return <SimulatorOverview onNavigate={onTabChange} />
+    }
 
     return (
         <>
             <div className="sub-nav-bar flex-row">
-                <div className="pagination flex-row card">
-                    <Button text={"Adventure Chapters"} color={0} onClick={() => { setPageContent(0) }} />
-                    <Button text={"Towers"} color={1} onClick={() => { setPageContent(1) }} />
-                    <Button text={"Titans"} color={2} onClick={() => { setPageContent(2) }} />
-                    <Button text={"Guild Hunt"} color={3} onClick={() => { setPageContent(3) }} />
-                    <Button text={"Custom Combat"} color={4} onClick={() => { setPageContent(4) }} />
+                <div className="pagination flex-row card w-100">
+                    {SIMULATOR_TABS.map(([id, label, color]) => (
+                        <Button key={id} text={label} color={color} active={activeTab === id} onClick={() => onTabChange?.(id)} />
+                    ))}
                 </div>
                 <div className="options flex-row card">
-                    <Button text={"Manual Save"} color={5} onClick={() => { manualSaveFunction() }} />
+                    <Button text="Manual Save" color={5} onClick={manualSaveFunction} />
                 </div>
             </div>
 
-
-            <div id='page-simulators' className='page flex-row w-100'>
+            <div id="page-simulators" className="page flex-row w-100">
                 <Suspense fallback={<div className="card">Loading...</div>}>
-                    {pageContent === 0 && <SubPageChapters heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} itemsRef={itemsRef} savedItemsRef={savedItemsRef} />}
-                    {pageContent === 1 && <SubPageTowers heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} itemsRef={itemsRef} savedItemsRef={savedItemsRef} />}
-                    {pageContent === 2 && <SubPageTitans heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} itemsRef={itemsRef} savedItemsRef={savedItemsRef} />}
-                    {pageContent === 3 && <SubPageGuildBoss heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} itemsRef={itemsRef} savedItemsRef={savedItemsRef} />}
-                    {pageContent === 4 && <></>}
+                    {activeTab === 'adventure' && <SubPageChapters />}
+                    {activeTab === 'towers' && <SubPageTowers />}
+                    {activeTab === 'titans' && <SubPageTitans />}
+                    {activeTab === 'guild-hunt' && <SubPageGuildBoss />}
+                    {activeTab === 'custom' && (
+                        <SubPageCustomCombat
+                            savedHeroesRef={savedHeroesRef}
+                            savedTeamsRef={savedTeamsRef}
+                        />
+                    )}
                 </Suspense>
             </div>
         </>
