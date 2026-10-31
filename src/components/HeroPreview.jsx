@@ -11,7 +11,8 @@ import Modal from './Modal.jsx'
 import { createHeroShareToken, createItemsShareToken } from '../utils/heroShare.js'
 import EmptyItem from './EmptyItem.jsx'
 import Item from './Item.jsx'
-import TextCard from './TextCard.jsx'
+import SkillCatalogueCard from './SkillCatalogueCard.jsx'
+import TalentCatalogueCard from './TalentCatalogueCard.jsx'
 
 import '../css/hero.scss'
 import HeroStat from './HeroStat.jsx'
@@ -283,82 +284,39 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
         heroObj?.stats?.agility]
     )
 
-    const renderHeroSkills = () => {
-        return heroObj.skills.map((skill, index) => (
-            <TextCard text={skill.name} prefix={index + 1 + "."} suffix={"Level 1"}>
-                <div className='flex-row' title={skill.description}>
-                    {skill.effect.map(eff => <div className='text'>{eff.type}</div>)}
-                </div>
-                {renderSkillStatusEffects(skill)}
-            </TextCard>
-        ))
-    }
+    const renderHeroSkills = () => (heroObj.skills ?? []).map((skill, index) => (
+        <SkillCatalogueCard
+            key={`${heroObj.id}-preview-skill-${index}`}
+            hero={heroObj}
+            skill={skill}
+            skillIndex={index}
+            showHeroName={false}
+            className="hero-preview-skill-entry"
+        />
+    ))
 
-    const renderSkillStatusEffects = (skill) => {
-        let skillStatusEffects = []
-        for (let i = 0; i < skill.effect.length; i++) { // each effect
-            let batch = skill.effect[i].applies;
-            for (let j = 0; j < batch.length; j++) { // each statuseffect
-                skillStatusEffects.push(
-                    {sprite: statusSprites[getEnumNameById(STATUS_EFFECT_DEFINITIONS, batch[j].status.id)], name: batch[j].status.name, duration: batch[j].duration}
-                )
-            }
-        }
-        return <div className='flex-row'>
-            {skillStatusEffects.map(eff => <div className='flex-row card status-effect' title={eff.name}>
-                <img className='status-effect-img' width={32} src={eff.sprite}/>
-                <div className='status-effect-turns text'>{(eff.duration < 1 ? "Special" : (eff.duration > 1 ? eff.duration + " Turns" : eff.duration + " Turn"))}</div>
-            </div>)}
-        </div>
-    }
-
-    // unused atm, using renderSkillStatusEffects instead on each skill
-    /*
-    const renderAllHeroStatusEffects = () => {
-        let statusEffectSprites = []
-        for (let i = 0; i < heroObj.skills.length; i++) { // each skill
-            let sEffect = heroObj.skills[i].effect;
-            for (let j = 0; j < sEffect.length; j++) { // each effect
-                let batch = sEffect[j].applies;
-                console.log(batch)
-                for (let k = 0; k < batch.length; k++) { // each statuseffect
-                    statusEffectSprites.push(statusSprites[getEnumNameById(STATUS_EFFECT_DEFINITIONS, batch[k].status.id)])
-                }
-            }
-        }
-        return <div className='flex-row'>
-            {statusEffectSprites.map(src => <img width={48} src={src}/>)}
-        </div>
-    }
-    */
-
-    const renderHeroTalents = () => {
-        let talents = []
-        for (let key in heroObj.talents) {
-            let talent = heroObj.talents[key]
-            if (!heroObj.talents.active) {
-                let sum = ""
-                let temp = null
-                for (let eff in talent.effect) {
-                    temp = talent.effect[eff]
-                    let effname = Object.keys(temp)
-                    let effvalue = Object.values(temp)
-                    for (let i = 0; i < effname.length; i++) {
-                        sum += effvalue[i] + "x "
-                        sum += effname[i] + "";
-                        if (i !== effname.length - 1) {
-                            sum += " and "
-                        }
-                    }
-                }
-                let row = ~~(key / 10)
-                let prefix = (key % 10 == 0 ? "M-" : (key % 2 == 0 ? "R-" : "L-"))
-                prefix += row
-                talents.unshift(<TextCard text={talent.name} prefix={prefix} suffix={(talent.active ? "Y" : "N")} className={(!prefix.includes("M") ? "w-33" : "w-100")}><div className='text'>{sum}</div></TextCard>)
-            }
-        }
-        return talents
-    }
+    const renderHeroTalents = () => Object.entries(heroObj.talents ?? {})
+        .filter(([id]) => /^\\d+$/.test(id))
+        .sort(([idA], [idB]) => {
+            const rowA = Math.floor(Number(idA) / 10)
+            const rowB = Math.floor(Number(idB) / 10)
+            if (rowA !== rowB) return rowB - rowA
+            const sideOrder = id => String(id).endsWith("1") ? 0 : String(id).endsWith("0") ? 1 : 2
+            return sideOrder(idA) - sideOrder(idB)
+        })
+        .map(([id, talent]) => {
+            const isCenter = String(id).endsWith("0")
+            const side = String(id).endsWith("1") ? "left" : isCenter ? "center" : "right"
+            return (
+                <TalentCatalogueCard
+                    key={`${heroObj.id}-preview-talent-${id}`}
+                    talent={talent}
+                    sources={[{ hero: heroObj, id }]}
+                    showSourceHero={false}
+                    className={`hero-preview-talent-entry hero-preview-talent-${side} ${isCenter ? "w-100" : "w-33"}`}
+                />
+            )
+        })
 
     const handleSaveHero = () => {
         saveHero({
