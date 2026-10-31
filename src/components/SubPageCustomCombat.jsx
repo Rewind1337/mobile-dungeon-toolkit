@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import { EQUIPMENT_SLOT_DEFINITIONS } from "../database/enums.jsx"
 import { itemSprites } from "../database/db_sprites.jsx"
-import { heroSprites } from "../database/db_sprites.jsx"
 import Hero from "./Hero.jsx"
 import { TeamOverview } from "./PageTeams.jsx"
 
