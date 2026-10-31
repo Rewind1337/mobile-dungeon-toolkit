@@ -128,7 +128,7 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
     return (
         <section className="info-overview">
             <header className="info-overview-hero card card-static">
-                <h1 className="catalogue-title header-big">Information Hub</h1>
+                <h1 className="catalogue-title header-big">Wiki</h1>
                 <p className="catalogue-description text">
                     Explore the heroes, banners, equipment, gems, resources, perks, skills, talents, and status effects tracked by the toolkit.
                     Use the catalogue navigation above to browse each collection.
