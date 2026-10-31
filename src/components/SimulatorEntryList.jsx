@@ -15,4 +15,17 @@ function SimulatorEntryList({ entries = [], entryLabel = "Entry" }) {
     )
 }
 
+export function SimulatorEntryDetails({ entry, entryLabel = "Entry" }) {
+    if (!entry) return null
+    const metadata = Object.fromEntries(Object.entries(entry).filter(([key]) => key !== "stages"))
+    return (
+        <div className="simulator-entry-details flex-col">
+            <div className="header-big">{entry.name ?? entryLabel}</div>
+            <pre className="text simulator-data-json">{JSON.stringify(metadata, null, 2)}</pre>
+            <div className="header">Stages</div>
+            <SimulatorEntryList entries={entry.stages} entryLabel="Stage" />
+        </div>
+    )
+}
+
 export default SimulatorEntryList
