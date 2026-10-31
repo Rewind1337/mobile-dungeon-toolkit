@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { useDynamicList } from "../hooks/useDynamicList";
+import { useDynamicList } from "../hooks/useDynamicList.jsx"
+import SimulatorEntryList from "./SimulatorEntryList.jsx"
 
 const CHAPTERS = [
     { id: 0, name: "Maerwynn", stages: [] },
@@ -36,38 +37,63 @@ const SHADOW_CHAPTERS = [
     { id: 11, name: "Plains of Oz'Korr", stages: [] },
 ]
 
-function Chapter({ id, name, setSelectedChapter }) {
-    return <div className="chapter-wrapper flex-row">
-        <div className="chapter card flex-row" data-id={id} data-threshhold="0" onClick={() => { setSelectedChapter(id) }}>
-            <div className="text">{id + 1}</div>
-            <div className="header">{name}</div>
+const SHADOW_THRESHOLDS = [1, 2, 3]
+
+function Chapter({ chapter, shadowChapter, onSelect }) {
+    return (
+        <div className="chapter-wrapper flex-row">
+            <button type="button" className="chapter card flex-row" data-id={chapter.id} data-threshold="0"
+                onClick={() => onSelect(chapter, 0)}>
+                <span className="text">{chapter.id + 1}</span>
+                <span className="header">{chapter.name}</span>
+            </button>
+            {shadowChapter && SHADOW_THRESHOLDS.map(threshold => (
+                <button type="button" className="chapter-shadow card" key={threshold}
+                    data-id={shadowChapter.id} data-threshold={threshold}
+                    title={`Shadow World ${threshold} · Threshold ${threshold}`}
+                    onClick={() => onSelect(shadowChapter, threshold)}>
+                    <span className="header">SW {threshold}</span>
+                    <span className="text chapter-shadow-subtitle">Threshold {threshold}</span>
+                </button>
+            ))}
         </div>
-        <div className="chapter-shadow card" data-id={id} data-threshhold="1">
-            <div className="header">SW 1</div>
-        </div>
-        <div className="chapter-shadow card" data-id={id} data-threshhold="2">
-            <div className="header">SW 2</div>
-        </div>
-        <div className="chapter-shadow card" data-id={id} data-threshhold="3">
-            <div className="header">SW 3</div>
-        </div>
-    </div>
+    )
 }
 
 function SubPageChapters() {
-    const { listHeight, listRef } = useDynamicList(0, true);
-    const [selectedChapter, setSelectedChapter] = useState(null);
+    const { listHeight, listRef, events } = useDynamicList(0, true)
+    const [selectedChapter, setSelectedChapter] = useState(null)
+
+    const selectChapter = (chapter, threshold) => setSelectedChapter({ chapter, threshold })
 
     return (
-        <>
-            <div className='card w-66'>
-                <div className='header-big'>Select Chapter</div>
-                <div ref={listRef} className="list chapter-list flex-col" style={{ maxHeight: listHeight }}>
-                    {CHAPTERS.map((chapter, chapterIndex) => <Chapter key={"chapter-" + chapterIndex} {...chapter} setSelectedChapter={setSelectedChapter} />)}
+        <div className="simulator-selection-layout page flex-row w-100">
+            <section className="card w-66 simulator-selection-list">
+                <div className="header-big">Select Chapter</div>
+                <div ref={listRef} {...events} className="list chapter-list flex-col" style={{ maxHeight: listHeight }}>
+                    {CHAPTERS.map(chapter => (
+                        <Chapter key={`chapter-${chapter.id}`} chapter={chapter}
+                            shadowChapter={SHADOW_CHAPTERS.find(shadow => shadow.id === chapter.id)}
+                            onSelect={selectChapter} />
+                    ))}
                 </div>
-            </div>
-            <div className='card w-100'>{selectedChapter}</div>
-        </>
+            </section>
+            <section className="card w-100 simulator-selection-detail">
+                {selectedChapter ? (
+                    <>
+                        <div className="header-big">
+                            {selectedChapter.chapter.name}
+                            {selectedChapter.threshold > 0
+                                ? ` · SW ${selectedChapter.threshold} (Threshold ${selectedChapter.threshold})`
+                                : ""}
+                        </div>
+                        <SimulatorEntryList entries={selectedChapter.chapter.stages} entryLabel="Stage" />
+                    </>
+                ) : (
+                    <div className="header-big">Select a Chapter</div>
+                )}
+            </section>
+        </div>
     )
 }
 
