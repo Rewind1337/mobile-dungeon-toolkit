@@ -1846,6 +1846,27 @@ input[type="number"] {
   outline-offset: 3px;
 }
 
+.simulator-overview-tile.chapters {
+  background-image: url('../sprites/splash/chapters.webp');
+  background-position: 50% 50%;
+}
+.simulator-overview-tile.towers {
+  background-image: url('../sprites/simulation/tower_crystal_bore.webp');
+  background-position: 70% 0%;
+}
+.simulator-overview-tile.titans {
+  background-image: url('../sprites/splash/titans.webp');
+  background-position: 50% 25%;
+}
+.simulator-overview-tile.guildbosses {
+  background-image: url('../sprites/splash/guildbosses.webp');
+  background-position: 50% 10%;
+}
+.simulator-overview-tile.custom-combat {
+  background-image: url('../sprites/simulation/titan_shadow.webp');
+  background-position: 50% 40%;
+}
+
 .custom-combat-page {
   gap: V.$gap;
   min-width: 0;
