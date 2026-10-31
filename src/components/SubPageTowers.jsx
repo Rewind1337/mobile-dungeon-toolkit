@@ -1,16 +1,16 @@
 import { useState } from "react"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
-import SimulatorEntryList from "./SimulatorEntryList.jsx"
+import { SimulatorEntryDetails } from "./SimulatorEntryList.jsx"
 
 const TOWERS = [
-    { id: 0, name: "Lighthouse", stages: [] },
-    { id: 1, name: "Abandoned Tower", stages: [] },
-    { id: 2, name: "Obelisk", stages: [] },
-    { id: 3, name: "Serpents Steeple", stages: [] },
-    { id: 4, name: "Peppermint Pillar", stages: [] },
-    { id: 5, name: "Yggdrasil", stages: [] },
-    { id: 6, name: "Decayed Cocoon", stages: [] },
-    { id: 7, name: "Crystal Bore", stages: [] },
+    { id: 0, name: "Lighthouse" },
+    { id: 1, name: "Abandoned Tower" },
+    { id: 2, name: "Obelisk" },
+    { id: 3, name: "Serpents Steeple" },
+    { id: 4, name: "Peppermint Pillar" },
+    { id: 5, name: "Yggdrasil" },
+    { id: 6, name: "Decayed Cocoon" },
+    { id: 7, name: "Crystal Bore" },
 ]
 
 function SubPageTowers() {
@@ -33,8 +33,7 @@ function SubPageTowers() {
             <section className="card w-100 simulator-selection-detail">
                 {selectedTower ? (
                     <>
-                        <div className="header-big">{selectedTower.name}</div>
-                        <SimulatorEntryList entries={selectedTower.stages} entryLabel="Stage" />
+                        <SimulatorEntryDetails entry={selectedTower} entryLabel="Tower" />
                     </>
                 ) : (
                     <div className="header-big">Select a Tower</div>
