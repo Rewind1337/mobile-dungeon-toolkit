@@ -1153,6 +1153,7 @@ input[type="number"] {
 @include M.media-query-max(V.$bp-mobile) {
   .filters { justify-content: flex-start; gap: 6px; padding: 6px; }
   .filters-primary-row .filter-group > button { display: none; }
+  .filters-advanced-options .filter-group > button { display: none; }
   .filters-primary-row .mobile-filter-control,
   .filters-advanced-options .mobile-filter-control,
   .filters-advanced-options .mobile-filter-specials { display: flex; }
