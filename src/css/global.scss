@@ -1881,13 +1881,6 @@ input[type="number"] {
 .custom-combat-heading p {
   margin-top: V.$gap-small;
 }
-.custom-combat-pickers {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  align-items: center;
-  gap: V.$gap;
-  min-width: 0;
-}
 .custom-combat-team-picker {
   display: flex;
   flex-direction: column;
@@ -1898,7 +1891,6 @@ input[type="number"] {
   width: 100%;
   min-width: 0;
 }
-.custom-combat-versus,
 .custom-combat-vs {
   display: flex;
   align-items: center;
@@ -1956,10 +1948,5 @@ input[type="number"] {
   }
 }
 @include M.media-query-max(V.$bp-mobile) {
-  .custom-combat-pickers {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .custom-combat-versus {
-    min-height: 28px;
-  }
+  .custom-combat-vs { min-height: 34px; }
 }
