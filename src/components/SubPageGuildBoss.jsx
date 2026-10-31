@@ -1,12 +1,12 @@
 import { useState } from "react"
 import { elementSprites } from "../database/db_sprites.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
-import SimulatorEntryList from "./SimulatorEntryList.jsx"
+import { SimulatorEntryDetails } from "./SimulatorEntryList.jsx"
 
 const GUILD_BOSSES = [
-    { id: 0, name: "Elemental Weaver", elementIds: [0, 1, 2], stages: [] },
-    { id: 1, name: "Equinox", elementIds: [3, 4], stages: [] },
-    { id: 2, name: "Star Breaker", elementIds: [5], stages: [] },
+    { id: 0, name: "Elemental Weaver", elementSrcArray: [elementSprites[0], elementSprites[1], elementSprites[2]] },
+    { id: 1, name: "Equinox", elementSrcArray: [elementSprites[3], elementSprites[4]] },
+    { id: 2, name: "Star Breaker", elementSrcArray: [elementSprites[5]] },
 ]
 
 function SubPageGuildBoss() {
@@ -23,7 +23,7 @@ function SubPageGuildBoss() {
                             key={boss.id} onClick={() => setSelectedGuildBoss(boss)}>
                             <span className="header">{boss.name}</span>
                             <span className="header elements">
-                                {boss.elementIds.map(id => <img key={id} src={elementSprites[id]} alt="" />)}
+                                {boss.elementSrcArray.map((src, index) => <img key={index} src={src} alt="" />)}
                             </span>
                         </button>
                     ))}
@@ -32,8 +32,7 @@ function SubPageGuildBoss() {
             <section className="card boss-preview w-100 simulator-selection-detail">
                 {selectedGuildBoss ? (
                     <>
-                        <div className="header-big">{selectedGuildBoss.name}</div>
-                        <SimulatorEntryList entries={selectedGuildBoss.stages} entryLabel="Stage" />
+                        <SimulatorEntryDetails entry={selectedGuildBoss} entryLabel="Guild Boss" />
                     </>
                 ) : (
                     <div className="header-big">Select a Guild Boss</div>
