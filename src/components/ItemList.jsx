@@ -25,10 +25,10 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
         unique: null,
         slot: null,
         attributeRequirement: null,
-        rarity: null,
+        rarity: [],
     });
     const [filtersAdvanced, setFiltersAdvanced] = useState(false)
-    const [sortOrder, setSortOrder] = useState(0) // 0 alphabetical, 1 reverse alphabetical
+    const [sortOrder, setSortOrder] = useState("alphabetic")
 
     const allItems = useMemo(() => {
         return [
@@ -41,14 +41,26 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
     }, [itemsRef]);
 
     const toggleFilter = (type, value) => {
-        setFilters((prev) => ({
-            ...prev,
-            [type]: prev[type] === value ? null : value,
-        }));
+        setFilters(previous => {
+            if (type === "rarity") {
+                if (Array.isArray(value)) {
+                    return { set: null, unique: null, slot: null, attributeRequirement: null, rarity: value }
+                }
+                const current = Array.isArray(previous.rarity) ? previous.rarity : []
+                const nextRarities = current.includes(value)
+                    ? current.filter(rarity => rarity !== value)
+                    : [...current, value]
+                return { set: null, unique: null, slot: null, attributeRequirement: null, rarity: nextRarities }
+            }
+            return {
+                set: null, unique: null, slot: null, attributeRequirement: null, rarity: [],
+                [type]: previous[type] === value ? null : value
+            }
+        })
     };
 
     const clearFilters = () => {
-        setFilters({ set: null, unique: null, slot: null, attributeRequirement: null, rarity: null });
+        setFilters({ set: null, unique: null, slot: null, attributeRequirement: null, rarity: [] });
         setSearch("");
         commitSearch("");
     };
@@ -68,7 +80,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
             const matchesUnique = filters.unique === null || (filters.unique === 'unique' ? hasUnique : !hasUnique);
             const matchesSlot = filters.slot === null || itemObj.slot === filters.slot;
             const matchesAttribute = filters.attributeRequirement === null || itemObj.attributeRequirement === filters.attributeRequirement;
-            const matchesRarity = filters.rarity === null || itemObj.rarity === filters.rarity;
+            const matchesRarity = filters.rarity.length === 0 || filters.rarity.includes(itemObj.rarity);
             const set = (setsRef ?? []).find(setEntry => setEntry.id === itemObj.set)
             const searchable = [...getSearchableValues(itemObj), itemObj.name,
                 getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? '',
@@ -89,14 +101,16 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
         });
 
         return result.sort((a, b) => {
-            const comparison = a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
-            return sortOrder === 0 ? comparison : -comparison;
+            const byName = String(a.name).localeCompare(String(b.name), undefined, { sensitivity: "base" })
+            if (sortOrder === "rarity") return Number(b.rarity ?? 0) - Number(a.rarity ?? 0) || byName
+            if (sortOrder === "level") return Number(b.level ?? 0) - Number(a.level ?? 0) || byName
+            return byName
         });
     }, [allItems, filters, search, itemType, heroAttributeRequirement, sortOrder, setsRef]);
 
     return (<>
         <div className='flex-row'>
-            <ItemFilters savedItems={savedItems} setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={setSearch} onSearchBlur={() => commitSearch(search)} clearFilters={clearFilters} filters={{ ...filters, name: search }} filterSprites={filterSprites} topOffset={filtersOffset} sortOrder={sortOrder} onToggleSort={() => setSortOrder(order => order === 0 ? 1 : 0)} />
+            <ItemFilters savedItems={savedItems} setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={setSearch} onSearchBlur={() => commitSearch(search)} clearFilters={clearFilters} filters={{ ...filters, name: search }} filterSprites={filterSprites} topOffset={filtersOffset} sortOrder={sortOrder} onSortChange={setSortOrder} />
         </div>
         <div className='header-big'>{headerText}</div>
 
