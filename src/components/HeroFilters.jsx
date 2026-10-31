@@ -2,8 +2,18 @@ import { memo } from 'react'
 import Button from './Button.jsx'
 import { ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, ATTRIBUTE_DEFINITIONS, RARITY_DEFINITIONS} from '../database/enums.jsx'
 
-function MobileFilterSelect({ label, value, onChange, options }) {
-    return <label className="mobile-filter-control"><span>{label}</span><select aria-label={label} value={value ?? ""} onChange={onChange}><option value="">All</option>{options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>
+function MobileFilterSelect({ label, value, onChange, options, multiple = false }) {
+    return (
+        <label className="mobile-filter-control">
+            <span>{label}</span>
+            <select aria-label={label} multiple={multiple}
+                value={multiple ? (Array.isArray(value) ? value.map(String) : []) : value ?? ""}
+                onChange={onChange}>
+                {!multiple && <option value="">All</option>}
+                {options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+            </select>
+        </label>
+    )
 }
 
 function HeroElementFilters({ toggleFilter, filters, filterSprites }) {
@@ -38,51 +48,47 @@ function HeroAttributeFilters({ toggleFilter, filters, filterSprites }) {
 
 function HeroRarityFilters({ toggleFilter, filters, filterSprites }) {
     return (<div className='filter-group filters-group-rarities flex-row'>
-        <Button title="Uncommon rarity" className='filters-rarity-button' round color={"uncommon"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.UNCOMMON.id)} text={filterSprites[31]} active={filters.rarity === RARITY_DEFINITIONS.UNCOMMON.id} />
-        <Button title="Rare rarity" className='filters-rarity-button' round color={"rare"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.RARE.id)} text={filterSprites[32]} active={filters.rarity === RARITY_DEFINITIONS.RARE.id} />
-        <Button title="Epic rarity" className='filters-rarity-button' round color={"epic"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.EPIC.id)} text={filterSprites[33]} active={filters.rarity === RARITY_DEFINITIONS.EPIC.id} />
-        <Button title="Legendary rarity" className='filters-rarity-button' round color={"legendary"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.LEGENDARY.id)} text={filterSprites[34]} active={filters.rarity === RARITY_DEFINITIONS.LEGENDARY.id} />
-        <MobileFilterSelect label="Rarity" value={filters.rarity} onChange={event => toggleFilter('rarity', event.target.value === '' ? null : Number(event.target.value))} options={[{value: RARITY_DEFINITIONS.UNCOMMON.id, label: 'Uncommon'}, {value: RARITY_DEFINITIONS.RARE.id, label: 'Rare'}, {value: RARITY_DEFINITIONS.EPIC.id, label: 'Epic'}, {value: RARITY_DEFINITIONS.LEGENDARY.id, label: 'Legendary'}]} />
+        <Button title="Uncommon rarity" className='filters-rarity-button' round color={"uncommon"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.UNCOMMON.id)} text={filterSprites[31]} active={filters.rarity.includes(RARITY_DEFINITIONS.UNCOMMON.id)} />
+        <Button title="Rare rarity" className='filters-rarity-button' round color={"rare"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.RARE.id)} text={filterSprites[32]} active={filters.rarity.includes(RARITY_DEFINITIONS.RARE.id)} />
+        <Button title="Epic rarity" className='filters-rarity-button' round color={"epic"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.EPIC.id)} text={filterSprites[33]} active={filters.rarity.includes(RARITY_DEFINITIONS.EPIC.id)} />
+        <Button title="Legendary rarity" className='filters-rarity-button' round color={"legendary"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.LEGENDARY.id)} text={filterSprites[34]} active={filters.rarity.includes(RARITY_DEFINITIONS.LEGENDARY.id)} />
+        <MobileFilterSelect multiple label="Rarity" value={filters.rarity}
+            onChange={event => toggleFilter("rarity", Array.from(event.target.selectedOptions, option => Number(option.value)))}
+            options={[{value: RARITY_DEFINITIONS.UNCOMMON.id, label: "Uncommon"}, {value: RARITY_DEFINITIONS.RARE.id, label: "Rare"}, {value: RARITY_DEFINITIONS.EPIC.id, label: "Epic"}, {value: RARITY_DEFINITIONS.LEGENDARY.id, label: "Legendary"}]} />
     </div>)
 }
 
-function HeroFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, onSearchBlur, clearFilters, filters, filterSprites, sortOrder, onToggleSort, searchPlaceholder = "Search heroes...", searchAriaLabel = "Search heroes by name" }) {
-
-    if (!advanced) {
-        return (
-            <div className='filters flex-row card'>
-                <Button title="Show or hide advanced filters" className='filters-advanced-button' round onClick={() => {setFiltersAdvanced(advanced => !advanced)}} imgAsText text={(advanced ? filterSprites[54] : filterSprites[53])} active={advanced} />
-                <Button title="Clear all filters" className='filters-clear-button' round onClick={clearFilters} text={"ALL"} active={Object.values(filters).every((v) => v === null || v === "")} />
+function HeroFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, onSearchBlur, clearFilters, filters, filterSprites, sortOrder, onSortChange, searchPlaceholder = "Search heroes...", searchAriaLabel = "Search heroes by name" }) {
+    return (
+        <div className="filters card">
+            <div className="filters-primary-row">
+                <Button title="Show or hide advanced filters" className="filters-advanced-button" round onClick={() => setFiltersAdvanced(value => !value)} imgAsText text={(advanced ? filterSprites[54] : filterSprites[53])} active={advanced} />
+                <Button title="Clear all filters" className="filters-clear-button" round onClick={clearFilters} text="ALL" active={filters.rarity.length === 0 && [filters.element, filters.role, filters.mainAttribute, filters.isStarred, filters.name].every(value => value === null || value === "")} />
                 <HeroElementFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <div className="name-search-filter">
-                    <input className="selectable w-100" type="text" aria-label={searchAriaLabel} placeholder={searchPlaceholder} value={filters.name} onChange={(event) => setSearch(event.target.value)} onBlur={onSearchBlur} />
+                    <input className="selectable w-100" type="text" aria-label={searchAriaLabel} placeholder={searchPlaceholder} value={filters.name} onChange={event => setSearch(event.target.value)} onBlur={onSearchBlur} />
                 </div>
-                <Button title={sortOrder == 0 ? "Sort A to Z" : "Sort Z to A"} className='filters-sort-button' round onClick={onToggleSort} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
+                <label className="filters-sort-order">
+                    <span className="catalogue-control-label text">Sort Order</span>
+                    <select aria-label="Sort order" value={sortOrder} onChange={event => onSortChange(event.target.value)}>
+                        <option value="alphabetic">Alphabetic</option>
+                        <option value="rarity">Rarity</option>
+                        <option value="level">Level</option>
+                    </select>
+                </label>
             </div>
-        )
-    } else {
-        return (
-            <div className='filters flex-row flex-wrap card'>
-                <Button title="Show or hide advanced filters" className='filters-advanced-button' round onClick={() => {setFiltersAdvanced(advanced => !advanced)}} imgAsText text={(advanced ? filterSprites[54] : filterSprites[53])} active={advanced} />
-                <Button title="Clear all filters" className='filters-clear-button' round onClick={clearFilters} text={"ALL"} active={Object.values(filters).every((v) => v === null || v === "")} />
-                <HeroElementFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
-                <div className="name-search-filter">
-                    <input className="selectable w-100" type="text" aria-label={searchAriaLabel} placeholder={searchPlaceholder} value={filters.name} onChange={(event) => setSearch(event.target.value)} onBlur={onSearchBlur} />
+            {advanced && (
+                <div className="filters-advanced-options">
+                    <HeroRoleFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
+                    <HeroAttributeFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
+                    <div className="filter-group filters-group-special filters-starred-group flex-row">
+                        <Button title="Show starred heroes only" className="filters-starred-button" round onClick={() => toggleFilter("isStarred", true)} imgAsText text={filterSprites[50]} active={filters.isStarred === true} />
+                    </div>
+                    <HeroRarityFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 </div>
-                <Button title={sortOrder == 0 ? "Sort A to Z" : "Sort Z to A"} className='filters-sort-button' round onClick={onToggleSort} text={(sortOrder == 0 ? filterSprites[51] : filterSprites[52])} active={true} />
-                <div className='flex-wrapper' />
-                <HeroRoleFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
-                <div className='flex-wrapper' />
-                <HeroAttributeFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
-                <div className='flex-wrapper' />
-                <div className='filter-group filters-group-special filters-starred-group flex-row'>
-                    <Button title="Show starred heroes only" className='filters-starred-button' round onClick={() => toggleFilter('isStarred', true)} imgAsText text={filterSprites[50]} active={filters.isStarred === true} />
-                </div>
-                <div className='flex-wrapper' />
-                <HeroRarityFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
-            </div>
-        )
-    }
+            )}
+        </div>
+    )
 }
 
 export default memo(HeroFilters)
