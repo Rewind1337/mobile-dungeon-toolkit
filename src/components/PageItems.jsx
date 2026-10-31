@@ -24,6 +24,19 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
         setSelectedSavedItemId({ slot: null, id: null })
         setPreviewFullWidth(false)
     }
+
+    useEffect(() => {
+        const handleEscape = event => {
+            if (event.key !== "Escape" || event.defaultPrevented || document.querySelector(".modal-backdrop.visible")) return
+            if (selectedItemId.slot === null && selectedSavedItemId.slot === null) return
+            setSelectedItemId({ slot: null, id: null })
+            setSelectedSavedItemId({ slot: null, id: null })
+            setPreviewFullWidth(false)
+        }
+        window.addEventListener("keydown", handleEscape)
+        return () => window.removeEventListener("keydown", handleEscape)
+    }, [selectedItemId.slot, selectedSavedItemId.slot])
+
     const [itemImportModalVisible, setItemImportModalVisible] = useState(false)
     const [itemShareInput, setItemShareInput] = useState("")
     const [itemShareUrl, setItemShareUrl] = useState("")
