@@ -554,15 +554,15 @@ body::after {
     border-radius: 4px;
   }
 
-  &[data-threshhold="1"] {
+  &[data-threshold="1"] {
     background: rgb(150, 15, 184);
   }
 
-  &[data-threshhold="2"] {
+  &[data-threshold="2"] {
     background: rgb(101, 7, 144);
   }
 
-  &[data-threshhold="3"] {
+  &[data-threshold="3"] {
     background: rgb(59, 3, 105);
   }
 }
@@ -1345,27 +1345,17 @@ input[type="number"] {
   width: auto;
 }
 
-.team-header .team-name-input {
-  display: block;
+.team-name-heading {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  min-width: 0;
+  margin: 0;
+}
+.team-name-input {
+  flex: 1 1 auto;
   width: 100%;
   min-width: 0;
-  height: auto;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  outline: 0;
-  background: transparent;
-  box-shadow: none;
-  color: inherit;
-  font: inherit;
-  text-align: left;
-  text-shadow: inherit;
-}
-
-.team-header .team-name-input:focus-visible {
-  outline: 1px solid rgba(255, 255, 255, 0.65);
-  outline-offset: 3px;
 }
 
 .team-actions {
@@ -1411,7 +1401,6 @@ input[type="number"] {
   background: rgba(0, 0, 0, 0.18);
   color: inherit;
   font: inherit;
-  cursor: pointer;
 }
 .team-collapsed-hero-chip > span {
   min-width: 0;
@@ -1419,11 +1408,6 @@ input[type="number"] {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.team-collapsed-hero-chip:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.75);
-  outline-offset: 2px;
-}
-
 .team-hero-slots {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 132px), 1fr));
@@ -1765,5 +1749,201 @@ input[type="number"] {
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
+  }
+}
+
+
+/* Simulator pages share the same selectable-list and detail-pane layout. */
+.simulator-selection-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.65fr);
+  align-items: start;
+  gap: V.$gap;
+  width: 100%;
+  min-width: 0;
+}
+.simulator-selection-layout > section {
+  width: 100%;
+  min-width: 0;
+}
+.simulator-selection-list,
+.simulator-selection-detail {
+  min-width: 0;
+}
+.simulator-selection-detail {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-height: 180px;
+}
+.chapter-shadow-subtitle {
+  font-size: V.$font-size-xsmall;
+  line-height: 1.1;
+  opacity: 0.8;
+  white-space: nowrap;
+}
+.simulator-entry-list {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+  max-height: min(64vh, 720px);
+  overflow: auto;
+  min-width: 0;
+}
+.simulator-data-entry {
+  min-width: 0;
+  gap: V.$gap-small;
+}
+.simulator-data-json {
+  max-width: 100%;
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: V.$font-family-stats;
+  font-size: V.$font-size-small;
+}
+.simulator-empty-data {
+  opacity: 0.75;
+}
+
+.simulator-overview {
+  gap: V.$gap;
+  min-width: 0;
+}
+.simulator-overview-heading {
+  width: 100%;
+}
+.simulator-overview-heading h1,
+.simulator-overview-heading p {
+  margin: 0;
+}
+.simulator-overview-heading p {
+  margin-top: V.$gap-small;
+}
+.simulator-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: V.$gap;
+  min-width: 0;
+}
+.simulator-overview-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: V.$gap-small;
+  width: 100%;
+  min-width: 0;
+  min-height: 160px;
+  padding: V.$padding-card;
+  border: 2px solid black;
+  text-align: left;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+}
+.simulator-overview-tile .header,
+.simulator-overview-tile .text {
+  text-shadow: -2px 0 2px black, 2px 0 2px black, 0 -2px 2px black, 0 2px 2px black;
+}
+.simulator-overview-tile:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 3px;
+}
+
+.custom-combat-page {
+  gap: V.$gap;
+  min-width: 0;
+}
+.custom-combat-heading {
+  width: 100%;
+}
+.custom-combat-heading h1,
+.custom-combat-heading p {
+  margin: 0;
+}
+.custom-combat-heading p {
+  margin-top: V.$gap-small;
+}
+.custom-combat-pickers {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: V.$gap;
+  min-width: 0;
+}
+.custom-combat-team-picker {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+.custom-combat-team-picker select {
+  width: 100%;
+  min-width: 0;
+}
+.custom-combat-versus,
+.custom-combat-vs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f2bd55;
+  font-family: V.$font-family-stats;
+  font-size: clamp(24px, 4vw, 48px);
+  font-weight: 900;
+  text-shadow: 0 2px 4px black, 0 0 12px rgba(0, 0, 0, 0.85);
+}
+.custom-combat-matchup {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: start;
+  gap: V.$gap;
+  min-width: 0;
+}
+.custom-combat-team {
+  min-width: 0;
+}
+.custom-combat-team-header {
+  display: flex;
+  flex-direction: column;
+  grid-template-columns: none;
+  align-items: flex-start;
+}
+.custom-combat-team-name {
+  opacity: 0.8;
+}
+.custom-combat-team .team-content {
+  grid-template-columns: minmax(0, 1fr);
+}
+.custom-combat-empty-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 90px;
+  width: 100%;
+  opacity: 0.6;
+}
+.custom-combat-vs {
+  align-self: center;
+  padding: 0 V.$gap-small;
+}
+
+@include M.media-query-max(V.$bp-tablet) {
+  .simulator-selection-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .custom-combat-matchup {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .custom-combat-vs {
+    min-height: 34px;
+  }
+}
+@include M.media-query-max(V.$bp-mobile) {
+  .custom-combat-pickers {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .custom-combat-versus {
+    min-height: 28px;
   }
 }
