@@ -4,9 +4,9 @@ import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import { SimulatorEntryDetails } from "./SimulatorEntryList.jsx"
 
 const GUILD_BOSSES = [
-    { id: 0, name: "Elemental Weaver", elementSrcArray: [elementSprites[0], elementSprites[1], elementSprites[2]] },
-    { id: 1, name: "Equinox", elementSrcArray: [elementSprites[3], elementSprites[4]] },
-    { id: 2, name: "Star Breaker", elementSrcArray: [elementSprites[5]] },
+    { id: 0, name: "Elemental Weaver", elementIds: [0, 1, 2] },
+    { id: 1, name: "Equinox", elementIds: [2, 0, 1] },
+    { id: 2, name: "Star Breaker", elementIds: [5] },
 ]
 
 function SubPageGuildBoss() {
@@ -23,7 +23,7 @@ function SubPageGuildBoss() {
                             key={boss.id} onClick={() => setSelectedGuildBoss(boss)}>
                             <span className="header">{boss.name}</span>
                             <span className="header elements">
-                                {boss.elementSrcArray.map((src, index) => <img key={index} src={src} alt="" />)}
+                                {boss.elementIds.map(id => <img key={id} src={elementSprites[id]} alt="" />)}
                             </span>
                         </button>
                     ))}
@@ -32,7 +32,7 @@ function SubPageGuildBoss() {
             <section className="card boss-preview w-100 simulator-selection-detail">
                 {selectedGuildBoss ? (
                     <>
-                        <SimulatorEntryDetails entry={selectedGuildBoss} entryLabel="Guild Boss" />
+                        <SimulatorEntryDetails entry={selectedGuildBoss} title={"Guild Boss - " + selectedGuildBoss.name} elementIds={selectedGuildBoss.elementIds} emptyMessage="No guild boss stage entries have been defined yet." />
                     </>
                 ) : (
                     <div className="header-big">Select a Guild Boss</div>
