@@ -125,13 +125,13 @@
 
 /* Keep the intentionally empty 404 navigation slot identical to disabled nav buttons. */
 .not-found-links .not-found-link.disabled {
-  background: rgb(53, 53, 53);
+  background-color: rgb(53, 53, 53);
   cursor: default;
   filter: none;
   transform: none;
 }
 .not-found-links .not-found-link.disabled:hover {
-  background: rgb(63, 63, 63);
+  background-color: rgb(63, 63, 63);
   filter: none;
   transform: none;
 }
