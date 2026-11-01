@@ -383,8 +383,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                 defence: Number(mainStats.defence) || 0,
                 agility: Number(mainStats.agility) || 0
             },
-            items: [...equippedItems],
-            talents: cloneTalentSelections(talentSelections)
+            items: [...equippedItems]
         })
     }
 
