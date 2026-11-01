@@ -228,7 +228,7 @@ function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null
                     scrollElementRef={scrollElementRef}
                     minColumnWidth={340}
                     maxColumns={3}
-                    estimatedRowHeight={520}
+                    estimatedRowHeight={240}
                     rowGap={10}
                     columnGap={10}
                     className="hero-catalogue-grid-spacer"
