@@ -2018,7 +2018,9 @@ input[type="number"] {
   max-width: 260px;
   min-height: 32px;
   padding: 6px 10px;
+  font-family: V.$font-family-stats;
   font-size: V.$font-size-small;
+  font-weight: 400;
 }
 .team-collapsed-hero-chip .catalogue-chip-icon {
   width: 22px;
