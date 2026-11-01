@@ -58,7 +58,7 @@ export function SimulatorEntryDetails({
     emptyMessage
 }) {
     if (!entry) return null
-    const metadata = Object.entries(entry).filter(([key]) => !["stages", "elementSrcArray", "elementIds", "name"].includes(key))
+    const metadata = Object.entries(entry).filter(([key]) => !["id", "stages", "elementSrcArray", "elementIds", "name"].includes(key))
     return (
         <div className="simulator-entry-details flex-col">
             <div className="header-big">{title ?? entry.name ?? entryLabel}</div>
