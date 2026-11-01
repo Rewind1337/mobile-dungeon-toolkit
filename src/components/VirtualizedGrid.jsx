@@ -18,7 +18,7 @@ function VirtualizedGrid({
     className = "",
     rowClassName = "",
     minColumnWidth = 110,
-    maxColumns = 12,
+    maxColumns = Infinity,
     columnGap = 10,
     rowGap = 10,
     estimatedRowHeight = 180,
