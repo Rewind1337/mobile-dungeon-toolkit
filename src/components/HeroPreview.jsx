@@ -152,6 +152,10 @@ function formatStatValue(value) {
     return Number.isInteger(rounded) ? String(rounded) : String(rounded)
 }
 
+function cloneTalentSelections(talents) {
+    return Object.fromEntries(Object.entries(talents ?? {}).map(([id, talent]) => [id, { ...talent, active: Boolean(talent?.active) }]))
+}
+
 function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, heroesRef, selectedHeroId, saveHero, deleteSavedHero, onItemClick, equippedItems = [], setsRef = [] }) {
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
@@ -170,6 +174,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
         defence: 1234,
         agility: 1234
     })
+    const [talentSelections, setTalentSelections] = useState({})
 
     function onResize() {
         let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5;
@@ -274,6 +279,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
             defence: heroObj?.stats?.defence ?? 1234,
             agility: heroObj?.stats?.agility ?? 1234
         })
+        setTalentSelections(cloneTalentSelections(heroObj?.talents))
     }, [selectedHeroId,
         heroObj?.id,
         heroObj?.saveId,
@@ -295,32 +301,81 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
         />
     ))
 
-    const renderHeroTalents = () => Object.entries(heroObj.talents ?? {})
-        .filter(([id]) => /^\d+$/.test(id))
-        .sort(([idA], [idB]) => {
-            const rowA = Math.floor(Number(idA) / 10)
-            const rowB = Math.floor(Number(idB) / 10)
-            if (rowA !== rowB) return rowB - rowA
-            const sideOrder = id => String(id).endsWith("1") ? 0 : String(id).endsWith("0") ? 1 : 2
-            return sideOrder(idA) - sideOrder(idB)
+    const toggleTalent = id => {
+        const row = Math.floor(Number(id) / 10)
+        setTalentSelections(previous => {
+            const selectedTalent = previous[id]
+            if (!selectedTalent) return previous
+            const next = cloneTalentSelections(previous)
+
+            if (selectedTalent.active) {
+                for (const [otherId, talent] of Object.entries(next)) {
+                    if (Math.floor(Number(otherId) / 10) >= row) talent.active = false
+                }
+                return next
+            }
+
+            const previousRowIsSelected = row === 1 || Object.entries(previous).some(([otherId, talent]) =>
+                Math.floor(Number(otherId) / 10) === row - 1 && talent.active
+            )
+            if (!previousRowIsSelected) return previous
+
+            for (const [otherId, talent] of Object.entries(next)) {
+                if (Math.floor(Number(otherId) / 10) === row) talent.active = false
+            }
+            next[id].active = true
+            return next
         })
-        .map(([id, talent]) => {
-            const isCenter = String(id).endsWith("0")
-            const side = String(id).endsWith("1") ? "left" : isCenter ? "center" : "right"
+    }
+
+    const renderHeroTalents = () => {
+        const entries = Object.entries(talentSelections).filter(([id]) => /^\d+$/.test(id))
+        const rows = new Map()
+        for (const entry of entries) {
+            const row = Math.floor(Number(entry[0]) / 10)
+            if (!rows.has(row)) rows.set(row, [])
+            rows.get(row).push(entry)
+        }
+
+        return [...rows.entries()].sort(([rowA], [rowB]) => rowB - rowA).map(([row, rowEntries]) => {
+            const previousRowIsSelected = row === 1 || entries.some(([id, talent]) =>
+                Math.floor(Number(id) / 10) === row - 1 && talent.active
+            )
+            const selectedInRow = rowEntries.some(([, talent]) => talent.active)
+            rowEntries.sort(([idA], [idB]) => {
+                const sideOrder = id => String(id).endsWith("1") ? 0 : String(id).endsWith("0") ? 1 : 2
+                return sideOrder(idA) - sideOrder(idB)
+            })
+
             return (
-                <TalentCatalogueCard
-                    key={`${heroObj.id}-preview-talent-${id}`}
-                    talent={talent}
-                    sources={[{ hero: heroObj, id }]}
-                    showSourceHero={false}
-                    className={`hero-preview-talent-entry hero-preview-talent-${side} ${isCenter ? "w-100" : "w-33"}`}
-                />
+                <div className="hero-preview-talent-row" key={"talent-row-" + row}>
+                    {rowEntries.map(([id, talent]) => {
+                        const isCenter = String(id).endsWith("0")
+                        const side = String(id).endsWith("1") ? "left" : isCenter ? "center" : "right"
+                        return (
+                            <TalentCatalogueCard
+                                key={heroObj.id + "-preview-talent-" + id}
+                                talent={talent}
+                                sources={[{ hero: heroObj, id }]}
+                                showSourceHero={false}
+                                showSourcePosition={false}
+                                interactive={true}
+                                isActive={Boolean(talent.active)}
+                                isLocked={!previousRowIsSelected && !talent.active}
+                                isConflicted={selectedInRow && !talent.active}
+                                onClick={() => toggleTalent(id)}
+                                className={"hero-preview-talent-entry hero-preview-talent-" + side}
+                            />
+                        )
+                    })}
+                </div>
             )
         })
-
+    }
     const handleSaveHero = () => {
         saveHero({
             ...heroObj,
+            talents: cloneTalentSelections(talentSelections),
             level: Math.max(1, Number(selectedLevel) || 1),
             stats: {
                 health: Number(mainStats.health) || 0,
@@ -328,7 +383,8 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                 defence: Number(mainStats.defence) || 0,
                 agility: Number(mainStats.agility) || 0
             },
-            items: [...equippedItems]
+            items: [...equippedItems],
+            talents: cloneTalentSelections(talentSelections)
         })
     }
 
@@ -349,6 +405,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
         setShareLinkCopied(false)
         setHeroShareUrl(buildShareUrl("hero", createHeroShareToken({
             ...heroObj,
+            talents: cloneTalentSelections(talentSelections),
             level: Math.max(1, Number(selectedLevel) || 1),
             stats: {
                 health: Number(mainStats.health) || 0,
@@ -371,6 +428,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
             setEquippedItemsShareUrl("")
             setHeroShareUrl(buildShareUrl("hero", createHeroShareToken({
                 ...heroObj,
+                talents: cloneTalentSelections(talentSelections),
                 level: Math.max(1, Number(selectedLevel) || 1),
                 stats: {
                     health: Number(mainStats.health) || 0,
@@ -384,7 +442,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
         }
 
         try {
-            const heroWithCurrentItems = { ...heroObj, items: [...equippedItems] }
+            const heroWithCurrentItems = { ...heroObj, talents: cloneTalentSelections(talentSelections), items: [...equippedItems] }
             setHeroShareUrl(buildShareUrl("hero", createHeroShareToken({
                 ...heroWithCurrentItems,
                 level: Math.max(1, Number(selectedLevel) || 1),
@@ -401,6 +459,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
             setEquippedItemsShareUrl("")
             setHeroShareUrl(buildShareUrl("hero", createHeroShareToken({
                 ...heroObj,
+                talents: cloneTalentSelections(talentSelections),
                 level: Math.max(1, Number(selectedLevel) || 1),
                 stats: {
                     health: Number(mainStats.health) || 0,
@@ -551,7 +610,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                             </div>
                         </div>
                         {(showSkillsAndTalents && heroObj.talents) &&
-                            <div className='flex-row flex-wrap talents'>
+                            <div className='hero-preview-talent-grid talents'>
                                 {renderHeroTalents()}
                             </div>
                         }
