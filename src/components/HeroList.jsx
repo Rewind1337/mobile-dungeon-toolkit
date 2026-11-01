@@ -4,6 +4,7 @@ import { useDynamicList } from '../hooks/useDynamicList.jsx';
 import '../css/hero.scss'
 
 import Hero from './Hero.jsx'
+import VirtualizedGrid from './VirtualizedGrid.jsx'
 import { filterSprites } from '../database/db_sprites.jsx'
 import HeroFilters from './HeroFilters.jsx';
 import BackToTopButton from './BackToTopButton.jsx';
@@ -24,7 +25,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
         element: null,
         role: null,
         mainAttribute: null,
-        rarity: [],
+        rarity: null,
         isStarred: null
     });
     const [filtersAdvanced, setFiltersAdvanced] = useState(false)
@@ -33,24 +34,23 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
     const toggleFilter = (type, value) => {
         setFilters(previous => {
             if (type === "rarity") {
-                if (Array.isArray(value)) {
-                    return { element: null, role: null, mainAttribute: null, rarity: value, isStarred: null }
+                return {
+                    element: null,
+                    role: null,
+                    mainAttribute: null,
+                    rarity: previous.rarity === value ? null : value,
+                    isStarred: null
                 }
-                const current = Array.isArray(previous.rarity) ? previous.rarity : []
-                const nextRarities = current.includes(value)
-                    ? current.filter(rarity => rarity !== value)
-                    : [...current, value]
-                return { element: null, role: null, mainAttribute: null, rarity: nextRarities, isStarred: null }
             }
             return {
-                element: null, role: null, mainAttribute: null, rarity: [], isStarred: null,
+                element: null, role: null, mainAttribute: null, rarity: null, isStarred: null,
                 [type]: previous[type] === value ? null : value
             }
         })
     };
 
     const clearFilters = () => {
-        setFilters({ element: null, role: null, mainAttribute: null, rarity: [], isStarred: null });
+        setFilters({ element: null, role: null, mainAttribute: null, rarity: null, isStarred: null });
         setSearch("");
         commitSearch("");
     };
@@ -60,7 +60,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
             (filters.element === null || heroObj.element === filters.element) &&
             (filters.role === null || heroObj.role === filters.role) &&
             (filters.mainAttribute === null || heroObj.mainAttribute === filters.mainAttribute) &&
-            (filters.rarity.length === 0 || filters.rarity.includes(heroObj.rarity)) &&
+            (filters.rarity === null || filters.rarity === heroObj.rarity) &&
             (filters.isStarred === null || heroObj.isStarred === filters.isStarred) &&
             matchesSearchQuery([
                 ...getSearchableValues(heroObj),
@@ -88,22 +88,33 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
             <HeroFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={setSearch} onSearchBlur={() => commitSearch(search)} clearFilters={clearFilters} filters={{ ...filters, name: search }} filterSprites={filterSprites} sortOrder={sortOrder} onSortChange={setSortOrder} />
         </div>
         <div className='header-big'>{headerText}</div>
-        <div className='list hero-list flex-row' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
+        <div className='list hero-list flex-row virtualized-list-scroll' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
             {filteredHeroes.length === 0 ? (
                 <div className="text-big margin-auto">No heroes match the selected filters</div>
             ) : (
-                filteredHeroes.map((heroObj) => (
-                    <Hero
-                        selected={(savedHeroes ? heroObj.saveId : heroObj.id) === selectedHeroId}
-                        heroObj={heroObj}
-                        key={heroObj.id + '-' + heroObj.saveId}
-                        level={savedHeroes ? (heroObj.level ?? null) : null}
-                        onClick={() => {
-                            const clickedId = savedHeroes ? heroObj.saveId : heroObj.id
-                            setSelectedHeroId(currentId => currentId === clickedId ? null : clickedId)
-                        }}
-                    />
-                ))
+                <VirtualizedGrid
+                    items={filteredHeroes}
+                    scrollElementRef={listRef}
+                    minColumnWidth={100}
+                    maxColumns={12}
+                    estimatedRowHeight={185}
+                    rowGap={8}
+                    columnGap={8}
+                    className="hero-list-virtual"
+                    rowClassName="hero-list-virtual-row"
+                    getItemKey={hero => `${hero.id}-${hero.saveId ?? "base"}`}
+                    renderItem={heroObj => (
+                        <Hero
+                            selected={(savedHeroes ? heroObj.saveId : heroObj.id) === selectedHeroId}
+                            heroObj={heroObj}
+                            level={savedHeroes ? (heroObj.level ?? null) : null}
+                            onClick={() => {
+                                const clickedId = savedHeroes ? heroObj.saveId : heroObj.id
+                                setSelectedHeroId(currentId => currentId === clickedId ? null : clickedId)
+                            }}
+                        />
+                    )}
+                />
             )}
         </div>
         <BackToTopButton scrollRef={listRef} className="hero-list-back-to-top" />
