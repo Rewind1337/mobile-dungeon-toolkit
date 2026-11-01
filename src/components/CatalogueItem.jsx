@@ -276,6 +276,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
                             estimatedRowHeight={390}
                             rowGap={10}
                             columnGap={10}
+                            alignItems="stretch"
                             className="catalogue-item-grid-spacer"
                             rowClassName="catalogue-item-grid-row"
                             renderItem={item => {
@@ -299,6 +300,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
                             estimatedRowHeight={440}
                             rowGap={10}
                             columnGap={10}
+                            alignItems="stretch"
                             className="catalogue-set-grid-spacer"
                             rowClassName="catalogue-set-grid-row"
                             renderItem={set => <SetCatalogueCard set={set} pieces={itemsBySet.get(set.id) ?? []} />}
