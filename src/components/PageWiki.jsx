@@ -9,7 +9,7 @@ import "../css/hero.scss"
 import { ATTRIBUTE_DEFINITIONS, ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, RARITY_DEFINITIONS, PERK_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, DROP_SOURCE_DEFINITIONS, PRIMARY_STAT_DEFINITIONS } from "../database/enums.jsx"
 import { init_banner_db } from "../database/db_banners.jsx"
 import { init_resource_db } from "../database/db_resources.jsx"
-import { attributeSprites, elementSprites, roleSprites } from "../database/db_sprites.jsx"
+import { attributeSprites, elementSprites, roleSprites, perkSprites } from "../database/db_sprites.jsx"
 
 const CatalogueItem = lazy(() => import("./CatalogueItem.jsx"))
 const CatalogueHero = lazy(() => import("./CatalogueHero.jsx"))
@@ -92,7 +92,9 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
                 ? roleSprites[id]
                 : iconType === "attribute"
                     ? attributeSprites[id]
-                    : null
+                    : iconType === "primary-stat"
+                        ? perkSprites[({ 0: "ATTACK_FLAT", 1: "DEFENCE_FLAT", 2: "AGILITY_FLAT" })[Number(id)]]
+                        : null
         const isClickable = typeof onSelect === "function" && Number.isFinite(Number(id))
         const activateWithKeyboard = event => {
             if (event.key === "Enter" || event.key === " ") {
