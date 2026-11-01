@@ -22,7 +22,7 @@ const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
     rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
 )
 
-function HeroCatalogueCard({ hero }) {
+function HeroCatalogueCard({ hero, expandedSections = {}, onSectionToggle }) {
     const rarity = getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? "Unknown rarity"
     const attribute = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? "Unknown attribute"
     const element = getEnumNameById(ELEMENT_DEFINITIONS, Number(hero.element)) ?? "Unknown element"
@@ -61,7 +61,11 @@ function HeroCatalogueCard({ hero }) {
             </header>
 
             {skills.length > 0 && (
-                <details className="hero-catalogue-section hero-catalogue-collapsible card">
+                <details
+                    className="hero-catalogue-section hero-catalogue-collapsible card"
+                    open={Boolean(expandedSections.skills)}
+                    onToggle={event => onSectionToggle?.(hero.id, "skills", event.currentTarget.open)}
+                >
                     <summary className="catalogue-section-label text">Skills</summary>
                     <div className="hero-catalogue-skills">
                         {skills.map((skill, index) => (
@@ -72,7 +76,11 @@ function HeroCatalogueCard({ hero }) {
             )}
 
             {talents.length > 0 && (
-                <details className="hero-catalogue-section hero-catalogue-collapsible card">
+                <details
+                    className="hero-catalogue-section hero-catalogue-collapsible card"
+                    open={Boolean(expandedSections.talents)}
+                    onToggle={event => onSectionToggle?.(hero.id, "talents", event.currentTarget.open)}
+                >
                     <summary className="catalogue-section-label text">Talents</summary>
                     <div className="hero-catalogue-talents">
                         {talents.map(([id, talent]) => (
@@ -88,6 +96,13 @@ function HeroCatalogueCard({ hero }) {
 
 function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null, onViewChange, scrollElementRef }) {
     const [search, setSearch, commitSearch] = useUrlSearch()
+    const [expandedHeroSections, setExpandedHeroSections] = useState({})
+    const handleHeroSectionToggle = (heroId, section, isOpen) => {
+        setExpandedHeroSections(previous => ({
+            ...previous,
+            [heroId]: { ...previous[heroId], [section]: isOpen }
+        }))
+    }
     const [rarityFilter, setRarityFilter] = useState("all")
     const [attributeFilter, setAttributeFilter] = useState("all")
     const [elementFilter, setElementFilter] = useState("all")
@@ -233,7 +248,13 @@ function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null
                     columnGap={10}
                     className="hero-catalogue-grid-spacer"
                     rowClassName="hero-catalogue-grid-row"
-                    renderItem={hero => <HeroCatalogueCard hero={hero} />}
+                    renderItem={hero => (
+                        <HeroCatalogueCard
+                            hero={hero}
+                            expandedSections={expandedHeroSections[hero.id]}
+                            onSectionToggle={handleHeroSectionToggle}
+                        />
+                    )}
                 />
             }
                 </>
