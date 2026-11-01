@@ -132,7 +132,7 @@ const TEAM_BASE_STATS = [
 export function TeamHeroStats({ hero, slotIndex }) {
     if (!hero) return null
     return (
-        <div className="team-base-stat-summary" aria-label={hero.name + " base stats"}>
+        <div className="team-base-stat-summary" aria-label={hero.name + " base stats, slot " + (slotIndex + 1)}>
             {TEAM_BASE_STATS.map(([key, label, fullLabel]) => {
                 const value = hero.stats?.[key]
                 const displayValue = Number.isFinite(Number(value)) ? Number(value).toLocaleString() : "—"
