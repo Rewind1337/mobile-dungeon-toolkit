@@ -284,9 +284,9 @@ function App() {
                 <Button className="not-found-link" text="Heroes" color={0} onClick={() => switchTabTo('heroes')} />
                 <Button className="not-found-link" text="Items" color={1} onClick={() => switchTabTo('items')} />
                 <Button className="not-found-link" text="Teams" color={2} onClick={() => switchTabTo('teams')} />
-                <Button className="not-found-link" text="Home" color={3} onClick={() => switchTabTo('splash')} />
+                <Button className="not-found-link" text="Home" color={6} onClick={() => switchTabTo('splash')} />
+                <Button className="not-found-link" text="" color={3} disabled={true} />
                 <Button className="not-found-link" text="Simulators" color={4} onClick={() => switchTabTo('simulator')} />
-                <Button className="not-found-link" text="Coming Soon" color={3} disabled />
                 <Button className="not-found-link" text="Wiki" color={5} onClick={() => switchTabTo('wiki')} />
               </nav>
             </section>
