@@ -405,3 +405,33 @@
   .banner-catalogue-card.card-dark { grid-column: 1 / -1; }
   .resource-catalogue-filters { align-items: stretch; flex-direction: column; }
 }
+
+
+.resource-catalogue-additional-info,
+.resource-catalogue-location-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+.resource-catalogue-additional-info .catalogue-chip,
+.resource-catalogue-location-chips .catalogue-chip { max-width: 100%; }
+.resource-catalogue-additional-info .catalogue-chip-icon {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  object-fit: contain;
+}
+.resource-catalogue-location-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+.resource-catalogue-location-label {
+  flex: 0 0 auto;
+  font-weight: 700;
+  opacity: 0.8;
+}
