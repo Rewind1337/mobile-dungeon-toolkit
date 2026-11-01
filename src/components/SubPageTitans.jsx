@@ -1,14 +1,15 @@
 import { useState } from "react"
 import { elementSprites } from "../database/db_sprites.jsx"
+import { ELEMENT_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import { SimulatorEntryDetails } from "./SimulatorEntryList.jsx"
 
 const TITANS = [
-    { id: 0, name: "Scorchwing" },
-    { id: 1, name: "Azuretide" },
-    { id: 2, name: "Mossquake" },
-    { id: 3, name: "Throne" },
-    { id: 4, name: "Shadowmaw" },
+    { id: 0, element: 0, name: "Scorchwing" },
+    { id: 1, element: 1, name: "Azuretide" },
+    { id: 2, element: 2, name: "Mossquake" },
+    { id: 3, element: 3, name: "Throne" },
+    { id: 4, element: 4, name: "Shadowmaw" },
 ]
 
 function SubPageTitans() {
@@ -24,7 +25,7 @@ function SubPageTitans() {
                         <button type="button" className="titan card flex-col" data-id={titan.id}
                             key={titan.id} onClick={() => setSelectedTitan(titan)}>
                             <span className="header">{titan.name}</span>
-                            <span className="header elements"><img src={elementSprites[titan.id]} alt="" /></span>
+                            <span className="header elements"><img src={elementSprites[titan.element]} alt="" /></span>
                         </button>
                     ))}
                 </div>
@@ -32,7 +33,7 @@ function SubPageTitans() {
             <section className="card w-100 simulator-selection-detail">
                 {selectedTitan ? (
                     <>
-                        <SimulatorEntryDetails entry={selectedTitan} entryLabel="Titan" />
+                        <SimulatorEntryDetails entry={selectedTitan} title={getEnumNameById(ELEMENT_DEFINITIONS, selectedTitan.element) + " Titan - " + selectedTitan.name} elementIds={[selectedTitan.element]} emptyMessage="No titan stage entries have been defined yet." />
                     </>
                 ) : (
                     <div className="header-big">Select a Titan</div>
