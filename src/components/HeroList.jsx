@@ -102,7 +102,6 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
                     columnGap={8}
                     className="hero-list-virtual"
                     rowClassName="hero-list-virtual-row"
-                    getItemKey={hero => `${hero.id}-${hero.saveId ?? "base"}`}
                     renderItem={heroObj => (
                         <Hero
                             selected={(savedHeroes ? heroObj.saveId : heroObj.id) === selectedHeroId}
