@@ -31,18 +31,22 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
 
     const filteredResources = useMemo(() => {
         return sourceResources
-            .filter(resource => matchesSearchQuery([resource.name, resource.description, resource.gemType, resource.rarity?.name], search))
+            .filter(resource => matchesSearchQuery([
+                resource.name,
+                resource.description,
+                resource.gemType,
+                resource.rarity?.name,
+                ...(resource.sourceLocations ?? []),
+                ...(resource.useLocations ?? []),
+                ...(resource.additionalInformation ?? []).flatMap(information =>
+                    Object.entries(information ?? {}).flatMap(([key, value]) => [key, value])
+                )
+            ], search))
             .filter(resource => {
                 if (isGemsView || locationFilter === "all") return true
-                const locations = Array.isArray(resource.locations)
-                    ? resource.locations
-                    : resource.location == null ? [] : [resource.location]
+                const locations = [...(resource.sourceLocations ?? []), ...(resource.useLocations ?? [])]
                 return locations.some(location =>
-                    location === locationFilter
-                    || RESOURCE_LOCATIONS[location] === locationFilter
-                    || Object.entries(RESOURCE_LOCATIONS).some(([key, label]) =>
-                        label === locationFilter && (key === location || label === location)
-                    )
+                    location === locationFilter || RESOURCE_LOCATIONS[location] === locationFilter
                 )
             })
             .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }))
