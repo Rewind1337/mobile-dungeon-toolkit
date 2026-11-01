@@ -1,8 +1,7 @@
 import { useState } from "react"
-import { elementSprites } from "../database/db_sprites.jsx"
 import { ELEMENT_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
-import { SimulatorEntryDetails } from "./SimulatorEntryList.jsx"
+import { SimulatorEntryDetails, SimulatorElementChips } from "./SimulatorEntryList.jsx"
 
 const TITANS = [
     { id: 0, element: 0, name: "Scorchwing" },
@@ -24,8 +23,10 @@ function SubPageTitans() {
                     {TITANS.map(titan => (
                         <button type="button" className="titan card flex-col" data-id={titan.id}
                             key={titan.id} onClick={() => setSelectedTitan(titan)}>
-                            <span className="header">{titan.name}</span>
-                            <span className="header elements"><img src={elementSprites[titan.element]} alt="" /></span>
+                            <div className="simulator-selection-chips">
+                                <span className="catalogue-chip text simulator-selection-name-chip">{titan.name}</span>
+                                <SimulatorElementChips elementIds={[titan.element]} size="large" />
+                            </div>
                         </button>
                     ))}
                 </div>
