@@ -20,8 +20,10 @@ function SubPageGuildBoss() {
                     {GUILD_BOSSES.map(boss => (
                         <button type="button" className="guildboss card flex-col" data-id={boss.id}
                             key={boss.id} onClick={() => setSelectedGuildBoss(boss)}>
-                            <span className="header">{boss.name}</span>
-                            <SimulatorElementChips elementIds={boss.elementIds} />
+                            <div className="simulator-selection-chips">
+                                <span className="catalogue-chip text simulator-selection-name-chip">{boss.name}</span>
+                                <SimulatorElementChips elementIds={boss.elementIds} size="large" />
+                            </div>
                         </button>
                     ))}
                 </div>
