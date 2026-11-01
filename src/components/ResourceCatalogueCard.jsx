@@ -30,7 +30,7 @@ function AdditionalInfoChip({ information }) {
     if (information.rarity != null) {
         const rarity = findDefinition(RARITY_DEFINITIONS, information.rarity)
         if (!rarity) return <span className="catalogue-chip text">{humanize(information.rarity)}</span>
-        return <span className="catalogue-chip text" data-rarity={rarity.id}>{humanize(rarity.name)}</span>
+        return <span className="catalogue-chip catalogue-chip-rarity text" data-rarity={rarity.id}>{humanize(rarity.name)}</span>
     }
     if (information.text != null) return <span className="catalogue-chip text">{String(information.text)}</span>
     return null
@@ -63,7 +63,7 @@ export default function ResourceCatalogueCard({ resource }) {
                 <div className="resource-catalogue-title-row">
                     <h2 className="resource-catalogue-name text-big">{resource.name}</h2>
                     {resource.isGem && (
-                        <span className="catalogue-chip resource-catalogue-rarity text" data-rarity={resource.rarity.id}>
+                        <span className="catalogue-chip catalogue-chip-rarity resource-catalogue-rarity text" data-rarity={resource.rarity.id}>
                             {humanize(resource.rarity.name)}
                         </span>
                     )}
