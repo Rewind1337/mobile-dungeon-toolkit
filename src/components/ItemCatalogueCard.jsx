@@ -31,7 +31,7 @@ function renderUniqueEffectDescription(item) {
         </span>
     )
     return parts.map((part, index) => (
-        <span key={index}>{part}{index < parts.length - 1 && effectArray}</span>
+        <span key={index}>{part}{index < parts.length - 1 && <>{effectArray}<span className="rarity-effect-unit"> %</span></>}</span>
     ))
 }
 
