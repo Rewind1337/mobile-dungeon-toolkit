@@ -275,8 +275,8 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                     <Button text={"Your Saved Items"} color={1} onClick={() => setItemSelectionModalMode(1)} />
                 </div>
                 {itemSelectionModalMode === 0 ?
-/* NOT ACTIVE    */ <ItemList setsRef={itemsRef.current.ITEM_SETS} extraHeight={75} filtersOffset={"65px"} headerText={"All Items"} itemsRef={itemsRef.current.BASE_ITEMS} itemType={itemSelectionType} heroAttributeRequirement={activeHero?.mainAttribute} setSelectedItemId={setSelectedItemId} /> :
-                    <ItemList setsRef={itemsRef.current.ITEM_SETS} extraHeight={75} filtersOffset={"65px"} savedItems headerText={"Saved Items"} itemsRef={savedItemsRef.current} itemType={itemSelectionType} heroAttributeRequirement={activeHero?.mainAttribute} setSelectedItemId={setSelectedSavedItemId} />
+/* NOT ACTIVE    */ <ItemList localSearch setsRef={itemsRef.current.ITEM_SETS} extraHeight={75} filtersOffset={"65px"} headerText={"All Items"} itemsRef={itemsRef.current.BASE_ITEMS} itemType={itemSelectionType} heroAttributeRequirement={activeHero?.mainAttribute} setSelectedItemId={setSelectedItemId} /> :
+                    <ItemList localSearch setsRef={itemsRef.current.ITEM_SETS} extraHeight={75} filtersOffset={"65px"} savedItems headerText={"Saved Items"} itemsRef={savedItemsRef.current} itemType={itemSelectionType} heroAttributeRequirement={activeHero?.mainAttribute} setSelectedItemId={setSelectedSavedItemId} />
                 }
             </Modal>
             <Modal position="right" isVisible={selectedItemId.slot !== null || selectedSavedItemId.slot !== null} onClose={() => { setItemSelectionVisible(false); clearItemSelection(); }}>
