@@ -233,7 +233,6 @@ function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null
                     columnGap={10}
                     className="hero-catalogue-grid-spacer"
                     rowClassName="hero-catalogue-grid-row"
-                    getItemKey={hero => hero.id}
                     renderItem={hero => <HeroCatalogueCard hero={hero} />}
                 />
             }
