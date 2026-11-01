@@ -125,7 +125,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                 <VirtualizedGrid
                     items={filteredItems}
                     scrollElementRef={listRef}
-                    minColumnWidth={100}
+                    minColumnWidth={110}
                     maxColumns={12}
                     estimatedRowHeight={170}
                     rowGap={8}
