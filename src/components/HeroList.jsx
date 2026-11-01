@@ -96,7 +96,6 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
                     items={filteredHeroes}
                     scrollElementRef={listRef}
                     minColumnWidth={110}
-                    maxColumns={12}
                     estimatedRowHeight={185}
                     rowGap={8}
                     columnGap={8}
