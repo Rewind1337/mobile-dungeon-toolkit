@@ -94,11 +94,13 @@ function VirtualizedGrid({
         [rows, columns]
     )
 
+    const getRowKey = useCallback(index => rowKeys[index] ?? index, [rowKeys])
+
     const virtualizer = useVirtualizer({
         count: rows.length,
         getScrollElement: () => scrollElementRef?.current ?? null,
         estimateSize: () => estimatedRowHeight,
-        getItemKey: index => rowKeys[index] ?? index,
+        getItemKey: getRowKey,
         overscan,
         gap: rowGap,
         scrollMargin,
