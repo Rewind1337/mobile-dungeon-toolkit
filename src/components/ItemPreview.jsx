@@ -5,11 +5,26 @@ import { DEFAULT_MASTERWORK_MUTATIONS, MASTERWORK_MUTATION_DEFINITIONS, PERK_DEF
 import { attributeSprites, iconSprites } from '../database/db_sprites.jsx'
 import ExpandSrc from '../sprites/expand.webp'
 import CrossSrc from '../sprites/cross.png'
+import DamagedSrc from '../sprites/buttons/damaged.webp'
+import DamagedBorderSrc from '../sprites/damaged_border.webp'
+import MasterworkSrc from '../sprites/masterwork.webp'
 
 import Button from './Button.jsx'
 import ItemPerk from './ItemPerk.jsx'
 
 import '../css/item.scss'
+
+const RARITY_ACCENT_COLORS = {
+    0: "#ddd0b2",
+    1: "#9de260",
+    2: "#0099ff",
+    3: "#9f5fff",
+    4: "#ffe900",
+    5: "#ffa100",
+    6: "#fd5d47",
+    7: "#7efffe",
+    8: "#9511a1"
+}
 
 const SLOT_INDEX_TO_NAME_MAP = {
     0: "WEAPONS",
@@ -238,18 +253,32 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
             </div>
             <div className='flex-col'>
                 <div className='flex-row'>
-                    <div className={"item card selected"} data-rarity={selectedRarity} data-type={itemObj.iconType}>
-                        <div className="item-icon"><img src={itemObj.iconSrc} draggable={false} /></div>
-                        <div className="flex-col">
-                            <div className="item-sprite"><img className="item-sprite-img" src={itemObj.itemSrc} draggable={false} /></div>
-                            <div className="input-wrapper">
-                                <input
-                                    type='number'
-                                    min='1'
-                                    className=''
-                                    value={selectedLevel}
-                                    onChange={event => setSelectedLevel(event.target.value)}
-                                />
+                    <div
+                        className={"item-preview-damaged-frame" + (selectedItemDamaged ? " is-damaged" : "")}
+                        style={{
+                            "--item-damage-color": RARITY_ACCENT_COLORS[selectedRarity] ?? "#ffffff",
+                            "--item-damage-mask": `url(${DamagedBorderSrc})`
+                        }}
+                    >
+                        {selectedItemDamaged && <div className="item-preview-damaged-effect" aria-hidden="true" />}
+                        <div className={"item card selected" + (selectedItemDamaged ? " is-damaged" : "")} data-rarity={selectedRarity} data-type={itemObj.iconType}>
+                            <div className="item-icon"><img src={itemObj.iconSrc} draggable={false} alt="" /></div>
+                            {selectedItemDamaged && (
+                                <div className="item-damaged" title="Damaged item — perk changes are locked" aria-label="Damaged item">
+                                    <img src={DamagedSrc} draggable={false} alt="" />
+                                </div>
+                            )}
+                            <div className="flex-col">
+                                <div className="item-sprite"><img className="item-sprite-img" src={itemObj.itemSrc} draggable={false} alt="" /></div>
+                                <div className="input-wrapper">
+                                    <input
+                                        type='number'
+                                        min='1'
+                                        className=''
+                                        value={selectedLevel}
+                                        onChange={event => setSelectedLevel(event.target.value)}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -279,22 +308,26 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                     </div>
                     <div className='flex-row masterwork-input-row'>
                     <Button text={"Masterwork - 1"} disabled={selectedMasterworkLevel <= 0} onClick={() => setSelectedMasterworkLevel(Math.max(0, Math.min(maxMasterworkLevel, Math.trunc(Number(selectedMasterworkLevel - 1)))))} color={1} />
-                        <input
-                            aria-label='Masterwork level'
-                            type='number'
-                            min='0'
-                            max={maxMasterworkLevel}
-                            step='1'
-                            value={selectedMasterworkLevel}
-                            onChange={event => {
-                                const value = event.target.value
-                                if (value === '') {
-                                    setSelectedMasterworkLevel(0)
-                                    return
-                                }
-                                setSelectedMasterworkLevel(Math.max(0, Math.min(maxMasterworkLevel, Math.trunc(Number(value) || 0))))
-                            }}
-                        />
+                        <div className="masterwork-art-control">
+                            <img className="masterwork-artwork" src={MasterworkSrc} alt="" draggable={false} />
+                            <input
+                                className="masterwork-level-input"
+                                aria-label='Masterwork level'
+                                type='number'
+                                min='0'
+                                max={maxMasterworkLevel}
+                                step='1'
+                                value={selectedMasterworkLevel}
+                                onChange={event => {
+                                    const value = event.target.value
+                                    if (value === '') {
+                                        setSelectedMasterworkLevel(0)
+                                        return
+                                    }
+                                    setSelectedMasterworkLevel(Math.max(0, Math.min(maxMasterworkLevel, Math.trunc(Number(value) || 0))))
+                                }}
+                            />
+                        </div>
                     <Button text={"Masterwork + 1"} disabled={selectedMasterworkLevel >= maxMasterworkLevel} onClick={() => setSelectedMasterworkLevel(Math.max(0, Math.min(maxMasterworkLevel, Math.trunc(Number(selectedMasterworkLevel + 1)))))} color={1} />
                     </div>
                     <div className='text masterwork-summary'>
