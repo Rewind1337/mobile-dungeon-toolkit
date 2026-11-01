@@ -4,6 +4,8 @@ import { itemSprites } from "../database/db_sprites.jsx"
 import Hero from "./Hero.jsx"
 import { TeamOverview, TeamHeroStats } from "./PageTeams.jsx"
 
+const EMPTY_TEAMS = []
+
 const EQUIPMENT_SLOTS = [
     EQUIPMENT_SLOT_DEFINITIONS.WEAPON,
     EQUIPMENT_SLOT_DEFINITIONS.HELMET,
@@ -68,7 +70,7 @@ function CombatTeamCard({ team, teams, selectedId, onTeamChange, savedHeroes, ti
 
 function SubPageCustomCombat({ savedHeroesRef, savedTeamsRef }) {
     const savedHeroes = Array.isArray(savedHeroesRef.current) ? savedHeroesRef.current : []
-    const teams = Array.isArray(savedTeamsRef.current) ? savedTeamsRef.current : []
+    const teams = Array.isArray(savedTeamsRef.current) ? savedTeamsRef.current : EMPTY_TEAMS
     const firstTeamId = teams.length > 0 ? String(teams[0].id) : ""
     const [teamOneId, setTeamOneId] = useState(firstTeamId)
     const [teamTwoId, setTeamTwoId] = useState(firstTeamId)
