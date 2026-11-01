@@ -8,6 +8,7 @@ import Modal from "./Modal.jsx"
 import { decodeHeroShareInput, restoreSharedHero } from "../utils/heroShare.js"
 import { clearSearchFromUrl } from "../js/search.jsx"
 import { ATTRIBUTE_DEFINITIONS } from "../database/enums.jsx"
+import { createSavedItemRecord } from "../js/ids.jsx"
 
 const isItemCompatibleWithHero = (item, hero) => {
     if (!item || !hero) return false
@@ -52,12 +53,36 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                 .filter(Number.isFinite)
         ) + 1
 
+        const nextSavedItems = { ...savedItemsRef.current }
+        const slotIndexToNameMap = {
+            0: "WEAPONS",
+            1: "HELMETS",
+            2: "ARMORS",
+            3: "NECKLACES",
+            4: "RINGS",
+            5: "OTHER"
+        }
+        for (const slotName of Object.values(slotIndexToNameMap)) {
+            nextSavedItems[slotName] = Array.isArray(nextSavedItems[slotName]) ? [...nextSavedItems[slotName]] : []
+        }
+
+        const importedItems = Array.from({ length: 6 }, (_, slotIndex) => {
+            const item = hero.items?.[slotIndex]
+            if (!item) return null
+            const slotArray = slotIndexToNameMap[Number(item.slot ?? slotIndex)]
+            if (!slotArray) return null
+            const savedItem = createSavedItemRecord(item)
+            nextSavedItems[slotArray] = [...nextSavedItems[slotArray], savedItem]
+            return savedItem
+        })
+
         const savedHero = {
             ...hero,
             saveId: nextSaveId,
-            items: Array.isArray(hero.items) ? [...hero.items] : []
+            items: importedItems
         }
 
+        savedItemsRef.current = nextSavedItems
         savedHeroesRef.current = [...savedHeroesRef.current, savedHero]
         setSavedHeroesRevision(revision => revision + 1)
         switchListPage(1)
