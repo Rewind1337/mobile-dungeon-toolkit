@@ -5,7 +5,7 @@ import { DEFAULT_MASTERWORK_MUTATIONS, MASTERWORK_MUTATION_DEFINITIONS, PERK_DEF
 import { attributeSprites, iconSprites } from '../database/db_sprites.jsx'
 import ExpandSrc from '../sprites/expand.webp'
 import CrossSrc from '../sprites/cross.png'
-import DamagedSrc from '../sprites/buttons/damaged.webp'
+import DamagedItemIndicator from './DamagedItemIndicator.jsx'
 import DamagedBorderSrc from '../sprites/damaged_border.webp'
 import MasterworkSrc from '../sprites/masterwork.webp'
 
@@ -264,9 +264,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                         <div className={"item card selected" + (selectedItemDamaged ? " is-damaged" : "")} data-rarity={selectedRarity} data-type={itemObj.iconType}>
                             <div className="item-icon"><img src={itemObj.iconSrc} draggable={false} alt="" /></div>
                             {selectedItemDamaged && (
-                                <div className="item-damaged" title="Damaged item — perk changes are locked" aria-label="Damaged item">
-                                    <img src={DamagedSrc} draggable={false} alt="" />
-                                </div>
+                                <DamagedItemIndicator loading="eager" />
                             )}
                             <div className="flex-col">
                                 <div className="item-sprite"><img className="item-sprite-img" src={itemObj.itemSrc} draggable={false} alt="" /></div>
