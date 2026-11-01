@@ -9,6 +9,7 @@ import { attributeSprites, heroSprites, itemSprites, statusSprites } from "../da
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import { getStatusPolarity } from "../js/statusPolarity.jsx"
 import { createTeamShareToken, decodeTeamShareInput, restoreSharedTeam } from "../utils/heroShare.js"
+import { createSavedItemRecord } from "../js/ids.jsx"
 
 const createDefaultTeams = () => [
     { id: 0, name: "Default Team", heroes: Array(5).fill(null) },
@@ -121,7 +122,31 @@ export function TeamOverview({ team, savedHeroes }) {
     )
 }
 
-function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
+const TEAM_BASE_STATS = [
+    ["health", "HP", "Health"],
+    ["attack", "ATK", "Attack"],
+    ["defence", "DEF", "Defence"],
+    ["agility", "AGI", "Agility"],
+]
+
+export function TeamHeroStats({ hero, slotIndex }) {
+    if (!hero) return null
+    return (
+        <div className="team-base-stat-summary" aria-label={hero.name + " base stats"}>
+            {TEAM_BASE_STATS.map(([key, label, fullLabel]) => {
+                const value = hero.stats?.[key]
+                const displayValue = Number.isFinite(Number(value)) ? Number(value).toLocaleString() : "—"
+                return (
+                    <span className="team-base-stat" key={key} title={hero.name + " · " + fullLabel}>
+                        <strong>{label}</strong><span>{displayValue}</span>
+                    </span>
+                )
+            })}
+        </div>
+    )
+}
+
+function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedItemsRef, manualSaveFunction }) {
     const { listHeight, listRef, events } = useDynamicList(165, true)
     const savedHeroes = Array.isArray(savedHeroesRef.current) ? savedHeroesRef.current : []
     const [teams, setTeams] = useState(() => normalizeTeams(savedTeamsRef.current))
@@ -242,29 +267,41 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, manualS
         const payload = decodeTeamShareInput(token)
         const restoredTeam = restoreSharedTeam(payload, heroesRef.current, itemsRef.current.BASE_ITEMS)
         const nextSavedHeroes = [...(savedHeroesRef.current ?? [])]
+        const nextSavedItems = { ...(savedItemsRef?.current ?? {}) }
+        const slotIndexToNameMap = { 0: "WEAPONS", 1: "HELMETS", 2: "ARMORS", 3: "NECKLACES", 4: "RINGS", 5: "OTHER" }
+        for (const slotName of Object.values(slotIndexToNameMap)) {
+            nextSavedItems[slotName] = Array.isArray(nextSavedItems[slotName]) ? [...nextSavedItems[slotName]] : []
+        }
+
         let nextSaveId = Math.max(-1, ...nextSavedHeroes.map(hero => Number(hero.saveId)).filter(Number.isFinite))
         const savedHeroIds = restoredTeam.heroes.map(hero => {
             if (!hero) return null
             nextSaveId += 1
-            nextSavedHeroes.push({
-                ...hero,
-                saveId: nextSaveId,
-                items: Array.isArray(hero.items) ? [...hero.items] : []
+            const importedItems = Array.from({ length: 6 }, (_, slotIndex) => {
+                const item = hero.items?.[slotIndex]
+                if (!item) return null
+                const slotArray = slotIndexToNameMap[Number(item.slot ?? slotIndex)]
+                if (!slotArray) return item
+                const savedItem = createSavedItemRecord(item)
+                nextSavedItems[slotArray] = [...nextSavedItems[slotArray], savedItem]
+                return savedItem
             })
+            nextSavedHeroes.push({ ...hero, saveId: nextSaveId, items: importedItems })
             return nextSaveId
         })
+
         savedHeroesRef.current = nextSavedHeroes
+        if (savedItemsRef) savedItemsRef.current = nextSavedItems
 
         const id = teams.reduce((max, team) => Math.max(max, team.id), -1) + 1
-        let name = restoredTeam.name || "Imported Team"
+        let name = "Imported Team"
         let copyNumber = 2
         while (teams.some(team => team.name.toLowerCase() === name.toLowerCase())) {
-            name = `${restoredTeam.name || "Imported Team"} (${copyNumber})`
+            name = "Imported Team (" + copyNumber + ")"
             copyNumber += 1
         }
         commitTeams([...teams, { id, name, heroes: savedHeroIds }])
     }
-
     const handleImportTeam = (input = teamImportInput) => {
         if (!String(input ?? "").trim()) return
         try {
@@ -309,7 +346,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, manualS
                     <header className="header-big">Saved Teams</header>
                     {teams.length === 0 && <p className="text">No teams yet. Create one to get started.</p>}
                     {teams.map(team => (
-                        <article className="team card flex-col" key={team.id}>
+                        <article className={"team card flex-col" + (collapsedTeamIds.has(team.id) ? " is-collapsed" : "")} key={team.id}>
                             <header className={"team-header" + (collapsedTeamIds.has(team.id) ? " is-collapsed" : "")}>
                                 <Button
                                     className="team-collapse-button"
@@ -337,6 +374,24 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, manualS
                                         />
                                     )}
                                 </h2>
+                                {collapsedTeamIds.has(team.id) && (
+                                    <div className="team-collapsed-heroes" aria-label={team.name + " heroes"}>
+                                        {team.heroes.map((saveId, slotIndex) => {
+                                            const hero = savedHeroes.find(savedHero => savedHero.saveId === saveId)
+                                            if (!hero) return null
+                                            return (
+                                                <span className="catalogue-chip text team-collapsed-hero-chip"
+                                                    key={team.id + "-collapsed-hero-" + slotIndex}
+                                                    title={hero.name + " · Slot " + (slotIndex + 1)}>
+                                                    <img className="catalogue-chip-icon"
+                                                        src={hero.heroSrc ?? heroSprites[hero.id] ?? heroSprites["null"]}
+                                                        alt="" loading="lazy" decoding="async" draggable={false} />
+                                                    <span>{hero.name}</span>
+                                                </span>
+                                            )
+                                        })}
+                                    </div>
+                                )}
                                 {!collapsedTeamIds.has(team.id) && (
                                     <div className="team-actions">
                                         <Button text="Clear Team" color={4} onClick={() => clearTeam(team.id)} />
@@ -346,24 +401,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, manualS
                                     </div>
                                 )}
                             </header>
-                            {collapsedTeamIds.has(team.id) ? (
-                                <div className="team-collapsed-heroes" aria-label={`${team.name} heroes`}>
-                                    {team.heroes.map((saveId, slotIndex) => {
-                                        const hero = savedHeroes.find(savedHero => savedHero.saveId === saveId)
-                                        if (!hero) return null
-                                        return (
-                                            <span className="catalogue-chip text team-collapsed-hero-chip"
-                                                key={`${team.id}-collapsed-hero-${slotIndex}`}
-                                                title={`${hero.name} · Slot ${slotIndex + 1}`}>
-                                                <img className="catalogue-chip-icon"
-                                                    src={hero.heroSrc ?? heroSprites[hero.id] ?? heroSprites["null"]}
-                                                    alt="" loading="lazy" decoding="async" draggable={false} />
-                                                <span>{hero.name}</span>
-                                            </span>
-                                        )
-                                    })}
-                                </div>
-                            ) : (
+                            {!collapsedTeamIds.has(team.id) && (
                             <div className="team-content">
                                 <div className="team-heroes-column">
                                     <div className="team-hero-slots" aria-label={`${team.name} hero slots`}>
@@ -403,6 +441,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, manualS
                                                                         ))}
                                                                     </div>
                                                             </div>
+                                                            <TeamHeroStats hero={hero} slotIndex={slotIndex} />
                                                         </>
                                                         : <EmptyHero onClick={() => openSlotPicker(team, slotIndex)} />
                                                     }
