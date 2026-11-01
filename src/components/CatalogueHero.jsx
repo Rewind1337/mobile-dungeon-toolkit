@@ -8,7 +8,7 @@ import {
 } from "../database/enums.jsx"
 import Button from "./Button.jsx"
 import Hero from "./Hero.jsx"
-import { attributeSprites, roleSprites } from "../database/db_sprites.jsx"
+import { attributeSprites, elementSprites, roleSprites } from "../database/db_sprites.jsx"
 import { getSearchableValues, matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import { humanize } from "../js/util.jsx"
 import BannerCatalogueList from "./BannerCatalogueList.jsx"
@@ -24,6 +24,7 @@ const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
 function HeroCatalogueCard({ hero }) {
     const rarity = getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? "Unknown rarity"
     const attribute = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? "Unknown attribute"
+    const element = getEnumNameById(ELEMENT_DEFINITIONS, Number(hero.element)) ?? "Unknown element"
     const role = getEnumNameById(ROLE_DEFINITIONS, Number(hero.role)) ?? "Unknown role"
 
     const skills = Array.isArray(hero.skills) ? hero.skills : []
@@ -41,6 +42,10 @@ function HeroCatalogueCard({ hero }) {
                     <div className="hero-catalogue-name text" data-rarity={hero.rarity}>{hero.name}</div>
                     <div className="hero-catalogue-meta-row">
                         <span className="catalogue-chip catalogue-chip-rarity text" data-rarity={hero.rarity}>{humanize(rarity)}</span>
+                        <span className={`catalogue-chip text catalogue-chip-element-${String(element).toLowerCase()}`}>
+                            {elementSprites[Number(hero.element)] && <img className="catalogue-chip-icon" src={elementSprites[Number(hero.element)]} alt="" />}
+                            {humanize(element)}
+                        </span>
                         <span className={`catalogue-chip catalogue-chip-attribute catalogue-chip-attribute-${String(attribute).toLowerCase()} text`}>
                             {typeof attributeSprites[Number(hero.mainAttribute)] === "string" && <img className="catalogue-chip-icon" src={attributeSprites[Number(hero.mainAttribute)]} alt="" />}
                             {humanize(attribute)}
