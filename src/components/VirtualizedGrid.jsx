@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState }
 import { useVirtualizer } from "@tanstack/react-virtual"
 
 /**
@@ -34,33 +34,39 @@ function VirtualizedGrid({
         [items]
     )
 
-    useLayoutEffect(() => {
-        const measureLayout = () => {
-            const spacer = spacerRef.current
-            if (!spacer) return
+    const measureLayout = useCallback(() => {
+        const spacer = spacerRef.current
+        if (!spacer) return
 
-            const width = spacer.clientWidth
-            if (width > 0) {
-                const nextColumns = Math.max(1, Math.min(
-                    maxColumns,
-                    Math.floor((width + columnGap) / (minColumnWidth + columnGap))
-                ))
-                setColumns(current => current === nextColumns ? current : nextColumns)
-            }
-
-            const scrollElement = scrollElementRef?.current
-            if (scrollElement) {
-                const spacerRect = spacer.getBoundingClientRect()
-                const scrollRect = scrollElement.getBoundingClientRect()
-                const nextMargin = Math.max(
-                    0,
-                    spacerRect.top - scrollRect.top - scrollElement.clientTop + scrollElement.scrollTop
-                )
-                setScrollMargin(current => Math.abs(current - nextMargin) < 1 ? current : nextMargin)
-            }
+        const width = spacer.clientWidth
+        if (width > 0) {
+            const nextColumns = Math.max(1, Math.min(
+                maxColumns,
+                Math.floor((width + columnGap) / (minColumnWidth + columnGap))
+            ))
+            setColumns(current => current === nextColumns ? current : nextColumns)
         }
 
+        const scrollElement = scrollElementRef?.current
+        if (scrollElement) {
+            const spacerRect = spacer.getBoundingClientRect()
+            const scrollRect = scrollElement.getBoundingClientRect()
+            const nextMargin = Math.max(
+                0,
+                spacerRect.top - scrollRect.top - scrollElement.clientTop + scrollElement.scrollTop
+            )
+            setScrollMargin(current => Math.abs(current - nextMargin) < 1 ? current : nextMargin)
+        }
+    }, [columnGap, maxColumns, minColumnWidth, scrollElementRef])
+
+    // Recalculate on parent renders too: expanding the filter controls above a
+    // catalogue changes its scrollMargin even if the scroll pane itself stays
+    // the same size.
+    useLayoutEffect(() => {
         measureLayout()
+    })
+
+    useLayoutEffect(() => {
         const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(measureLayout)
         if (spacerRef.current) observer?.observe(spacerRef.current)
         if (scrollElementRef?.current && scrollElementRef.current !== spacerRef.current) {
@@ -71,7 +77,7 @@ function VirtualizedGrid({
             observer?.disconnect()
             window.removeEventListener("resize", measureLayout)
         }
-    }, [columnGap, maxColumns, minColumnWidth, scrollElementRef])
+    }, [measureLayout, scrollElementRef])
 
     const rows = useMemo(() => {
         const result = []
@@ -115,7 +121,7 @@ function VirtualizedGrid({
             style={{
                 position: "relative",
                 width: "100%",
-                height: Math.max(0, virtualizer.getTotalSize() - scrollMargin)
+                height: virtualizer.getTotalSize()
             }}
         >
             {virtualizer.getVirtualItems().map(virtualRow => (
