@@ -428,9 +428,12 @@
   display: inline-flex;
   align-items: stretch;
   justify-content: center;
-  padding: 7px;
+  padding: 0;
   isolation: isolate;
   min-width: 0;
+}
+.item-preview-damaged-frame.is-damaged {
+  padding: 7px;
 }
 .item-preview-damaged-frame.is-damaged .item-preview-damaged-effect {
   position: absolute;
