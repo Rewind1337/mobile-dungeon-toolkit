@@ -8,6 +8,7 @@ import ItemCatalogueCard from "./ItemCatalogueCard.jsx"
 import SetCatalogueCard from "./SetCatalogueCard.jsx"
 import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"
 import Button from "./Button.jsx"
+import VirtualizedGrid from "./VirtualizedGrid.jsx"
 
 import "../css/item.scss"
 import "../css/infos.scss"
@@ -86,7 +87,7 @@ function CatalogueFilters({
     )
 }
 
-function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter = null, onViewChange }) {
+function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter = null, onViewChange, scrollElementRef }) {
     const [view, setView] = useState(initialView)
     const [search, setSearch, commitSearch] = useUrlSearch()
     const changeView = nextView => {
@@ -211,6 +212,11 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
         return matchesSearch && matchesSource && matchesLocation
     }), [setsRef, search, sourceFilter, locationFilter, itemsBySet])
 
+    const sortedItems = useMemo(
+        () => filteredItems.slice().sort((a, b) => a.name.localeCompare(b.name)),
+        [filteredItems]
+    )
+
     const clearFilters = () => {
         setSearch("")
         commitSearch("")
@@ -262,15 +268,22 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
                 <div className="catalogue-results">
                     {filteredItems.length === 0
                         ? <p className="catalogue-empty card">No items match these filters.</p>
-                        : <div className="catalogue-item-grid">
-                            {filteredItems
-                                .slice()
-                                .sort((a, b) => a.name.localeCompare(b.name))
-                                .map(item => {
-                                    const set = item.set ? setsById.get(item.set) ?? null : null
-                                    return <ItemCatalogueCard key={item.id} item={item} set={set} />
-                                })}
-                        </div>
+                        : <VirtualizedGrid
+                            items={sortedItems}
+                            scrollElementRef={scrollElementRef}
+                            minColumnWidth={340}
+                            maxColumns={3}
+                            estimatedRowHeight={390}
+                            rowGap={10}
+                            columnGap={10}
+                            className="catalogue-item-grid-spacer"
+                            rowClassName="catalogue-item-grid-row"
+                            getItemKey={item => `${item.slot}-${item.id}`}
+                            renderItem={item => {
+                                const set = item.set ? setsById.get(item.set) ?? null : null
+                                return <ItemCatalogueCard item={item} set={set} />
+                            }}
+                        />
                     }
                 </div>
             )}
@@ -279,9 +292,19 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
                 <div className="catalogue-set-grid">
                     {filteredSets.length === 0
                         ? <p className="catalogue-empty card">No sets match these filters.</p>
-                        : filteredSets.map(set => (
-                            <SetCatalogueCard key={set.id} set={set} pieces={itemsBySet.get(set.id) ?? []} />
-                        ))
+                        : <VirtualizedGrid
+                            items={filteredSets}
+                            scrollElementRef={scrollElementRef}
+                            minColumnWidth={340}
+                            maxColumns={3}
+                            estimatedRowHeight={440}
+                            rowGap={10}
+                            columnGap={10}
+                            className="catalogue-set-grid-spacer"
+                            rowClassName="catalogue-set-grid-row"
+                            getItemKey={set => set.id}
+                            renderItem={set => <SetCatalogueCard set={set} pieces={itemsBySet.get(set.id) ?? []} />}
+                        />
                     }
                 </div>
             )}
