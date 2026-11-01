@@ -15,10 +15,10 @@ function formatMetadataValue(value) {
     return String(value)
 }
 
-export function SimulatorElementChips({ elementIds = [] }) {
+export function SimulatorElementChips({ elementIds = [], size = "default" }) {
     if (!Array.isArray(elementIds) || elementIds.length === 0) return null
     return (
-        <div className="simulator-element-chips" aria-label="Elements">
+        <div className={"simulator-element-chips" + (size === "large" ? " is-large" : "")} aria-label="Elements">
             {elementIds.map(id => {
                 const name = getEnumNameById(ELEMENT_DEFINITIONS, Number(id)) ?? "Unknown"
                 const key = String(name).toLowerCase()
