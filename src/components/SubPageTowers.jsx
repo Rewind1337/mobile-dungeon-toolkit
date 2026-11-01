@@ -33,7 +33,7 @@ function SubPageTowers() {
             <section className="card w-100 simulator-selection-detail">
                 {selectedTower ? (
                     <>
-                        <SimulatorEntryDetails entry={selectedTower} entryLabel="Tower" />
+                        <SimulatorEntryDetails entry={selectedTower} title={"Tower " + (selectedTower.id + 1) + " - " + selectedTower.name} emptyMessage="No tower stage entries have been defined yet." />
                     </>
                 ) : (
                     <div className="header-big">Select a Tower</div>
