@@ -16,7 +16,7 @@ const SIMULATOR_TABS = [
     ['custom', 'Custom Combat', 4],
 ]
 
-function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedHeroesRef, itemsRef, savedTeamsRef, savedItemsRef, manualSaveFunction }) {
+function PageSimulators({ activeTab = 'overview', onTabChange, savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
     return (
         <>
             <div className="sub-nav-bar flex-row">
