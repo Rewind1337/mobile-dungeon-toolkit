@@ -486,3 +486,47 @@
     font-size: 16px;
   }
 }
+
+
+/* Keep the Hero Preview's skills, hero, and talents in stable columns. */
+.hero-preview .skills-talents-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content minmax(0, 1fr);
+  align-items: start;
+  gap: V.$gap;
+}
+.hero-preview .skills-talents-layout > .skills {
+  grid-column: 1;
+  width: 100%;
+  min-width: 0;
+}
+.hero-preview .skills-talents-layout > .flex-col.hero {
+  grid-column: 2;
+  width: max-content;
+  max-width: 100%;
+  justify-self: center;
+}
+.hero-preview .skills-talents-layout > .talents {
+  grid-column: 3;
+  width: 100%;
+  min-width: 0;
+}
+
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .hero-preview .skills-talents-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .hero-preview .skills-talents-layout > .flex-col.hero {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: center;
+  }
+  .hero-preview .skills-talents-layout > .skills {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .hero-preview .skills-talents-layout > .talents {
+    grid-column: 1;
+    grid-row: 3;
+  }
+}
