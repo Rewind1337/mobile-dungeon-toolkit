@@ -218,19 +218,25 @@
   margin-bottom: V.$gap-small;
 }
 
-/* Hero preview talent rows use a fixed three-column layout rather than card width helpers. */
+/* Hero preview talent rows use a full-width two-column layout for left/right pairs. */
 .hero-preview-talent-grid {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  gap: V.$gap-small;
+  gap: V.$gap;
 }
 .hero-preview-talent-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: stretch;
-  gap: V.$gap-small;
+  gap: V.$gap;
   min-width: 0;
+}
+.hero-preview-talent-row.has-two-side-talents {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.hero-preview-talent-row.has-two-side-talents .hero-preview-talent-right {
+  grid-column: 2;
 }
 .hero-preview-talent-entry {
   min-width: 0;
@@ -270,7 +276,7 @@
 
 @include M.media-query-max(V.$bp-mobile) {
   .hero-preview-talent-grid { min-width: 0; }
-  .hero-preview-talent-row { gap: 4px; }
+  .hero-preview-talent-row { gap: V.$gap-small; }
   .hero-preview-talent-entry .talent-catalogue-name { font-size: V.$font-size-small; }
 }
 
