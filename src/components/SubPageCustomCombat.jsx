@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { EQUIPMENT_SLOT_DEFINITIONS } from "../database/enums.jsx"
 import { itemSprites } from "../database/db_sprites.jsx"
 import Hero from "./Hero.jsx"
-import { TeamOverview } from "./PageTeams.jsx"
+import { TeamOverview, TeamHeroStats } from "./PageTeams.jsx"
 
 const EQUIPMENT_SLOTS = [
     EQUIPMENT_SLOT_DEFINITIONS.WEAPON,
@@ -51,6 +51,7 @@ function CombatTeamCard({ team, teams, selectedId, onTeamChange, savedHeroes, ti
                                                 })}
                                             </div>
                                         </div>
+                                        <TeamHeroStats hero={hero} slotIndex={slotIndex} />
                                     </>
                                 ) : (
                                     <div className="custom-combat-empty-slot text">Empty Slot</div>
