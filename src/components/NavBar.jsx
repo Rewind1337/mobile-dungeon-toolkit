@@ -16,7 +16,7 @@ function NavBar({ switchTabTo }) {
             </div>
             <div className='nav-right flex-row'>
                 <Button disabled text={""} color={3} />
-                <Button onMouseDown={() => { switchTabTo("simulator") }} text={"Simulators"} color={4} />
+                <Button disabled onMouseDown={() => { switchTabTo("simulator") }} text={"Simulators"} color={4} />
                 <Button onMouseDown={() => { switchTabTo("wiki") }} text={"Wiki"} color={5} />
             </div>
         </div>
