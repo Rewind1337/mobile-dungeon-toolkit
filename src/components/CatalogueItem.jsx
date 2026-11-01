@@ -289,7 +289,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
             )}
 
             {view === "sets" && (
-                <div className="catalogue-set-grid">
+                <div className="catalogue-results">
                     {filteredSets.length === 0
                         ? <p className="catalogue-empty card">No sets match these filters.</p>
                         : <VirtualizedGrid
