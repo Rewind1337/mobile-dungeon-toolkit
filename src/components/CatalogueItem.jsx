@@ -278,7 +278,6 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
                             columnGap={10}
                             className="catalogue-item-grid-spacer"
                             rowClassName="catalogue-item-grid-row"
-                            getItemKey={item => `${item.slot}-${item.id}`}
                             renderItem={item => {
                                 const set = item.set ? setsById.get(item.set) ?? null : null
                                 return <ItemCatalogueCard item={item} set={set} />
@@ -302,7 +301,6 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
                             columnGap={10}
                             className="catalogue-set-grid-spacer"
                             rowClassName="catalogue-set-grid-row"
-                            getItemKey={set => set.id}
                             renderItem={set => <SetCatalogueCard set={set} pieces={itemsBySet.get(set.id) ?? []} />}
                         />
                     }
