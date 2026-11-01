@@ -755,8 +755,6 @@ body::after {
 }
 
 .team {
-  min-height: 220px;
-
   &:last-child {
     min-height: 40px;
   }
@@ -1982,10 +1980,11 @@ input[type="number"] {
 .team-header .team-name-input,
 .team-name-display {
   font-family: V.$font-family-stats;
-  font-size: V.$font-size-small;
+  font-size: V.$font-size-header;
   font-weight: 400;
   line-height: 1.2;
   text-shadow: inherit;
+  text-indent: 4px;
 }
 .team-header.is-collapsed {
   grid-template-columns: auto auto minmax(0, 1fr);
@@ -2000,7 +1999,6 @@ input[type="number"] {
 .team-name-display {
   display: block;
   max-width: min(28vw, 260px);
-  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

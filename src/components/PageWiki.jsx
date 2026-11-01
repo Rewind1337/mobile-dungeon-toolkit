@@ -131,7 +131,7 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
         <section className="info-overview">
             <header className="catalogue-header info-overview-heading">
                 <div className="catalogue-heading-copy">
-                    <h1 className="catalogue-title header-big">Wiki</h1>
+                    <div className="catalogue-title header-big">Wiki</div>
                     <p className="catalogue-description text">
                         Explore the heroes, banners, equipment, gems, resources, perks, skills, talents, and status effects tracked by the toolkit.
                         Use the catalogue navigation above to browse each collection.
@@ -139,62 +139,67 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
                 </div>
             </header>
 
-            <section className="info-overview-breakdown-card info-overview-data-card card card-dark card-static">
-                <h3 className="header info-overview-breakdown-title">Data Overview</h3>
-                <div className="catalogue-overview-stats">
-                    <Stat label="Items" value={itemCount} />
-                    <Stat label="Item sets" value={sets.length} />
-                    <Stat label="Heroes" value={heroes.length} />
-                    <Stat label="Banners" value={BANNER_DATA.length} />
-                    <Stat label="Skills" value={skillCount} />
-                    <Stat label="Talent entries" value={talentCount} />
-                    <Stat label="Perks" value={Object.keys(PERK_DEFINITIONS).length} />
-                    <Stat label="Status effects" value={Object.keys(STATUS_EFFECT_DEFINITIONS).length} />
-                    <Stat label="Resources" value={RESOURCE_COUNT} />
-                    <Stat label="Gem types" value={GEM_TYPE_COUNT} />
+            <section className="info-overview-section card card-static">
+                <div className="info-overview-section-heading">
+                    <h2 className="header">Data Overview</h2>
+                    <p className="text">Distribution of the currently loaded data.</p>
                 </div>
+                <section className="info-overview-breakdown-card info-overview-data-card card card-static">
+                    <div className="catalogue-overview-stats">
+                        <Stat label="Items" value={itemCount} />
+                        <Stat label="Item sets" value={sets.length} />
+                        <Stat label="Heroes" value={heroes.length} />
+                        <Stat label="Banners" value={BANNER_DATA.length} />
+                        <Stat label="Skills" value={skillCount} />
+                        <Stat label="Talent entries" value={talentCount} />
+                        <Stat label="Perks" value={Object.keys(PERK_DEFINITIONS).length} />
+                        <Stat label="Status Effects" value={Object.keys(STATUS_EFFECT_DEFINITIONS).length} />
+                        <Stat label="Resources" value={RESOURCE_COUNT} />
+                        <Stat label="Gem types" value={GEM_TYPE_COUNT} />
+                    </div>
+                </section>
             </section>
 
-            <section className="info-overview-section">
+            <section className="info-overview-section card card-static">
                 <div className="info-overview-section-heading">
                     <h2 className="header">Hero Overview</h2>
                     <p className="text">Distribution of the currently loaded hero data.</p>
                 </div>
                 <div className="info-overview-breakdown info-overview-hero-breakdown">
-                    <section className="info-overview-breakdown-card card card-dark card-static">
+                    <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By element</h3>
                         <div className="catalogue-overview-slot-list">{rows(heroCountBy("element", ELEMENT_DEFINITIONS, ["Fire", "Water", "Nature", "Light", "Shadow"]), "element", id => onNavigate?.("hero-catalogue", { element: id }))}</div>
                     </section>
-                    <section className="info-overview-breakdown-card card card-dark card-static">
+                    <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By rarity</h3>
                         <div className="catalogue-overview-slot-list">{rows(heroCountBy("rarity", RARITY_DEFINITIONS, ["Uncommon", "Rare", "Epic", "Legendary"]), "rarity", id => onNavigate?.("hero-catalogue", { rarity: id }))}</div>
                     </section>
-                    <section className="info-overview-breakdown-card card card-dark card-static">
+                    <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By role</h3>
                         <div className="catalogue-overview-slot-list">{rows(heroCountBy("role", ROLE_DEFINITIONS), "role", id => onNavigate?.("hero-catalogue", { role: id }))}</div>
                     </section>
-                    <section className="info-overview-breakdown-card card card-dark card-static">
+                    <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By main attribute</h3>
                         <div className="catalogue-overview-slot-list">{rows(heroCountBy("mainAttribute", ATTRIBUTE_DEFINITIONS), "attribute", id => onNavigate?.("hero-catalogue", { attribute: id }))}</div>
                     </section>
                 </div>
             </section>
 
-            <section className="info-overview-section">
+            <section className="info-overview-section card card-static">
                 <div className="info-overview-section-heading">
                     <h2 className="header">Item Overview</h2>
                     <p className="text">Distribution of the currently loaded item database.</p>
                 </div>
                 <div className="info-overview-breakdown info-overview-item-breakdown">
-                    <section className="info-overview-breakdown-card card card-dark card-static">
+                    <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By slot</h3>
                         <div className="catalogue-overview-slot-list">{rows(itemCountBy("slot", EQUIPMENT_SLOT_DEFINITIONS), "slot", id => onNavigate?.("item-catalogue", { slot: id }))}</div>
                     </section>
-                    <section className="info-overview-breakdown-card card card-dark card-static">
+                    <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By main attribute</h3>
                         <div className="catalogue-overview-slot-list">{rows(itemCountBy("mainAttribute", PRIMARY_STAT_DEFINITIONS), "primary-stat", id => onNavigate?.("item-catalogue", { attribute: id }))}</div>
                     </section>
-                    <section className="info-overview-breakdown-card card card-dark card-static">
+                    <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">By drop source</h3>
                         <div className="catalogue-overview-slot-list">
                             <div className="catalogue-overview-slot card"><span className="text">Dungeon drops</span><span className="header">{dungeonDropCount}</span></div>
