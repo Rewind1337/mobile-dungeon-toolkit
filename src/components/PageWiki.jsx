@@ -142,16 +142,16 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
             <section className="info-overview-breakdown-card info-overview-data-card card card-dark card-static">
                 <h3 className="header info-overview-breakdown-title">Data Overview</h3>
                 <div className="catalogue-overview-stats">
-                <Stat label="Items" value={itemCount} />
-                <Stat label="Item sets" value={sets.length} />
-                <Stat label="Heroes" value={heroes.length} />
-                <Stat label="Banners" value={BANNER_DATA.length} />
-                <Stat label="Skills" value={skillCount} />
-                <Stat label="Talent entries" value={talentCount} />
-                <Stat label="Perks" value={Object.keys(PERK_DEFINITIONS).length} />
-                <Stat label="Status effects" value={Object.keys(STATUS_EFFECT_DEFINITIONS).length} />
-                <Stat label="Resources" value={RESOURCE_COUNT} />
-                <Stat label="Gem types" value={GEM_TYPE_COUNT} />
+                    <Stat label="Items" value={itemCount} />
+                    <Stat label="Item sets" value={sets.length} />
+                    <Stat label="Heroes" value={heroes.length} />
+                    <Stat label="Banners" value={BANNER_DATA.length} />
+                    <Stat label="Skills" value={skillCount} />
+                    <Stat label="Talent entries" value={talentCount} />
+                    <Stat label="Perks" value={Object.keys(PERK_DEFINITIONS).length} />
+                    <Stat label="Status effects" value={Object.keys(STATUS_EFFECT_DEFINITIONS).length} />
+                    <Stat label="Resources" value={RESOURCE_COUNT} />
+                    <Stat label="Gem types" value={GEM_TYPE_COUNT} />
                 </div>
             </section>
 
