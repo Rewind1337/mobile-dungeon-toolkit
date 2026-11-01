@@ -82,7 +82,7 @@ function SubPageCustomCombat({ savedHeroesRef, savedTeamsRef }) {
     const teamTwo = teams.find(team => String(team.id) === teamTwoId) ?? null
 
     return (
-        <main className="page flex-col w-100 custom-combat-page">
+        <main className="page flex-col w-100 card custom-combat-page">
             <header className="card custom-combat-heading">
                 <h1 className="header-big">Custom Combat</h1>
                 <p className="text">Choose the two saved teams that should face each other. The same team can be selected for both sides.</p>
