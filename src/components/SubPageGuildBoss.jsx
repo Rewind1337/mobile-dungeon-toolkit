@@ -1,11 +1,10 @@
 import { useState } from "react"
-import { elementSprites } from "../database/db_sprites.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
-import { SimulatorEntryDetails } from "./SimulatorEntryList.jsx"
+import { SimulatorEntryDetails, SimulatorElementChips } from "./SimulatorEntryList.jsx"
 
 const GUILD_BOSSES = [
     { id: 0, name: "Elemental Weaver", elementIds: [0, 1, 2] },
-    { id: 1, name: "Equinox", elementIds: [2, 0, 1] },
+    { id: 1, name: "Equinox", elementIds: [4, 3] },
     { id: 2, name: "Star Breaker", elementIds: [5] },
 ]
 
@@ -22,9 +21,7 @@ function SubPageGuildBoss() {
                         <button type="button" className="guildboss card flex-col" data-id={boss.id}
                             key={boss.id} onClick={() => setSelectedGuildBoss(boss)}>
                             <span className="header">{boss.name}</span>
-                            <span className="header elements">
-                                {boss.elementIds.map(id => <img key={id} src={elementSprites[id]} alt="" />)}
-                            </span>
+                            <SimulatorElementChips elementIds={boss.elementIds} />
                         </button>
                     ))}
                 </div>
