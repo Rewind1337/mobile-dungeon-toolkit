@@ -15,6 +15,7 @@ import BannerCatalogueList from "./BannerCatalogueList.jsx"
 import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"
 import SkillCatalogueCard from "./SkillCatalogueCard.jsx"
 import TalentCatalogueCard from "./TalentCatalogueCard.jsx"
+import VirtualizedGrid from "./VirtualizedGrid.jsx"
 import "../css/infos_heroes.scss"
 
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
@@ -85,7 +86,7 @@ function HeroCatalogueCard({ hero }) {
 }
 
 
-function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null, onViewChange }) {
+function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null, onViewChange, scrollElementRef }) {
     const [search, setSearch, commitSearch] = useUrlSearch()
     const [rarityFilter, setRarityFilter] = useState("all")
     const [attributeFilter, setAttributeFilter] = useState("all")
@@ -222,9 +223,19 @@ function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null
 
             {filteredHeroes.length === 0
                 ? <p className="catalogue-empty card">No heroes match these filters.</p>
-                : <div className="hero-catalogue-grid">
-                    {filteredHeroes.map(hero => <HeroCatalogueCard key={hero.id} hero={hero} />)}
-                </div>
+                : <VirtualizedGrid
+                    items={filteredHeroes}
+                    scrollElementRef={scrollElementRef}
+                    minColumnWidth={340}
+                    maxColumns={3}
+                    estimatedRowHeight={520}
+                    rowGap={10}
+                    columnGap={10}
+                    className="hero-catalogue-grid-spacer"
+                    rowClassName="hero-catalogue-grid-row"
+                    getItemKey={hero => hero.id}
+                    renderItem={hero => <HeroCatalogueCard hero={hero} />}
+                />
             }
                 </>
             )}
