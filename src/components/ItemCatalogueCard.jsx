@@ -1,4 +1,5 @@
 import { attributeSprites, iconSprites } from "../database/db_sprites.jsx"
+import { RARITY_DEFINITIONS } from "../database/enums.jsx"
 import { humanize } from "../js/util.jsx"
 import Item from "./Item.jsx"
 import CataloguePerkList from "./CataloguePerkList.jsx"
@@ -6,6 +7,33 @@ import { ATTRIBUTE_ICON_KEYS, SLOT_ICON_KEYS, getAttributeRequirementLabel, getD
 import "../css/item.scss"
 import "../css/infos.scss"
 import "../css/infos_items.scss"
+
+function renderUniqueEffectDescription(item) {
+    const description = item.unique?.description
+    if (!description) return null
+    const parts = description.split("$e")
+    if (parts.length === 1) return description
+    const values = Array.isArray(item.unique?.rarityEffect) ? item.unique.rarityEffect : []
+    const effectArray = (
+        <span className="rarity-effect-array">
+            <span className="rarity-effect-bracket">[</span>
+            {values.map((value, index) => (
+                <span key={index}>
+                    {index > 0 && <span className="rarity-effect-separator">, </span>}
+                    <span className="rarity-effect-value" data-rarity={RARITY_DEFINITIONS.RARE.id + index}>
+                        {Number(value - 1).toFixed(2)}
+                    </span>
+                </span>
+            ))}
+            {values.length > 0 && <span className="rarity-effect-separator">, </span>}
+            <span className="rarity-effect-unknown">?</span>
+            <span className="rarity-effect-bracket">]</span>
+        </span>
+    )
+    return parts.map((part, index) => (
+        <span key={index}>{part}{index < parts.length - 1 && effectArray}</span>
+    ))
+}
 
 export default function ItemCatalogueCard({ item, set }) {
     const statuses = getEffectStatuses(item)
@@ -50,7 +78,7 @@ export default function ItemCatalogueCard({ item, set }) {
                         )}
                         <div className="text">Unique Effect</div>
                     </div>
-                    <p className="catalogue-effect-description text">{effectDescription}</p>
+                    <p className="catalogue-effect-description text">{renderUniqueEffectDescription(item)}</p>
                 </section>
             )}
 
