@@ -2171,3 +2171,86 @@ input[type="number"] {
   .custom-combat-team-picker { max-width: 100%; }
 }
 
+
+/* Virtualized catalogue list and grid primitives. */
+.virtualized-list-scroll {
+  display: block;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.virtualized-grid-spacer {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+.virtualized-grid-row,
+.virtualized-grid-cell {
+  min-width: 0;
+}
+.hero-list.virtualized-list-scroll .virtualized-grid-row > .virtualized-grid-cell > .hero,
+.item-list.virtualized-list-scroll .virtualized-grid-row > .virtualized-grid-cell > .item {
+  width: max-content;
+  max-width: 100%;
+  justify-self: center;
+  margin-inline: auto;
+}
+
+/* Text starts at a consistent inset across every form control. */
+input,
+select {
+  text-indent: 4px;
+}
+
+/* Responsive previews establish independent query containers, not viewport-bound breakpoints. */
+.hero-preview-pane {
+  container-name: hero-preview-pane;
+  container-type: inline-size;
+  min-width: 0;
+}
+.item-preview-pane {
+  container-name: item-preview-pane;
+  container-type: inline-size;
+  min-width: 0;
+}
+
+/* Consistent element colours across Guild Hunt and the hero catalogue. */
+.catalogue-chip-element-fire {
+  color: #ffc0a8;
+  border-color: rgba(235, 104, 64, 0.78);
+  background: linear-gradient(135deg, rgba(135, 42, 22, 0.38), rgba(67, 20, 15, 0.28));
+  box-shadow: inset 0 0 0 1px rgba(255, 170, 135, 0.1);
+}
+.catalogue-chip-element-water {
+  color: #b8dfff;
+  border-color: rgba(89, 163, 235, 0.8);
+  background: linear-gradient(135deg, rgba(31, 83, 138, 0.42), rgba(12, 37, 74, 0.3));
+}
+.catalogue-chip-element-nature {
+  color: #c5f0a9;
+  border-color: rgba(120, 190, 91, 0.8);
+  background: linear-gradient(135deg, rgba(49, 105, 40, 0.4), rgba(20, 58, 27, 0.3));
+}
+.catalogue-chip-element-light {
+  color: #fff0a6;
+  border-color: rgba(239, 211, 104, 0.85);
+  background: linear-gradient(135deg, rgba(135, 111, 31, 0.4), rgba(75, 58, 17, 0.28));
+}
+.catalogue-chip-element-shadow {
+  color: #dfc1ff;
+  border-color: rgba(170, 119, 225, 0.82);
+  background: linear-gradient(135deg, rgba(91, 48, 135, 0.46), rgba(43, 20, 69, 0.34));
+  box-shadow: inset 0 0 0 1px rgba(205, 165, 255, 0.1);
+}
+.catalogue-chip-element-void {
+  color: #f3f6fa;
+  border-color: rgba(224, 234, 245, 0.9);
+  background: linear-gradient(135deg, rgba(190, 205, 220, 0.22), rgba(90, 105, 120, 0.18));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16), 0 0 7px rgba(220, 235, 255, 0.2);
+}
+.guildboss .simulator-element-chips {
+  justify-content: center;
+}
