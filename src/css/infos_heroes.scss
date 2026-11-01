@@ -309,3 +309,51 @@
     gap: V.$gap;
   }
 }
+
+/* Virtualized hero catalogue rows keep the existing two/three-column card design. */
+.hero-catalogue-grid-spacer { width: 100%; min-width: 0; }
+.hero-catalogue-grid-row {
+  display: grid;
+  align-items: start;
+  gap: V.$gap;
+  min-width: 0;
+}
+.hero-catalogue-grid-row > .virtualized-grid-cell { min-width: 0; }
+
+/* The hero preview responds to its own pane width, including split and full-width modes. */
+@container hero-preview-pane (max-width: 760px) {
+  .hero-preview .skills-talents-layout {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+    gap: V.$gap;
+  }
+  .hero-preview .skills-talents-layout > .flex-col.hero {
+    order: -1;
+    align-self: center;
+    margin: V.$gap-small auto 0;
+  }
+  .hero-preview .skills-talents-layout > .skills,
+  .hero-preview .skills-talents-layout > .talents {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .hero-preview .details { flex-direction: column; }
+}
+@container hero-preview-pane (max-width: 520px) {
+  .hero-preview .hero-metadata > .hero-metadata-name {
+    order: -1;
+    flex: 1 1 100%;
+    width: 100%;
+  }
+  .hero-preview .hero-metadata-attribute,
+  .hero-preview .hero-metadata-role {
+    flex: 1 1 calc(50% - V.$gap-small);
+    min-width: 0;
+    justify-content: center;
+  }
+  .hero-preview .equipment {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-items: center;
+  }
+}
