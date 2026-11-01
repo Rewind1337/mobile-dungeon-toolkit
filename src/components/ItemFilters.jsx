@@ -49,17 +49,17 @@ function ItemAttributeFilters({ toggleFilter, filters, filterSprites }) {
 
 function ItemRarityFilters({ toggleFilter, filters, filterSprites }) {
     return (<div className='filter-group filters-group-rarities flex-row'>
-        <Button title="Common rarity" className='filters-rarity-button' round color={"common"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.COMMON.id)} text={filterSprites[30]} active={filters.rarity.includes(RARITY_DEFINITIONS.COMMON.id)} />
-        <Button title="Uncommon rarity" className='filters-rarity-button' round color={"uncommon"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.UNCOMMON.id)} text={filterSprites[31]} active={filters.rarity.includes(RARITY_DEFINITIONS.UNCOMMON.id)} />
-        <Button title="Rare rarity" className='filters-rarity-button' round color={"rare"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.RARE.id)} text={filterSprites[32]} active={filters.rarity.includes(RARITY_DEFINITIONS.RARE.id)} />
-        <Button title="Epic rarity" className='filters-rarity-button' round color={"epic"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.EPIC.id)} text={filterSprites[33]} active={filters.rarity.includes(RARITY_DEFINITIONS.EPIC.id)} />
+        <Button title="Common rarity" className='filters-rarity-button' round color={"common"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.COMMON.id)} text={filterSprites[30]} active={filters.rarity === RARITY_DEFINITIONS.COMMON.id} />
+        <Button title="Uncommon rarity" className='filters-rarity-button' round color={"uncommon"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.UNCOMMON.id)} text={filterSprites[31]} active={filters.rarity === RARITY_DEFINITIONS.UNCOMMON.id} />
+        <Button title="Rare rarity" className='filters-rarity-button' round color={"rare"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.RARE.id)} text={filterSprites[32]} active={filters.rarity === RARITY_DEFINITIONS.RARE.id} />
+        <Button title="Epic rarity" className='filters-rarity-button' round color={"epic"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.EPIC.id)} text={filterSprites[33]} active={filters.rarity === RARITY_DEFINITIONS.EPIC.id} />
         <Button title="Legendary rarity" className='filters-rarity-button' round color={"legendary"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.LEGENDARY.id)} text={filterSprites[34]} active={filters.rarity === RARITY_DEFINITIONS.LEGENDARY.id} />
-        <Button title="Mythic rarity" className='filters-rarity-button' round color={"mythic"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.MYTHIC.id)} text={filterSprites[35]} active={filters.rarity.includes(RARITY_DEFINITIONS.MYTHIC.id)} />
-        <Button title="Heroic rarity" className='filters-rarity-button' round color={"heroic"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.HEROIC.id)} text={filterSprites[36]} active={filters.rarity.includes(RARITY_DEFINITIONS.HEROIC.id)} />
-        <Button title="Divine rarity" className='filters-rarity-button' round color={"divine"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.DIVINE.id)} text={filterSprites[37]} active={filters.rarity.includes(RARITY_DEFINITIONS.DIVINE.id)} />
-        <Button title="Ancient rarity" className='filters-rarity-button' round color={"ancient"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.ANCIENT.id)} text={filterSprites[38]} active={filters.rarity.includes(RARITY_DEFINITIONS.ANCIENT.id)} />
-        <MobileFilterSelect multiple label="Rarity" value={filters.rarity}
-            onChange={event => toggleFilter("rarity", Array.from(event.target.selectedOptions, option => Number(option.value)))}
+        <Button title="Mythic rarity" className='filters-rarity-button' round color={"mythic"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.MYTHIC.id)} text={filterSprites[35]} active={filters.rarity === RARITY_DEFINITIONS.MYTHIC.id} />
+        <Button title="Heroic rarity" className='filters-rarity-button' round color={"heroic"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.HEROIC.id)} text={filterSprites[36]} active={filters.rarity === RARITY_DEFINITIONS.HEROIC.id} />
+        <Button title="Divine rarity" className='filters-rarity-button' round color={"divine"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.DIVINE.id)} text={filterSprites[37]} active={filters.rarity === RARITY_DEFINITIONS.DIVINE.id} />
+        <Button title="Ancient rarity" className='filters-rarity-button' round color={"ancient"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.ANCIENT.id)} text={filterSprites[38]} active={filters.rarity === RARITY_DEFINITIONS.ANCIENT.id} />
+        <MobileFilterSelect label="Rarity" value={filters.rarity ?? ""}
+            onChange={event => toggleFilter("rarity", event.target.value === "" ? null : Number(event.target.value))}
             options={Object.values(RARITY_DEFINITIONS).map(option => ({value: option.id, label: option.name[0] + option.name.slice(1).toLowerCase()}))} />
     </div>)
 }
@@ -69,7 +69,7 @@ function ItemFilters({ savedItems = false, setFiltersAdvanced, advanced, toggleF
         <div className="filters card" style={{ top: topOffset }}>
             <div className="filters-primary-row">
                 <Button title="Show or hide advanced filters" className="filters-advanced-button" round onClick={() => setFiltersAdvanced(value => !value)} imgAsText text={(advanced ? filterSprites[54] : filterSprites[53])} active={advanced} />
-                <Button title="Clear all filters" className="filters-clear-button" round onClick={clearFilters} text="ALL" active={filters.rarity.length === 0 && [filters.set, filters.unique, filters.slot, filters.attributeRequirement, filters.name].every(value => value === null || value === "")} />
+                <Button title="Clear all filters" className="filters-clear-button" round onClick={clearFilters} text="ALL" active={filters.rarity === null && [filters.set, filters.unique, filters.slot, filters.attributeRequirement, filters.name].every(value => value === null || value === "")} />
                 <ItemSlotFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <div className="name-search-filter">
                     <input className="selectable w-100" type="text" aria-label="Search items by name" placeholder="Search items..." value={filters.name} onChange={event => setSearch(event.target.value)} onBlur={onSearchBlur} />
