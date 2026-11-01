@@ -132,7 +132,6 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                     columnGap={8}
                     className="item-list-virtual"
                     rowClassName="item-list-virtual-row"
-                    getItemKey={item => `${item.slot}-${item.saveId ?? item.id}`}
                     renderItem={itemObj => (
                         <Item
                             itemObj={itemObj}
