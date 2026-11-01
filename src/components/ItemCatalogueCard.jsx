@@ -21,7 +21,7 @@ function renderUniqueEffectDescription(item) {
                 <span key={index}>
                     {index > 0 && <span className="rarity-effect-separator">, </span>}
                     <span className="rarity-effect-value" data-rarity={RARITY_DEFINITIONS.RARE.id + index}>
-                        {Number(value - 1).toFixed(2)}
+                        {Math.round((Number(value) - 1) * 100)}
                     </span>
                 </span>
             ))}
