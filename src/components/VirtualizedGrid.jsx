@@ -6,10 +6,14 @@ import { useVirtualizer } from "@tanstack/react-virtual"
  * multi-column cards aligned while supporting cards with different heights.
  * scrollElementRef can point at the list itself or at a page-level scroll pane.
  */
+function getVirtualItemKey(item, index) {
+    const value = item?.saveId ?? item?.id ?? item?.key ?? item?.name ?? index
+    return `${item?.slot ?? ""}-${value}`
+}
+
 function VirtualizedGrid({
     items = [],
     renderItem,
-    getItemKey,
     scrollElementRef,
     className = "",
     rowClassName = "",
@@ -25,14 +29,9 @@ function VirtualizedGrid({
     const [columns, setColumns] = useState(1)
     const [scrollMargin, setScrollMargin] = useState(0)
 
-    const itemKey = (item, index) => {
-        if (getItemKey) return getItemKey(item, index)
-        return item?.saveId ?? item?.id ?? item?.key ?? item?.name ?? index
-    }
-
     const itemSignature = useMemo(
-        () => items.map((item, index) => String(itemKey(item, index))).join("|"),
-        [items, getItemKey]
+        () => items.map((item, index) => String(getVirtualItemKey(item, index))).join("|"),
+        [items]
     )
 
     useLayoutEffect(() => {
@@ -84,9 +83,9 @@ function VirtualizedGrid({
 
     const rowKeys = useMemo(
         () => rows.map((row, rowIndex) => row.map((item, index) =>
-            String(itemKey(item, rowIndex * columns + index))
+            String(getVirtualItemKey(item, rowIndex * columns + index))
         ).join("::")),
-        [rows, columns, getItemKey]
+        [rows, columns]
     )
 
     const virtualizer = useVirtualizer({
@@ -138,7 +137,7 @@ function VirtualizedGrid({
                     }}
                 >
                     {rows[virtualRow.index].map((item, index) => (
-                        <div className="virtualized-grid-cell" key={itemKey(item, virtualRow.index * columns + index)}>
+                        <div className="virtualized-grid-cell" key={getVirtualItemKey(item, virtualRow.index * columns + index)}>
                             {renderItem(item, virtualRow.index * columns + index)}
                         </div>
                     ))}
