@@ -287,7 +287,8 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
         heroObj?.stats?.health,
         heroObj?.stats?.attack,
         heroObj?.stats?.defence,
-        heroObj?.stats?.agility]
+        heroObj?.stats?.agility,
+        heroObj?.talents]
     )
 
     const renderHeroSkills = () => (heroObj.skills ?? []).map((skill, index) => (
