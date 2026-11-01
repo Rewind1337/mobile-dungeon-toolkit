@@ -282,6 +282,8 @@
   grid-template-columns: minmax(220px, 1fr) max-content minmax(260px, 1fr);
   align-items: start;
   gap: V.$gap;
+  width: 100%;
+  min-width: 0;
 }
 .hero-preview .skills-talents-layout > .skills,
 .hero-preview .skills-talents-layout > .hero-preview-talent-grid {
