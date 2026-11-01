@@ -221,10 +221,11 @@
 /* Hero preview talent rows use a fixed three-column layout rather than card width helpers. */
 .hero-preview-talent-grid {
   display: flex;
-  flex: 1 1 100%;
+  flex: 1 1 30%;
   flex-direction: column;
+  max-width: 38%;
+  min-width: 220px;
   gap: V.$gap-small;
-  min-width: 0;
 }
 .hero-preview-talent-row {
   display: grid;
@@ -270,6 +271,7 @@
 }
 
 @include M.media-query-max(V.$bp-mobile) {
+  .hero-preview-talent-grid { flex-basis: 100%; max-width: 100%; min-width: 0; }
   .hero-preview-talent-row { gap: 4px; }
   .hero-preview-talent-entry .talent-catalogue-name { font-size: V.$font-size-small; }
 }
