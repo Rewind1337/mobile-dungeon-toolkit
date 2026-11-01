@@ -4,6 +4,7 @@ import { useDynamicList } from '../hooks/useDynamicList.jsx'
 import '../css/item.scss'
 
 import Item from './Item.jsx'
+import VirtualizedGrid from './VirtualizedGrid.jsx'
 import { filterSprites } from '../database/db_sprites.jsx'
 import ItemFilters from './ItemFilters.jsx'
 import BackToTopButton from './BackToTopButton.jsx'
@@ -17,15 +18,19 @@ function getSearchableValues(value, seen = new Set()) {
     seen.add(value)
     return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : [key, ...getSearchableValues(child, seen)])
 }
-function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, setsRef = [], itemType = null, heroAttributeRequirement = null, setSelectedItemId }) {
+function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, setsRef = [], itemType = null, heroAttributeRequirement = null, localSearch = false, setSelectedItemId }) {
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
-    const [search, setSearch, commitSearch] = useUrlSearch();
+    const [urlSearch, setUrlSearch, commitUrlSearch] = useUrlSearch();
+    const [modalSearch, setModalSearch] = useState("");
+    const search = localSearch ? modalSearch : urlSearch;
+    const setSearch = localSearch ? setModalSearch : setUrlSearch;
+    const commitSearch = localSearch ? () => {} : commitUrlSearch;
     const [filters, setFilters] = useState({
         set: null,
         unique: null,
         slot: null,
         attributeRequirement: null,
-        rarity: [],
+        rarity: null,
     });
     const [filtersAdvanced, setFiltersAdvanced] = useState(false)
     const [sortOrder, setSortOrder] = useState("alphabetic")
@@ -43,24 +48,23 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
     const toggleFilter = (type, value) => {
         setFilters(previous => {
             if (type === "rarity") {
-                if (Array.isArray(value)) {
-                    return { set: null, unique: null, slot: null, attributeRequirement: null, rarity: value }
+                return {
+                    set: null,
+                    unique: null,
+                    slot: null,
+                    attributeRequirement: null,
+                    rarity: previous.rarity === value ? null : value
                 }
-                const current = Array.isArray(previous.rarity) ? previous.rarity : []
-                const nextRarities = current.includes(value)
-                    ? current.filter(rarity => rarity !== value)
-                    : [...current, value]
-                return { set: null, unique: null, slot: null, attributeRequirement: null, rarity: nextRarities }
             }
             return {
-                set: null, unique: null, slot: null, attributeRequirement: null, rarity: [],
+                set: null, unique: null, slot: null, attributeRequirement: null, rarity: null,
                 [type]: previous[type] === value ? null : value
             }
         })
     };
 
     const clearFilters = () => {
-        setFilters({ set: null, unique: null, slot: null, attributeRequirement: null, rarity: [] });
+        setFilters({ set: null, unique: null, slot: null, attributeRequirement: null, rarity: null });
         setSearch("");
         commitSearch("");
     };
@@ -80,7 +84,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
             const matchesUnique = filters.unique === null || (filters.unique === 'unique' ? hasUnique : !hasUnique);
             const matchesSlot = filters.slot === null || itemObj.slot === filters.slot;
             const matchesAttribute = filters.attributeRequirement === null || itemObj.attributeRequirement === filters.attributeRequirement;
-            const matchesRarity = filters.rarity.length === 0 || filters.rarity.includes(itemObj.rarity);
+            const matchesRarity = filters.rarity === null || filters.rarity === itemObj.rarity;
             const set = (setsRef ?? []).find(setEntry => setEntry.id === itemObj.set)
             const searchable = [...getSearchableValues(itemObj), itemObj.name,
                 getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? '',
@@ -114,18 +118,29 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
         </div>
         <div className='header-big'>{headerText}</div>
 
-        <div className='list item-list flex-row' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
+        <div className='list item-list flex-row virtualized-list-scroll' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
             {filteredItems.length === 0 ? (
                 <div className="text-big margin-auto">No items match the selected filters</div>
             ) : (
-                filteredItems.map((itemObj) => (
-                    <Item
-                        itemObj={itemObj}
-                        key={itemObj.key}
-                        level={savedItems ? (itemObj.level ?? 1) : null}
-                        onClick={() => setSelectedItemId({ slot: itemObj.slot, id: itemObj.id })}
-                    />
-                ))
+                <VirtualizedGrid
+                    items={filteredItems}
+                    scrollElementRef={listRef}
+                    minColumnWidth={100}
+                    maxColumns={12}
+                    estimatedRowHeight={170}
+                    rowGap={8}
+                    columnGap={8}
+                    className="item-list-virtual"
+                    rowClassName="item-list-virtual-row"
+                    getItemKey={item => `${item.slot}-${item.saveId ?? item.id}`}
+                    renderItem={itemObj => (
+                        <Item
+                            itemObj={itemObj}
+                            level={savedItems ? (itemObj.level ?? 1) : null}
+                            onClick={() => setSelectedItemId({ slot: itemObj.slot, id: itemObj.id })}
+                        />
+                    )}
+                />
             )}
         </div>
         <BackToTopButton scrollRef={listRef} className="item-list-back-to-top" />
