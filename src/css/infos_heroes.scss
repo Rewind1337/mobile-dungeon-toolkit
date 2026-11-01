@@ -275,3 +275,34 @@
   .hero-preview-talent-row { gap: 4px; }
   .hero-preview-talent-entry .talent-catalogue-name { font-size: V.$font-size-small; }
 }
+
+/* A three-column preview layout keeps skills, hero and talents aligned without width hacks. */
+.hero-preview .skills-talents-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) max-content minmax(260px, 1fr);
+  align-items: start;
+  gap: V.$gap;
+}
+.hero-preview .skills-talents-layout > .skills,
+.hero-preview .skills-talents-layout > .hero-preview-talent-grid {
+  width: auto;
+  max-width: none;
+  min-width: 0;
+}
+.hero-preview .skills-talents-layout > .hero-preview-talent-grid {
+  flex: initial;
+}
+@include M.media-query-max(V.$bp-tablet, ()) {
+  .hero-preview .skills-talents-layout {
+    grid-template-columns: minmax(0, 1fr) max-content minmax(0, 1fr);
+    gap: V.$gap-small;
+  }
+}
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .hero-preview .skills-talents-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: V.$gap;
+  }
+}
