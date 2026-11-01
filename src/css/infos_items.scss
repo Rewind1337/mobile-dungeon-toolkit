@@ -240,3 +240,42 @@
   .catalogue-item-grid, .catalogue-set-grid { grid-template-columns: minmax(0, 1fr); }
   .catalogue-item-name { border-radius: 0; }
 }
+
+/* Virtualized item and set rows preserve the catalogue grid's stretch behavior. */
+.catalogue-item-grid-spacer,
+.catalogue-set-grid-spacer { width: 100%; min-width: 0; }
+.catalogue-item-grid-row,
+.catalogue-set-grid-row {
+  display: grid;
+  align-items: stretch;
+  gap: V.$gap;
+  min-width: 0;
+}
+.catalogue-item-grid-row > .virtualized-grid-cell,
+.catalogue-set-grid-row > .virtualized-grid-cell { min-width: 0; }
+.catalogue-item-grid-row .catalogue-item-card,
+.catalogue-set-grid-row .catalogue-set-card { width: 100%; }
+
+/* Item preview controls adapt to the width of the preview pane, not the window. */
+@container item-preview-pane (max-width: 620px) {
+  .item-preview-metadata {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .item-preview-metadata .item-preview-name {
+    order: -1;
+    flex: 1 1 100%;
+    width: 100%;
+  }
+  .item-preview .masterwork-input-row {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .item-preview .masterwork-input-row > button {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .item-preview .masterwork-milestones {
+    flex-wrap: wrap;
+  }
+}
