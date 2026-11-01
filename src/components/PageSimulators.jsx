@@ -17,10 +17,6 @@ const SIMULATOR_TABS = [
 ]
 
 function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedHeroesRef, itemsRef, savedTeamsRef, savedItemsRef, manualSaveFunction }) {
-    if (activeTab === 'overview') {
-        return <SimulatorOverview onNavigate={onTabChange} />
-    }
-
     return (
         <>
             <div className="sub-nav-bar flex-row">
@@ -34,20 +30,22 @@ function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedH
                 </div>
             </div>
 
-            <div id="page-simulators" className="page flex-row w-100">
-                <Suspense fallback={<div className="card">Loading...</div>}>
-                    {activeTab === 'adventure' && <SubPageChapters />}
-                    {activeTab === 'towers' && <SubPageTowers />}
-                    {activeTab === 'titans' && <SubPageTitans />}
-                    {activeTab === 'guild-hunt' && <SubPageGuildBoss />}
-                    {activeTab === 'custom' && (
-                        <SubPageCustomCombat
-                            savedHeroesRef={savedHeroesRef}
-                            savedTeamsRef={savedTeamsRef}
-                        />
-                    )}
-                </Suspense>
-            </div>
+            {activeTab === 'overview' ? <SimulatorOverview /> : (
+                <div id="page-simulators" className="page flex-row w-100">
+                    <Suspense fallback={<div className="card">Loading...</div>}>
+                        {activeTab === 'adventure' && <SubPageChapters />}
+                        {activeTab === 'towers' && <SubPageTowers />}
+                        {activeTab === 'titans' && <SubPageTitans />}
+                        {activeTab === 'guild-hunt' && <SubPageGuildBoss />}
+                        {activeTab === 'custom' && (
+                            <SubPageCustomCombat
+                                savedHeroesRef={savedHeroesRef}
+                                savedTeamsRef={savedTeamsRef}
+                            />
+                        )}
+                    </Suspense>
+                </div>
+            )}
         </>
     )
 }
