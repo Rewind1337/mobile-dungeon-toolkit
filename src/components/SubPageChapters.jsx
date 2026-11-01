@@ -47,15 +47,16 @@ function Chapter({ chapter, shadowChapter, onSelect }) {
                 <span className="text">{chapter.id + 1}</span>
                 <span className="header">{chapter.name}</span>
             </button>
-            {shadowChapter && SHADOW_THRESHOLDS.map(threshold => (
-                <button type="button" className="chapter-shadow card" key={threshold}
-                    data-id={shadowChapter.id} data-threshold={threshold}
-                    title={`Shadow World ${threshold} · Threshold ${threshold}`}
-                    onClick={() => onSelect(shadowChapter, threshold)}>
-                    <span className="header">SW {threshold}</span>
-                    <span className="text chapter-shadow-subtitle">Threshold {threshold}</span>
-                </button>
-            ))}
+            {shadowChapter
+                ? SHADOW_THRESHOLDS.map(threshold => (
+                    <button type="button" className="chapter-shadow card" key={threshold}
+                        data-id={shadowChapter.id} data-threshold={threshold}
+                        title={"Shadow World " + threshold + " · Threshold " + threshold}
+                        onClick={() => onSelect(shadowChapter, threshold)}>
+                        <span className="header">SW {threshold}</span>
+                    </button>
+                ))
+                : <span className="chapter-shadow-placeholder text" aria-label="Shadow World chapters coming soon">Soon...</span>}
         </div>
     )
 }
@@ -78,15 +79,10 @@ function SubPageChapters() {
                     ))}
                 </div>
             </section>
-            <section className="card w-100 simulator-selection-detail">
+            <section className={"card w-100 simulator-selection-detail" + (selectedChapter?.threshold > 0 ? " is-shadow-world" : "")}>
                 {selectedChapter ? (
                     <>
-                        <SimulatorEntryDetails
-                            entry={selectedChapter.chapter}
-                            entryLabel={selectedChapter.threshold > 0
-                                ? `Shadow World ${selectedChapter.threshold} · Threshold ${selectedChapter.threshold}`
-                                : "Chapter"}
-                        />
+                        <SimulatorEntryDetails entry={selectedChapter.chapter} title={"Chapter " + (selectedChapter.chapter.id + 1) + " - " + selectedChapter.chapter.name + (selectedChapter.threshold > 0 ? " - Threshold " + selectedChapter.threshold : "")} emptyMessage="No stage entries have been defined yet." />
                     </>
                 ) : (
                     <div className="header-big">Select a Chapter</div>
