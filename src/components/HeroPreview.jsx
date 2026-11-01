@@ -349,7 +349,13 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
             })
 
             return (
-                <div className="hero-preview-talent-row" key={"talent-row-" + row}>
+                <div className={"hero-preview-talent-row" + (
+                    rowEntries.length === 2 &&
+                    rowEntries.some(([id]) => String(id).endsWith("1")) &&
+                    rowEntries.some(([id]) => !String(id).endsWith("0") && !String(id).endsWith("1"))
+                        ? " has-two-side-talents"
+                        : ""
+                )} key={"talent-row-" + row}>
                     {rowEntries.map(([id, talent]) => {
                         const isCenter = String(id).endsWith("0")
                         const side = String(id).endsWith("1") ? "left" : isCenter ? "center" : "right"
