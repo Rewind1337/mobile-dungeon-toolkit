@@ -44,7 +44,7 @@ function CataloguePerk() {
                     <span className="catalogue-control-label text">Slot</span>
                     <select aria-label="Filter perks by equipment slot" value={slotFilter} onChange={event => setSlotFilter(event.target.value)}>
                         <option value="all">All slots</option>
-                        {Object.keys(POSSIBLE_PERKS).map(slot => <option key={slot} value={slot}>{slot.replaceAll("_", " ").toLowerCase().replace(/\\b\\w/g, letter => letter.toUpperCase())}</option>)}
+                        {Object.keys(POSSIBLE_PERKS).map(slot => <option key={slot} value={slot}>{{ WEAPONS: "Weapon", HELMETS: "Helmet", ARMORS: "Armor", RINGS: "Ring", NECKLACES: "Necklace" }[slot] ?? slot}</option>)}
                     </select>
                 </label>
                 <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={clearFilters} />
