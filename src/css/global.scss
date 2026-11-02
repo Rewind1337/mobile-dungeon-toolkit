@@ -2432,6 +2432,7 @@ select {
 
 /* Add a scrollable tail so mobile browser/OS toolbars don't cover the page end. */
 @include M.media-query-max(V.$bp-mobile) {
+  .page,
   #page-info,
   #page-splash,
   .teams-list,
