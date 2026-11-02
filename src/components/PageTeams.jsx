@@ -11,6 +11,7 @@ import { getStatusPolarity } from "../js/statusPolarity.jsx"
 import { createTeamShareToken, decodeTeamShareInput, restoreSharedTeam } from "../utils/heroShare.js"
 import { calculateTeamStats } from "../utils/calculatedStats.js"
 import { createSavedItemRecord } from "../js/ids.jsx"
+import { formatNumber } from "../js/util.jsx"
 
 const createDefaultTeams = () => [
     { id: 0, name: "Default Team", heroes: Array(5).fill(null) },
@@ -138,13 +139,12 @@ export function TeamHeroStats({ hero, slotIndex, calculatedStats }) {
                 const value = calculatedStats?.main?.[key] ?? hero.stats?.[key]
                 const maxValue = calculatedStats?.mainMax?.[key]
                 const hasMax = Number.isFinite(Number(maxValue)) && Math.abs(Number(maxValue) - Number(value)) > 0.001
-                const format = stat => Number.isFinite(Number(stat))
-                    ? Number(stat).toLocaleString(undefined, { maximumFractionDigits: 2 })
-                    : "—"
-                const displayValue = hasMax ? `${format(value)} (${format(maxValue)} MAX)` : format(value)
+                const format = stat => Number.isFinite(Number(stat)) ? formatNumber(Number(stat), 2) : "—"
                 return (
                     <span className="team-base-stat" key={key} title={hero.name + " · " + fullLabel}>
-                        <strong>{label}</strong><span>{displayValue}</span>
+                        <strong>{label}</strong>
+                        <span className="team-base-stat-value">{format(value)}</span>
+                        {hasMax && <small className="team-base-stat-max">MAX {format(maxValue)}</small>}
                     </span>
                 )
             })}
@@ -179,15 +179,17 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
         setSelectedSaveId(team.heroes[slotIndex] ?? null)
     }
 
-    const confirmSlotSelection = () => {
-        if (!slotPicker || selectedSaveId === null || !savedHeroes.some(hero => hero.saveId === selectedSaveId)) return
+    const assignHeroToSlot = saveId => {
+        if (!slotPicker || saveId === null || saveId === undefined || !savedHeroes.some(hero => hero.saveId === saveId)) return
         commitTeams(teams.map(team => team.id !== slotPicker.teamId ? team : {
             ...team,
-            heroes: team.heroes.map((saveId, index) => index === slotPicker.slotIndex ? selectedSaveId : saveId),
+            heroes: team.heroes.map((currentSaveId, index) => index === slotPicker.slotIndex ? saveId : currentSaveId),
         }))
         setSlotPicker(null)
         setSelectedSaveId(null)
     }
+
+    const confirmSlotSelection = () => assignHeroToSlot(selectedSaveId)
 
     const clearTeam = teamId => commitTeams(teams.map(team => team.id === teamId ? { ...team, heroes: Array(5).fill(null) } : team))
     const renameTeam = (teamId, name) => commitTeams(teams.map(team => team.id === teamId ? { ...team, name } : team))
@@ -526,6 +528,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                             heroesRef={modalHeroes}
                             selectedHeroId={selectedSaveId}
                             setSelectedHeroId={setSelectedSaveId}
+                            onDoubleClick={hero => assignHeroToSlot(hero.saveId)}
                         />
                     ) : (
                         <p className="text">You have no saved heroes yet. Save a hero first, then return here.</p>

@@ -59,7 +59,7 @@ function Chapter({ chapter, shadowChapter, onSelect }) {
                 dataThreshold={0}
                 fillPercent={0}
                 prefix={<span className="text">{chapter.id + 1}</span>}
-                text={<span className="header">{chapter.name}</span>}
+                text={chapter.name}
                 suffix={<img src={LightworldIcon} alt="" loading="lazy" decoding="async" draggable={false} />}
                 onClick={() => onSelect(chapter, 0)}
             />
@@ -72,7 +72,7 @@ function Chapter({ chapter, shadowChapter, onSelect }) {
                         dataThreshold={threshold}
                         fillPercent={0}
                         title={"Shadow World " + threshold + " · Threshold " + threshold}
-                        text={<span className="header">SW {threshold}</span>}
+                        text={"SW " + threshold}
                         suffix={<img src={thresholdIcons[threshold]} alt="" loading="lazy" decoding="async" draggable={false} />}
                         onClick={() => onSelect(shadowChapter, threshold)}
                     />

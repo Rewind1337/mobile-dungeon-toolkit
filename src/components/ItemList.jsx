@@ -18,7 +18,7 @@ function getSearchableValues(value, seen = new Set()) {
     seen.add(value)
     return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : [key, ...getSearchableValues(child, seen)])
 }
-function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, setsRef = [], itemType = null, heroAttributeRequirement = null, localSearch = false, setSelectedItemId }) {
+function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, setsRef = [], itemType = null, heroAttributeRequirement = null, localSearch = false, setSelectedItemId, onDoubleClick }) {
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
     const [urlSearch, setUrlSearch, commitUrlSearch] = useUrlSearch();
     const [modalSearch, setModalSearch] = useState("");
@@ -136,6 +136,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                             itemObj={itemObj}
                             level={savedItems ? (itemObj.level ?? 1) : null}
                             onClick={() => setSelectedItemId({ slot: itemObj.slot, id: itemObj.id })}
+                            onDoubleClick={onDoubleClick ? () => onDoubleClick(itemObj) : undefined}
                         />
                     )}
                 />

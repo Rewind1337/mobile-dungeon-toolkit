@@ -26,11 +26,11 @@ function getItemPerkEntries(item) {
     const entries = []
     for (const perk of item?.fixedPerks ?? []) {
         const key = Object.keys(PERK_DEFINITIONS).find(name => PERK_DEFINITIONS[name].id === perk.id)
-        if (key && key !== "NOTHING") entries.push({ key, value: Number(perk.value ?? 0) })
+        if (key && key !== "NOTHING") entries.push({ key, value: Number(perk.value ?? 0), isFixed: true })
     }
     for (let index = 0; index < (item?.perks ?? []).length; index++) {
         const key = String(item.perks[index] ?? "NOTHING").toUpperCase().replace(/\s/g, "_")
-        if (PERK_DEFINITIONS[key] && key !== "NOTHING") entries.push({ key, value: Number(item.perkValues?.[index] ?? 0) })
+        if (PERK_DEFINITIONS[key] && key !== "NOTHING") entries.push({ key, value: Number(item.perkValues?.[index] ?? 0), isFixed: false })
     }
     return entries
 }
@@ -61,7 +61,9 @@ export function calculateItemStats(item) {
                 : MAIN_STAT_PERKS[itemMainStat].percent
         }
         const mutationKey = Object.keys(MUTATION_PERK_ALIASES).find(key => MUTATION_PERK_ALIASES[key] === targetKey) ?? targetKey
-        const matchingMutations = selectedMutations.filter(selection => selection.perkKey === targetKey || selection.perkKey === mutationKey)
+        const matchingMutations = perk.isFixed
+            ? []
+            : selectedMutations.filter(selection => selection.perkKey === targetKey || selection.perkKey === mutationKey)
         let normalMutationMultiplier = 1
         let maxMutationMultiplier = 1
         for (const { mutation } of matchingMutations) {
@@ -69,8 +71,9 @@ export function calculateItemStats(item) {
             maxMutationMultiplier *= multiplier
             if (mutation.condition === "permanent") normalMutationMultiplier *= multiplier
         }
-        addValue(perks, targetKey, perk.value * masterworkMultiplier * normalMutationMultiplier)
-        addValue(maxPerks, targetKey, perk.value * masterworkMultiplier * maxMutationMultiplier)
+        const masterworkScale = perk.isFixed ? masterworkMultiplier : 1
+        addValue(perks, targetKey, perk.value * masterworkScale * normalMutationMultiplier)
+        addValue(maxPerks, targetKey, perk.value * masterworkScale * maxMutationMultiplier)
     }
     return { perks, maxPerks }
 }

@@ -16,7 +16,8 @@ import TalentCatalogueCard from './TalentCatalogueCard.jsx'
 
 import '../css/hero.scss'
 import HeroStat from './HeroStat.jsx'
-import { calculateHeroStats, formatCalculatedStatValue, MAIN_STAT_PERKS } from '../utils/calculatedStats.js'
+import { calculateHeroStats, MAIN_STAT_PERKS } from '../utils/calculatedStats.js'
+import { formatNumber } from '../js/util.jsx'
 
 
 function cloneTalentSelections(talents) {
@@ -531,7 +532,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                             const hasMax = Math.abs(calculatedStats.mainMax[name] - calculatedStats.main[name]) > 0.001
                             return <div className='flex-row text card calculated-stat' key={name} title={`Final ${name} after equipped gear`}>
                                 <img width={32} src={perkSprites[mapping.flat]}/>
-                                <div>{formatCalculatedStatValue(calculatedStats.main[name])}{hasMax ? ` (${formatCalculatedStatValue(calculatedStats.mainMax[name])} MAX)` : ""}</div>
+                                <div>{formatNumber(calculatedStats.main[name], 2)}{hasMax ? ` (${formatNumber(calculatedStats.mainMax[name], 2)} MAX)` : ""}</div>
                             </div>
                         })}
                     </div>
@@ -539,12 +540,12 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                     <div className='flex-row details'>
                         <div className='flex-col'>
                             {["CRIT_CHANCE","CRIT_RESISTANCE","CRIT_DAMAGE","CRIT_DAMAGE_REDUCTION","ACCURACY","RESISTANCE","BOSS_DAMAGE","BOSS_DAMAGE_REDUCTION","AOE_DAMAGE_REDUCTION","AP_DAMAGE_REDUCTION","LIFE_STEAL","HEALING_EFFICIENCY","HEALING_RECEIVED"].map(name => (
-                                <HeroStat key={name} name={name} value={formatCalculatedStatValue(calculatedStats.other[name])} maxValue={Math.abs(calculatedStats.otherMax[name] - calculatedStats.other[name]) > 0.001 ? formatCalculatedStatValue(calculatedStats.otherMax[name]) : null}/>
+                                <HeroStat key={name} name={name} value={formatNumber(calculatedStats.other[name], 2)} maxValue={Math.abs(calculatedStats.otherMax[name] - calculatedStats.other[name]) > 0.001 ? formatNumber(calculatedStats.otherMax[name], 2) : null}/>
                             ))}
                         </div>
                         <div className='flex-col'>
                             {["FIRE_DAMAGE","NATURE_DAMAGE","WATER_DAMAGE","LIGHT_DAMAGE","SHADOW_DAMAGE","FIRE_DAMAGE_REDUCTION","NATURE_DAMAGE_REDUCTION","WATER_DAMAGE_REDUCTION","LIGHT_DAMAGE_REDUCTION","SHADOW_DAMAGE_REDUCTION"].map(name => (
-                                <HeroStat key={name} name={name} value={formatCalculatedStatValue(calculatedStats.other[name])} maxValue={Math.abs(calculatedStats.otherMax[name] - calculatedStats.other[name]) > 0.001 ? formatCalculatedStatValue(calculatedStats.otherMax[name]) : null}/>
+                                <HeroStat key={name} name={name} value={formatNumber(calculatedStats.other[name], 2)} maxValue={Math.abs(calculatedStats.otherMax[name] - calculatedStats.other[name]) > 0.001 ? formatNumber(calculatedStats.otherMax[name], 2) : null}/>
                             ))}
                         </div>
                     </div>

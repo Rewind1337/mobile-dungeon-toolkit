@@ -43,7 +43,7 @@ function HeroCatalogueCard({ hero, expandedSections = {}, onSectionToggle }) {
                     <div className="hero-catalogue-name text" data-rarity={hero.rarity}>{hero.name}</div>
                     <div className="hero-catalogue-meta-row">
                         <span className="catalogue-chip catalogue-chip-rarity text" data-rarity={hero.rarity}>{humanize(rarity)}</span>
-                        <span className="catalogue-chip text">
+                        <span className={`catalogue-chip text catalogue-chip-element-outline catalogue-chip-element-${String(element).toLowerCase()}`}>
                             {elementSprites[Number(hero.element)] && <img className="catalogue-chip-icon" src={elementSprites[Number(hero.element)]} alt="" />}
                             {humanize(element)}
                         </span>

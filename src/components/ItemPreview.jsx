@@ -110,11 +110,15 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
         const minimumRarity = RARITY_DEFINITIONS.RARE.id
         const rarity = Math.max(minimumRarity, Math.min(8, Number(selectedItem.rarity ?? minimumRarity)))
         const perkSlots = makePerkSlots(selectedItem, rarity)
+        const masterworkLevel = Math.max(0, Math.min(getMaxMasterworkLevel(rarity), Math.trunc(Number(selectedItem.masterworkLevel) || 0)))
+        const mutations = { ...DEFAULT_MASTERWORK_MUTATIONS, ...(selectedItem.mutations ?? {}) }
+        if (masterworkLevel < 5) mutations[5] = null
+        if (masterworkLevel < 10) mutations[10] = null
 
         setItemObj(selectedItem)
         setSelectedRarity(rarity)
         setSelectedLevel(Number(selectedItem.level) || 1)
-        setSelectedMasterworkLevel(Math.max(0, Math.min(getMaxMasterworkLevel(rarity), Math.trunc(Number(selectedItem.masterworkLevel) || 0))))
+        setSelectedMasterworkLevel(masterworkLevel)
         setSelectedItemDamaged(Boolean(selectedItem.isDamaged))
         setSelectedPerks(perkSlots.perks)
         setSelectedPerkValues(perkSlots.values)
@@ -122,8 +126,18 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
         setSelectedSetBonusValues(Array.isArray(selectedItem.setBonusValues)
             ? selectedItem.setBonusValues.map(value => Number(value ?? 0))
             : [])
-        setSelectedMutations({ ...DEFAULT_MASTERWORK_MUTATIONS, ...(selectedItem.mutations ?? {}) })
+        setSelectedMutations(mutations)
     }, [selectedItemId, itemsRef])
+
+    const updateMasterworkLevel = (value, maxLevel = getMaxMasterworkLevel(selectedRarity)) => {
+        const nextLevel = Math.max(0, Math.min(maxLevel, Math.trunc(Number(value) || 0)))
+        setSelectedMasterworkLevel(nextLevel)
+        setSelectedMutations(previous => ({
+            ...previous,
+            5: nextLevel >= 5 ? previous[5] : null,
+            10: nextLevel >= 10 ? previous[10] : null,
+        }))
+    }
 
     const changeRarity = (nextRarity) => {
         if (!itemObj) return
@@ -131,7 +145,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
         const rarity = Math.max(minimumRarity, Math.min(8, Number(nextRarity) || minimumRarity))
         const perkSlots = makePerkSlots({ ...itemObj, perks: selectedPerks, perkValues: selectedPerkValues }, rarity)
         setSelectedRarity(rarity)
-        setSelectedMasterworkLevel(previous => Math.max(0, Math.min(getMaxMasterworkLevel(rarity), Math.trunc(Number(previous) || 0))))
+        updateMasterworkLevel(selectedMasterworkLevel, getMaxMasterworkLevel(rarity))
         setSelectedPerks(perkSlots.perks)
         setSelectedPerkValues(perkSlots.values)
     }
@@ -220,13 +234,14 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
         if (name === "MAIN_STAT_PERCENT") return MAIN_STAT_PERK_KEYS[itemMainStat]?.percent ?? name
         return name
     }
-    const availableMutationPerks = new Set([
-        ...(itemObj.fixedPerks ?? []).map(perk => Object.keys(PERK_DEFINITIONS).find(key => PERK_DEFINITIONS[key].id === perk.id)),
-        ...(selectedPerks ?? []).map(perk => String(perk ?? "NOTHING").toUpperCase().replace(/\s/g, "_"))
-    ].filter(Boolean))
+    const availableMutationPerks = new Set(
+        (selectedPerks ?? [])
+            .map(perk => String(perk ?? "NOTHING").toUpperCase().replace(/\s/g, "_"))
+            .filter(key => key !== "NOTHING" && PERK_DEFINITIONS[key])
+    )
 
-    // MAIN_STAT perks resolve to a specific stat for each item, so expose matching
-    // mutation categories in the selector when the item has that main-stat perk.
+    // MAIN_STAT rolled perks resolve to a specific stat for each item, so expose matching
+    // mutation categories only when that rolled perk is selected.
     if (itemMainStat && availableMutationPerks.has("MAIN_STAT_FLAT")) {
         availableMutationPerks.add(MAIN_STAT_PERK_KEYS[itemMainStat]?.flat)
     }
@@ -305,7 +320,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                         <div className='header'>Masterwork - Level {selectedMasterworkLevel} / {maxMasterworkLevel}</div>
                     </div>
                     <div className='flex-row masterwork-input-row'>
-                    <Button text={"Masterwork - 1"} disabled={selectedMasterworkLevel <= 0} onClick={() => setSelectedMasterworkLevel(Math.max(0, Math.min(maxMasterworkLevel, Math.trunc(Number(selectedMasterworkLevel - 1)))))} color={1} />
+                    <Button text={"Masterwork - 1"} disabled={selectedMasterworkLevel <= 0} onClick={() => updateMasterworkLevel(selectedMasterworkLevel - 1)} color={1} />
                         <div className="masterwork-art-control">
                             <img className="masterwork-artwork" src={MasterworkSrc} alt="" draggable={false} />
                             <input
@@ -318,18 +333,14 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                                 value={selectedMasterworkLevel}
                                 onChange={event => {
                                     const value = event.target.value
-                                    if (value === '') {
-                                        setSelectedMasterworkLevel(0)
-                                        return
-                                    }
-                                    setSelectedMasterworkLevel(Math.max(0, Math.min(maxMasterworkLevel, Math.trunc(Number(value) || 0))))
+                                    updateMasterworkLevel(value)
                                 }}
                             />
                         </div>
-                    <Button text={"Masterwork + 1"} disabled={selectedMasterworkLevel >= maxMasterworkLevel} onClick={() => setSelectedMasterworkLevel(Math.max(0, Math.min(maxMasterworkLevel, Math.trunc(Number(selectedMasterworkLevel + 1)))))} color={1} />
+                    <Button text={"Masterwork + 1"} disabled={selectedMasterworkLevel >= maxMasterworkLevel} onClick={() => updateMasterworkLevel(selectedMasterworkLevel + 1)} color={1} />
                     </div>
                     <div className='text masterwork-summary'>
-                        All item perk values: +{selectedMasterworkLevel * 10}% ({(1 + selectedMasterworkLevel / 10).toFixed(1)}×)
+                        Fixed item stats only: +{selectedMasterworkLevel * 10}% ({(1 + selectedMasterworkLevel / 10).toFixed(1)}×)
                     </div>
                     <label className='flex-row masterwork-damaged-toggle'>
                         <input
@@ -343,7 +354,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                     <div className='header'>Masterwork Mutations</div>
                     {[5, 10].map(milestone => (
                         <div className='flex-col masterwork-mutation-select' key={milestone}>
-                            <span className='text'>Level {milestone} mutation</span>
+                            <span className='text'>{milestone === 5 ? "First Mutation" : "Second Mutation"}</span>
                             <select className='text'
                                 value={selectedMutations[milestone] ? `${selectedMutations[milestone].perkKey}:${selectedMutations[milestone].id}` : ""}
                                 disabled={selectedMasterworkLevel < milestone || maxMasterworkLevel < milestone}
@@ -352,7 +363,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                                     setSelectedMutations(previous => ({ ...previous, [milestone]: event.target.value ? { perkKey, id: Number(id) } : null }))
                                 }}
                             >
-                                <option value="">No mutation</option>
+                                <option value="">Unlocked at Masterwork {milestone}</option>
                                 {Object.entries(MASTERWORK_MUTATION_DEFINITIONS)
                                     .filter(([perkKey]) => availableMutationPerks.has(perkKey) || (perkKey === "HEAL_RECOVERY" && availableMutationPerks.has("HEALING_RECEIVED")))
                                     .flatMap(([perkKey, mutations]) => mutations.map(mutation => (
@@ -366,16 +377,6 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                     <small className='text'>Conditional mutations contribute to MAX; permanent mutations affect the calculated value.</small>
                 </div>
 
-                <div className='flex-row masterwork-milestones'>
-                        <div className={selectedMasterworkLevel >= 5 ? 'masterwork-milestone unlocked' : 'masterwork-milestone'}>
-                            <div className='header'>Level 5</div>
-                            <div className='text'>{maxMasterworkLevel < 5 ? 'Unavailable at this rarity' : selectedMasterworkLevel >= 5 ? 'Perk mutation unlocked' : 'Perk mutation at 5'}</div>
-                        </div>
-                        <div className={selectedMasterworkLevel >= 10 ? 'masterwork-milestone unlocked' : 'masterwork-milestone'}>
-                            <div className='header'>Level 10</div>
-                            <div className='text'>{maxMasterworkLevel < 10 ? 'Unavailable at this rarity' : selectedMasterworkLevel >= 10 ? 'Perk mutation unlocked' : 'Perk mutation at 10'}</div>
-                        </div>
-                    </div>
                 </div>
 
                 {itemObj.unique && itemObj.unique !== 0 && itemObj.unique.description && <div className='card'>
@@ -443,7 +444,6 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                             name={(perk || "NOTHING").toUpperCase().replace(/\s/g, '_')}
                             spriteName={getPerkSpriteName((perk || "NOTHING").toUpperCase().replace(/\s/g, '_'))}
                             value={selectedPerkValues[index] ?? 0}
-                            multiplier={1 + selectedMasterworkLevel / 10}
                             perkSlot={index + 1}
                             editable={true}
                             onValueChange={value => setSelectedPerkValues(previous => previous.map((oldValue, perkIndex) => (

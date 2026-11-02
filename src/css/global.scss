@@ -2292,3 +2292,105 @@ select {
   height: 38px;
   flex: 0 0 38px;
 }
+
+
+.catalogue-chip.catalogue-chip-element-outline {
+  color: inherit;
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: none;
+}
+
+/* Compact home-page navigation labels. */
+.home-navigation-tile > .header {
+  height: auto;
+  margin: auto;
+}
+
+/* Calculated stats switch to a two-by-two grid when a team hero card narrows. */
+.team-hero-slot {
+  container-type: inline-size;
+  container-name: team-hero-slot;
+}
+.team-base-stat-value {
+  display: block;
+  overflow-wrap: anywhere;
+  font-weight: 700;
+}
+.team-base-stat-max {
+  display: block;
+  font-size: 0.82em;
+  line-height: 1.1;
+  opacity: 0.72;
+  overflow-wrap: anywhere;
+}
+@container team-hero-slot (max-width: 340px) {
+  .team-base-stat-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 5px 3px;
+  }
+}
+
+/* Chapter text fills a consistent center area while the shadow buttons stay compact. */
+.chapter-wrapper {
+  width: 100%;
+  align-items: stretch;
+}
+.chapter {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.chapter-shadow {
+  flex: 0 1 clamp(56px, 8vw, 96px);
+  min-width: 0;
+  padding-inline: 4px;
+}
+.chapter-shadow-placeholder {
+  flex: 0 1 clamp(168px, 24vw, 288px);
+  min-width: 0;
+}
+.chapter > .text {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: V.$font-family-header;
+  font-size: clamp(20px, 3vw, 34px);
+  line-height: 1.1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chapter > .icon-left > .text {
+  flex: 0 0 auto;
+  font-family: V.$font-family-stats;
+  font-size: 20px;
+  line-height: 1;
+}
+.chapter-shadow > .text {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: V.$font-family-stats;
+  font-size: clamp(14px, 1.5vw, 19px);
+  line-height: 1.1;
+  text-align: center;
+  white-space: nowrap;
+}
+.chapter .icon-left,
+.chapter .icon-right,
+.chapter-shadow .icon-left,
+.chapter-shadow .icon-right {
+  flex: 0 0 auto;
+}
+.chapter .icon-right img {
+  display: block;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 3px black);
+}
+.chapter-shadow .icon-right img {
+  display: block;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 3px black);
+}

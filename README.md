@@ -30,27 +30,37 @@ IF you are affiliated with Playa Games, please reach out to me.
 - Create and save teams.
 - Support reusable heroes with different equipment layouts and presets across multiple teams.
 
-### 0.4.x — Battle simulation
-- Implement combat simulation, including action priorities and damage calculations.
-- Add hero base stats, stat growth by level, skills and skill order, enemy formations, and campaign-specific modifiers.
+### 0.4.x — Wiki-Style Data Hub
+- Provide a browsable, searchable reference for the manually collected game data:
+  - Hero Catalogue, including the Tier List and Banner Catalogue.
+  - Item & Set Catalogue.
+  - Perk Catalogue.
+  - Skills & Talents Catalogue.
+  - Status Effect Catalogue.
+  - Resource & Gem Catalogue.
 
-### 0.5.x — Dungeon simulation
-- Build on the battle simulator with dungeon spawn rules, layouts, and dungeon-specific modifiers.
+### 0.5.x — Simulation preparation
+- Build the shared combat foundation used by the individual simulators.
+- Implement core combat rules such as turn order, action priorities, damage calculations, targeting, and status-effect handling.
+- Consolidate the hero and enemy stats, skill data, and reusable battle logic needed by each simulation mode.
 
-### 0.6.x — Tower simulation
-- Add tower layouts and tower-specific modifiers.
+### 0.6.x — Adventure and dungeon simulation
+- Build on the shared combat foundation with chapter and dungeon encounters, enemy formations, spawn rules, and encounter-specific modifiers.
 
-### 0.7.x — Titan simulation
-- Add titan stats, skills, and mechanics.
+### 0.7.x — Tower simulation
+- Add tower layouts, encounters, and tower-specific modifiers.
 
-### 0.8.x — Guild Hunt simulation
-- Add guild boss stats, skills, and mechanics.
+### 0.8.x — Titan simulation
+- Add titan stats, skills, mechanics, and encounter rules.
 
-### 0.9.x — Custom PvP simulation
-- Add configurable PvP battles using the battle simulator.
+### 0.9.x — Guild Hunt simulation
+- Add guild boss stats, skills, mechanics, and encounter rules.
 
-### 0.10.x — Daily activities
-- Explore simulations for the Magic Toilet and other daily mini-games, including historical banners and hero draw odds.
+### 0.10.x — Custom PvP simulation
+- Add configurable PvP battles using the shared combat foundation.
+
+### 0.11.x — Daily activities
+- Explore simulations for the Magic Toilet and other daily mini-games.
 
 ### 1.0.0 — Full toolkit
 - Complete the planned features above, with room for additional tools and improvements.

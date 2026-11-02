@@ -19,8 +19,9 @@ function AdditionalInfoChip({ information }) {
     if (information.element != null) {
         const element = findDefinition(ELEMENT_DEFINITIONS, information.element)
         if (!element) return <span className="catalogue-chip text">{humanize(information.element)}</span>
+        const name = element.name.toLowerCase()
         return (
-            <span className="catalogue-chip text">
+            <span className={"catalogue-chip text catalogue-chip-element-outline catalogue-chip-element-" + name}>
                 {elementSprites[element.id] && <img className="catalogue-chip-icon" src={elementSprites[element.id]} alt="" />}
                 {humanize(element.name)}
             </span>

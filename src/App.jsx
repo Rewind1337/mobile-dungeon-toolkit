@@ -308,13 +308,13 @@ function App() {
                 <div className='header-big'>Management</div>
                 <div className='flex-row'>
                   <div className='card heroes flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Hero Management" onClick={() => switchTabTo('heroes')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchTabTo('heroes'); } }}>
-                    <div className='header'>Hero Management</div>
+                    <div className='header card card-static'>Hero Management</div>
                   </div>
                   <div className='card items flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Item Management" onClick={() => switchTabTo('items')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchTabTo('items'); } }}>
-                    <div className='header'>Item Management</div>
+                    <div className='header card card-static'>Item Management</div>
                   </div>
                   <div className='card teams flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Team Management" onClick={() => switchTabTo('teams')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchTabTo('teams'); } }}>
-                    <div className='header'>Team Management</div>
+                    <div className='header card card-static'>Team Management</div>
                   </div>
                 </div>
               </div>
@@ -324,19 +324,19 @@ function App() {
                 <div className='header-big'>Simulations</div>
                 <div className='flex-row'>
                   <div className='card chapters flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Adventure Chapters" onClick={() => switchSimulatorTo('adventure')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('adventure'); } }}>
-                    <div className='header'>Adventure Chapters</div>
+                    <div className='header card card-static'>Adventure Chapters</div>
                   </div>
                   <div className='card towers flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Towers" onClick={() => switchSimulatorTo('towers')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('towers'); } }}>
-                    <div className='header'>Towers</div>
+                    <div className='header card card-static'>Towers</div>
                   </div>
                   <div className='card titans flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Titans" onClick={() => switchSimulatorTo('titans')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('titans'); } }}>
-                    <div className='header'>Titans</div>
+                    <div className='header card card-static'>Titans</div>
                   </div>
                   <div className='card guildbosses flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Guild Hunt" onClick={() => switchSimulatorTo('guild-hunt')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('guild-hunt'); } }}>
-                    <div className='header'>Guild Hunt</div>
+                    <div className='header card card-static'>Guild Hunt</div>
                   </div>
                   <div className='card custom-combat flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Custom Combat" onClick={() => switchSimulatorTo('custom')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('custom'); } }}>
-                    <div className='header'>Custom Combat</div>
+                    <div className='header card card-static'>Custom Combat</div>
                   </div>
                 </div>
               </div>

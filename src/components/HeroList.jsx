@@ -18,7 +18,7 @@ function getSearchableValues(value, seen = new Set()) {
     seen.add(value)
     return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : [key, ...getSearchableValues(child, seen)])
 }
-function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId }) {
+function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId, onDoubleClick }) {
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
     const [search, setSearch, commitSearch] = useUrlSearch();
     const [filters, setFilters] = useState({
@@ -110,6 +110,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
                                 const clickedId = savedHeroes ? heroObj.saveId : heroObj.id
                                 setSelectedHeroId(currentId => currentId === clickedId ? null : clickedId)
                             }}
+                            onDoubleClick={onDoubleClick ? () => onDoubleClick(heroObj) : undefined}
                         />
                     )}
                 />
