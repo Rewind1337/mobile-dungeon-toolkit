@@ -19,12 +19,12 @@ IF you are affiliated with Playa Games, please reach out to me.
 - Add the item database, including set items and unique items.
 - Save and manage item stats and set bonuses.
 - Support perks and rolls, including rarity, equipment slot, and item type.
-- ~~Optional: calculate stats from base stats for a desired level.~~
+- ~~Calculate stats from base stats for a desired level.~~
 
 ### 0.2.x — Hero management
 - Add functional management for legendary and epic heroes.
 - Equip heroes with gear, inspect their skills, and save their stats.
-- ~~Optional: calculate stats from base stats for a desired level.~~
+- ~~Calculate stats from base stats for a desired level.~~
 
 ### 0.3.x — Teams
 - Create and save teams.
