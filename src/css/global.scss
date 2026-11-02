@@ -2331,77 +2331,70 @@ select {
   }
 }
 
+/* Chapter text fills a consistent center area while the shadow buttons stay compact. */
+.chapter-wrapper {
+  width: 100%;
+  align-items: stretch;
+}
+.chapter {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.chapter-shadow {
+  flex: 0 1 clamp(68px, 8vw, 90px);
+  min-width: 0;
+  padding-inline: 4px;
+}
+.chapter-shadow-placeholder {
+  flex: 0 1 clamp(168px, 24vw, 288px);
+  min-width: 0;
+}
+.chapter > .text {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: V.$font-family-header;
+  font-size: clamp(20px, 3vw, 34px);
+  line-height: 1.1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chapter > .icon-left > .text {
+  flex: 0 0 auto;
+  font-family: V.$font-family-stats;
+  font-size: 20px;
+  line-height: 1;
+}
 .chapter-shadow > .text {
-  text-shadow: -3px 0 2px black, 3px 0 2px black, 0 -3px 2px black, 0 3px 2px black;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: V.$font-family-stats;
+  font-size: clamp(14px, 1.5vw, 19px);
+  line-height: 1.1;
+  text-align: center;
+  white-space: nowrap;
 }
-
-/* Use the compact chapter/Shadow World label layout on small screens only. */
-@include M.media-query-max(V.$bp-mobile, ()) {
-  .chapter-wrapper {
-    width: 100%;
-    align-items: stretch;
-  }
-  .chapter {
-    flex: 1 1 auto;
-    min-width: 0;
-  }
-  .chapter-shadow {
-    flex: 0 1 clamp(68px, 8vw, 90px);
-    min-width: 0;
-    padding-inline: 4px;
-  }
-  .chapter-shadow-placeholder {
-    flex: 0 1 clamp(168px, 24vw, 288px);
-    min-width: 0;
-  }
-  .chapter > .text {
-    flex: 1 1 auto;
-    min-width: 0;
-    font-family: V.$font-family-header;
-    font-size: clamp(20px, 3vw, 34px);
-    line-height: 1.1;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .chapter > .icon-left > .text {
-    flex: 0 0 auto;
-    font-family: V.$font-family-stats;
-    font-size: 20px;
-    line-height: 1;
-  }
-  .chapter-shadow > .text {
-    flex: 1 1 auto;
-    min-width: 0;
-    font-family: V.$font-family-stats;
-    font-size: clamp(14px, 1.5vw, 19px);
-    line-height: 1.1;
-    text-align: center;
-    white-space: nowrap;
-  }
-  .chapter .icon-left,
-  .chapter .icon-right,
-  .chapter-shadow .icon-left,
-  .chapter-shadow .icon-right {
-    flex: 0 0 auto;
-  }
-  .chapter .icon-right img {
-    display: block;
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
-    filter: drop-shadow(0 0 3px black);
-  }
-  .chapter-shadow .icon-right img {
-    display: block;
-    width: 22px;
-    height: 22px;
-    object-fit: contain;
-    filter: drop-shadow(0 0 3px black);
-  }
+.chapter .icon-left,
+.chapter .icon-right,
+.chapter-shadow .icon-left,
+.chapter-shadow .icon-right {
+  flex: 0 0 auto;
 }
-
+.chapter .icon-right img {
+  display: block;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 3px black);
+}
+.chapter-shadow .icon-right img {
+  display: block;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 3px black);
+}
 
 /* Keep team-name fields useful without allowing the action buttons to wrap. */
 .team-header:not(.is-collapsed) {
@@ -2466,7 +2459,7 @@ select {
   padding-inline: 2px;
   font-size: V.$font-size-small;
   opacity: 0.85;
-  text-shadow: none;
+  text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black;
 }
 .filters-sort-order {
   flex-direction: column;
@@ -2477,7 +2470,6 @@ select {
 .filters-sort-order > .catalogue-control-label {
   flex: 0 0 auto;
   white-space: normal;
-  text-shadow: none;
   font-size: V.$font-size-small;
   opacity: 0.85;
 }
@@ -2512,5 +2504,22 @@ select {
     height: 32px;
     min-height: 32px;
     border-radius: 0;
+  }
+}
+
+
+/* On narrow simulator screens, show the selectable list without the detail pane. */
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .simulator-selection-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .simulator-selection-list {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .simulator-selection-detail {
+    display: none;
   }
 }
