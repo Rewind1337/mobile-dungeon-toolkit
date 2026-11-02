@@ -7,7 +7,7 @@ import { SLOT_NAMES, RARITY_NAMES, getLocations, getSetLocations, getSourceName,
 import ItemCatalogueCard from "./ItemCatalogueCard.jsx"
 import SetCatalogueCard from "./SetCatalogueCard.jsx"
 import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"
-import Button from "./Button.jsx"
+import CatalogueFilterActions from "./CatalogueFilterActions.jsx"
 import VirtualizedGrid from "./VirtualizedGrid.jsx"
 
 import "../css/item.scss"
@@ -23,6 +23,8 @@ function CatalogueFilters({
     setSlotFilter,
     attributeFilter,
     setAttributeFilter,
+    setAttributeFilterForSets,
+    setPieceCountFilter,
     locationFilter,
     setLocationFilter,
     allSources,
@@ -31,7 +33,8 @@ function CatalogueFilters({
     resultCount,
     totalCount,
     clearFilters,
-    onSearchBlur
+    onSearchBlur,
+    onHideFilters
 }) {
     return (
         <div className={`catalogue-filters card${view === "sets" ? " is-set-view" : ""}`}>
@@ -80,9 +83,26 @@ function CatalogueFilters({
                     </select>
                 </label>
             </>}
-            <div className="catalogue-filter-actions">
-                <Button text="Clear filters" color={"cancel"} onClick={clearFilters} />
-            </div>
+            {view === "sets" && <>
+                <label className="catalogue-filter">
+                    <span className="catalogue-control-label text">Set attribute</span>
+                    <select aria-label="Filter sets by main attribute" value={setAttributeFilterForSets} onChange={event => setAttributeFilterForSets(event.target.value)}>
+                        <option value="all">All attributes</option>
+                        {Object.values(PRIMARY_STAT_DEFINITIONS).map(attribute =>
+                            <option key={attribute.id} value={String(attribute.id)}>{humanize(attribute.name)}</option>
+                        )}
+                    </select>
+                </label>
+                <label className="catalogue-filter">
+                    <span className="catalogue-control-label text">Set pieces</span>
+                    <select aria-label="Filter by set size" value={setPieceCountFilter} onChange={event => setPieceCountFilter(event.target.value)}>
+                        <option value="all">All Sets</option>
+                        <option value="2">2 Piece Sets</option>
+                        <option value="4">4 Piece Sets</option>
+                    </select>
+                </label>
+            </>}
+            <CatalogueFilterActions filtersVisible onHide={onHideFilters} onClear={clearFilters} />
         </div>
     )
 }
@@ -98,6 +118,9 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
     const [slotFilter, setSlotFilter] = useState("all")
     const [attributeFilter, setAttributeFilter] = useState("all")
     const [locationFilter, setLocationFilter] = useState("all")
+    const [setAttributeFilter, setSetAttributeFilter] = useState("all")
+    const [setPieceCountFilter, setSetPieceCountFilter] = useState("all")
+    const [filtersVisible, setFiltersVisible] = useState(true)
 
     useEffect(() => {
         if (!initialFilter) return
@@ -209,8 +232,10 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
         const matchesSearch = matchesSearchQuery(searchable, search)
         const matchesSource = sourceFilter === "all" || sourceName === sourceFilter
         const matchesLocation = locationFilter === "all" || locations.includes(locationFilter)
-        return matchesSearch && matchesSource && matchesLocation
-    }), [setsRef, search, sourceFilter, locationFilter, itemsBySet])
+        const matchesSetAttribute = setAttributeFilter === "all" || String(set.mainAttribute) === setAttributeFilter
+        const matchesSetPieces = setPieceCountFilter === "all" || String(set.pieces) === setPieceCountFilter
+        return matchesSearch && matchesSource && matchesLocation && matchesSetAttribute && matchesSetPieces
+    }), [setsRef, search, sourceFilter, locationFilter, itemsBySet, setAttributeFilter, setPieceCountFilter])
 
     const sortedItems = useMemo(
         () => filteredItems.slice().sort((a, b) => a.name.localeCompare(b.name)),
@@ -224,6 +249,8 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
         setSlotFilter("all")
         setAttributeFilter("all")
         setLocationFilter("all")
+        setSetAttributeFilter("all")
+        setSetPieceCountFilter("all")
     }
 
     return (
@@ -244,25 +271,30 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
                 </div>
             </header>
 
-            <CatalogueFilters
-                search={search}
-                setSearch={setSearch}
-                onSearchBlur={() => commitSearch(search)}
-                sourceFilter={sourceFilter}
-                setSourceFilter={setSourceFilter}
-                slotFilter={slotFilter}
-                setSlotFilter={setSlotFilter}
-                attributeFilter={attributeFilter}
-                setAttributeFilter={setAttributeFilter}
-                locationFilter={locationFilter}
-                setLocationFilter={setLocationFilter}
-                allSources={allSources}
-                allLocations={allLocations}
-                view={view}
-                resultCount={view === "sets" ? filteredSets.length : filteredItems.length}
-                totalCount={view === "sets" ? (setsRef ?? []).length : allItems.length}
-                clearFilters={clearFilters}
-            />
+            {filtersVisible ? (
+                <CatalogueFilters
+                    search={search}
+                    setSearch={setSearch}
+                    onSearchBlur={() => commitSearch(search)}
+                    sourceFilter={sourceFilter}
+                    setSourceFilter={setSourceFilter}
+                    slotFilter={slotFilter}
+                    setSlotFilter={setSlotFilter}
+                    attributeFilter={attributeFilter}
+                    setAttributeFilter={setAttributeFilter}
+                    setAttributeFilterForSets={setSetAttributeFilter}
+                    setPieceCountFilter={setSetPieceCountFilter}
+                    locationFilter={locationFilter}
+                    setLocationFilter={setLocationFilter}
+                    allSources={allSources}
+                    allLocations={allLocations}
+                    view={view}
+                    resultCount={view === "sets" ? filteredSets.length : filteredItems.length}
+                    totalCount={view === "sets" ? (setsRef ?? []).length : allItems.length}
+                    clearFilters={clearFilters}
+                    onHideFilters={() => setFiltersVisible(false)}
+                />
+            ) : <CatalogueFilterActions filtersVisible={false} onShow={() => setFiltersVisible(true)} />}
 
             {view === "items" && (
                 <div className="catalogue-results">

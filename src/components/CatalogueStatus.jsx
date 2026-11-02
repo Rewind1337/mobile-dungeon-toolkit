@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react"
 import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import { STATUS_EFFECT_DEFINITIONS } from "../database/enums.jsx"
-import Button from "./Button.jsx"
+import CatalogueFilterActions from "./CatalogueFilterActions.jsx"
 import StatusCatalogueCard from "./StatusCatalogueCard.jsx"
 import { STATUS_DESCRIPTIONS, getCategory } from "../js/statusCatalogueUtils.jsx"
 import { humanize } from "../js/util.jsx"
@@ -58,6 +58,7 @@ function matchesStatusSearch(status, rawQuery) {
 function CatalogueStatus() {
     const [search, setSearch, commitSearch] = useUrlSearch()
     const [categoryFilter, setCategoryFilter] = useState("all")
+    const [filtersVisible, setFiltersVisible] = useState(true)
 
     const statuses = useMemo(() => Object.values(STATUS_EFFECT_DEFINITIONS)
         .slice()
@@ -70,9 +71,11 @@ function CatalogueStatus() {
                 && (categoryFilter === "all"
                     || (categoryFilter === "special"
                         ? category.startsWith("Special")
-                        : category.toLowerCase().endsWith(categoryFilter)))
+                        : category === (categoryFilter === "buff" ? "Buff" : "Debuff")))
         })
     }, [statuses, search, categoryFilter])
+
+    const clearFilters = () => { setSearch(""); commitSearch(""); setCategoryFilter("all") }
 
     return (
         <section className="status-catalogue">
@@ -88,31 +91,24 @@ function CatalogueStatus() {
                 </div>
             </header>
 
-            <div className="status-catalogue-filters card">
-                <label className="catalogue-search">
-                    <span className="catalogue-control-label text">Search status effects ({filteredStatuses.length} of {statuses.length} status effects)</span>
-                    <input
-                        className="selectable catalogue-input"
-                        aria-label="Search status effects"
-                        placeholder="Name, effect, stat, mechanic…"
-                        value={search}
-                        onChange={event => setSearch(event.target.value)}
-                        onBlur={() => commitSearch(search)}
-                    />
-                </label>
-                <label className="catalogue-filter">
-                    <span className="catalogue-control-label text">Category</span>
-                    <select aria-label="Filter by status category" value={categoryFilter} onChange={event => setCategoryFilter(event.target.value)}>
-                        <option value="all">All categories</option>
-                        <option value="buff">Buffs</option>
-                        <option value="debuff">Debuffs</option>
-                        <option value="special">Special effects (including inferred buffs/debuffs)</option>
-                    </select>
-                </label>
-                <div className="catalogue-filter-actions">
-                    <Button className="status-catalogue-clear" text="Clear filters" color={"cancel"} onClick={() => { setSearch(""); commitSearch(""); setCategoryFilter("all") }} />
+            {filtersVisible ? (
+                <div className="status-catalogue-filters card">
+                    <label className="catalogue-search">
+                        <span className="catalogue-control-label text">Search status effects ({filteredStatuses.length} of {statuses.length} status effects)</span>
+                        <input className="selectable catalogue-input" aria-label="Search status effects" placeholder="Name, effect, stat, mechanic…" value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
+                    </label>
+                    <label className="catalogue-filter">
+                        <span className="catalogue-control-label text">Category</span>
+                        <select aria-label="Filter by status category" value={categoryFilter} onChange={event => setCategoryFilter(event.target.value)}>
+                            <option value="all">All categories</option>
+                            <option value="buff">Buffs</option>
+                            <option value="debuff">Debuffs</option>
+                            <option value="special">Special Effects</option>
+                        </select>
+                    </label>
+                    <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={clearFilters} />
                 </div>
-            </div>
+            ) : <CatalogueFilterActions filtersVisible={false} onShow={() => setFiltersVisible(true)} />}
 
             {filteredStatuses.length === 0
                 ? <p className="catalogue-empty card">No status effects match these filters.</p>

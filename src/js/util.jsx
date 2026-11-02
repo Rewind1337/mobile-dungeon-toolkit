@@ -5,6 +5,8 @@ export function formatNumber(n, decimals) {
         return "Invalid input";
     }
 
+    if (n <= 9_999) return String(n);
+
     const suffixes = [
         { threshold: 1_000_000_000_000, suffix: "T" },
         { threshold: 1_000_000_000, suffix: "B" },

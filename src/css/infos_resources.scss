@@ -436,3 +436,26 @@
   font-weight: 700;
   opacity: 0.8;
 }
+
+
+.resource-catalogue-filters .resource-location-filter {
+  flex: 0 1 220px;
+  min-width: 160px;
+}
+.resource-catalogue-filters .catalogue-filter-actions {
+  align-self: flex-end;
+  margin-left: auto;
+}
+.banner-catalogue-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+.banner-catalogue-search > .catalogue-search {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+.banner-catalogue-search > .catalogue-filter-actions {
+  flex: 0 0 auto;
+  margin-left: auto;
+}

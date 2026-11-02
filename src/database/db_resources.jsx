@@ -1,5 +1,6 @@
 import { resourceSprites } from "./db_sprites.jsx"
-import { RESOURCE_LOCATIONS } from "./enums"
+import { RARITY_DEFINITIONS, RESOURCE_LOCATIONS } from "./enums.jsx"
+import { humanize } from "../js/util.jsx"
 
 let BASE_RESOURCES = []
 
@@ -18,6 +19,27 @@ function add_resource(name, description, sourceLocations = [], useLocations = []
         sourceLocations: [...sourceLocations],
         useLocations: [...useLocations],
         additionalInformation: additionalInformation.map(entry => ({ ...entry })),
+    })
+}
+
+function add_gem(name, rarity, sourceLocations = []) {
+    const normalizedName = name.toLowerCase().replace(/[^a-z0-9]/g, "_").replace(/^_+|_+$/g, "")
+    const id = `${normalizedName}_${rarity.name.toLowerCase()}`
+    if (BASE_RESOURCES.some(resource => resource.id === id)) {
+        throw new Error(`Duplicate stable gem ID "${id}".`)
+    }
+
+    BASE_RESOURCES.push({
+        id,
+        name: `${humanize(rarity.name)} ${name}`,
+        gemType: name,
+        description: "Description here.",
+        spriteSrc: resourceSprites[normalizedName] !== undefined ? resourceSprites[normalizedName] : resourceSprites["null"],
+        sourceLocations: [...sourceLocations],
+        useLocations: [],
+        additionalInformation: [],
+        isGem: true,
+        rarity,
     })
 }
 
@@ -79,10 +101,18 @@ export function init_resource_db() {
     add_resource("Epic Skill Tome", "Description here.", [], [RESOURCE_LOCATIONS.TAVERN], [{ rarity: "epic" }, { text: "Not Implemented" }])
     add_resource("Legendary Skill Tome", "Description here.", [], [RESOURCE_LOCATIONS.TAVERN], [{ rarity: "legendary" }, { text: "Not Implemented" }])
 
-    add_resource("Ruby", "Description here.")
-    add_resource("Sapphire", "Description here.")
-    add_resource("Emerald", "Description here.")
-    add_resource("Diamond", "Description here.")
+    // Each rarity has its own sourceLocations array for its dungeon drop odds.
+    // Store future drop entries as plain strings so they can be displayed directly.
+    const gemRarities = [
+        RARITY_DEFINITIONS.COMMON,
+        RARITY_DEFINITIONS.UNCOMMON,
+        RARITY_DEFINITIONS.RARE,
+        RARITY_DEFINITIONS.EPIC,
+        RARITY_DEFINITIONS.LEGENDARY,
+    ]
+    for (const name of ["Ruby", "Sapphire", "Emerald", "Diamond"]) {
+        gemRarities.forEach(rarity => add_gem(name, rarity, []))
+    }
 
     add_resource("Fire Shard Tier1", "Description here.", [], [RESOURCE_LOCATIONS.CHAPEL], [{ element: "fire" }])
     add_resource("Fire Shard Tier2", "Description here.", [], [RESOURCE_LOCATIONS.CHAPEL], [{ element: "fire" }])

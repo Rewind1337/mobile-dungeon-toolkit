@@ -6,7 +6,7 @@ import {
     ROLE_DEFINITIONS,
     getEnumNameById
 } from "../database/enums.jsx"
-import Button from "./Button.jsx"
+import CatalogueFilterActions from "./CatalogueFilterActions.jsx"
 import Hero from "./Hero.jsx"
 import { attributeSprites, elementSprites, roleSprites } from "../database/db_sprites.jsx"
 import { getSearchableValues, matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
@@ -107,6 +107,7 @@ function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null
     const [attributeFilter, setAttributeFilter] = useState("all")
     const [elementFilter, setElementFilter] = useState("all")
     const [roleFilter, setRoleFilter] = useState("all")
+    const [filtersVisible, setFiltersVisible] = useState(true)
 
     useEffect(() => {
         if (!initialFilter) return
@@ -192,49 +193,43 @@ function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null
                 <BannerCatalogueList heroesRef={heroesRef} search={search} setSearch={setSearch} commitSearch={commitSearch} />
             ) : (
                 <>
-            <div className="hero-catalogue-filters card">
-                <label className="catalogue-search">
-                    <span className="catalogue-control-label text">Search heroes ({filteredHeroes.length} of {catalogueHeroes.length} heroes)</span>
-                    <input
-                        className="selectable catalogue-input"
-                        aria-label="Search hero catalogue"
-                        placeholder="Name, skill, talent, effect, ID…"
-                        value={search}
-                        onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)}
-                    />
-                </label>
-                <label className="catalogue-filter">
-                    <span className="catalogue-control-label text">Rarity</span>
-                    <select aria-label="Filter by rarity" value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
-                        <option value="all">All rarities</option>
-                        {HERO_CATALOGUE_RARITIES.map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
-                    </select>
-                </label>
-                <label className="catalogue-filter">
-                    <span className="catalogue-control-label text">Main attribute</span>
-                    <select aria-label="Filter by main attribute" value={attributeFilter} onChange={event => setAttributeFilter(event.target.value)}>
-                        <option value="all">All attributes</option>
-                        {Object.values(ATTRIBUTE_DEFINITIONS).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
-                    </select>
-                </label>
-                <label className="catalogue-filter">
-                    <span className="catalogue-control-label text">Element</span>
-                    <select aria-label="Filter by element" value={elementFilter} onChange={event => setElementFilter(event.target.value)}>
-                        <option value="all">All elements</option>
-                        {Object.values(ELEMENT_DEFINITIONS).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
-                    </select>
-                </label>
-                <label className="catalogue-filter">
-                    <span className="catalogue-control-label text">Role</span>
-                    <select aria-label="Filter by role" value={roleFilter} onChange={event => setRoleFilter(event.target.value)}>
-                        <option value="all">All roles</option>
-                        {Object.values(ROLE_DEFINITIONS).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
-                    </select>
-                </label>
-                <div className="catalogue-filter-actions">
-                    <Button text="Clear filters" color={"cancel"} onClick={clearFilters} />
+            {filtersVisible ? (
+                <div className="hero-catalogue-filters card">
+                    <label className="catalogue-search">
+                        <span className="catalogue-control-label text">Search heroes ({filteredHeroes.length} of {catalogueHeroes.length} heroes)</span>
+                        <input className="selectable catalogue-input" aria-label="Search hero catalogue" placeholder="Name, skill, talent, effect, ID…" value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
+                    </label>
+                    <label className="catalogue-filter">
+                        <span className="catalogue-control-label text">Rarity</span>
+                        <select aria-label="Filter by rarity" value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
+                            <option value="all">All rarities</option>
+                            {HERO_CATALOGUE_RARITIES.map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
+                        </select>
+                    </label>
+                    <label className="catalogue-filter">
+                        <span className="catalogue-control-label text">Main attribute</span>
+                        <select aria-label="Filter by main attribute" value={attributeFilter} onChange={event => setAttributeFilter(event.target.value)}>
+                            <option value="all">All attributes</option>
+                            {Object.values(ATTRIBUTE_DEFINITIONS).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
+                        </select>
+                    </label>
+                    <label className="catalogue-filter">
+                        <span className="catalogue-control-label text">Element</span>
+                        <select aria-label="Filter by element" value={elementFilter} onChange={event => setElementFilter(event.target.value)}>
+                            <option value="all">All elements</option>
+                            {Object.values(ELEMENT_DEFINITIONS).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
+                        </select>
+                    </label>
+                    <label className="catalogue-filter">
+                        <span className="catalogue-control-label text">Role</span>
+                        <select aria-label="Filter by role" value={roleFilter} onChange={event => setRoleFilter(event.target.value)}>
+                            <option value="all">All roles</option>
+                            {Object.values(ROLE_DEFINITIONS).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
+                        </select>
+                    </label>
+                    <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={clearFilters} />
                 </div>
-            </div>
+            ) : <CatalogueFilterActions filtersVisible={false} onShow={() => setFiltersVisible(true)} />}
 
             {filteredHeroes.length === 0
                 ? <p className="catalogue-empty card">No heroes match these filters.</p>

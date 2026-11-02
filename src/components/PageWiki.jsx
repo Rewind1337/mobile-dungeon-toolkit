@@ -21,9 +21,8 @@ const CataloguePerk = lazy(() => import("./CataloguePerk.jsx"))
 const EMPTY_ITEM_DATA = {}
 const BANNER_DATA = init_banner_db()
 const RESOURCE_DATA = init_resource_db()
-const GEM_RESOURCE_IDS = new Set(["ruby", "sapphire", "emerald", "diamond"])
-const RESOURCE_COUNT = RESOURCE_DATA.filter(resource => !GEM_RESOURCE_IDS.has(resource.id)).length
-const GEM_TYPE_COUNT = RESOURCE_DATA.filter(resource => GEM_RESOURCE_IDS.has(resource.id)).length
+const RESOURCE_COUNT = RESOURCE_DATA.filter(resource => !resource.isGem).length
+const GEM_TYPE_COUNT = new Set(RESOURCE_DATA.filter(resource => resource.isGem).map(resource => resource.gemType)).size
 const TABS = [
     ["hero-catalogue", "Hero Catalogue"],
     ["item-catalogue", "Items & Sets"],

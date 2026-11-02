@@ -1,11 +1,13 @@
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { getSearchableValues, matchesSearchQuery } from "../js/search.jsx"
 import { BANNERS, getBannerLiveDateInfo, hasValidBannerDate, matchesBannerHeroQuery, parseBannerDate } from "../js/bannerCatalogueUtils.jsx"
 import BannerCatalogueCard from "./BannerCatalogueCard.jsx"
+import CatalogueFilterActions from "./CatalogueFilterActions.jsx"
 import "../css/infos.scss"
 import "../css/infos_resources.scss"
 
 export default function BannerCatalogueList({ heroesRef, search, setSearch, commitSearch }) {
+    const [filtersVisible, setFiltersVisible] = useState(true)
     const heroesById = useMemo(() => {
         const heroes = Array.isArray(heroesRef) ? heroesRef : []
         return new Map(heroes.map(hero => [hero.id, hero]))
@@ -92,22 +94,18 @@ export default function BannerCatalogueList({ heroesRef, search, setSearch, comm
 
     return (
         <div className="banner-catalogue-list">
-            <label className="catalogue-search banner-catalogue-search card">
-                <span className="catalogue-control-label text">
-                    Search banners, heroes, and banner details
-                    <span className="catalogue-result-count text">
-                        Showing {filteredBanners.length} of {BANNERS.length} banners
-                    </span>
-                </span>
-                <input
-                    className="selectable catalogue-input"
-                    type="search"
-                    aria-label="Search all banner and hero details"
-                    placeholder="Search banners, heroes, and details..."
-                    value={search}
-                    onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)}
-                />
-            </label>
+            {filtersVisible ? (
+                <div className="banner-catalogue-search card">
+                    <label className="catalogue-search">
+                        <span className="catalogue-control-label text">
+                            Search banners, heroes, and banner details
+                            <span className="catalogue-result-count text">Showing {filteredBanners.length} of {BANNERS.length} banners</span>
+                        </span>
+                        <input className="selectable catalogue-input" type="search" aria-label="Search all banner and hero details" placeholder="Search banners, heroes, and details..." value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
+                    </label>
+                    <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={() => { setSearch(""); commitSearch(""); }} />
+                </div>
+            ) : <CatalogueFilterActions filtersVisible={false} onShow={() => setFiltersVisible(true)} />}
             {filteredBanners.length === 0
                 ? <p className="catalogue-empty card">No banners match that search.</p>
                 : <div className="banner-catalogue-grid">

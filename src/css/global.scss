@@ -2395,3 +2395,48 @@ select {
   object-fit: contain;
   filter: drop-shadow(0 0 3px black);
 }
+
+
+/* Keep team-name fields useful without allowing the action buttons to wrap. */
+.team-header:not(.is-collapsed) {
+  grid-template-columns: auto minmax(0, 360px) minmax(0, 1fr);
+}
+.team-header:not(.is-collapsed) .team-name-heading {
+  max-width: 360px;
+}
+.team-header:not(.is-collapsed) .team-name-input {
+  width: 100%;
+  max-width: 100%;
+}
+.team-header:not(.is-collapsed) .team-actions {
+  justify-self: end;
+  flex-wrap: nowrap;
+}
+.team-collapsed-heroes {
+  justify-content: flex-end;
+}
+
+@include M.media-query-max(V.$bp-tablet) {
+  .team-header:not(.is-collapsed) {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .team-header:not(.is-collapsed) .team-name-heading {
+    max-width: 100%;
+  }
+  .team-header:not(.is-collapsed) .team-actions {
+    grid-column: 1 / -1;
+    justify-self: end;
+    flex-wrap: nowrap;
+  }
+}
+
+/* Add a scrollable tail so mobile browser/OS toolbars don't cover the page end. */
+@include M.media-query-max(V.$bp-mobile) {
+  #page-info,
+  #page-splash,
+  .teams-list,
+  .virtualized-list-scroll {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
+    scroll-padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+}

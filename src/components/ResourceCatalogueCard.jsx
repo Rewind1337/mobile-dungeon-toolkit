@@ -76,8 +76,8 @@ export default function ResourceCatalogueCard({ resource }) {
                     </div>
                 )}
                 <p className="resource-catalogue-description text">{resource.description || "No description recorded."}</p>
-                <ResourceLocationRow label="Source" locations={resource.sourceLocations} />
-                <ResourceLocationRow label="Used in" locations={resource.useLocations} />
+                <ResourceLocationRow label="Obtained from" locations={resource.sourceLocations} />
+                <ResourceLocationRow label="Used for" locations={resource.useLocations} />
             </div>
         </article>
     )
