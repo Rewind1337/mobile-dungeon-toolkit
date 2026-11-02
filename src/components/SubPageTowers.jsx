@@ -1,82 +1,45 @@
 import { useState } from "react"
-
-import Hero from "./Hero.jsx"
-import { useDynamicList } from "../hooks/useDynamicList.jsx";
+import { useDynamicList } from "../hooks/useDynamicList.jsx"
+import { SimulatorEntryDetails } from "./SimulatorEntryList.jsx"
 
 const TOWERS = [
-    { id: 0, name: "Lighthouse", stages: Array(30) },
-    { id: 1, name: "Abandoned Tower", stages: Array(30) },
-    { id: 2, name: "Obelisk", stages: Array(30) },
-    { id: 3, name: "Serpents Steeple", stages: Array(30) },
-    { id: 4, name: "Peppermint Pillar", stages: Array(30) },
-    { id: 5, name: "Yggdrasil", stages: Array(30) },
-    { id: 6, name: "Decayed Cocoon", stages: Array(30) },
-    { id: 7, name: "Crystal Bore", stages: Array(30) }
+    { id: 0, name: "Lighthouse" },
+    { id: 1, name: "Abandoned Tower" },
+    { id: 2, name: "Obelisk" },
+    { id: 3, name: "Serpents Steeple" },
+    { id: 4, name: "Peppermint Pillar" },
+    { id: 5, name: "Yggdrasil" },
+    { id: 6, name: "Decayed Cocoon" },
+    { id: 7, name: "Crystal Bore" },
 ]
 
-function Tower({ id, name, setSelectedTower }) {
-    return <div className="tower card flex-col" data-id={id} onClick={() => { setSelectedTower(id) }}>
-        <div className="header">{name}</div>
-    </div>
-}
-
-function TowerStage({ id, towerId, setSelectedStage, heroesRef }) {
-    let arr1 = [];
-    let arr2 = [];
-    let arr3 = [];
-    for (let i = 0; i < 15; i++) {
-        let r = Math.floor(Math.random() * heroesRef.current.length);
-        let heroObj = heroesRef.current[r];
-        let _hero = <Hero heroObj={heroObj} level={1} />
-        if (i < 5)
-            arr1.push(_hero)
-        else if (i >= 5 && i < 10)
-            arr2.push(_hero)
-        else
-            arr3.push(_hero)
-    }
-    return <div className="tower-stage card flex-col" data-id={id} onClick={() => { setSelectedStage(id) }}>
-        <div className="header">Lighthouse {towerId + 1} - {id + 1}</div>
-        <div className="flex-row header-row">
-            <div className="header wave">Wave 1</div>
-            <div className="header wave">Wave 2</div>
-            <div className="header wave">Wave 3</div>
-        </div>
-        <div className="flex-row hero-row">
-            <div className="flex-row card">
-                {arr1}
-            </div>
-            <div className="flex-row card">
-                {arr2}
-            </div>
-            <div className="flex-row card">
-                {arr3}
-            </div>
-        </div>
-    </div>
-}
-
-function SubPageTowers({ heroesRef }) {
-    const { listHeight, listRef, events } = useDynamicList(0, true);
-    const [selectedTower, setSelectedTower] = useState(null);
-    const [selectedStage, setSelectedStage] = useState(null);
+function SubPageTowers() {
+    const { listHeight, listRef, events } = useDynamicList(0, true)
+    const [selectedTower, setSelectedTower] = useState(null)
 
     return (
-        <>
-            <div className='card w-66'>
-                <div className='header-big'>Select Tower</div>
-                <div ref={listRef} className="list tower-list flex-col"  {...events} style={{ maxHeight: listHeight }}>
-                    {TOWERS.map((tower, towerIndex) => <Tower key={"tower-" + towerIndex} {...tower} setSelectedTower={setSelectedTower} />)}
+        <div className="simulator-selection-layout page flex-row w-100">
+            <section className="card w-66 simulator-selection-list">
+                <div className="header-big">Select Tower</div>
+                <div ref={listRef} {...events} className="list tower-list flex-col" style={{ maxHeight: listHeight }}>
+                    {TOWERS.map(tower => (
+                        <button type="button" className="tower card flex-col" data-id={tower.id}
+                            key={tower.id} onClick={() => setSelectedTower(tower)}>
+                            <span className="header">{tower.name}</span>
+                        </button>
+                    ))}
                 </div>
-            </div>
-            <div className='card w-100'>
-                <div className='header-big'>Select Stage</div>
-                <div className="list tower-stage-list flex-col"  {...events} style={{ maxHeight: listHeight }}>
-                    {selectedTower} - {selectedStage}
-                    <TowerStage id={0} towerId={0} setSelectedStage={setSelectedStage} heroesRef={heroesRef} />
-                </div>
-            </div>
-        </>
+            </section>
+            <section className="card w-100 simulator-selection-detail">
+                {selectedTower ? (
+                    <>
+                        <SimulatorEntryDetails entry={selectedTower} title={"Tower " + (selectedTower.id + 1) + " - " + selectedTower.name} emptyMessage="No tower stage entries have been defined yet." />
+                    </>
+                ) : (
+                    <div className="header-big">Select a Tower</div>
+                )}
+            </section>
+        </div>
     )
 }
 

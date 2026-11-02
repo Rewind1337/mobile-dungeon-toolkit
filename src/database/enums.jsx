@@ -13,6 +13,7 @@ export const RESOURCE_LOCATIONS = {
     REGULAR_SHOP: "Regular Shop (Trader)",
     DUNGEON_SHOP: "Dungeon Shop (Trader)",
     MAGIC_TOILET_SHOP: "Magic Toilet Shop (Trader)",
+    MAGIC_TOILET: "Magic Toilet (Flush)",
     CHAPEL: "Chapel",
     TAVERN: "Tavern",
     ADVENTURE: "Regular Adventure",

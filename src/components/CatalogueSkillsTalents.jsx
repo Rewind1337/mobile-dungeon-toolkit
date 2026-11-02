@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react"
 import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
 import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"
+import CatalogueFilterActions from "./CatalogueFilterActions.jsx"
 import SkillCatalogueCard from "./SkillCatalogueCard.jsx"
 import TalentCatalogueCard from "./TalentCatalogueCard.jsx"
 import { stringify, getTalentPosition } from "../js/skillsTalentsUtils.jsx"
@@ -8,6 +9,7 @@ import { stringify, getTalentPosition } from "../js/skillsTalentsUtils.jsx"
 function CatalogueSkillsTalents({ heroes = [], initialView = "skills", onViewChange }) {
     const [view, setView] = useState(initialView)
     const [search, setSearch, commitSearch] = useUrlSearch()
+    const [filtersVisible, setFiltersVisible] = useState(true)
     const changeView = nextView => {
         setView(nextView)
         onViewChange?.(nextView)
@@ -40,7 +42,12 @@ function CatalogueSkillsTalents({ heroes = [], initialView = "skills", onViewCha
             { label: "Talent Catalogue", value: "talents" },
         ]} />
         <header className="catalogue-header"><div className="catalogue-heading-copy"><div className="catalogue-title header-big">{view === "skills" ? "Skills Catalogue" : "Talents Catalogue"}</div><p className="catalogue-description text">{view === "skills" ? "Every skill currently present in the hero database, with its source hero." : "Every unique talent currently present in the hero database, with its source hero and position. Shared talents list all source heroes."}</p><p className="catalogue-progress-note text">This section is still in progress; some skill and talent data may be incomplete.</p></div></header>
-        <label className="catalogue-search skills-talents-catalogue-filters card"><span className="catalogue-control-label text">Search {view} ({filtered.length} of {entries.length} {view === "skills" ? "skills" : "talents"})</span><input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} placeholder="Name, hero, effect…" /></label>
+        {filtersVisible ? (
+            <div className="skills-talents-catalogue-filters card">
+                <label className="catalogue-search"><span className="catalogue-control-label text">Search {view} ({filtered.length} of {entries.length} {view === "skills" ? "skills" : "talents"})</span><input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} placeholder="Name, hero, effect…" /></label>
+                <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={() => { setSearch(""); commitSearch(""); }} />
+            </div>
+        ) : <CatalogueFilterActions filtersVisible={false} onShow={() => setFiltersVisible(true)} />}
         {filtered.length === 0 ? <p className="catalogue-empty card">No {view} match this search.</p> : <div className="hero-catalogue-grid">{filtered.map(entry => view === "skills" ? <SkillCatalogueCard key={entry.key} hero={entry.hero} skill={entry.skill} skillIndex={entry.skillIndex} /> : <TalentCatalogueCard key={entry.key} talent={entry.talent} sources={entry.sources} />)}</div>}
     </section>
 }

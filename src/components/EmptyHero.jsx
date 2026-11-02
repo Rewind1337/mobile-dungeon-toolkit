@@ -1,10 +1,10 @@
 import { memo, useState } from 'react'
 import { itemSprites } from '../database/db_sprites.jsx';
 
-function EmptyHero({ onClick }) {
+function EmptyHero({ onClick, className = "" }) {
     const [hover, setHover] = useState(false);
     return (
-        <div className={"hero card" + (hover ? " hover" : "")} onMouseEnter={() => { setHover(1) }} onMouseLeave={() => { setHover(0) }} onClick={() => { onClick() }}>
+        <div className={["hero", "card", hover ? "hover" : "", className].filter(Boolean).join(" ")} onMouseEnter={() => { setHover(1) }} onMouseLeave={() => { setHover(0) }} onClick={() => { onClick() }}>
             <div className="flex-col">
                 <div className="hero-sprite"><img className="hero-sprite-img" src={itemSprites["null"]} draggable={false} alt="" /></div>
                 <div className="text">?</div>

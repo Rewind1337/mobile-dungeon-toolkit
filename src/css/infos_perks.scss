@@ -22,3 +22,16 @@
 @include M.media-query-max(V.$bp-mobile) {
   .perk-catalogue-row { gap: V.$gap-small; }
 }
+
+
+.perk-catalogue-slot-chip .catalogue-chip-icon {
+  filter: drop-shadow(0 0 2px black);
+}
+
+
+.perk-catalogue-filters {
+  grid-template-columns: minmax(240px, 2fr) minmax(170px, 1fr) auto;
+}
+@include M.media-query-max(V.$bp-mobile) {
+  .perk-catalogue-filters { grid-template-columns: minmax(0, 1fr); }
+}

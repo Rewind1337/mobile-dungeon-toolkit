@@ -97,10 +97,10 @@
 }
 
 .catalogue-filters {
-  grid-template-columns: minmax(260px, 2fr) repeat(3, minmax(145px, 1fr)) minmax(0, 1fr);
+  grid-template-columns: minmax(240px, 2fr) repeat(4, minmax(120px, 1fr)) auto;
 }
 .catalogue-filters.is-set-view {
-  grid-template-columns: minmax(260px, 2fr) repeat(2, minmax(145px, 1fr)) minmax(0, 1fr);
+  grid-template-columns: minmax(220px, 2fr) repeat(4, minmax(115px, 1fr)) auto;
 }
 
 .hero-catalogue-filters {
@@ -270,5 +270,36 @@
 
   .catalogue-view-label-compact {
     display: inline;
+  }
+}
+
+
+/* Catalogue filter visibility controls. */
+.catalogue-filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: V.$gap-small;
+  min-width: 0;
+  height: auto;
+}
+.catalogue-filter-actions-hidden {
+  justify-content: flex-start;
+  width: fit-content;
+  max-width: 100%;
+}
+.catalogue-filter-actions-hidden button,
+.catalogue-show-filters-inline {
+  width: auto;
+}
+
+@include M.media-query-max(V.$bp-mobile) {
+  .catalogue-filter-actions {
+    justify-content: flex-start;
+    grid-column: 1 / -1;
+  }
+  .catalogue-filter-actions-hidden .catalogue-show-filters-inline {
+    display: none;
   }
 }

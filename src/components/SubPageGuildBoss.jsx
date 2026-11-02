@@ -1,39 +1,43 @@
 import { useState } from "react"
-
-import { elementSprites } from "../database/db_sprites.jsx"
-import { useDynamicList } from "../hooks/useDynamicList.jsx";
+import { useDynamicList } from "../hooks/useDynamicList.jsx"
+import { SimulatorEntryDetails, SimulatorElementChips } from "./SimulatorEntryList.jsx"
 
 const GUILD_BOSSES = [
-    { id: 0, name: "Elemental Weaver", elementSrcArray: [elementSprites[0], elementSprites[1], elementSprites[2]] },
-    { id: 1, name: "Equinox", elementSrcArray: [elementSprites[3], elementSprites[4]] },
-    { id: 2, name: "Star Breaker", elementSrcArray: [elementSprites[5]] },
+    { id: 0, name: "Elemental Weaver", elementIds: [0, 1, 2] },
+    { id: 1, name: "Equinox", elementIds: [4, 3] },
+    { id: 2, name: "Star Breaker", elementIds: [5] },
 ]
 
-function GuildBoss({ id, name, elementSrcArray, setSelectedGuildBoss }) {
-    return <div className="guildboss card flex-col" data-id={id} onClick={() => { setSelectedGuildBoss(id) }} >
-        <div className="header">{name}</div>
-        <div className="header elements">{elementSrcArray.map(src => <img src={src} />)}</div>
-    </div>
-}
-
 function SubPageGuildBoss() {
-    const { listHeight, listRef } = useDynamicList(0, true);
-    const [selectedGuildBoss, setSelectedGuildBoss] = useState(null);
+    const { listHeight, listRef, events } = useDynamicList(0, true)
+    const [selectedGuildBoss, setSelectedGuildBoss] = useState(null)
 
     return (
-        <>
-            <div className='card w-25'>
-                <div className='header-big'>Select Guildboss</div>
-                <div ref={listRef} className="list guildboss-list flex-col" style={{ maxHeight: listHeight }}>
-                    {GUILD_BOSSES.map((guildboss, guildbossIndex) => <GuildBoss key={"guildboss-" + guildbossIndex} {...guildboss} setSelectedGuildBoss={setSelectedGuildBoss} />)}
+        <div className="simulator-selection-layout page flex-row w-100">
+            <section className="card w-25 simulator-selection-list">
+                <div className="header-big">Select Guild Boss</div>
+                <div ref={listRef} {...events} className="list guildboss-list flex-col" style={{ maxHeight: listHeight }}>
+                    {GUILD_BOSSES.map(boss => (
+                        <button type="button" className="guildboss card flex-col" data-id={boss.id}
+                            key={boss.id} onClick={() => setSelectedGuildBoss(boss)}>
+                            <div className="simulator-selection-chips">
+                                <span className="catalogue-chip text simulator-selection-name-chip">{boss.name}</span>
+                                <SimulatorElementChips elementIds={boss.elementIds} size="large" />
+                            </div>
+                        </button>
+                    ))}
                 </div>
-            </div>
-            <div className='card boss-preview w-100'>
-                {selectedGuildBoss}
-                <div className="flex-row" style={{ maxHeight: listHeight }}>
-                </div>
-            </div>
-        </>
+            </section>
+            <section className="card boss-preview w-100 simulator-selection-detail">
+                {selectedGuildBoss ? (
+                    <>
+                        <SimulatorEntryDetails entry={selectedGuildBoss} title={"Guild Boss - " + selectedGuildBoss.name} elementIds={selectedGuildBoss.elementIds} emptyMessage="No guild boss stage entries have been defined yet." />
+                    </>
+                ) : (
+                    <div className="header-big">Select a Guild Boss</div>
+                )}
+            </section>
+        </div>
     )
 }
 

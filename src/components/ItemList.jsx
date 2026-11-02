@@ -4,6 +4,7 @@ import { useDynamicList } from '../hooks/useDynamicList.jsx'
 import '../css/item.scss'
 
 import Item from './Item.jsx'
+import VirtualizedGrid from './VirtualizedGrid.jsx'
 import { filterSprites } from '../database/db_sprites.jsx'
 import ItemFilters from './ItemFilters.jsx'
 import BackToTopButton from './BackToTopButton.jsx'
@@ -17,9 +18,13 @@ function getSearchableValues(value, seen = new Set()) {
     seen.add(value)
     return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : [key, ...getSearchableValues(child, seen)])
 }
-function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, setsRef = [], itemType = null, heroAttributeRequirement = null, setSelectedItemId }) {
+function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, setsRef = [], itemType = null, heroAttributeRequirement = null, localSearch = false, setSelectedItemId, onDoubleClick }) {
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
-    const [search, setSearch, commitSearch] = useUrlSearch();
+    const [urlSearch, setUrlSearch, commitUrlSearch] = useUrlSearch();
+    const [modalSearch, setModalSearch] = useState("");
+    const search = localSearch ? modalSearch : urlSearch;
+    const setSearch = localSearch ? setModalSearch : setUrlSearch;
+    const commitSearch = localSearch ? () => {} : commitUrlSearch;
     const [filters, setFilters] = useState({
         set: null,
         unique: null,
@@ -28,7 +33,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
         rarity: null,
     });
     const [filtersAdvanced, setFiltersAdvanced] = useState(false)
-    const [sortOrder, setSortOrder] = useState(0) // 0 alphabetical, 1 reverse alphabetical
+    const [sortOrder, setSortOrder] = useState("alphabetic")
 
     const allItems = useMemo(() => {
         return [
@@ -41,10 +46,21 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
     }, [itemsRef]);
 
     const toggleFilter = (type, value) => {
-        setFilters((prev) => ({
-            ...prev,
-            [type]: prev[type] === value ? null : value,
-        }));
+        setFilters(previous => {
+            if (type === "rarity") {
+                return {
+                    set: null,
+                    unique: null,
+                    slot: null,
+                    attributeRequirement: null,
+                    rarity: previous.rarity === value ? null : value
+                }
+            }
+            return {
+                set: null, unique: null, slot: null, attributeRequirement: null, rarity: null,
+                [type]: previous[type] === value ? null : value
+            }
+        })
     };
 
     const clearFilters = () => {
@@ -68,7 +84,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
             const matchesUnique = filters.unique === null || (filters.unique === 'unique' ? hasUnique : !hasUnique);
             const matchesSlot = filters.slot === null || itemObj.slot === filters.slot;
             const matchesAttribute = filters.attributeRequirement === null || itemObj.attributeRequirement === filters.attributeRequirement;
-            const matchesRarity = filters.rarity === null || itemObj.rarity === filters.rarity;
+            const matchesRarity = filters.rarity === null || filters.rarity === itemObj.rarity;
             const set = (setsRef ?? []).find(setEntry => setEntry.id === itemObj.set)
             const searchable = [...getSearchableValues(itemObj), itemObj.name,
                 getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? '',
@@ -89,29 +105,41 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
         });
 
         return result.sort((a, b) => {
-            const comparison = a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
-            return sortOrder === 0 ? comparison : -comparison;
+            const byName = String(a.name).localeCompare(String(b.name), undefined, { sensitivity: "base" })
+            if (sortOrder === "rarity") return Number(b.rarity ?? 0) - Number(a.rarity ?? 0) || byName
+            if (sortOrder === "level") return Number(b.level ?? 0) - Number(a.level ?? 0) || byName
+            return byName
         });
     }, [allItems, filters, search, itemType, heroAttributeRequirement, sortOrder, setsRef]);
 
     return (<>
         <div className='flex-row'>
-            <ItemFilters savedItems={savedItems} setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={setSearch} onSearchBlur={() => commitSearch(search)} clearFilters={clearFilters} filters={{ ...filters, name: search }} filterSprites={filterSprites} topOffset={filtersOffset} sortOrder={sortOrder} onToggleSort={() => setSortOrder(order => order === 0 ? 1 : 0)} />
+            <ItemFilters savedItems={savedItems} setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={setSearch} onSearchBlur={() => commitSearch(search)} clearFilters={clearFilters} filters={{ ...filters, name: search }} filterSprites={filterSprites} topOffset={filtersOffset} sortOrder={sortOrder} onSortChange={setSortOrder} />
         </div>
         <div className='header-big'>{headerText}</div>
 
-        <div className='list item-list flex-row' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
+        <div className='list item-list flex-row virtualized-list-scroll' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
             {filteredItems.length === 0 ? (
                 <div className="text-big margin-auto">No items match the selected filters</div>
             ) : (
-                filteredItems.map((itemObj) => (
-                    <Item
-                        itemObj={itemObj}
-                        key={itemObj.key}
-                        level={savedItems ? (itemObj.level ?? 1) : null}
-                        onClick={() => setSelectedItemId({ slot: itemObj.slot, id: itemObj.id })}
-                    />
-                ))
+                <VirtualizedGrid
+                    items={filteredItems}
+                    scrollElementRef={listRef}
+                    minColumnWidth={110}
+                    estimatedRowHeight={170}
+                    rowGap={8}
+                    columnGap={8}
+                    className="item-list-virtual"
+                    rowClassName="item-list-virtual-row"
+                    renderItem={itemObj => (
+                        <Item
+                            itemObj={itemObj}
+                            level={savedItems ? (itemObj.level ?? 1) : null}
+                            onClick={() => setSelectedItemId({ slot: itemObj.slot, id: itemObj.id })}
+                            onDoubleClick={onDoubleClick ? () => onDoubleClick(itemObj) : undefined}
+                        />
+                    )}
+                />
             )}
         </div>
         <BackToTopButton scrollRef={listRef} className="item-list-back-to-top" />

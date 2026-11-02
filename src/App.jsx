@@ -17,7 +17,7 @@ const PageItems = lazy(() => import('./components/PageItems.jsx'))
 const PageHeroes = lazy(() => import('./components/PageHeroes.jsx'))
 const PageSimulators = lazy(() => import('./components/PageSimulators.jsx'))
 const PageTeams = lazy(() => import('./components/PageTeams.jsx'))
-const PageInfos = lazy(() => import('./components/PageInfos.jsx'))
+const PageWiki = lazy(() => import('./components/PageWiki.jsx'))
 
 
 const BASE_HEROES = init_hero_db()
@@ -28,23 +28,23 @@ const PAGE_TO_ROUTE = {
   items: '/items/',
   teams: '/teams/',
   simulator: '/simulators/',
-  info: '/info/',
+  wiki: '/wiki/',
 };
 
-const INFO_TAB_TO_ROUTE = {
-  overview: '/info/',
-  'item-catalogue': '/info/item-catalogue/items/',
-  'set-catalogue': '/info/item-catalogue/sets/',
-  'perk-catalogue': '/info/perk-catalogue/',
-  'hero-catalogue': '/info/hero-catalogue/heroes/',
-  'hero-tier-list-catalogue': '/info/hero-catalogue/tier-list/',
-  'hero-banners-catalogue': '/info/hero-catalogue/banners/',
-  'resources-catalogue': '/info/resource-catalogue/resources/',
-  'gems-catalogue': '/info/resource-catalogue/gems/',
-  'status-catalogue': '/info/status-catalogue/',
-  'skills-talents-catalogue': '/info/skill-catalogue/',
-  'skills-catalogue': '/info/skill-catalogue/',
-  'talents-catalogue': '/info/talent-catalogue/',
+const WIKI_TAB_TO_ROUTE = {
+  overview: '/wiki/',
+  'item-catalogue': '/wiki/item-catalogue/items/',
+  'set-catalogue': '/wiki/item-catalogue/sets/',
+  'perk-catalogue': '/wiki/perk-catalogue/',
+  'hero-catalogue': '/wiki/hero-catalogue/heroes/',
+  'hero-tier-list-catalogue': '/wiki/hero-catalogue/tier-list/',
+  'hero-banners-catalogue': '/wiki/hero-catalogue/banners/',
+  'resources-catalogue': '/wiki/resource-catalogue/resources/',
+  'gems-catalogue': '/wiki/resource-catalogue/gems/',
+  'status-catalogue': '/wiki/status-catalogue/',
+  'skills-talents-catalogue': '/wiki/skill-catalogue/',
+  'skills-catalogue': '/wiki/skill-catalogue/',
+  'talents-catalogue': '/wiki/talent-catalogue/',
 };
 
 const normalizeRoute = (route) => {
@@ -72,56 +72,36 @@ const getPathWithoutBase = () => {
 
 const getPageFromPath = () => {
   const pathname = getPathWithoutBase();
-
-  // Catalogue subroutes are views within the existing Info page. Keep short root-level aliases working too.
-  if (pathname === '/info' || pathname.startsWith('/info/') || pathname === '/other' || pathname.startsWith('/other/')
-      || pathname === '/hero-catalogue' || pathname.startsWith('/hero-catalogue/')
-      || pathname === '/resources-catalogue' || pathname.startsWith('/resources-catalogue/')
-      || pathname === '/skills-catalogue' || pathname.startsWith('/skills-catalogue/')
-      || pathname === '/talents-catalogue' || pathname.startsWith('/talents-catalogue/')) return 'info';
-
+  if (pathname === '/wiki' || pathname.startsWith('/wiki/')) return 'wiki';
+  if (pathname === '/simulators' || pathname.startsWith('/simulators/')) return 'simulator';
   return ROUTE_TO_PAGE[pathname] ?? 'notFound';
 };
 
-const getInfoTabFromPath = () => {
+const getWikiTabFromPath = () => {
   const pathname = getPathWithoutBase();
-  const aliases = {
-    '/info/hero-catalogue': 'hero-catalogue',
-    '/hero-catalogue': 'hero-catalogue',
-    '/hero-catalogue/heroes': 'hero-catalogue',
-    '/hero-catalogue/tier-list': 'hero-tier-list-catalogue',
-    '/hero-catalogue/banners': 'hero-banners-catalogue',
-    '/info/skills-talents-catalogue': 'skills-catalogue',
-    '/info/skills-talents-catalogue/skills': 'skills-catalogue',
-    '/info/skill-catalogue': 'skills-catalogue',
-    '/info/skills-catalogue': 'skills-catalogue',
-    '/skills-catalogue': 'skills-catalogue',
-    '/info/skills-talents-catalogue/talents': 'talents-catalogue',
-    '/info/talent-catalogue': 'talents-catalogue',
-    '/info/talents-catalogue': 'talents-catalogue',
-    '/talents-catalogue': 'talents-catalogue',
-    '/info/resource-catalogue': 'resources-catalogue',
-    '/info/resource-catalogue/resources': 'resources-catalogue',
-    '/info/resource-catalogue/gems': 'gems-catalogue',
-    '/info/resources-catalogue': 'resources-catalogue',
-    '/info/resources-catalogue/resources': 'resources-catalogue',
-    '/info/resources-catalogue/gems': 'gems-catalogue',
-    '/resources-catalogue': 'resources-catalogue',
-    '/resources-catalogue/resources': 'resources-catalogue',
-    '/resources-catalogue/gems': 'gems-catalogue',
-  };
-  if (aliases[pathname]) return aliases[pathname];
-  return Object.entries(INFO_TAB_TO_ROUTE).find(([, route]) => normalizeRoute(route) === pathname || normalizeRoute(route.replace('/info/', '/other/')) === pathname)?.[0] ?? 'overview';
+  return Object.entries(WIKI_TAB_TO_ROUTE)
+    .find(([, route]) => normalizeRoute(route) === pathname)?.[0] ?? 'overview';
+};
+
+const SIMULATOR_TAB_TO_ROUTE = {
+  overview: '/simulators/',
+  adventure: '/simulators/adventure/',
+  towers: '/simulators/towers/',
+  titans: '/simulators/titans/',
+  'guild-hunt': '/simulators/guild-hunt/',
+  custom: '/simulators/custom/',
+};
+
+const getSimulatorTabFromPath = () => {
+  const pathname = getPathWithoutBase();
+  return Object.entries(SIMULATOR_TAB_TO_ROUTE)
+    .find(([, route]) => normalizeRoute(route) === pathname)?.[0] ?? 'overview';
 };
 
 const createDefaultState = () => ({
   pageContent: 'splash',
   savedHeroesRef: [],
-  savedTeamsRef: [
-    { id: 0, name: "Default Team", heroes: Array(5).fill(null) },
-    { id: 1, name: "Team A", heroes: Array(5).fill(null) },
-    { id: 2, name: "Team B", heroes: Array(5).fill(null) },
-  ],
+  savedTeamsRef: [],
   savedItemsRef: {
     WEAPONS: [],
     HELMETS: [],
@@ -146,6 +126,19 @@ const loadInitialState = () => {
 
     const defaults = createDefaultState();
     const savedItems = isRecord(parsedState.savedItemsRef) ? parsedState.savedItemsRef : {};
+    const savedTeams = Array.isArray(parsedState.savedTeamsRef)
+      ? parsedState.savedTeamsRef.filter(isRecord)
+      : defaults.savedTeamsRef;
+    const isUntouchedLegacyStarterSet = savedTeams.length === 3
+      && ["Default Team", "Team A", "Team B"].every((name, index) => {
+        const team = savedTeams[index];
+        return team?.id === index
+          && team?.name === name
+          && Array.isArray(team.heroes)
+          && team.heroes.length === 5
+          && team.heroes.every(hero => hero == null);
+      });
+    const savedTeamsRef = isUntouchedLegacyStarterSet ? [savedTeams[0]] : savedTeams;
     const savedItemsRef = Object.fromEntries(
       Object.keys(defaults.savedItemsRef).map(slot => [
         slot,
@@ -161,9 +154,7 @@ const loadInitialState = () => {
       savedHeroesRef: Array.isArray(parsedState.savedHeroesRef)
         ? parsedState.savedHeroesRef.filter(isRecord)
         : defaults.savedHeroesRef,
-      savedTeamsRef: Array.isArray(parsedState.savedTeamsRef)
-        ? parsedState.savedTeamsRef.filter(isRecord)
-        : defaults.savedTeamsRef,
+      savedTeamsRef,
       savedItemsRef
     };
 
@@ -187,7 +178,8 @@ function App() {
 
   // app related
   const [pageContent, setPageContent] = useState(getPageFromPath)
-  const [activeInfoTab, setActiveInfoTab] = useState(getInfoTabFromPath)
+  const [activeWikiTab, setActiveWikiTab] = useState(getWikiTabFromPath)
+  const [activeSimulatorTab, setActiveSimulatorTab] = useState(getSimulatorTabFromPath)
   const [importStatus, setImportStatus] = useState("")
 
   const saveToLocalStorage = useCallback(() => {
@@ -214,7 +206,8 @@ function App() {
   useEffect(() => {
     const handlePopState = () => {
       setPageContent(getPageFromPath());
-      setActiveInfoTab(getInfoTabFromPath());
+      setActiveWikiTab(getWikiTabFromPath());
+      setActiveSimulatorTab(getSimulatorTabFromPath());
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -235,12 +228,13 @@ function App() {
       window.history.pushState({}, '', destination);
     }
 
-    if (page === 'info') setActiveInfoTab('overview');
+    if (page === 'wiki') setActiveWikiTab('overview');
+    if (page === 'simulator') setActiveSimulatorTab('overview');
     setPageContent(page);
   };
 
-  const switchInfoCatalogueTo = (tab) => {
-    const route = INFO_TAB_TO_ROUTE[tab];
+  const switchWikiCatalogueTo = (tab) => {
+    const route = WIKI_TAB_TO_ROUTE[tab];
     if (!route) return;
 
     const baseUrl = import.meta.env.BASE_URL;
@@ -251,8 +245,21 @@ function App() {
       window.history.pushState({}, '', destination);
     }
 
-    setActiveInfoTab(tab);
-    setPageContent('info');
+    setActiveWikiTab(tab);
+    setPageContent('wiki');
+  }
+
+  const switchSimulatorTo = (tab) => {
+    const route = SIMULATOR_TAB_TO_ROUTE[tab];
+    if (!route) return;
+    const baseUrl = import.meta.env.BASE_URL;
+    const destination = `${baseUrl}${route.slice(1)}`;
+    if (window.location.pathname !== destination) {
+      clearSearchFromUrl();
+      window.history.pushState({}, '', destination);
+    }
+    setActiveSimulatorTab(tab);
+    setPageContent('simulator');
   }
 
   return (
@@ -277,9 +284,10 @@ function App() {
                 <Button className="not-found-link" text="Heroes" color={0} onClick={() => switchTabTo('heroes')} />
                 <Button className="not-found-link" text="Items" color={1} onClick={() => switchTabTo('items')} />
                 <Button className="not-found-link" text="Teams" color={2} onClick={() => switchTabTo('teams')} />
-                <Button className="not-found-link" text="Home" color={3} onClick={() => switchTabTo('splash')} />
-                <Button className="not-found-link" text="Simulators" color={4} onClick={() => switchTabTo('simulator')} />
-                <Button className="not-found-link" text="Info" color={5} onClick={() => switchTabTo('info')} />
+                <Button className="not-found-link" text="Home" color={6} onClick={() => switchTabTo('splash')} />
+                <Button className="not-found-link" text="" color={3} disabled={true} />
+                <Button className="not-found-link" text="Simulators" color={4} disabled={true} />
+                <Button className="not-found-link" text="Wiki" color={5} onClick={() => switchTabTo('wiki')} />
               </nav>
             </section>
           </main>
@@ -299,17 +307,14 @@ function App() {
               <div className='card management flex-col'>
                 <div className='header-big'>Management</div>
                 <div className='flex-row'>
-                  <div className='card heroes flex-col'>
-                    <div className='header'>Hero Management</div>
-                    <Button text={"Take me there"} color={0} onMouseDown={() => { switchTabTo('heroes') }} />
+                  <div className='card heroes flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Hero Management" onClick={() => switchTabTo('heroes')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchTabTo('heroes'); } }}>
+                    <div className='header card card-static'>Hero Management</div>
                   </div>
-                  <div className='card items flex-col'>
-                    <div className='header'>Item Management</div>
-                    <Button text={"Take me there"} color={1} onMouseDown={() => { switchTabTo('items') }} />
+                  <div className='card items flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Item Management" onClick={() => switchTabTo('items')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchTabTo('items'); } }}>
+                    <div className='header card card-static'>Item Management</div>
                   </div>
-                  <div className='card teams flex-col'>
-                    <div className='header'>Team Management</div>
-                    <Button text={"Take me there"} color={2} onMouseDown={() => { switchTabTo('teams') }} />
+                  <div className='card teams flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Team Management" onClick={() => switchTabTo('teams')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchTabTo('teams'); } }}>
+                    <div className='header card card-static'>Team Management</div>
                   </div>
                 </div>
               </div>
@@ -318,23 +323,22 @@ function App() {
               <div className='card simulations flex-col'>
                 <div className='header-big'>Simulations</div>
                 <div className='flex-row'>
-                  <div className='card chapters flex-col'>
-                    <div className='header'>Chapters</div>
+                  <div className='card chapters flex-col home-navigation-tile is-disabled' aria-disabled="true" aria-label="Adventure Chapters temporarily unavailable">
+                    <div className='header card card-static'>Adventure Chapters</div>
                   </div>
-
-                  <div className='card titans flex-col'>
-                    <div className='header'>Titans</div>
+                  <div className='card towers flex-col home-navigation-tile is-disabled' aria-disabled="true" aria-label="Towers temporarily unavailable">
+                    <div className='header card card-static'>Towers</div>
                   </div>
-
-                  <div className='card towers flex-col'>
-                    <div className='header'>Towers</div>
+                  <div className='card titans flex-col home-navigation-tile is-disabled' aria-disabled="true" aria-label="Titans temporarily unavailable">
+                    <div className='header card card-static'>Titans</div>
                   </div>
-
-                  <div className='card guildbosses flex-col'>
-                    <div className='header'>Guildbosses</div>
+                  <div className='card guildbosses flex-col home-navigation-tile is-disabled' aria-disabled="true" aria-label="Guild Hunt temporarily unavailable">
+                    <div className='header card card-static'>Guild Hunt</div>
+                  </div>
+                  <div className='card custom-combat flex-col home-navigation-tile is-disabled' aria-disabled="true" aria-label="Custom Combat temporarily unavailable">
+                    <div className='header card card-static'>Custom Combat</div>
                   </div>
                 </div>
-                <Button text={"Take me there"} color={4} onMouseDown={() => { switchTabTo('simulator') }} />
               </div>
             </div>
             <div className='flex-col splash-footer-wrapper'>
@@ -386,14 +390,14 @@ function App() {
 
         {pageContent === 'teams' && <PageTeams itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedTeamsRef={savedTeamsRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
 
-        {pageContent === 'simulator' && <PageSimulators itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
+        {pageContent === 'simulator' && <PageSimulators activeTab={activeSimulatorTab} onTabChange={switchSimulatorTo} itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedTeamsRef={savedTeamsRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
 
-        {pageContent === 'info' && (
-          <PageInfos
+        {pageContent === 'wiki' && (
+          <PageWiki
             itemsRef={itemsRef}
             heroesRef={heroesRef}
-            activeTab={activeInfoTab}
-            onTabChange={switchInfoCatalogueTo}
+            activeTab={activeWikiTab}
+            onTabChange={switchWikiCatalogueTo}
           />
         )}
 

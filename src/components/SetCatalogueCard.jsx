@@ -20,10 +20,10 @@ export default function SetCatalogueCard({ set, pieces }) {
     return (
         <article className="catalogue-set-card card">
             <header className="catalogue-set-header">
-                <div className="catalogue-set-name catalogue-chip catalogue-chip-name header text">{set.name}</div>
+                <div className="catalogue-set-name text">{set.name}</div>
                 <p className={`catalogue-set-requirement catalogue-chip text catalogue-chip-attribute ${attributeClass}`}>
                     {attributeSprites[attributeKey] && <img className="catalogue-chip-icon" src={attributeSprites[attributeKey]} alt="" />}
-                    Attribute: {attributeLabel}
+                    {attributeLabel}
                 </p>
                 <div className="catalogue-set-meta flex-row justify-center text">
                     <span className="catalogue-chip text">{getDropSourceLabel(set.dropSource, locations)}</span>

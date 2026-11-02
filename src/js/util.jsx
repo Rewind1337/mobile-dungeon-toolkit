@@ -5,11 +5,13 @@ export function formatNumber(n, decimals) {
         return "Invalid input";
     }
 
+    if (n <= 9_999) return String(n.toFixed(0));
+
     const suffixes = [
-        { threshold: 1_000_000_000_000, suffix: "Bil" },
-        { threshold: 1_000_000_000, suffix: "Mrd" },
-        { threshold: 1_000_000, suffix: "Mil" },
-        { threshold: 1_000, suffix: "T" },
+        { threshold: 1_000_000_000_000, suffix: "T" },
+        { threshold: 1_000_000_000, suffix: "B" },
+        { threshold: 1_000_000, suffix: "M" },
+        { threshold: 1_000, suffix: "K" },
         { threshold: 0, suffix: "" }
     ];
 
@@ -19,7 +21,7 @@ export function formatNumber(n, decimals) {
 
     return formatted + suffix;
 }
- 
+
 /** Convert enum-style identifiers into readable labels. */
 export const humanize = value => String(value ?? "")
     .replaceAll("_", " ")

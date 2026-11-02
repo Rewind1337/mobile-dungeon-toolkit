@@ -8,6 +8,7 @@ import Modal from "./Modal.jsx"
 import { decodeHeroShareInput, restoreSharedHero } from "../utils/heroShare.js"
 import { clearSearchFromUrl } from "../js/search.jsx"
 import { ATTRIBUTE_DEFINITIONS } from "../database/enums.jsx"
+import { createSavedItemRecord } from "../js/ids.jsx"
 
 const isItemCompatibleWithHero = (item, hero) => {
     if (!item || !hero) return false
@@ -52,12 +53,36 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                 .filter(Number.isFinite)
         ) + 1
 
+        const nextSavedItems = { ...savedItemsRef.current }
+        const slotIndexToNameMap = {
+            0: "WEAPONS",
+            1: "HELMETS",
+            2: "ARMORS",
+            3: "NECKLACES",
+            4: "RINGS",
+            5: "OTHER"
+        }
+        for (const slotName of Object.values(slotIndexToNameMap)) {
+            nextSavedItems[slotName] = Array.isArray(nextSavedItems[slotName]) ? [...nextSavedItems[slotName]] : []
+        }
+
+        const importedItems = Array.from({ length: 6 }, (_, slotIndex) => {
+            const item = hero.items?.[slotIndex]
+            if (!item) return null
+            const slotArray = slotIndexToNameMap[Number(item.slot ?? slotIndex)]
+            if (!slotArray) return null
+            const savedItem = createSavedItemRecord(item)
+            nextSavedItems[slotArray] = [...nextSavedItems[slotArray], savedItem]
+            return savedItem
+        })
+
         const savedHero = {
             ...hero,
             saveId: nextSaveId,
-            items: Array.isArray(hero.items) ? [...hero.items] : []
+            items: importedItems
         }
 
+        savedItemsRef.current = nextSavedItems
         savedHeroesRef.current = [...savedHeroesRef.current, savedHero]
         setSavedHeroesRevision(revision => revision + 1)
         switchListPage(1)
@@ -113,13 +138,25 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const clearHeroSelection = () => { setSelectedHeroId(null) }
     const deselectHero = () => {
         setSelectedHeroId(null)
         setSelectedSavedHeroId(null)
         setEquippedItems([])
         setPreviewFullWidth(false)
     }
+
+    useEffect(() => {
+        const handleEscape = event => {
+            if (event.key !== "Escape" || event.defaultPrevented || document.querySelector(".modal-backdrop.visible")) return
+            if (selectedHeroId === null && selectedSavedHeroId === null) return
+            setSelectedHeroId(null)
+            setSelectedSavedHeroId(null)
+            setEquippedItems([])
+            setPreviewFullWidth(false)
+        }
+        window.addEventListener("keydown", handleEscape)
+        return () => window.removeEventListener("keydown", handleEscape)
+    }, [selectedHeroId, selectedSavedHeroId])
 
     const saveHero = (heroObj) => {
         const existingSaveId = heroObj?.saveId
@@ -132,7 +169,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                     : hero
             ))
             setSavedHeroesRevision(revision => revision + 1)
-            setSelectedSavedHeroId(existingSaveId)
+            deselectHero()
             switchListPage(1)
             if (manualSaveFunction) manualSaveFunction()
             return
@@ -151,7 +188,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
         }
         savedHeroesRef.current = [...savedHeroesRef.current, savedHero]
         setSavedHeroesRevision(revision => revision + 1)
-        clearHeroSelection()
+        deselectHero()
         if (manualSaveFunction) manualSaveFunction()
     }
 
@@ -237,8 +274,8 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                     <Button text={"Your Saved Items"} color={1} onClick={() => setItemSelectionModalMode(1)} />
                 </div>
                 {itemSelectionModalMode === 0 ?
-/* NOT ACTIVE    */ <ItemList setsRef={itemsRef.current.ITEM_SETS} extraHeight={75} filtersOffset={"65px"} headerText={"All Items"} itemsRef={itemsRef.current.BASE_ITEMS} itemType={itemSelectionType} heroAttributeRequirement={activeHero?.mainAttribute} setSelectedItemId={setSelectedItemId} /> :
-                    <ItemList setsRef={itemsRef.current.ITEM_SETS} extraHeight={75} filtersOffset={"65px"} savedItems headerText={"Saved Items"} itemsRef={savedItemsRef.current} itemType={itemSelectionType} heroAttributeRequirement={activeHero?.mainAttribute} setSelectedItemId={setSelectedSavedItemId} />
+/* NOT ACTIVE    */ <ItemList localSearch setsRef={itemsRef.current.ITEM_SETS} extraHeight={75} filtersOffset={"65px"} headerText={"All Items"} itemsRef={itemsRef.current.BASE_ITEMS} itemType={itemSelectionType} heroAttributeRequirement={activeHero?.mainAttribute} setSelectedItemId={setSelectedItemId} onDoubleClick={equipSelectedItem} /> :
+                    <ItemList localSearch setsRef={itemsRef.current.ITEM_SETS} extraHeight={75} filtersOffset={"65px"} savedItems headerText={"Saved Items"} itemsRef={savedItemsRef.current} itemType={itemSelectionType} heroAttributeRequirement={activeHero?.mainAttribute} setSelectedItemId={setSelectedSavedItemId} onDoubleClick={equipSelectedItem} />
                 }
             </Modal>
             <Modal position="right" isVisible={selectedItemId.slot !== null || selectedSavedItemId.slot !== null} onClose={() => { setItemSelectionVisible(false); clearItemSelection(); }}>

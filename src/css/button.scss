@@ -300,3 +300,31 @@ button {
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.55);
 }
 .back-to-top-button .icon-left { font-size: 1.4em; }
+
+
+.catalogue-show-filters-fab {
+  display: none;
+}
+
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .catalogue-show-filters-fab {
+    position: fixed;
+    left: V.$gap;
+    bottom: calc(V.$gap + env(safe-area-inset-bottom));
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 124px;
+    min-height: 48px;
+    padding-inline: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.55);
+  }
+  .back-to-top-button {
+    right: V.$gap;
+    bottom: calc(V.$gap + env(safe-area-inset-bottom));
+    min-width: 124px;
+    min-height: 48px;
+  }
+}

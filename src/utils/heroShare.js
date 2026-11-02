@@ -322,3 +322,45 @@ export function restoreSharedHero(payload, baseHeroes, baseItems) {
         items: restoredItems
     }
 }
+
+
+export function createTeamShareToken(team, savedHeroes, { includeItems = false } = {}) {
+    const heroTokens = (team?.heroes ?? Array(5).fill(null)).map(saveId => {
+        if (saveId === null || saveId === undefined) return null
+        const hero = (savedHeroes ?? []).find(savedHero => savedHero.saveId === saveId)
+        if (!hero) return null
+        return createHeroShareToken(hero, { includeItems })
+    })
+
+    return toBase64Url(JSON.stringify({
+        v: SHARE_FORMAT_VERSION,
+        k: "team",
+        n: String(team?.name ?? "Imported Team"),
+        h: heroTokens
+    }))
+}
+
+export function decodeTeamShareInput(input) {
+    const payload = decodeInput(input, "team")
+    if (
+        payload?.v !== SHARE_FORMAT_VERSION ||
+        payload.k !== "team" ||
+        !Array.isArray(payload.h) ||
+        payload.h.length !== 5 ||
+        payload.h.some(token => token !== null && typeof token !== "string") ||
+        typeof payload.n !== "string"
+    ) {
+        throw new Error("This team link is invalid or uses an unsupported format version.")
+    }
+    return payload
+}
+
+export function restoreSharedTeam(payload, baseHeroes, baseItems) {
+    return {
+        name: payload.n,
+        heroes: payload.h.map(token => {
+            if (!token) return null
+            return restoreSharedHero(decodeHeroShareInput(token), baseHeroes, baseItems)
+        })
+    }
+}

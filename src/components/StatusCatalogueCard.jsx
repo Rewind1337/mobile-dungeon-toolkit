@@ -27,7 +27,6 @@ export default function StatusCatalogueCard({ status }) {
             <header className="catalogue-entry-heading status-catalogue-heading">
                 <h3 className="catalogue-entry-name text-big status-catalogue-name">{humanize(status.name)}</h3>
             </header>
-            <p className="status-catalogue-description text">{description}</p>
             <div className="status-polarity-row" aria-label="Status effect properties">
                 <span className={`catalogue-chip text status-catalogue-category ${categoryClass}`}>
                     {categoryIcon && <img className="status-polarity-icon" src={categoryIcon} alt="" />}
@@ -42,6 +41,7 @@ export default function StatusCatalogueCard({ status }) {
                     <span>Removable</span>
                 </span>
             </div>
+            <p className="status-catalogue-description text">{description}</p>
             {details.length > 0 && (
                 <ul className="status-catalogue-details">
                     {details.map(detail => <li className="text" key={detail}>{detail}</li>)}

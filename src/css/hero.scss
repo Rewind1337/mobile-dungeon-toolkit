@@ -424,46 +424,6 @@
 }
 
 
-/* Keep the skills/talents cards readable when the preview has a narrow viewport. */
-@include M.media-query-max(V.$bp-mobile, ()) {
-  .hero-preview .skills-talents-layout {
-    flex-direction: column;
-    align-items: stretch;
-    gap: V.$gap;
-  }
-
-  .hero-preview .skills-talents-layout > .flex-col.hero {
-    order: -1;
-    align-self: center;
-    margin: V.$gap-small 0 0;
-    max-width: 100%;
-  }
-
-  .hero-preview .skills-talents-layout > .skills,
-  .hero-preview .skills-talents-layout > .talents {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-  }
-
-  .hero-preview .skills-talents-layout > .talents {
-    flex-wrap: wrap;
-  }
-
-  .hero-preview .talents .text-card.w-33 {
-    flex: 0 1 calc(50% - V.$gap-small);
-    width: calc(50% - V.$gap-small);
-    min-width: 0;
-  }
-
-  .hero-preview .talents .text-card.w-100 {
-    flex: 1 1 100%;
-    width: 100%;
-    min-width: 0;
-  }
-}
-
-
 .back-to-top-button.hero-list-back-to-top {
   right: 7px;
   bottom: 6px;
@@ -485,4 +445,48 @@
     width: 100%;
     font-size: 16px;
   }
+}
+
+
+
+
+/* The hero stays centered while skills and talents are shown in a separate dialog. */
+.hero-preview-identity {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+}
+.hero-preview .hero-preview-identity > .flex-col.hero {
+  width: max-content;
+  max-width: 100%;
+}
+.hero-preview-skills-talents-modal {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: V.$gap;
+  width: 100%;
+  min-width: 0;
+}
+.hero-preview-skills-talents-modal.is-single-column {
+  grid-template-columns: minmax(0, 1fr);
+}
+.hero-preview-skills-talents-column {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 0;
+  width: 100%;
+}
+.hero-preview-skills-talents-column > .header { text-align: center; }
+.hero-preview .hero-preview-skills-talents-modal .skills,
+.hero-preview .hero-preview-skills-talents-modal .talents {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+}
+.hero-preview-skills-talents-modal .hero-preview-talent-grid { width: 100%; }
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .hero-preview-skills-talents-modal { grid-template-columns: minmax(0, 1fr); }
 }
