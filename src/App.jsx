@@ -286,7 +286,7 @@ function App() {
                 <Button className="not-found-link" text="Teams" color={2} onClick={() => switchTabTo('teams')} />
                 <Button className="not-found-link" text="Home" color={6} onClick={() => switchTabTo('splash')} />
                 <Button className="not-found-link" text="" color={3} disabled={true} />
-                <Button className="not-found-link" text="Simulators" color={4} onClick={() => switchTabTo('simulator')} />
+                <Button className="not-found-link" text="Simulators" color={4} disabled={true} />
                 <Button className="not-found-link" text="Wiki" color={5} onClick={() => switchTabTo('wiki')} />
               </nav>
             </section>
@@ -323,19 +323,19 @@ function App() {
               <div className='card simulations flex-col'>
                 <div className='header-big'>Simulations</div>
                 <div className='flex-row'>
-                  <div className='card chapters flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Adventure Chapters" onClick={() => switchSimulatorTo('adventure')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('adventure'); } }}>
+                  <div className='card chapters flex-col home-navigation-tile is-disabled' aria-disabled="true" aria-label="Adventure Chapters temporarily unavailable">
                     <div className='header card card-static'>Adventure Chapters</div>
                   </div>
-                  <div className='card towers flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Towers" onClick={() => switchSimulatorTo('towers')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('towers'); } }}>
+                  <div className='card towers flex-col home-navigation-tile is-disabled' aria-disabled="true" aria-label="Towers temporarily unavailable">
                     <div className='header card card-static'>Towers</div>
                   </div>
-                  <div className='card titans flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Titans" onClick={() => switchSimulatorTo('titans')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('titans'); } }}>
+                  <div className='card titans flex-col home-navigation-tile is-disabled' aria-disabled="true" aria-label="Titans temporarily unavailable">
                     <div className='header card card-static'>Titans</div>
                   </div>
-                  <div className='card guildbosses flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Guild Hunt" onClick={() => switchSimulatorTo('guild-hunt')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('guild-hunt'); } }}>
+                  <div className='card guildbosses flex-col home-navigation-tile is-disabled' aria-disabled="true" aria-label="Guild Hunt temporarily unavailable">
                     <div className='header card card-static'>Guild Hunt</div>
                   </div>
-                  <div className='card custom-combat flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Custom Combat" onClick={() => switchSimulatorTo('custom')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('custom'); } }}>
+                  <div className='card custom-combat flex-col home-navigation-tile is-disabled' aria-disabled="true" aria-label="Custom Combat temporarily unavailable">
                     <div className='header card card-static'>Custom Combat</div>
                   </div>
                 </div>
