@@ -52,12 +52,41 @@ function makePerkSlots(item, rarity) {
     }
 }
 
-function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, onEquipItem, onExportItem, setsRef }) {
-    const MAIN_STAT_PERK_KEYS = {
-        attack: { flat: "ATTACK_FLAT", percent: "ATTACK_PERCENT" },
-        defence: { flat: "DEFENCE_FLAT", percent: "DEFENCE_PERCENT" },
-        agility: { flat: "AGILITY_FLAT", percent: "AGILITY_PERCENT" }
+const MAIN_STAT_PERK_KEYS = {
+    attack: { flat: "ATTACK_FLAT", percent: "ATTACK_PERCENT" },
+    defence: { flat: "DEFENCE_FLAT", percent: "DEFENCE_PERCENT" },
+    agility: { flat: "AGILITY_FLAT", percent: "AGILITY_PERCENT" }
+}
+
+function getAvailableMutationPerks(perks, mainAttribute) {
+    const available = new Set(
+        (perks ?? [])
+            .map(perk => String(perk ?? "NOTHING").toUpperCase().replace(/\s/g, "_"))
+            .filter(key => key !== "NOTHING" && PERK_DEFINITIONS[key])
+    )
+    const mainStat = ({ 0: "attack", 1: "defence", 2: "agility" })[Number(mainAttribute)]
+    if (mainStat && available.has("MAIN_STAT_FLAT")) available.add(MAIN_STAT_PERK_KEYS[mainStat].flat)
+    if (mainStat && available.has("MAIN_STAT_PERCENT")) available.add(MAIN_STAT_PERK_KEYS[mainStat].percent)
+    return available
+}
+
+function normalizeMutationSelections(mutations, masterworkLevel, maxMasterworkLevel, perks, mainAttribute) {
+    const normalized = { ...DEFAULT_MASTERWORK_MUTATIONS, ...(mutations ?? {}) }
+    const available = getAvailableMutationPerks(perks, mainAttribute)
+    for (const milestone of [5, 10]) {
+        const selection = normalized[milestone]
+        const hasValidTarget = selection && (
+            available.has(selection.perkKey) ||
+            (selection.perkKey === "HEAL_RECOVERY" && available.has("HEALING_RECEIVED"))
+        )
+        if (masterworkLevel < milestone || maxMasterworkLevel < milestone || !hasValidTarget) {
+            normalized[milestone] = null
+        }
     }
+    return normalized
+}
+
+function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, onEquipItem, onExportItem, setsRef }) {
     const [itemObj, setItemObj] = useState(null)
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
@@ -111,9 +140,13 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
         const rarity = Math.max(minimumRarity, Math.min(8, Number(selectedItem.rarity ?? minimumRarity)))
         const perkSlots = makePerkSlots(selectedItem, rarity)
         const masterworkLevel = Math.max(0, Math.min(getMaxMasterworkLevel(rarity), Math.trunc(Number(selectedItem.masterworkLevel) || 0)))
-        const mutations = { ...DEFAULT_MASTERWORK_MUTATIONS, ...(selectedItem.mutations ?? {}) }
-        if (masterworkLevel < 5) mutations[5] = null
-        if (masterworkLevel < 10) mutations[10] = null
+        const mutations = normalizeMutationSelections(
+            selectedItem.mutations,
+            masterworkLevel,
+            getMaxMasterworkLevel(rarity),
+            perkSlots.perks,
+            selectedItem.mainAttribute
+        )
 
         setItemObj(selectedItem)
         setSelectedRarity(rarity)
@@ -129,14 +162,16 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
         setSelectedMutations(mutations)
     }, [selectedItemId, itemsRef])
 
-    const updateMasterworkLevel = (value, maxLevel = getMaxMasterworkLevel(selectedRarity)) => {
+    const updateMasterworkLevel = (value, maxLevel = getMaxMasterworkLevel(selectedRarity), perks = selectedPerks) => {
         const nextLevel = Math.max(0, Math.min(maxLevel, Math.trunc(Number(value) || 0)))
         setSelectedMasterworkLevel(nextLevel)
-        setSelectedMutations(previous => ({
-            ...previous,
-            5: nextLevel >= 5 ? previous[5] : null,
-            10: nextLevel >= 10 ? previous[10] : null,
-        }))
+        setSelectedMutations(previous => normalizeMutationSelections(
+            previous,
+            nextLevel,
+            maxLevel,
+            perks,
+            itemObj?.mainAttribute
+        ))
     }
 
     const changeRarity = (nextRarity) => {
@@ -145,7 +180,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
         const rarity = Math.max(minimumRarity, Math.min(8, Number(nextRarity) || minimumRarity))
         const perkSlots = makePerkSlots({ ...itemObj, perks: selectedPerks, perkValues: selectedPerkValues }, rarity)
         setSelectedRarity(rarity)
-        updateMasterworkLevel(selectedMasterworkLevel, getMaxMasterworkLevel(rarity))
+        updateMasterworkLevel(selectedMasterworkLevel, getMaxMasterworkLevel(rarity), perkSlots.perks)
         setSelectedPerks(perkSlots.perks)
         setSelectedPerkValues(perkSlots.values)
     }
@@ -153,10 +188,18 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
     const handlePerkSelect = (index) => {
         if (selectedItemDamaged || !onPerkClick) return
         onPerkClick(itemObj, (chosenPerk) => {
-            setSelectedPerks(previous => previous.map((perk, perkIndex) => perkIndex === index ? chosenPerk : perk))
+            const nextPerks = selectedPerks.map((perk, perkIndex) => perkIndex === index ? chosenPerk : perk)
+            setSelectedPerks(nextPerks)
             setSelectedPerkValues(previous => previous.map((value, perkIndex) => (
                 perkIndex === index && selectedPerks[index] !== chosenPerk ? 0 : value
             )))
+            setSelectedMutations(previous => normalizeMutationSelections(
+                previous,
+                selectedMasterworkLevel,
+                getMaxMasterworkLevel(selectedRarity),
+                nextPerks,
+                itemObj.mainAttribute
+            ))
         })
     }
 
@@ -234,20 +277,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
         if (name === "MAIN_STAT_PERCENT") return MAIN_STAT_PERK_KEYS[itemMainStat]?.percent ?? name
         return name
     }
-    const availableMutationPerks = new Set(
-        (selectedPerks ?? [])
-            .map(perk => String(perk ?? "NOTHING").toUpperCase().replace(/\s/g, "_"))
-            .filter(key => key !== "NOTHING" && PERK_DEFINITIONS[key])
-    )
-
-    // MAIN_STAT rolled perks resolve to a specific stat for each item, so expose matching
-    // mutation categories only when that rolled perk is selected.
-    if (itemMainStat && availableMutationPerks.has("MAIN_STAT_FLAT")) {
-        availableMutationPerks.add(MAIN_STAT_PERK_KEYS[itemMainStat]?.flat)
-    }
-    if (itemMainStat && availableMutationPerks.has("MAIN_STAT_PERCENT")) {
-        availableMutationPerks.add(MAIN_STAT_PERK_KEYS[itemMainStat]?.percent)
-    }
+    const availableMutationPerks = getAvailableMutationPerks(selectedPerks, itemObj.mainAttribute)
 
     return (
         <div ref={listRef} className='item-preview flex-col' style={{ maxHeight: listHeight }}>
