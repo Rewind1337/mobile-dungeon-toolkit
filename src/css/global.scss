@@ -1967,6 +1967,13 @@ input[type="number"] {
   backdrop-filter: blur(4px);
 }
 
+#page-splash .home-navigation-tile.is-disabled {
+  cursor: not-allowed;
+  filter: grayscale(1);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 /* Collapsed teams fit into one horizontal, compact summary row. */
 .team-header .team-collapse-button {
   margin: 0;
