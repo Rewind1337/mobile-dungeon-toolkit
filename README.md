@@ -10,6 +10,14 @@ A web-based toolkit for exploring, managing, and planning your *Mobile Dungeon* 
 This project is independent and is not affiliated with Playa Games.
 IF you are affiliated with Playa Games, please reach out to me.
 
+## Artwork, third-party assets, and licensing
+
+Mobile Dungeon and its characters, artwork, sprites, icons, item/equipment graphics, and other in-game visual assets are owned by Playa Games and/or their respective rights holders. These assets are not original work by this project's author and are **not covered by the repository's MIT License**.
+
+The toolkit is an independent fan project and is not affiliated with or endorsed by Playa Games. Permission to use and redistribute the game's assets is being sought; this notice does not itself grant permission. See [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md) for the asset locations, attribution, and licensing scope.
+
+The MIT License is intended to cover only original project code to the extent the author has the right to license it. It does not grant rights to Playa Games' intellectual property, third-party libraries, or other third-party material.
+
 ## Roadmap
 
 ### 0.0.x — Foundations
