@@ -1,6 +1,11 @@
 import { useState } from "react"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import { SimulatorEntryDetails } from "./SimulatorEntryList.jsx"
+import Button from "./Button.jsx"
+import LightworldIcon from "../sprites/simulation/lightworld_icon.webp"
+import Threshold1Icon from "../sprites/simulation/threshold1_icon.webp"
+import Threshold2Icon from "../sprites/simulation/threshold2_icon.webp"
+import Threshold3Icon from "../sprites/simulation/threshold3_icon.webp"
 
 const CHAPTERS = [
     { id: 0, name: "Maerwynn", stages: [] },
@@ -40,21 +45,35 @@ const SHADOW_CHAPTERS = [
 const SHADOW_THRESHOLDS = [1, 2, 3]
 
 function Chapter({ chapter, shadowChapter, onSelect }) {
+    const thresholdIcons = {
+        1: Threshold1Icon,
+        2: Threshold2Icon,
+        3: Threshold3Icon,
+    }
+
     return (
         <div className="chapter-wrapper flex-row">
-            <button type="button" className="chapter card flex-row" data-id={chapter.id} data-threshold="0"
-                onClick={() => onSelect(chapter, 0)}>
-                <span className="text">{chapter.id + 1}</span>
-                <span className="header">{chapter.name}</span>
-            </button>
+            <Button
+                className="chapter card flex-row"
+                dataId={chapter.id}
+                dataThreshold={0}
+                prefix={<span className="text">{chapter.id + 1}</span>}
+                text={<span className="header">{chapter.name}</span>}
+                suffix={<img src={LightworldIcon} alt="" loading="lazy" decoding="async" draggable={false} />}
+                onClick={() => onSelect(chapter, 0)}
+            />
             {shadowChapter
                 ? SHADOW_THRESHOLDS.map(threshold => (
-                    <button type="button" className="chapter-shadow card" key={threshold}
-                        data-id={shadowChapter.id} data-threshold={threshold}
+                    <Button
+                        className="chapter-shadow card"
+                        key={threshold}
+                        dataId={shadowChapter.id}
+                        dataThreshold={threshold}
                         title={"Shadow World " + threshold + " · Threshold " + threshold}
-                        onClick={() => onSelect(shadowChapter, threshold)}>
-                        <span className="header">SW {threshold}</span>
-                    </button>
+                        text={<span className="header">SW {threshold}</span>}
+                        suffix={<img src={thresholdIcons[threshold]} alt="" loading="lazy" decoding="async" draggable={false} />}
+                        onClick={() => onSelect(shadowChapter, threshold)}
+                    />
                 ))
                 : <span className="chapter-shadow-placeholder text" aria-label="Shadow World chapters coming soon">Soon...</span>}
         </div>

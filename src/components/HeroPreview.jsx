@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, ROLE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, PERK_DEFINITIONS, MASTERWORK_MUTATION_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
+import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, ROLE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
 import { heroSprites, iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites, elementSprites } from '../database/db_sprites.jsx'
 import ExpandSrc from '../sprites/expand.webp'
@@ -16,141 +16,8 @@ import TalentCatalogueCard from './TalentCatalogueCard.jsx'
 
 import '../css/hero.scss'
 import HeroStat from './HeroStat.jsx'
+import { calculateHeroStats, formatCalculatedStatValue, MAIN_STAT_PERKS } from '../utils/calculatedStats.js'
 
-
-const MAIN_STAT_PERKS = {
-    health: { flat: "HEALTH_FLAT", percent: "HEALTH_PERCENT" },
-    attack: { flat: "ATTACK_FLAT", percent: "ATTACK_PERCENT" },
-    defence: { flat: "DEFENCE_FLAT", percent: "DEFENCE_PERCENT" },
-    agility: { flat: "AGILITY_FLAT", percent: "AGILITY_PERCENT" }
-}
-const OTHER_STAT_DEFAULTS = {
-    CRIT_CHANCE: 10, CRIT_RESISTANCE: 0, CRIT_DAMAGE: 150, CRIT_DAMAGE_REDUCTION: 0,
-    ACCURACY: 10, RESISTANCE: 20, BOSS_DAMAGE: 0, BOSS_DAMAGE_REDUCTION: 0,
-    AOE_DAMAGE_REDUCTION: 0, AP_DAMAGE_REDUCTION: 0, LIFE_STEAL: 0, HEALING_EFFICIENCY: 0,
-    HEALING_RECEIVED: 0, FIRE_DAMAGE: 0, NATURE_DAMAGE: 0, WATER_DAMAGE: 0, LIGHT_DAMAGE: 0,
-    SHADOW_DAMAGE: 0, FIRE_DAMAGE_REDUCTION: 0, NATURE_DAMAGE_REDUCTION: 0,
-    WATER_DAMAGE_REDUCTION: 0, LIGHT_DAMAGE_REDUCTION: 0, SHADOW_DAMAGE_REDUCTION: 0
-}
-const MUTATION_PERK_ALIASES = { HEAL_RECOVERY: "HEALING_RECEIVED" }
-function getItemPerkEntries(item) {
-    const entries = []
-    for (const perk of item?.fixedPerks ?? []) {
-        const key = Object.keys(PERK_DEFINITIONS).find(name => PERK_DEFINITIONS[name].id === perk.id)
-        if (key && key !== "NOTHING") entries.push({ key, value: Number(perk.value ?? 0) })
-    }
-    for (let index = 0; index < (item?.perks ?? []).length; index++) {
-        const key = String(item.perks[index] ?? "NOTHING").toUpperCase().replace(/\s/g, "_")
-        if (PERK_DEFINITIONS[key] && key !== "NOTHING") entries.push({ key, value: Number(item.perkValues?.[index] ?? 0) })
-    }
-    return entries
-}
-function calculateEquippedStats(baseStats, items, sets) {
-    const perks = {}, maxPerks = {}
-    const add = (target, key, value) => {
-        target[key] = (target[key] ?? 0) + (Number(value) || 0)
-    }
-    const equipped = (items ?? []).filter(Boolean)
-    const setCounts = new Map()
-
-    for (const item of equipped) {
-        if (item.set !== undefined && item.set !== null && item.set !== -1) {
-            setCounts.set(item.set, (setCounts.get(item.set) ?? 0) + 1)
-        }
-
-        const masterworkMultiplier = 1 + Math.max(0, Number(item.masterworkLevel) || 0) / 10
-        const selectedMutations = []
-        const level = Math.max(0, Number(item.masterworkLevel) || 0)
-
-        for (const milestone of [5, 10]) {
-            if (level < milestone) continue
-            const selection = item.mutations?.[milestone]
-            if (!selection || typeof selection !== "object" || !selection.perkKey || selection.id == null) continue
-
-            const mutation = MASTERWORK_MUTATION_DEFINITIONS[selection.perkKey]?.find(
-                entry => entry.id === Number(selection.id)
-            )
-            if (mutation) selectedMutations.push({ perkKey: selection.perkKey, mutation })
-        }
-
-        const itemMainStat = ({ 0: "attack", 1: "defence", 2: "agility" })[Number(item.mainAttribute)]
-        for (const perk of getItemPerkEntries(item)) {
-            const getTargetKey = key => {
-                if (key === "MAIN_STAT_FLAT" || key === "MAIN_STAT_PERCENT") {
-                    if (!itemMainStat) return null
-                    return key === "MAIN_STAT_FLAT"
-                        ? MAIN_STAT_PERKS[itemMainStat].flat
-                        : MAIN_STAT_PERKS[itemMainStat].percent
-                }
-                return key
-            }
-
-            const targetKey = getTargetKey(perk.key)
-            if (!targetKey) continue
-            const mutationKey = Object.keys(MUTATION_PERK_ALIASES).find(
-                key => MUTATION_PERK_ALIASES[key] === targetKey
-            ) ?? targetKey
-            const matchingMutations = selectedMutations.filter(
-                selection => selection.perkKey === targetKey || selection.perkKey === mutationKey
-            )
-
-            // A mutation modifies the matching item perk by its stated percentage.
-            // Permanent mutations affect the normal value; conditional mutations only affect MAX.
-            let normalMutationMultiplier = 1
-            let maxMutationMultiplier = 1
-            for (const { mutation } of matchingMutations) {
-                const multiplier = 1 + (Number(mutation.bonusPercent) || 0) / 100
-                maxMutationMultiplier *= multiplier
-                if (mutation.condition === "permanent") normalMutationMultiplier *= multiplier
-            }
-
-            const normalValue = perk.value * masterworkMultiplier * normalMutationMultiplier
-            const maxValue = perk.value * masterworkMultiplier * maxMutationMultiplier
-            add(perks, targetKey, normalValue)
-            add(maxPerks, targetKey, maxValue)
-        }
-    }
-
-    const appliedSets = new Set()
-    for (const item of equipped) {
-        if (item.set == null || item.set === -1 || appliedSets.has(item.set)) continue
-        const set = (sets ?? []).find(entry => entry.id === item.set)
-        if (!set || (setCounts.get(item.set) ?? 0) < Number(set.pieces ?? 0)) continue
-        appliedSets.add(item.set)
-
-        for (let index = 0; index < (set.setBonus ?? []).length; index++) {
-            const perk = set.setBonus[index]
-            const key = Object.keys(PERK_DEFINITIONS).find(name => PERK_DEFINITIONS[name].id === perk.id)
-            if (!key) continue
-            const value = item.setBonusValues?.[index] ?? 0
-            add(perks, key, value)
-            add(maxPerks, key, value)
-        }
-    }
-
-    const main = {}, mainMax = {}
-    for (const [name, mapping] of Object.entries(MAIN_STAT_PERKS)) {
-        const base = Number(baseStats?.[name]) || 0
-        const flat = perks[mapping.flat] ?? 0
-        const percent = perks[mapping.percent] ?? 0
-        const maxFlat = maxPerks[mapping.flat] ?? 0
-        const maxPercent = maxPerks[mapping.percent] ?? 0
-        main[name] = (base + flat) * (1 + percent / 100)
-        mainMax[name] = (base + maxFlat) * (1 + maxPercent / 100)
-    }
-
-    const other = { ...OTHER_STAT_DEFAULTS }, otherMax = {}
-    for (const [key, base] of Object.entries(OTHER_STAT_DEFAULTS)) {
-        other[key] = base + (perks[key] ?? 0)
-        otherMax[key] = base + (maxPerks[key] ?? 0)
-    }
-
-    return { main, mainMax, other, otherMax }
-}
-function formatStatValue(value) {
-    const rounded = Math.round((Number(value) || 0) * 100) / 100
-    return Number.isInteger(rounded) ? String(rounded) : String(rounded)
-}
 
 function cloneTalentSelections(talents) {
     return Object.fromEntries(Object.entries(talents ?? {}).map(([id, talent]) => [id, { ...talent, active: Boolean(talent?.active) }]))
@@ -160,7 +27,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
     const previousPreviewHeight = useRef(null)
-    const [showSkillsAndTalents, setShowSkillsAndTalents] = useState(false)
+    const [skillsTalentsModalVisible, setSkillsTalentsModalVisible] = useState(false)
     const [exportModalVisible, setExportModalVisible] = useState(false)
     const [heroShareUrl, setHeroShareUrl] = useState("")
     const [shareLinkCopied, setShareLinkCopied] = useState(false)
@@ -269,9 +136,12 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
 
     let heroObj = heroesRef.find(hero => hero.id === selectedHeroId || hero.saveId === selectedHeroId)
 
-    const calculatedStats = calculateEquippedStats(mainStats, equippedItems, setsRef)
+    const calculatedStats = calculateHeroStats({ ...heroObj, stats: mainStats, items: equippedItems }, setsRef)
+    const hasSkills = (heroObj?.skills ?? []).length > 0
+    const hasTalents = Object.keys(heroObj?.talents ?? {}).some(id => /^\d+$/.test(id))
 
     useEffect(() => {
+        setSkillsTalentsModalVisible(false)
         setSelectedLevel(heroObj?.level ?? 1)
         setMainStats({
             health: heroObj?.stats?.health ?? 1234,
@@ -579,35 +449,48 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                 </div>}
 
                 <div className='flex-col'>
-                    {(heroObj.skills && heroObj.talents) && <Button className="hero-preview-skills-toggle" color={0} text={"Skills & Talents"} onClick={() => { setShowSkillsAndTalents(!showSkillsAndTalents) }} />}
-                    <div className='flex-row skills-talents-layout'>
-                        {(showSkillsAndTalents && heroObj.skills) &&
-                            <div className='flex-col skills'>
-                                {renderHeroSkills()}
-                            </div>
-                        }
+                    {(hasSkills || hasTalents) && (
+                        <Button
+                            className="hero-preview-skills-toggle"
+                            color={0}
+                            text={"Skills & Talents"}
+                            onClick={() => setSkillsTalentsModalVisible(true)}
+                        />
+                    )}
+                    <Modal
+                        position="center"
+                        isVisible={skillsTalentsModalVisible}
+                        onClose={() => setSkillsTalentsModalVisible(false)}
+                    >
+                        <div className={"hero-preview-skills-talents-modal" + (hasSkills && hasTalents ? "" : " is-single-column")}>
+                            {hasSkills && (
+                                <section className="hero-preview-skills-talents-column skills">
+                                    <div className="header">Skills</div>
+                                    {renderHeroSkills()}
+                                </section>
+                            )}
+                            {hasTalents && (
+                                <section className="hero-preview-skills-talents-column talents">
+                                    <div className="header">Talents</div>
+                                    <div className="hero-preview-talent-grid talents">
+                                        {renderHeroTalents()}
+                                    </div>
+                                </section>
+                            )}
+                        </div>
+                    </Modal>
+                    <div className="hero-preview-identity">
                         <div className='flex-col hero'>
                             <div className={"hero card selected"} data-rarity={heroObj.rarity} data-element={heroObj.element}>
                                 <div className="hero-element">
-                                    <img
-                                        src={heroObj.elementSrc ?? elementSprites[heroObj.element]}
-                                        loading="eager"
-                                        decoding="async"
-                                        draggable={false}
-                                        alt=""
-                                    />
+                                    <img src={heroObj.elementSrc ?? elementSprites[heroObj.element]} loading="eager" decoding="async" draggable={false} alt="" />
                                 </div>
                                 {heroObj.isStarred === true && <div className="hero-starred">
                                     <img src={iconSprites["is_starred"]} loading="eager" decoding="async" draggable={false} />
                                 </div>}
                                 <div className="flex-col hero-sprite-container">
                                     <div className="hero-sprite">
-                                        <img className="hero-sprite-img"
-                                            src={heroObj.heroSrc ?? heroSprites[heroObj.id] ?? heroSprites["null"]}
-                                            loading="eager"
-                                            decoding="async"
-                                            draggable={false}
-                                        />
+                                        <img className="hero-sprite-img" src={heroObj.heroSrc ?? heroSprites[heroObj.id] ?? heroSprites["null"]} loading="eager" decoding="async" draggable={false} />
                                     </div>
                                     <div className="input-wrapper">
                                         <input type='number' className='' value={selectedLevel} onChange={e => setSelectedLevel(e.target.value)} />
@@ -615,11 +498,6 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                                 </div>
                             </div>
                         </div>
-                        {(showSkillsAndTalents && heroObj.talents) &&
-                            <div className='hero-preview-talent-grid talents'>
-                                {renderHeroTalents()}
-                            </div>
-                        }
                     </div>
 
                     <div className='header'>Equipped Items</div>
@@ -653,7 +531,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                             const hasMax = Math.abs(calculatedStats.mainMax[name] - calculatedStats.main[name]) > 0.001
                             return <div className='flex-row text card calculated-stat' key={name} title={`Final ${name} after equipped gear`}>
                                 <img width={32} src={perkSprites[mapping.flat]}/>
-                                <div>{formatStatValue(calculatedStats.main[name])}{hasMax ? ` (${formatStatValue(calculatedStats.mainMax[name])} MAX)` : ""}</div>
+                                <div>{formatCalculatedStatValue(calculatedStats.main[name])}{hasMax ? ` (${formatCalculatedStatValue(calculatedStats.mainMax[name])} MAX)` : ""}</div>
                             </div>
                         })}
                     </div>
@@ -661,12 +539,12 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                     <div className='flex-row details'>
                         <div className='flex-col'>
                             {["CRIT_CHANCE","CRIT_RESISTANCE","CRIT_DAMAGE","CRIT_DAMAGE_REDUCTION","ACCURACY","RESISTANCE","BOSS_DAMAGE","BOSS_DAMAGE_REDUCTION","AOE_DAMAGE_REDUCTION","AP_DAMAGE_REDUCTION","LIFE_STEAL","HEALING_EFFICIENCY","HEALING_RECEIVED"].map(name => (
-                                <HeroStat key={name} name={name} value={formatStatValue(calculatedStats.other[name])} maxValue={Math.abs(calculatedStats.otherMax[name] - calculatedStats.other[name]) > 0.001 ? formatStatValue(calculatedStats.otherMax[name]) : null}/>
+                                <HeroStat key={name} name={name} value={formatCalculatedStatValue(calculatedStats.other[name])} maxValue={Math.abs(calculatedStats.otherMax[name] - calculatedStats.other[name]) > 0.001 ? formatCalculatedStatValue(calculatedStats.otherMax[name]) : null}/>
                             ))}
                         </div>
                         <div className='flex-col'>
                             {["FIRE_DAMAGE","NATURE_DAMAGE","WATER_DAMAGE","LIGHT_DAMAGE","SHADOW_DAMAGE","FIRE_DAMAGE_REDUCTION","NATURE_DAMAGE_REDUCTION","WATER_DAMAGE_REDUCTION","LIGHT_DAMAGE_REDUCTION","SHADOW_DAMAGE_REDUCTION"].map(name => (
-                                <HeroStat key={name} name={name} value={formatStatValue(calculatedStats.other[name])} maxValue={Math.abs(calculatedStats.otherMax[name] - calculatedStats.other[name]) > 0.001 ? formatStatValue(calculatedStats.otherMax[name]) : null}/>
+                                <HeroStat key={name} name={name} value={formatCalculatedStatValue(calculatedStats.other[name])} maxValue={Math.abs(calculatedStats.otherMax[name] - calculatedStats.other[name]) > 0.001 ? formatCalculatedStatValue(calculatedStats.otherMax[name]) : null}/>
                             ))}
                         </div>
                     </div>

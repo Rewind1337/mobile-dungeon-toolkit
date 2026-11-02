@@ -49,13 +49,13 @@ export default function ItemCatalogueCard({ item, set }) {
                     <div className="catalogue-item-name text">{item.name}</div>
                     <div className="catalogue-item-meta-row">
                         <div className="catalogue-item-meta text">
-                            <span className="catalogue-chip text">
+                            <span className="catalogue-chip text catalogue-item-slot-chip">
                                 {iconSprites[SLOT_ICON_KEYS[String(item.slotLabel ?? "").toUpperCase()]] && <img className="catalogue-chip-icon" src={iconSprites[SLOT_ICON_KEYS[String(item.slotLabel ?? "").toUpperCase()]]} alt="" />}
                                 {humanize(item.slotLabel ?? "Unknown slot")}
                             </span>
                             <span className={`catalogue-chip text catalogue-chip-attribute ${getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("strength") ? "catalogue-chip-attribute-strength" : getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("dexterity") ? "catalogue-chip-attribute-dexterity" : getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("intelligence") ? "catalogue-chip-attribute-intelligence" : ""}`}>
                                 {attributeSprites[ATTRIBUTE_ICON_KEYS[getAttributeRequirementLabel(item.attributeRequirement).toLowerCase()]] && <img className="catalogue-chip-icon" src={attributeSprites[ATTRIBUTE_ICON_KEYS[getAttributeRequirementLabel(item.attributeRequirement).toLowerCase()]]} alt="" />}
-                                Attribute: {getAttributeRequirementLabel(item.attributeRequirement)}
+                                {getAttributeRequirementLabel(item.attributeRequirement)}
                             </span>
                             {set && <p className="catalogue-item-set catalogue-chip text">Set: {set.name}</p>}
                         </div>

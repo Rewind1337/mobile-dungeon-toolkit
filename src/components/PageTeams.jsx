@@ -9,6 +9,7 @@ import { attributeSprites, heroSprites, itemSprites, statusSprites } from "../da
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import { getStatusPolarity } from "../js/statusPolarity.jsx"
 import { createTeamShareToken, decodeTeamShareInput, restoreSharedTeam } from "../utils/heroShare.js"
+import { calculateTeamStats } from "../utils/calculatedStats.js"
 import { createSavedItemRecord } from "../js/ids.jsx"
 
 const createDefaultTeams = () => [
@@ -129,13 +130,18 @@ const TEAM_BASE_STATS = [
     ["agility", "AGI", "Agility"],
 ]
 
-export function TeamHeroStats({ hero, slotIndex }) {
+export function TeamHeroStats({ hero, slotIndex, calculatedStats }) {
     if (!hero) return null
     return (
-        <div className="team-base-stat-summary" aria-label={hero.name + " base stats, slot " + (slotIndex + 1)}>
+        <div className="team-base-stat-summary" aria-label={hero.name + " calculated stats, slot " + (slotIndex + 1)}>
             {TEAM_BASE_STATS.map(([key, label, fullLabel]) => {
-                const value = hero.stats?.[key]
-                const displayValue = Number.isFinite(Number(value)) ? Number(value).toLocaleString() : "—"
+                const value = calculatedStats?.main?.[key] ?? hero.stats?.[key]
+                const maxValue = calculatedStats?.mainMax?.[key]
+                const hasMax = Number.isFinite(Number(maxValue)) && Math.abs(Number(maxValue) - Number(value)) > 0.001
+                const format = stat => Number.isFinite(Number(stat))
+                    ? Number(stat).toLocaleString(undefined, { maximumFractionDigits: 2 })
+                    : "—"
+                const displayValue = hasMax ? `${format(value)} (${format(maxValue)} MAX)` : format(value)
                 return (
                     <span className="team-base-stat" key={key} title={hero.name + " · " + fullLabel}>
                         <strong>{label}</strong><span>{displayValue}</span>
@@ -345,7 +351,9 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                 <section ref={listRef} {...events} className="teams-list card flex-col" style={{ maxHeight: listHeight }}>
                     <header className="header-big">Saved Teams</header>
                     {teams.length === 0 && <p className="text">No teams yet. Create one to get started.</p>}
-                    {teams.map(team => (
+                    {teams.map(team => {
+                        const calculatedTeamStats = calculateTeamStats(team, savedHeroes, itemsRef.current?.ITEM_SETS ?? [])
+                        return (
                         <article className={"team card flex-col" + (collapsedTeamIds.has(team.id) ? " is-collapsed" : "")} key={team.id}>
                             <header className={"team-header" + (collapsedTeamIds.has(team.id) ? " is-collapsed" : "")}>
                                 <Button
@@ -441,7 +449,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                                                         ))}
                                                                     </div>
                                                             </div>
-                                                            <TeamHeroStats hero={hero} slotIndex={slotIndex} />
+                                                            <TeamHeroStats hero={hero} slotIndex={slotIndex} calculatedStats={calculatedTeamStats[slotIndex]?.stats} />
                                                         </>
                                                         : <EmptyHero onClick={() => openSlotPicker(team, slotIndex)} />
                                                     }
@@ -454,7 +462,8 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                             </div>
                             )}
                         </article>
-                    ))}
+                        )
+                    })}
                     <div className="team team-new card flex-row">
                         <Button text="Create New Team" color="confirm" onClick={createTeam} />
                     </div>

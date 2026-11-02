@@ -43,7 +43,7 @@ function HeroCatalogueCard({ hero, expandedSections = {}, onSectionToggle }) {
                     <div className="hero-catalogue-name text" data-rarity={hero.rarity}>{hero.name}</div>
                     <div className="hero-catalogue-meta-row">
                         <span className="catalogue-chip catalogue-chip-rarity text" data-rarity={hero.rarity}>{humanize(rarity)}</span>
-                        <span className={`catalogue-chip text catalogue-chip-element-${String(element).toLowerCase()}`}>
+                        <span className="catalogue-chip text">
                             {elementSprites[Number(hero.element)] && <img className="catalogue-chip-icon" src={elementSprites[Number(hero.element)]} alt="" />}
                             {humanize(element)}
                         </span>
@@ -51,7 +51,7 @@ function HeroCatalogueCard({ hero, expandedSections = {}, onSectionToggle }) {
                             {typeof attributeSprites[Number(hero.mainAttribute)] === "string" && <img className="catalogue-chip-icon" src={attributeSprites[Number(hero.mainAttribute)]} alt="" />}
                             {humanize(attribute)}
                         </span>
-                        <span className={`catalogue-chip catalogue-chip-role catalogue-chip-role-${String(role).toLowerCase()} text`}>
+                        <span className={`catalogue-chip catalogue-chip-role hero-catalogue-role-chip catalogue-chip-role-${String(role).toLowerCase()} text`}>
                             <img className="catalogue-chip-icon" src={roleSprites[Number(hero.role)]} alt="" />
                             {humanize(role)}
                         </span>

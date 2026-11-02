@@ -47,7 +47,7 @@ function CataloguePerk() {
                     <div className="perk-catalogue-slots">{entry.slots.map(slot => {
                         const slotLabel = slot.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())
                         const iconKey = slot.toLowerCase()
-                        return <span className="catalogue-chip text" key={slot}>
+                        return <span className="catalogue-chip text perk-catalogue-slot-chip" key={slot}>
                             {iconSprites[iconKey] && <img className="catalogue-chip-icon" src={iconSprites[iconKey]} alt="" />}
                             {slotLabel}
                         </span>

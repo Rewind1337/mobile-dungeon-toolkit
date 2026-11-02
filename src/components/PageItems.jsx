@@ -112,6 +112,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
         }
 
         setSavedItemsRevision(revision => revision + 1)
+        clearItemSelection()
 
         // A saved item should be present in the local save immediately, not only after a tab change.
         if (manualSaveFunction) manualSaveFunction()

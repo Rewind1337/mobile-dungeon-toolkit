@@ -280,36 +280,6 @@
   .hero-preview-talent-entry .talent-catalogue-name { font-size: V.$font-size-small; }
 }
 
-/* A three-column preview layout keeps skills, hero and talents aligned without width hacks. */
-.hero-preview .skills-talents-layout {
-  display: grid;
-  grid-template-columns: minmax(220px, 1fr) max-content minmax(260px, 1fr);
-  align-items: start;
-  gap: V.$gap;
-  width: 100%;
-  min-width: 0;
-}
-.hero-preview .skills-talents-layout > .skills,
-.hero-preview .skills-talents-layout > .hero-preview-talent-grid {
-  width: auto;
-  max-width: none;
-  min-width: 0;
-}
-@include M.media-query-max(V.$bp-tablet, ()) {
-  .hero-preview .skills-talents-layout {
-    grid-template-columns: minmax(0, 1fr) max-content minmax(0, 1fr);
-    gap: V.$gap-small;
-  }
-}
-@include M.media-query-max(V.$bp-mobile, ()) {
-  .hero-preview .skills-talents-layout {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: V.$gap;
-  }
-}
-
 /* Virtualized hero catalogue rows keep the existing two/three-column card design. */
 .hero-catalogue-grid-spacer { width: 100%; min-width: 0; }
 .hero-catalogue-grid-row {
@@ -322,22 +292,6 @@
 
 /* The hero preview responds to its own pane width, including split and full-width modes. */
 @container hero-preview-pane (max-width: 760px) {
-  .hero-preview .skills-talents-layout {
-    grid-template-columns: minmax(0, 1fr);
-    align-items: stretch;
-    gap: V.$gap;
-  }
-  .hero-preview .skills-talents-layout > .flex-col.hero {
-    order: -1;
-    align-self: center;
-    margin: V.$gap-small auto 0;
-  }
-  .hero-preview .skills-talents-layout > .skills,
-  .hero-preview .skills-talents-layout > .talents {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-  }
   .hero-preview .details { flex-direction: column; }
 }
 @container hero-preview-pane (max-width: 520px) {
@@ -356,4 +310,9 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
     justify-items: center;
   }
+}
+
+
+.hero-catalogue-role-chip .catalogue-chip-icon {
+  filter: drop-shadow(0 0 2px black);
 }

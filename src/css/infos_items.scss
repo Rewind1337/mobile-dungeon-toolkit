@@ -279,3 +279,9 @@
     flex-wrap: wrap;
   }
 }
+
+
+/* Keep equipment-slot sprites legible against the catalogue chips. */
+.catalogue-item-slot-chip .catalogue-chip-icon {
+  filter: drop-shadow(0 0 2px black);
+}

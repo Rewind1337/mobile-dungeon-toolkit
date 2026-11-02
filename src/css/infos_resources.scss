@@ -348,6 +348,7 @@
 
 .resource-catalogue-description {
   margin: 0;
+  text-align: left;
   overflow-wrap: anywhere;
 }
 
@@ -418,9 +419,9 @@
 .resource-catalogue-additional-info .catalogue-chip,
 .resource-catalogue-location-chips .catalogue-chip { max-width: 100%; }
 .resource-catalogue-additional-info .catalogue-chip-icon {
-  width: 24px;
-  height: 24px;
-  flex: 0 0 24px;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
   object-fit: contain;
 }
 .resource-catalogue-location-row {

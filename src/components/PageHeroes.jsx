@@ -138,7 +138,6 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const clearHeroSelection = () => { setSelectedHeroId(null) }
     const deselectHero = () => {
         setSelectedHeroId(null)
         setSelectedSavedHeroId(null)
@@ -170,7 +169,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                     : hero
             ))
             setSavedHeroesRevision(revision => revision + 1)
-            setSelectedSavedHeroId(existingSaveId)
+            deselectHero()
             switchListPage(1)
             if (manualSaveFunction) manualSaveFunction()
             return
@@ -189,7 +188,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
         }
         savedHeroesRef.current = [...savedHeroesRef.current, savedHero]
         setSavedHeroesRevision(revision => revision + 1)
-        clearHeroSelection()
+        deselectHero()
         if (manualSaveFunction) manualSaveFunction()
     }
 
