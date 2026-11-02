@@ -2441,3 +2441,70 @@ select {
     scroll-padding-bottom: calc(72px + env(safe-area-inset-bottom));
   }
 }
+
+
+/* Hero and item list filters use the same labelled-control treatment as the catalogues. */
+.filters-primary-row .name-search-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  max-width: none;
+}
+.filters .catalogue-control-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px V.$gap-small;
+  padding-inline: 2px;
+  font-size: V.$font-size-small;
+  opacity: 0.85;
+  text-shadow: none;
+}
+.filters-sort-order {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  min-width: 150px;
+}
+.filters-sort-order > .catalogue-control-label {
+  flex: 0 0 auto;
+  white-space: normal;
+  text-shadow: none;
+  font-size: V.$font-size-small;
+  opacity: 0.85;
+}
+.filters-sort-order select {
+  min-height: 40px;
+  border-radius: V.$border-radius;
+}
+
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .filters-primary-row .filters-sort-order {
+    order: 0;
+    flex: 0 1 145px;
+    min-width: 124px;
+  }
+  .filters-primary-row .name-search-filter {
+    order: 2;
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  .filters .mobile-filter-control {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    min-width: 0;
+    text-align: left;
+  }
+  .filters .mobile-filter-control > .catalogue-control-label {
+    flex: 0 0 auto;
+    white-space: normal;
+  }
+  .filters .filters-sort-order select {
+    height: 32px;
+    min-height: 32px;
+    border-radius: 0;
+  }
+}

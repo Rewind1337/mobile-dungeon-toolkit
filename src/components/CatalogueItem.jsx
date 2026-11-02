@@ -118,7 +118,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
     const [slotFilter, setSlotFilter] = useState("all")
     const [attributeFilter, setAttributeFilter] = useState("all")
     const [locationFilter, setLocationFilter] = useState("all")
-    const [setAttributeFilter, setSetAttributeFilter] = useState("all")
+    const [setMainAttributeFilter, setSetMainAttributeFilter] = useState("all")
     const [setPieceCountFilter, setSetPieceCountFilter] = useState("all")
     const [filtersVisible, setFiltersVisible] = useState(true)
 
@@ -232,10 +232,10 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
         const matchesSearch = matchesSearchQuery(searchable, search)
         const matchesSource = sourceFilter === "all" || sourceName === sourceFilter
         const matchesLocation = locationFilter === "all" || locations.includes(locationFilter)
-        const matchesSetAttribute = setAttributeFilter === "all" || String(set.mainAttribute) === setAttributeFilter
+        const matchesSetAttribute = setMainAttributeFilter === "all" || String(set.mainAttribute) === setMainAttributeFilter
         const matchesSetPieces = setPieceCountFilter === "all" || String(set.pieces) === setPieceCountFilter
         return matchesSearch && matchesSource && matchesLocation && matchesSetAttribute && matchesSetPieces
-    }), [setsRef, search, sourceFilter, locationFilter, itemsBySet, setAttributeFilter, setPieceCountFilter])
+    }), [setsRef, search, sourceFilter, locationFilter, itemsBySet, setMainAttributeFilter, setPieceCountFilter])
 
     const sortedItems = useMemo(
         () => filteredItems.slice().sort((a, b) => a.name.localeCompare(b.name)),
@@ -249,7 +249,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
         setSlotFilter("all")
         setAttributeFilter("all")
         setLocationFilter("all")
-        setSetAttributeFilter("all")
+        setSetMainAttributeFilter("all")
         setSetPieceCountFilter("all")
     }
 
@@ -282,7 +282,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
                     setSlotFilter={setSlotFilter}
                     attributeFilter={attributeFilter}
                     setAttributeFilter={setAttributeFilter}
-                    setAttributeFilterForSets={setSetAttributeFilter}
+                    setAttributeFilterForSets={setSetMainAttributeFilter}
                     setPieceCountFilter={setSetPieceCountFilter}
                     locationFilter={locationFilter}
                     setLocationFilter={setLocationFilter}

@@ -5,7 +5,7 @@ import { ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, ATTRIBUTE_DEFINITIONS, RARITY_DE
 function MobileFilterSelect({ label, value, onChange, options, multiple = false }) {
     return (
         <label className="mobile-filter-control">
-            <span>{label}</span>
+            <span className="catalogue-control-label text">{label}</span>
             <select aria-label={label} multiple={multiple}
                 value={multiple ? (Array.isArray(value) ? value.map(String) : []) : value ?? ""}
                 onChange={onChange}>
@@ -58,16 +58,17 @@ function HeroRarityFilters({ toggleFilter, filters, filterSprites }) {
     </div>)
 }
 
-function HeroFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, onSearchBlur, clearFilters, filters, filterSprites, sortOrder, onSortChange, searchPlaceholder = "Search heroes...", searchAriaLabel = "Search heroes by name" }) {
+function HeroFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, onSearchBlur, clearFilters, filters, filterSprites, sortOrder, onSortChange, searchPlaceholder = "Name, skill, talent, effect...", searchAriaLabel = "Search heroes by name" }) {
     return (
         <div className="filters card">
             <div className="filters-primary-row">
                 <Button title="Show or hide advanced filters" className="filters-advanced-button" round onClick={() => setFiltersAdvanced(value => !value)} imgAsText text={(advanced ? filterSprites[54] : filterSprites[53])} active={advanced} />
                 <Button title="Clear all filters" className="filters-clear-button" round onClick={clearFilters} text="ALL" active={filters.rarity === null && [filters.element, filters.role, filters.mainAttribute, filters.isStarred, filters.name].every(value => value === null || value === "")} />
                 <HeroElementFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
-                <div className="name-search-filter">
-                    <input className="selectable w-100" type="text" aria-label={searchAriaLabel} placeholder={searchPlaceholder} value={filters.name} onChange={event => setSearch(event.target.value)} onBlur={onSearchBlur} />
-                </div>
+                <label className="name-search-filter catalogue-search">
+                    <span className="catalogue-control-label text">Search</span>
+                    <input className="selectable catalogue-input w-100" type="text" aria-label={searchAriaLabel} placeholder={searchPlaceholder} value={filters.name} onChange={event => setSearch(event.target.value)} onBlur={onSearchBlur} />
+                </label>
                 <label className="filters-sort-order">
                     <span className="catalogue-control-label text">Sort Order</span>
                     <select aria-label="Sort order" value={sortOrder} onChange={event => onSortChange(event.target.value)}>
