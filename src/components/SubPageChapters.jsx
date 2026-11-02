@@ -57,6 +57,7 @@ function Chapter({ chapter, shadowChapter, onSelect }) {
                 className="chapter card flex-row"
                 dataId={chapter.id}
                 dataThreshold={0}
+                fillPercent={0}
                 prefix={<span className="text">{chapter.id + 1}</span>}
                 text={<span className="header">{chapter.name}</span>}
                 suffix={<img src={LightworldIcon} alt="" loading="lazy" decoding="async" draggable={false} />}
@@ -69,6 +70,7 @@ function Chapter({ chapter, shadowChapter, onSelect }) {
                         key={threshold}
                         dataId={shadowChapter.id}
                         dataThreshold={threshold}
+                        fillPercent={0}
                         title={"Shadow World " + threshold + " · Threshold " + threshold}
                         text={<span className="header">SW {threshold}</span>}
                         suffix={<img src={thresholdIcons[threshold]} alt="" loading="lazy" decoding="async" draggable={false} />}
