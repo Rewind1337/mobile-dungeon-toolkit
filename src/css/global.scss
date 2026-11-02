@@ -2331,6 +2331,10 @@ select {
   }
 }
 
+.chapter-shadow > .text {
+  text-shadow: -3px 0 2px black, 3px 0 2px black, 0 -3px 2px black, 0 3px 2px black;
+}
+
 /* Use the compact chapter/Shadow World label layout on small screens only. */
 @include M.media-query-max(V.$bp-mobile, ()) {
   .chapter-wrapper {
@@ -2375,7 +2379,6 @@ select {
     line-height: 1.1;
     text-align: center;
     white-space: nowrap;
-    text-shadow: -3px 0 2px black, 3px 0 2px black, 0 -3px 2px black, 0 3px 2px black;
   }
   .chapter .icon-left,
   .chapter .icon-right,
