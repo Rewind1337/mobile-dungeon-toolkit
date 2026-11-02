@@ -333,11 +333,11 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
             <div className="sub-nav-bar flex-row">
                 <div className="pagination flex-row card w-100">
                     <Button text="Saved Teams" color={2} />
-                    <Button text="Recommended Teams" color={5} disabled />
-                    <Button text="Import Team" color={5} onClick={() => setImportTeamModalVisible(true)} />
+                    <Button text="Recommended Teams" color={2} disabled />
+                    <Button text="Import Team" color={2} onClick={() => setImportTeamModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">
-                    <Button text="Manual Save" color={5} onClick={manualSaveFunction} />
+                    <Button text="Manual Save" color={2} onClick={manualSaveFunction} />
                 </div>
             </div>
 

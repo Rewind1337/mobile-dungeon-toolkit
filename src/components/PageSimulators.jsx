@@ -9,11 +9,11 @@ const SubPageChapters = lazy(() => import('./SubPageChapters.jsx'))
 const SubPageCustomCombat = lazy(() => import('./SubPageCustomCombat.jsx'))
 
 const SIMULATOR_TABS = [
-    ['adventure', 'Adventure Chapters', 0],
-    ['towers', 'Towers', 1],
-    ['titans', 'Titans', 2],
-    ['guild-hunt', 'Guild Hunt', 3],
-    ['custom', 'Custom Combat', 4],
+    ['adventure', 'Adventure Chapters'],
+    ['towers', 'Towers'],
+    ['titans', 'Titans'],
+    ['guild-hunt', 'Guild Hunt'],
+    ['custom', 'Custom Combat'],
 ]
 
 function PageSimulators({ activeTab = 'overview', onTabChange, savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
@@ -21,12 +21,12 @@ function PageSimulators({ activeTab = 'overview', onTabChange, savedHeroesRef, s
         <>
             <div className="sub-nav-bar flex-row">
                 <div className="pagination flex-row card w-100">
-                    {SIMULATOR_TABS.map(([id, label, color]) => (
-                        <Button key={id} text={label} color={color} active={activeTab === id} onClick={() => onTabChange?.(id)} />
+                    {SIMULATOR_TABS.map(([id, label]) => (
+                        <Button key={id} text={label} color={4} active={activeTab === id} onClick={() => onTabChange?.(id)} />
                     ))}
                 </div>
                 <div className="options flex-row card">
-                    <Button text="Manual Save" color={5} onClick={manualSaveFunction} />
+                    <Button text="Manual Save" color={4} onClick={manualSaveFunction} />
                 </div>
             </div>
 
