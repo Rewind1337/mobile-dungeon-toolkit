@@ -2331,69 +2331,72 @@ select {
   }
 }
 
-/* Chapter text fills a consistent center area while the shadow buttons stay compact. */
-.chapter-wrapper {
-  width: 100%;
-  align-items: stretch;
-}
-.chapter {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-.chapter-shadow {
-  flex: 0 1 clamp(68px, 8vw, 90px);
-  min-width: 0;
-  padding-inline: 4px;
-}
-.chapter-shadow-placeholder {
-  flex: 0 1 clamp(168px, 24vw, 288px);
-  min-width: 0;
-}
-.chapter > .text {
-  flex: 1 1 auto;
-  min-width: 0;
-  font-family: V.$font-family-header;
-  font-size: clamp(20px, 3vw, 34px);
-  line-height: 1.1;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.chapter > .icon-left > .text {
-  flex: 0 0 auto;
-  font-family: V.$font-family-stats;
-  font-size: 20px;
-  line-height: 1;
-}
-.chapter-shadow > .text {
-  flex: 1 1 auto;
-  min-width: 0;
-  font-family: V.$font-family-stats;
-  font-size: clamp(14px, 1.5vw, 19px);
-  line-height: 1.1;
-  text-align: center;
-  white-space: nowrap;
-}
-.chapter .icon-left,
-.chapter .icon-right,
-.chapter-shadow .icon-left,
-.chapter-shadow .icon-right {
-  flex: 0 0 auto;
-}
-.chapter .icon-right img {
-  display: block;
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 3px black);
-}
-.chapter-shadow .icon-right img {
-  display: block;
-  width: 22px;
-  height: 22px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 3px black);
+/* Use the compact chapter/Shadow World label layout on small screens only. */
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .chapter-wrapper {
+    width: 100%;
+    align-items: stretch;
+  }
+  .chapter {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .chapter-shadow {
+    flex: 0 1 clamp(68px, 8vw, 90px);
+    min-width: 0;
+    padding-inline: 4px;
+  }
+  .chapter-shadow-placeholder {
+    flex: 0 1 clamp(168px, 24vw, 288px);
+    min-width: 0;
+  }
+  .chapter > .text {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: V.$font-family-header;
+    font-size: clamp(20px, 3vw, 34px);
+    line-height: 1.1;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .chapter > .icon-left > .text {
+    flex: 0 0 auto;
+    font-family: V.$font-family-stats;
+    font-size: 20px;
+    line-height: 1;
+  }
+  .chapter-shadow > .text {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: V.$font-family-stats;
+    font-size: clamp(14px, 1.5vw, 19px);
+    line-height: 1.1;
+    text-align: center;
+    white-space: nowrap;
+    text-shadow: -3px 0 2px black, 3px 0 2px black, 0 -3px 2px black, 0 3px 2px black;
+  }
+  .chapter .icon-left,
+  .chapter .icon-right,
+  .chapter-shadow .icon-left,
+  .chapter-shadow .icon-right {
+    flex: 0 0 auto;
+  }
+  .chapter .icon-right img {
+    display: block;
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 3px black);
+  }
+  .chapter-shadow .icon-right img {
+    display: block;
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 3px black);
+  }
 }
 
 
