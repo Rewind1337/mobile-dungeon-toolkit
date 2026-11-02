@@ -1958,6 +1958,7 @@ input[type="number"] {
   align-self: center;
   width: auto;
   max-width: 100%;
+  height: auto !important;
   padding: 7px 12px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: V.$border-radius-small;
