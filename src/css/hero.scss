@@ -162,6 +162,7 @@
 
 .hero {
   cursor: pointer;
+  transition: none;
 
   .flex-col {
     gap: 0;
@@ -372,6 +373,8 @@
   }
   .hero-preview .hero-metadata .catalogue-chip-icon { width: 31px; height: 31px; }
   .hero-preview .hero-preview-skills-toggle { margin-top: V.$gap-small; }
+
+  .hero-preview > .flex-col {margin-top: V.$gap-small; }
 }
 
 .hero-preview .equipment {
@@ -453,7 +456,6 @@
 // At widths up to 900px, let the empty equipment-slot label fill its card and use a readable 16px font on mobile.
 @include M.media-query-max(V.$bp-mobile, ()) {
   .hero-preview .equipment > .item:not([data-type]) .text {
-    width: 100%;
     font-size: 16px;
   }
 }

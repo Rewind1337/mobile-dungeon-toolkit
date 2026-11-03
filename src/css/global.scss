@@ -216,6 +216,10 @@ body::after {
   &.card-dark {
     background: linear-gradient(125deg, rgba(99, 66, 16, 0.44), rgba(20, 57, 54, 0.52) 52%, rgba(7, 15, 25, 0.86));
   }
+
+  &.card-blue {
+    background: V.$secondary-gradient;
+  }
 }
 
 .header {
@@ -761,35 +765,6 @@ body::after {
 
 .teams-list {
   overflow: auto;
-}
-
-.team {
-  &:last-child {
-    min-height: 40px;
-  }
-
-  .flex-row {
-    .header-big {
-      margin-right: V.$gap;
-      flex-grow: 1;
-    }
-
-    button {
-      width: max-content;
-    }
-  }
-
-  button {
-    width: 100%;
-  }
-
-  &:nth-child(2n+1) {
-    background: V.$primary-gradient;
-  }
-
-  &:nth-child(2n+0) {
-    background: V.$secondary-gradient;
-  }
 }
 
 .page {

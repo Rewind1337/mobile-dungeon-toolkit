@@ -83,6 +83,7 @@
 
 .item {
   cursor: pointer;
+  transition: none;
 
   .flex-col {
     gap: 0;
@@ -327,9 +328,9 @@
 }
 @media (max-width: 900px) {
   .item-list .item-sprite, .item .item-sprite {
-    width: 60px;
+    width: 64px;
     height: 80px;
-    flex-basis: 60px;
+    flex-basis: 64px;
   }
   .item-perk { flex-basis: 100%; gap: 6px; }
   .item-perk > .flex-col { flex: 1 1 100px; }
