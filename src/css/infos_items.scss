@@ -278,6 +278,15 @@
   }
 }
 
+// At widths up to 900px, reduce only the item-catalogue preview sprites to the 60px mobile hero size while preserving the item's 3:4 aspect ratio.
+@include M.media-query-max(V.$bp-mobile) {
+  .catalogue-item-preview .item > .flex-col > .item-sprite {
+    width: 60px;
+    height: 80px;
+    flex-basis: 60px;
+  }
+}
+
 .catalogue-item-slot-chip .catalogue-chip-icon {
   filter: drop-shadow(0 0 2px black);
 }
