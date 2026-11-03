@@ -126,6 +126,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                     items={filteredItems}
                     scrollElementRef={listRef}
                     minColumnWidth={110}
+                    mobileMinColumnWidth={68}
                     estimatedRowHeight={170}
                     rowGap={8}
                     columnGap={8}
