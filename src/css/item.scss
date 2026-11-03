@@ -368,7 +368,6 @@
   height: 100%;
 }
 
-/* Damaged/bricked items have a matching top-right indicator on item cards. */
 .item-damaged {
   position: absolute;
   top: 0;
@@ -392,47 +391,64 @@
   object-fit: contain;
   filter: drop-shadow(0 0 2px black);
 }
+.item-icon.item-icon-damaged {
+  right: 0;
+  left: auto;
+  z-index: 4;
+  border-top-left-radius: V.$border-radius-small;
+  border-top-right-radius: V.$border-radius;
+  border-bottom-right-radius: V.$border-radius-small;
+  border-bottom-left-radius: V.$border-radius;
+  background: rgba(130, 22, 22, 0.82);
+}
+.item-icon.item-icon-damaged .item-damaged {
+  position: static;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+}
 @include M.media-query-max(V.$bp-mobile, ()) {
   .item-damaged {
-    width: 20px;
-    height: 20px;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+  .item-icon.item-icon-damaged {
     border-radius: 0;
   }
 }
 
-/* The supplied diagonal mask forms a rarity-coloured, softly blurred border halo. */
-.item-preview-damaged-frame {
-  position: relative;
-  display: inline-flex;
-  align-items: stretch;
-  justify-content: center;
-  padding: 0;
-  isolation: isolate;
+.item-set-bonus-state {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
   min-width: 0;
 }
-.item-preview-damaged-frame.is-damaged {
-  padding: 7px;
+.item-set-bonus-state.is-active > .item-perk {
+  border: 1px solid rgba(104, 205, 132, 0.78);
+  background: linear-gradient(135deg, rgba(30, 104, 57, 0.72), rgba(13, 55, 34, 0.76));
+  box-shadow: inset 0 0 0 1px rgba(130, 235, 160, 0.14), 0 0 8px rgba(75, 190, 105, 0.18);
 }
-.item-preview-damaged-frame.is-damaged .item-preview-damaged-effect {
-  position: absolute;
-  z-index: 0;
-  inset: -12px;
-  background: var(--item-damage-color);
-  -webkit-mask-image: var(--item-damage-mask);
-  mask-image: var(--item-damage-mask);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  filter: blur(5px) drop-shadow(0 0 8px var(--item-damage-color));
-  opacity: 0.9;
-  pointer-events: none;
+.item-set-bonus-state.is-active .perk-name {
+  color: #c9f4d3;
 }
-.item-preview-damaged-frame > .item {
-  position: relative;
-  z-index: 1;
+.item-set-bonus-state.is-inactive {
+  opacity: 0.48;
+  filter: grayscale(0.35);
+}
+.item-set-bonus-status {
+  align-self: flex-end;
+  padding-inline: 8px;
+  font-size: V.$font-size-xsmall;
+  line-height: 1.2;
+  opacity: 0.8;
+}
+.item-set-bonus-state.is-active .item-set-bonus-status {
+  color: #a9edb8;
+  opacity: 1;
 }
 
 /* Keep the masterwork level field centred over the artwork. */
