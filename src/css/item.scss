@@ -1,6 +1,7 @@
+// Item list, preview, and perk styles.
+
 @use './_variables.scss' as V;
 @use './mixins.scss' as M;
-
 
 .item-list {
   flex-wrap: wrap;
@@ -86,7 +87,6 @@
     gap: 0;
   }
 
-
   .item-sprite {
     width: 92px;
     height: 100%;
@@ -98,7 +98,7 @@
       border-radius: 0;
     }
   }
-  
+
   .item-sprite-img {
     width: 92px;
     height: 100%;
@@ -264,15 +264,13 @@
 
 .masterwork-mutation-controls {
   gap: 8px;
-  
+
   .masterwork-mutation-select select {
     width: 100%;
     font-size: V.$font-size-button;
     min-width: 0;
   }
 }
-
-/* Responsive perk rows and consistent sprite bounds */
 
 .item .item-sprite {
   width: V.$item-sprite-width;
@@ -341,7 +339,6 @@
   }
 }
 
-
 .back-to-top-button.item-list-back-to-top {
   right: 7px;
   bottom: 6px;
@@ -354,8 +351,6 @@
   }
 }
 
-
-/* Preview item sprites retain their full-size footprint on every viewport. */
 .item-preview .item .item-sprite,
 .catalogue-item-preview .item .item-sprite {
   width: V.$item-sprite-width;
@@ -451,7 +446,6 @@
   opacity: 1;
 }
 
-/* Keep the masterwork level field centred over the artwork. */
 .masterwork-input-row {
   display: flex;
   flex-wrap: nowrap;

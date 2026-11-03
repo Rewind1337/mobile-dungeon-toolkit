@@ -1,7 +1,7 @@
+// Perk catalogue styles.
+
 @use './_variables.scss' as V;
 @use './mixins.scss' as M;
-
-/* Perk catalogue */
 
 .perk-catalogue { display:flex; flex-direction:column; gap:V.$gap; width:100%; min-width:0; padding:V.$padding-card; }
 .perk-catalogue-list { display:grid; grid-template-columns:minmax(0,1fr); align-items:stretch; gap:V.$gap-small; min-width:0; }
@@ -23,11 +23,9 @@
   .perk-catalogue-row { gap: V.$gap-small; }
 }
 
-
 .perk-catalogue-slot-chip .catalogue-chip-icon {
   filter: drop-shadow(0 0 2px black);
 }
-
 
 .perk-catalogue-filters {
   grid-template-columns: minmax(240px, 2fr) minmax(170px, 1fr) auto;

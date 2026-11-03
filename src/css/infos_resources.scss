@@ -1,7 +1,7 @@
+// Banner and resource catalogue styles.
+
 @use './_variables.scss' as V;
 @use './mixins.scss' as M;
-
-/* Banner and resource catalogues */
 
 .banner-catalogue-list,
 .resource-catalogue {
@@ -98,7 +98,6 @@
 
 .banner-catalogue-hero-grid {
   display: grid;
-  // Keep each hero card fixed-width; only the number of columns changes with available space.
   grid-template-columns: repeat(auto-fill, 116px);
   justify-content: start;
   align-items: start;
@@ -120,13 +119,10 @@
   overflow: visible;
 }
 
-/* Only the nested Hero card in banner odds stays still; the surrounding odds card can hover. */
 .banner-catalogue-hero > .hero.hero-static,
 .banner-catalogue-hero > .hero.hero-static:hover,
 .banner-catalogue-hero > .hero.hero-static.hover {
   transition: none;
-  // Keep the transform as a containing block for the absolutely positioned
-  // element and starred indicators, but cancel the hover lift.
   transform: translate(0, 0);
 }
 
@@ -365,7 +361,6 @@
   .resource-catalogue-grid { grid-template-columns: minmax(0, 1fr); }
 }
 
-
 .banner-catalogue-search {
   position: sticky;
   top: V.$gap-small;
@@ -379,7 +374,6 @@
 .banner-catalogue-search .catalogue-control-label {
   width: 100%;
 }
-
 
 .resource-location-filter {
   display: flex;
@@ -406,7 +400,6 @@
   .banner-catalogue-card.card-dark { grid-column: 1 / -1; }
   .resource-catalogue-filters { align-items: stretch; flex-direction: column; }
 }
-
 
 .resource-catalogue-additional-info,
 .resource-catalogue-location-chips {
@@ -436,7 +429,6 @@
   font-weight: 700;
   opacity: 0.8;
 }
-
 
 .resource-catalogue-filters .resource-location-filter {
   flex: 0 1 220px;

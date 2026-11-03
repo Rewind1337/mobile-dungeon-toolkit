@@ -55,12 +55,17 @@ export function calculateItemStats(item) {
     const masterworkLevel = Math.max(0, Number(item.masterworkLevel) || 0)
     const masterworkMultiplier = 1 + masterworkLevel / 10
     const selectedMutations = []
+    const seenMutationSelections = new Set()
     for (const milestone of [5, 10]) {
         if (masterworkLevel < milestone) continue
         const selection = item.mutations?.[milestone]
         if (!selection || typeof selection !== "object" || !selection.perkKey || selection.id == null) continue
+        const selectionKey = `${selection.perkKey}:${Number(selection.id)}`
+        if (seenMutationSelections.has(selectionKey)) continue
         const mutation = MASTERWORK_MUTATION_DEFINITIONS[selection.perkKey]?.find(entry => entry.id === Number(selection.id))
-        if (mutation) selectedMutations.push({ perkKey: selection.perkKey, mutation })
+        if (!mutation) continue
+        seenMutationSelections.add(selectionKey)
+        selectedMutations.push({ perkKey: selection.perkKey, mutation })
     }
 
     const itemMainStat = ITEM_MAIN_STATS[Number(item.mainAttribute)]
