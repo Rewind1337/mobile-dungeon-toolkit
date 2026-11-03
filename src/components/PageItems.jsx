@@ -59,9 +59,10 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
         setPerkSelectionVisible(false)
     }
 
-    const handlePerkClick = (itemObj, applyPerk) => {
+    const handlePerkClick = (itemObj, applyPerk, alreadySelectedPerks = []) => {
         const slotName = slotIndexToNameMap[itemObj?.slot]
-        setPossiblePerks(POSSIBLE_PERKS[slotName] ?? [])
+        const selectedPerks = new Set(alreadySelectedPerks.filter(perk => perk && perk !== "NOTHING"))
+        setPossiblePerks((POSSIBLE_PERKS[slotName] ?? []).filter(perk => !selectedPerks.has(perk)))
         setPerkSelectionMainAttribute(itemObj?.mainAttribute ?? null)
         setPendingPerkSelection(() => applyPerk)
         setPerkSelectionVisible(true)
@@ -270,16 +271,18 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
             }}>
                 <div className='flex-row header-big'>Select Perk</div>
                 <div className="list perk-list flex-row flex-wrap">
-                    {possiblePerks.map(perk => (
-                        <ItemPerk
-                            key={perk}
-                            name={perk}
-                            spriteName={getPerkSpriteName(perk)}
-                            noValue={true}
-                            onClick={() => handleSelectPerkClick(perk)}
-                            buttonText={"Choose"}
-                        />
-                    ))}
+                    {possiblePerks.length === 0
+                        ? <div className="text">All available perks are already selected on this item.</div>
+                        : possiblePerks.map(perk => (
+                            <ItemPerk
+                                key={perk}
+                                name={perk}
+                                spriteName={getPerkSpriteName(perk)}
+                                noValue={true}
+                                onClick={() => handleSelectPerkClick(perk)}
+                                buttonText={"Choose"}
+                            />
+                        ))}
                 </div>
             </Modal>
 
