@@ -411,14 +411,15 @@
   border-radius: inherit;
   background: transparent;
 }
-// At widths up to 900px, make the damaged marker fill its icon wrapper and remove its rounded corners on mobile.
+// At widths up to 900px, keep standalone damaged markers icon-sized and remove rounded corners in both the list and preview.
 @include M.media-query-max(V.$bp-mobile, ()) {
   .item-damaged {
-    width: 100%;
-    height: 100%;
+    width: 20px;
+    height: 20px;
     border-radius: 0;
   }
-  .item-icon.item-icon-damaged {
+  .item-icon.item-icon-damaged,
+  .item-icon.item-icon-damaged .item-damaged {
     border-radius: 0;
   }
 }
