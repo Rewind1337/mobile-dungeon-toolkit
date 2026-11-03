@@ -1,6 +1,5 @@
-// Shared Sass variables and design tokens.
-
 @use 'sass:map';
+// Colors
 $primary-gradient: linear-gradient(152deg, hsl(205, 100%, 40%) 0%, hsl(205, 100%, 55%) 100%);
 $secondary-gradient: linear-gradient(152deg, hsl(210, 100%, 40%) 0%, hsl(210, 100%, 55%) 100%);
 
@@ -43,10 +42,12 @@ $button-cancel-gradient-click: linear-gradient(152deg, hsl(0, 100%, 40%) 0%, hsl
 $mobile-button-height: 44px;
 $mobile-button-text: 12px;
 
+// Fonts
 $font-family-base: "Roboto", sans-serif;
 $font-family-header: "Bangers", system-ui;
 $font-family-stats: "Poetsen One", sans-serif;
 
+// Font Sizes
 $font-size-xsmall: 10px;
 $font-size-small: 14px;
 $font-size-nav: 18px;
@@ -57,8 +58,10 @@ $font-size-header: 24px;
 $font-size-header-large: 36px;
 $font-size-wobble: 80px;
 
+// Text Styles
 $text-shadow: 1px 1px 2px black;
 
+// Interface
 $gap: 10px;
 $gap-small: 5px;
 $padding-button: 12px 4px;
@@ -67,6 +70,7 @@ $padding-nav: 34px 10px;
 $padding-rift: 80px;
 $sprite-size: 80px;
 
+// Sizing Sprites
 $hero-sprite-width: 96px;
 $hero-sprite-height: 136px;
 $item-sprite-width: 96px;
@@ -74,6 +78,7 @@ $item-sprite-height: 128px;
 $icon-width: 24px;
 $icon-height: 24px;
 
+// Border und Radius
 $border-radius-small: 4px;
 $border-radius: 8px;
 $border-radius-large: 10px;
@@ -85,6 +90,7 @@ $border-width-button: 1px;
 $border-width-rift: 8px;
 $border-width-blob: 20px;
 
+// Transitions
 $transition-card: width 0.2s ease, height 0.2s ease;
 $transition-button: border-color 0.25s, background-color 0.25s, transform 0.125s;
 $transition-transform: transform 0.125s;
@@ -96,10 +102,12 @@ $transition-scale: scale 0.2s linear;
 $transition-height: height 0.2s;
 $transition-wobble: width 0.22s linear;
 
+// Z-Indexes
 $z-index-base: 5;
 $z-index-nav: 10;
 $z-index-background: -1;
 
+// Breakpoints
 $breakpoints: (
     small: 600px,
     mobile: 900px,

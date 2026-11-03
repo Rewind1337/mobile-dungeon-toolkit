@@ -32,6 +32,7 @@
     padding: V.$padding-button;
   }
 
+// At widths up to 900px, turn the navigation bar into compact, full-height mobile buttons with square upper corners.
   @include M.media-query-max(V.$bp-mobile, ()) {
     min-height: V.$mobile-button-height;
     padding: 0;
@@ -87,6 +88,7 @@
 .nav-bar-header {
   display: block;
 
+// At widths up to 900px, hide the navigation header on mobile to preserve space for the page content.
   @include M.media-query-max(V.$bp-mobile, ()) {
     display: none;
   }

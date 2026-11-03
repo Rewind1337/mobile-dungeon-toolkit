@@ -231,9 +231,11 @@
   overflow-wrap: anywhere;
 }
 
+// At widths of 1500px and wider, expand the item and set catalogue grids to three columns on wide screens.
 @include M.media-query(V.$bp-wide) {
   .catalogue-item-grid, .catalogue-set-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+// At widths up to 900px, collapse the item and set catalogue grids to one column on mobile and square the item-name card corners.
 @include M.media-query-max(V.$bp-mobile) {
   .catalogue-item-grid, .catalogue-set-grid { grid-template-columns: minmax(0, 1fr); }
   .catalogue-item-name { border-radius: 0; }

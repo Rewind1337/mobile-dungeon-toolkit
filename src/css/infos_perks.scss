@@ -13,12 +13,15 @@
 .perk-catalogue-name { min-width:0; overflow-wrap:anywhere; }
 .perk-catalogue-slots { display:flex; flex-wrap:wrap; gap:V.$gap-small; min-width:0; overflow-wrap:anywhere; justify-content:flex-start; }
 
+// At widths of 1200px and wider, show perk catalogue entries in two columns from tablet width upward.
 @include M.media-query(V.$bp-tablet) {
   .perk-catalogue-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+// At widths of 1500px and wider, expand the perk catalogue to three columns on wide screens.
 @include M.media-query(V.$bp-wide) {
   .perk-catalogue-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+// At widths up to 900px, tighten the spacing between perk rows on mobile.
 @include M.media-query-max(V.$bp-mobile) {
   .perk-catalogue-row { gap: V.$gap-small; }
 }
@@ -30,6 +33,7 @@
 .perk-catalogue-filters {
   grid-template-columns: minmax(240px, 2fr) minmax(170px, 1fr) auto;
 }
+// At widths up to 900px, stack perk catalogue filter controls into one column on mobile.
 @include M.media-query-max(V.$bp-mobile) {
   .perk-catalogue-filters { grid-template-columns: minmax(0, 1fr); }
 }

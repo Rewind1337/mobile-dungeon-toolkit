@@ -11,6 +11,7 @@
   padding: 2px;
   gap: V.$gap-small;
 
+// At widths up to 900px, remove the extra padding from the hero list on mobile.
   @include M.media-query-max(V.$bp-mobile, ()) {
     padding: 0;
   }
@@ -152,6 +153,7 @@
     font-size: 20px;
     justify-content: left;
 
+// At widths up to 900px, reduce the hero-preview information chip text to 14px.
     @include M.media-query-max(V.$bp-mobile, ()) {
       font-size: 14px;
     }
@@ -189,6 +191,7 @@
       scale: 1.2;
     }
 
+// At widths up to 900px, make the hero element badge a 20px square with no rounded corners on mobile.
     @include M.media-query-max(V.$bp-mobile, ()) {
       border-radius: 0;
       width: 20px;
@@ -216,6 +219,7 @@
       scale: 1.1;
     }
 
+// At widths up to 900px, make the hero starred badge a 20px square with no rounded corners on mobile.
     @include M.media-query-max(V.$bp-mobile, ()) {
       border-radius: 0;
       width: 20px;
@@ -230,6 +234,7 @@
     border-radius: 4px;
     image-rendering: optimizeQuality;
 
+// At widths up to 900px, reduce hero sprites to 60px wide and remove their rounded corners on mobile.
     @include M.media-query-max(V.$bp-mobile, ()) {
       width: 60px;
       border-radius: 0;
@@ -241,6 +246,7 @@
     height: 100%;
     image-rendering: optimizeQuality;
 
+// At widths up to 900px, reduce the hero sprite image itself to 60px wide on mobile.
     @include M.media-query-max(V.$bp-mobile, ()) {
       width: 60px;
     }
@@ -345,6 +351,7 @@
   object-fit: contain;
   flex: 0 0 auto;
 }
+// At widths up to 900px, resize hero list sprites and rearrange preview metadata so the name gets a full row and attribute/role chips share the row below.
 @include M.media-query-max(V.$bp-mobile, ()) {
   .hero-list .hero-sprite, .hero .hero-sprite {
     width: 60px;
@@ -385,12 +392,14 @@
   margin: 0;
 }
 
+// At widths up to 1200px, change the six equipment slots in the hero preview to a three-column by two-row grid on tablet-sized screens.
 @include M.media-query-max(V.$bp-tablet, ()) {
   .hero-preview .equipment {
     grid-template-columns: repeat(3, calc(V.$item-sprite-width + 10px));
   }
 }
 
+// At widths up to 900px, change the hero equipment grid to two 70px columns on phones and flatten the labels beneath each item.
 @include M.media-query-max(V.$bp-mobile, ()) {
   .hero-preview .equipment {
     grid-template-columns: repeat(2, 70px);
@@ -410,6 +419,7 @@
   }
 }
 
+// At widths up to 900px, stack the hero's stats and detail sections vertically, and reorder the filters for narrow screens.
 @include M.media-query-max(V.$bp-mobile, ()) {
   .filters-group-rarities { order: 1; }
   .filters-starred-group { order: 2; }
@@ -428,6 +438,7 @@
   bottom: 6px;
 }
 
+// At widths up to 600px, move the hero-list Back to Top control closer to the screen edges on very small screens.
 @include M.media-query-max(V.$bp-small, ()) {
   .back-to-top-button.hero-list-back-to-top {
     right: 4px;
@@ -439,6 +450,7 @@
   margin-bottom: -2px;
 }
 
+// At widths up to 900px, let the empty equipment-slot label fill its card and use a readable 16px font on mobile.
 @include M.media-query-max(V.$bp-mobile, ()) {
   .hero-preview .equipment > .item:not([data-type]) .text {
     width: 100%;
@@ -482,6 +494,7 @@
   min-width: 0;
 }
 .hero-preview-skills-talents-modal .hero-preview-talent-grid { width: 100%; }
+// At widths up to 900px, show the hero Skills & Talents modal in a single column on mobile.
 @include M.media-query-max(V.$bp-mobile, ()) {
   .hero-preview-skills-talents-modal { grid-template-columns: minmax(0, 1fr); }
 }

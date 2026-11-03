@@ -11,6 +11,7 @@
   padding: 2px;
   gap: V.$gap-small;
 
+// At widths up to 900px, remove the gaps from the item list, reduce its padding, and cap its height on mobile.
   @include M.media-query-max(V.$bp-mobile, ()) {
     gap: 0;
     padding: 1px;
@@ -93,6 +94,7 @@
     outline: 2px solid black;
     border-radius: 4px;
 
+// At widths up to 900px, reduce item sprites to 60px wide and remove their rounded corners on mobile.
     @include M.media-query-max(V.$bp-mobile, ()) {
       width: 60px;
       border-radius: 0;
@@ -105,6 +107,7 @@
     filter: drop-shadow(0 0 2px black);
     image-rendering: optimizeQuality;
 
+// At widths up to 900px, reduce the item sprite image itself to 60px wide on mobile.
     @include M.media-query-max(V.$bp-mobile, ()) {
       width: 60px;
       border-radius: 0;
@@ -124,6 +127,7 @@
     z-index: 3;
     line-height: 19px;
 
+// At widths up to 900px, make the item-type icon a 20px square with no rounded corners on mobile.
     @include M.media-query-max(V.$bp-mobile, ()) {
       border-radius: 0;
       width: 20px;
@@ -344,6 +348,7 @@
   bottom: 6px;
 }
 
+// At widths up to 600px, move the item-list Back to Top control closer to the screen edges on very small screens.
 @include M.media-query-max(V.$bp-small, ()) {
   .back-to-top-button.item-list-back-to-top {
     right: 4px;
@@ -386,7 +391,7 @@
   object-fit: contain;
   filter: drop-shadow(0 0 2px black);
 }
-.item-icon.item-icon-damaged {
+.item .item-icon.item-icon-damaged {
   right: 0;
   left: auto;
   z-index: 4;
@@ -394,7 +399,8 @@
   border-top-right-radius: V.$border-radius;
   border-bottom-right-radius: V.$border-radius-small;
   border-bottom-left-radius: V.$border-radius;
-  background: rgba(130, 22, 22, 0.82);
+  background: rgba(0, 0, 0, 0.48);
+  animation: none;
 }
 .item-icon.item-icon-damaged .item-damaged {
   position: static;
@@ -404,6 +410,7 @@
   border-radius: inherit;
   background: transparent;
 }
+// At widths up to 900px, make the damaged marker fill its icon wrapper and remove its rounded corners on mobile.
 @include M.media-query-max(V.$bp-mobile, ()) {
   .item-damaged {
     width: 100%;

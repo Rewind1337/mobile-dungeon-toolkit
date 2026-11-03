@@ -12,6 +12,7 @@ import { createTeamShareToken, decodeTeamShareInput, restoreSharedTeam } from ".
 import { calculateTeamStats } from "../utils/calculatedStats.js"
 import { createSavedItemRecord } from "../js/ids.jsx"
 import { formatNumber } from "../js/util.jsx"
+import LockedSrc from "../sprites/locked.webp"
 
 const createDefaultTeams = () => [
     { id: 0, name: "Default Team", heroes: Array(5).fill(null) },
@@ -453,13 +454,13 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                                                     <div className="team-equipped-item-grid">
                                                                         {equippedItems.map(({ slot, item }) => (
                                                                             <span
-                                                                                className={"team-equipped-item" + (item ? "" : " is-empty")}
+                                                                                className={"team-equipped-item" + (slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? " is-locked" : item ? "" : " is-empty")}
                                                                                 key={slot.id}
-                                                                                title={item?.name ?? humanize(slot.name)}
+                                                                                title={slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? "Other slot (not implemented yet)" : item?.name ?? humanize(slot.name)}
                                                                             >
                                                                                 <img
                                                                                     className="team-equipped-item-icon"
-                                                                                    src={item?.itemSrc || item?.iconSrc || itemSprites["null"]}
+                                                                                    src={slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? LockedSrc : item?.itemSrc || item?.iconSrc || itemSprites["null"]}
                                                                                     alt=""
                                                                                     loading="lazy"
                                                                                     decoding="async"

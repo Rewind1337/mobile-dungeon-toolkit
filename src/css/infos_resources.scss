@@ -348,11 +348,13 @@
   overflow-wrap: anywhere;
 }
 
+// At widths of 1500px and wider, show banner cards in two columns and resource cards in three columns on wide screens.
 @include M.media-query(V.$bp-wide) {
   .banner-catalogue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .resource-catalogue-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+// At widths up to 900px, remove outer list padding and collapse banner/resource grids to one column on mobile.
 @include M.media-query-max(V.$bp-mobile) {
   .banner-catalogue-list,
   .resource-catalogue { padding: 0; }
@@ -382,12 +384,15 @@
   gap: V.$gap-small;
   min-width: 180px;
 }
+// At widths of 1500px and wider, show gem catalogue cards in three columns on wide screens.
 @include M.media-query(V.$bp-wide) {
   .gem-catalogue-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+// At widths up to 1200px, reduce the gem catalogue to two columns at tablet widths.
 @include M.media-query-max(V.$bp-tablet) {
   .gem-catalogue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+// At widths up to 900px, center the conditional banner hero grid, keep its hero cards compact, and stack resource filters on mobile.
 @include M.media-query-max(V.$bp-mobile) {
   .banner-catalogue-conditional .banner-catalogue-hero-grid {
     grid-template-columns: repeat(2, minmax(0, 116px));

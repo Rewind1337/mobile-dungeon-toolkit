@@ -80,6 +80,7 @@ body::after {
   padding: V.$gap;
   gap: V.$gap;
 
+// At widths up to 900px, remove the root page padding and gaps so the mobile layout can use the full viewport.
   @include M.media-query-max(V.$bp-mobile, ()) {
     padding: 0;
     gap: 0;
@@ -191,12 +192,14 @@ body::after {
   overflow: hidden;
   height: min-content;
 
+// Above 900px, enable the card hover lift only on screens wider than the mobile breakpoint.
   @include M.media-query(V.$bp-mobile + 1px, ()) {
     &:hover {
       transform: translate(0, -1px);
     }
   }
 
+// At widths up to 900px, reduce card padding and remove rounded corners for compact mobile cards.
   @include M.media-query-max(V.$bp-mobile, ()) {
     padding: 3px;
     border-radius: 0;
@@ -220,6 +223,7 @@ body::after {
   font-family: V.$font-family-header;
   text-shadow: -2px 0 4px black, 2px 0 4px black, 0 -2px 4px black, 0 2px 4px black;
 
+// At widths up to 900px, reduce standard header text to the navigation-sized font.
   @include M.media-query-max(V.$bp-mobile, ()) {
     font-size: V.$font-size-nav;
   }
@@ -238,6 +242,7 @@ body::after {
   font-family: V.$font-family-header;
   text-shadow: -3px 0 4px black, 3px 0 4px black, 0 -3px 4px black, 0 3px 4px black;
 
+// At widths up to 900px, reduce large header text to the regular header size.
   @include M.media-query-max(V.$bp-mobile, ()) {
     font-size: V.$font-size-header;
   }
@@ -256,6 +261,7 @@ body::after {
   font-family: V.$font-family-header;
   text-shadow: -2px 0 4px black, 2px 0 4px black, 0 -2px 4px black, 0 2px 4px black;
 
+// At widths up to 900px, shrink small headers to the extra-small text size.
   @include M.media-query-max(V.$bp-mobile, ()) {
     font-size: V.$font-size-xsmall;
   }
@@ -267,6 +273,7 @@ body::after {
 
   text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black;
 
+// At widths up to 900px, shrink regular text to the extra-small text size.
   @include M.media-query-max(V.$bp-mobile, ()) {
     font-size: V.$font-size-xsmall;
   }
@@ -278,6 +285,7 @@ body::after {
 
   text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black;
 
+// At widths up to 900px, shrink large text to the extra-small text size.
   @include M.media-query-max(V.$bp-mobile, ()) {
     font-size: V.$font-size-xsmall;
   }
@@ -399,6 +407,7 @@ body::after {
   min-height: 66px;
   width: max-content;
 
+// At widths up to 900px, make the options buttons full-height mobile controls with compact text and square edges.
   @include M.media-query-max(V.$bp-mobile, ()) {
     min-height: V.$mobile-button-height;
     padding: 0;
@@ -427,6 +436,7 @@ body::after {
   padding: 2px;
   gap: V.$gap-small;
 
+// At widths up to 900px, remove the gap and nearly all padding around the hero preview on narrow screens.
   @include M.media-query-max(V.$bp-mobile, ()) {
     gap: 0;
     padding: 1px;
@@ -801,6 +811,7 @@ a {
     width: 300px;
     margin-inline: auto;
 
+// At widths up to 900px, let footer buttons fill the available width instead of keeping their desktop fixed width.
     @include M.media-query-max(V.$bp-mobile, ()) {
       width: 100%;
     }
@@ -814,6 +825,7 @@ a {
     button {
       width: 100%;
 
+// At widths up to 900px, add a small gap below footer buttons so stacked mobile controls do not touch.
       @include M.media-query-max(V.$bp-mobile, ()) {
         margin-bottom: 4px;
       }
@@ -824,6 +836,7 @@ a {
       justify-content: center;
     }
 
+// At widths up to 900px, tighten footer padding and spacing, and allow its contents to wrap onto additional lines.
     @include M.media-query-max(V.$bp-mobile, ()) {
       padding: V.$gap-small V.$gap-small;
       gap: 0;
@@ -834,6 +847,7 @@ a {
       filter: brightness(500%) drop-shadow(1px 1px 2px black);
       transform: translate(0, 4px);
 
+// At widths up to 900px, shrink footer SVG icons to 20px and adjust their alignment for the compact footer row.
       @include M.media-query-max(V.$bp-mobile, ()) {
         height: 20px;
         margin-left: 4px;
@@ -845,6 +859,7 @@ a {
     img {
       filter: drop-shadow(1px 1px 2px black);
 
+// At widths up to 900px, shrink footer image icons to 20px and add compact horizontal spacing.
       @include M.media-query-max(V.$bp-mobile, ()) {
         height: 20px;
         margin-left: 4px;
@@ -856,11 +871,13 @@ a {
       align-items: center;
       white-space: nowrap;
 
+// At widths up to 900px, remove the extra gap inside footer text groups.
       @include M.media-query-max(V.$bp-mobile, ()) {
         gap: 0;
       }
     }
 
+// At widths up to 1200px, stack footer sections vertically and stretch their links and text to fit a tablet-width layout.
     @include M.media-query-max(V.$bp-tablet, ()) {
       flex-direction: column;
       justify-content: center;
@@ -905,6 +922,7 @@ a {
     height: 200px;
     background-size: cover;
 
+// At widths up to 900px, reduce the height of splash-page tiles from 200px to 150px.
     @include M.media-query-max(V.$bp-mobile, ()) {
       height: 150px;
     }
@@ -948,6 +966,7 @@ a {
   .card.welcome {
     display: none;
 
+// At widths up to 900px, show the welcome card on narrow screens even though it is hidden in the wider splash layout.
     @include M.media-query-max(V.$bp-mobile, ()) {
       display: block;
     }
@@ -1009,6 +1028,7 @@ select {
   text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black;
   user-select: text;
 
+// At widths up to 900px, make select controls 32px high with square corners.
   @include M.media-query-max(V.$bp-mobile, ()) {
     height: 32px;
     border-radius: 0;
@@ -1038,6 +1058,7 @@ input[type="number"] {
   -webkit-appearance: none;
   -moz-appearance: textfield;
 
+// At widths up to 900px, make number inputs 32px high with square corners.
   @include M.media-query-max(V.$bp-mobile, ()) {
     height: 32px;
     border-radius: 0;
@@ -1054,11 +1075,13 @@ input[type="number"] {
     border-radius: V.$border-radius; font-family: V.$font-family-stats; font-size: V.$font-size-button;
     text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black; user-select: text;
 
+// At widths up to 900px, make selects inside mobile filter controls 32px high with square corners.
     @include M.media-query-max(V.$bp-mobile, ()) {
       height: 32px;
       border-radius: 0;
     }
   }
+// At widths up to 900px, tighten mobile filter-control spacing and keep multi-select controls tall enough to show their options.
   @include M.media-query-max(V.$bp-mobile, ()) { gap: 6px; select { min-height: 32px; } }
 }
 
@@ -1145,6 +1168,7 @@ input[type="number"] {
 .other-overview-breakdown { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: V.$gap; }
 .other-overview-breakdown > .card { min-width: 0; }
 
+// At widths up to 900px, reflow the mobile filter panel: use one-column advanced filters, hide desktop filter buttons, and show the mobile controls in a compact order.
 @include M.media-query-max(V.$bp-mobile) {
   .filters { justify-content: flex-start; gap: 6px; padding: 6px; }
   .filters-primary-row .filter-group > button { display: none; }
@@ -1168,6 +1192,7 @@ input[type="number"] {
   .other-overview-breakdown { grid-template-columns: minmax(0, 1fr); }
 }
 
+// At widths of 900px and wider, restore the desktop-style filter controls from 900px upward, allowing the filter row to wrap while hiding the mobile-only controls.
 @include M.media-query(V.$bp-mobile) {
   .filters { justify-content: flex-start; flex-wrap: wrap; gap: 6px; }
   .filters > * { margin-inline: 0; }
@@ -1238,6 +1263,7 @@ input[type="number"] {
 .hero-metadata-name[data-rarity="3"], .item-preview-name[data-rarity="3"] { color: #d3a0ff; border-color: rgba(180, 95, 235, 0.75); }
 .hero-metadata-name[data-rarity="4"], .item-preview-name[data-rarity="4"] { color: #ffc56e; border-color: rgba(235, 165, 55, 0.8); }
 
+// At widths up to 900px, square catalogue chips and move hero/item preview names onto their own full-width row above the remaining metadata.
 @include M.media-query-max(V.$bp-mobile, ()) {
   .catalogue-chip { border-radius: 0; }
   .hero-preview .hero-metadata > .hero-metadata-name,
@@ -1469,6 +1495,22 @@ input[type="number"] {
   justify-content: flex-start;
 }
 
+.team-hero-status-icons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  white-space: normal;
+}
+
+.team-hero-status-icons .team-status-icon {
+  flex: 0 0 20px;
+}
+
 .team-status-icon {
   width: 20px;
   height: 20px;
@@ -1573,6 +1615,7 @@ input[type="number"] {
   min-width: 110px;
 }
 
+// At widths up to 1200px, stack team content into one column, give the team header a two-column layout, and move team actions onto a full-width row.
 @include M.media-query-max(V.$bp-tablet) {
   .team-content {
     grid-template-columns: minmax(0, 1fr);
@@ -1588,6 +1631,7 @@ input[type="number"] {
   }
 }
 
+// At widths up to 900px, make team slots auto-fit narrower cards, tighten gaps, and keep team headers/actions usable on mobile.
 @include M.media-query-max(V.$bp-mobile) {
   .team-hero-slots {
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 132px), 1fr));
@@ -1658,12 +1702,14 @@ input[type="number"] {
   white-space: nowrap;
 }
 
+// At widths up to 900px, hide the splash-page construction caption on mobile.
 @include M.media-query-max(V.$bp-mobile, ()) {
   #page-splash .under-construction-caption {
     display: none;
   }
 }
 
+// At widths up to 1200px, keep the splash footer ownership and inline groups in a single horizontal row on tablet-sized screens.
 @include M.media-query-max(V.$bp-tablet, ()) {
   #page-splash .footer .splash-footer-ownership,
   #page-splash .footer .splash-footer-inline {
@@ -1680,6 +1726,7 @@ input[type="number"] {
   }
 }
 
+// At widths up to 600px, replace the splash footer logo image with its text label and reduce the footer details to fit very narrow screens.
 @include M.media-query-max(V.$bp-small, ()) {
   #page-splash .footer .splash-footer-logo-image {
     display: none;
@@ -1728,6 +1775,7 @@ input[type="number"] {
   margin: 0;
 }
 
+// At widths up to 1200px, allow the splash footer ownership line to wrap and center when the available width is limited.
 @include M.media-query-max(V.$bp-tablet, ()) {
   #page-splash .footer .splash-footer-ownership {
     flex-wrap: wrap;
@@ -1924,6 +1972,7 @@ input[type="number"] {
   padding: 0 V.$gap-small;
 }
 
+// At widths up to 1200px, collapse simulator and custom-combat matchup layouts into a single column on tablet-sized screens.
 @include M.media-query-max(V.$bp-tablet) {
   .simulator-selection-layout {
     grid-template-columns: minmax(0, 1fr);
@@ -1935,6 +1984,7 @@ input[type="number"] {
     min-height: 34px;
   }
 }
+// At widths up to 900px, preserve a minimum 34px height for the custom-combat versus divider in the narrower matchup layout.
 @include M.media-query-max(V.$bp-mobile) {
   .custom-combat-vs { min-height: 34px; }
 }
@@ -2152,6 +2202,7 @@ input[type="number"] {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16), 0 0 7px rgba(220, 235, 255, 0.2);
 }
 
+// At widths up to 1200px, allow custom-combat team headers to wrap and keep the team picker within the available width.
 @include M.media-query-max(V.$bp-tablet) {
   .custom-combat-team-header { flex-wrap: wrap; }
   .custom-combat-team-picker { max-width: 100%; }
@@ -2388,6 +2439,7 @@ select {
   justify-content: flex-end;
 }
 
+// At widths up to 1200px, keep the expanded team header and its action controls within the viewport on tablet-sized screens.
 @include M.media-query-max(V.$bp-tablet) {
   .team-header:not(.is-collapsed) {
     grid-template-columns: auto minmax(0, 1fr);
@@ -2402,6 +2454,7 @@ select {
   }
 }
 
+// At widths up to 900px, add bottom padding to scrollable virtualized lists so their final row is not covered by mobile browser controls.
 @include M.media-query-max(V.$bp-mobile) {
   .page,
   #page-info,
@@ -2448,6 +2501,7 @@ select {
   border-radius: V.$border-radius;
 }
 
+// At widths up to 900px, reorder mobile filter controls, let search fields take a full row, and stack their labels and inputs where space is limited.
 @include M.media-query-max(V.$bp-mobile, ()) {
   .filters-primary-row .filters-sort-order {
     order: 0;
@@ -2477,6 +2531,7 @@ select {
   }
 }
 
+// At widths up to 900px, show the simulator selection list at full width and hide its detail pane on small screens.
 @include M.media-query-max(V.$bp-mobile, ()) {
   .simulator-selection-layout {
     grid-template-columns: minmax(0, 1fr);

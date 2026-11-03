@@ -3,6 +3,7 @@
 @use 'sass:map';
 @use './_variables.scss' as V;
 
+// Applies nested styles at or above the given breakpoint, optionally updating CSS variables on :root first.
 @mixin media-query($breakpoint, $vars: ()) {
     $min-width: map.get(V.$breakpoints, $breakpoint) or $breakpoint;
 
@@ -18,6 +19,7 @@
     }
 }
 
+// Applies nested styles at or below the given breakpoint, optionally updating CSS variables on :root first.
 @mixin media-query-max($breakpoint, $vars: ()) {
     $max-width: map.get(V.$breakpoints, $breakpoint) or $breakpoint;
 

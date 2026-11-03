@@ -212,6 +212,7 @@
   overflow-wrap: anywhere;
 }
 
+// At widths up to 1200px, reduce the catalogue and search filter grids to two columns on tablet-sized screens.
 @include M.media-query-max(V.$bp-tablet) {
   .catalogue-filters, .hero-catalogue-filters, .status-catalogue-filters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -223,6 +224,7 @@
   .catalogue-filter-actions { justify-content: flex-end; }
 }
 
+// At widths up to 900px, compact catalogue controls and entry cards, and collapse filter groups and catalogue breakdowns to one column on mobile.
 @include M.media-query-max(V.$bp-mobile) {
   .catalogue-input, .catalogue-filter select { min-height: 32px; }
   .catalogue-entry-card { gap: V.$gap-small; }
@@ -238,6 +240,7 @@
   .catalogue-filter-actions { justify-content: flex-start; }
   .catalogue-result-count { flex-basis: 100%; text-align: left; }
 }
+// At widths of 1500px and wider, add the shared horizontal margin around filter groups on wide screens.
 @include M.media-query(V.$bp-wide) {
   .filters > .filter-group { margin-inline: V.$gap-small; }
 }
@@ -253,6 +256,7 @@
   display: none;
 }
 
+// At widths up to 900px, hide the full catalogue view labels and show their shorter compact versions on mobile.
 @include M.media-query-max(V.$bp-mobile) {
   .catalogue-view-label-full {
     display: none;
@@ -282,6 +286,7 @@
   width: auto;
 }
 
+// At widths up to 900px, left-align catalogue filter actions and hide the inline show-filters control when the mobile filter layout is active.
 @include M.media-query-max(V.$bp-mobile) {
   .catalogue-filter-actions {
     justify-content: flex-start;

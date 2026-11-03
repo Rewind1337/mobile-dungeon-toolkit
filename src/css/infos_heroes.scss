@@ -197,9 +197,11 @@
   overflow-wrap: anywhere;
 }
 
+// At widths of 1500px and wider, expand the hero catalogue grid to three columns on wide screens.
 @include M.media-query(V.$bp-wide) {
   .hero-catalogue-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+// At widths up to 900px, collapse the hero catalogue to one column on mobile and square the hero-name card corners.
 @include M.media-query-max(V.$bp-mobile) {
   .hero-catalogue-grid { grid-template-columns: minmax(0, 1fr); }
   .hero-catalogue-name { border-radius: 0; }
@@ -271,6 +273,7 @@
   outline-offset: 2px;
 }
 
+// At widths up to 900px, remove minimum-width pressure from the talent grid, tighten talent-row spacing, and reduce talent names on mobile.
 @include M.media-query-max(V.$bp-mobile) {
   .hero-preview-talent-grid { min-width: 0; }
   .hero-preview-talent-row { gap: V.$gap-small; }

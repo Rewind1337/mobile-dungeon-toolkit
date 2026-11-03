@@ -97,6 +97,7 @@
   }
 }
 
+// At widths up to 600px, compact the not-found page, tighten its card spacing, and size its navigation links as mobile buttons.
 @include M.media-query-max(V.$bp-small) {
   #page-not-found {
     padding: 8px;
