@@ -131,6 +131,24 @@ const TEAM_BASE_STATS = [
     ["agility", "AGI", "Agility"],
 ]
 
+function TeamHeroStatusIcons({ hero }) {
+    if (!hero) return null
+    const statuses = getHeroStatusEffects(hero).filter(name => {
+        const polarity = getStatusPolarity(STATUS_EFFECT_DEFINITIONS[name])
+        return (polarity === "buff" || polarity === "debuff") && Boolean(statusSprites[name])
+    })
+    if (statuses.length === 0) return null
+
+    const label = statuses.map(humanize).join(", ")
+    return (
+        <div className="catalogue-chip team-hero-status-icons" aria-label={hero.name + " buffs and debuffs: " + label} title={label}>
+            {statuses.map(name => (
+                <img className="team-status-icon" key={name} src={statusSprites[name]} alt={humanize(name)} title={humanize(name)} />
+            ))}
+        </div>
+    )
+}
+
 export function TeamHeroStats({ hero, slotIndex, calculatedStats }) {
     if (!hero) return null
     return (
@@ -452,6 +470,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                                                     </div>
                                                             </div>
                                                             <TeamHeroStats hero={hero} slotIndex={slotIndex} calculatedStats={calculatedTeamStats[slotIndex]?.stats} />
+                                                            <TeamHeroStatusIcons hero={hero} />
                                                         </>
                                                         : <EmptyHero onClick={() => openSlotPicker(team, slotIndex)} />
                                                     }
