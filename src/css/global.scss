@@ -192,7 +192,7 @@ body::after {
   overflow: hidden;
   height: min-content;
 
-// Above 900px, enable the card hover lift only on screens wider than the mobile breakpoint.
+// At widths above 900px, enable the card hover lift for cards that can be hovered.
   @include M.media-query(V.$bp-mobile + 1px, ()) {
     &:hover {
       transform: translate(0, -1px);
