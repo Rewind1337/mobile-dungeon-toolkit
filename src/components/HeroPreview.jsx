@@ -2,9 +2,10 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, ROLE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
 import { CONSTANTS } from '../database/constants.jsx'
-import { heroSprites, iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites, elementSprites } from '../database/db_sprites.jsx'
+import { heroSprites, itemSprites, iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites, elementSprites } from '../database/db_sprites.jsx'
 import ExpandSrc from '../sprites/expand.webp'
 import CrossSrc from '../sprites/cross.png'
+import LockedSrc from '../sprites/locked.webp'
 
 import Button from './Button.jsx'
 import Modal from './Modal.jsx'
@@ -512,6 +513,21 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                             EQUIPMENT_SLOT_DEFINITIONS.OTHER
                         ].map(slot => {
                             const item = equippedItems[slot.id]
+                            if (slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id) {
+                                return (
+                                    <div key={slot.id} className="item card item-slot-locked" aria-disabled="true" title="The Other equipment slot is not implemented yet">
+                                        <div className="item-icon item-icon-locked">
+                                            <img src={LockedSrc} loading="eager" decoding="async" draggable={false} alt="" />
+                                        </div>
+                                        <div className="flex-col">
+                                            <div className="item-sprite">
+                                                <img className="item-sprite-img" src={itemSprites["null"]} loading="eager" decoding="async" draggable={false} alt="" />
+                                            </div>
+                                            <div className="text">Other</div>
+                                        </div>
+                                    </div>
+                                )
+                            }
                             return item
                                 ? <Item key={slot.id} itemObj={item} level={item.level ?? 1} loading="eager" onClick={() => onItemClick(slot.id)} />
                                 : <EmptyItem key={slot.id} label={slot.name.charAt(0) + slot.name.slice(1).toLowerCase()} onClick={() => onItemClick(slot.id)} />
