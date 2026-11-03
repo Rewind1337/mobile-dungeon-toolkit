@@ -1,10 +1,7 @@
+// Shared information catalogue layout and controls.
+
 @use './_variables.scss' as V;
 @use './mixins.scss' as M;
-
-/*
- * The shared .card, .header, .text, .flex-row and related utility classes
- * live in global.scss. Keep this file focused on catalogue-specific layout.
- */
 
 #page-info-layout {
   display: flex;
@@ -15,9 +12,6 @@
   width: 100%;
   gap: 10px;
 }
-
-
-/* Shared catalogue layout */
 
 .item-catalogue,
 .hero-catalogue {
@@ -49,7 +43,6 @@
 .catalogue-overview-title {
   margin: 0;
 }
-
 
 .catalogue-description,
 .catalogue-result-count,
@@ -146,7 +139,7 @@
   height: 100%;
 
   > button {
-    align-self: end; 
+    align-self: end;
   }
 }
 
@@ -166,7 +159,6 @@
   padding: V.$gap;
 }
 
-/* Shared two-column entry cards for statuses, skills and talents. */
 .catalogue-entry-card {
   display: flex;
   flex-direction: row;
@@ -220,7 +212,6 @@
   overflow-wrap: anywhere;
 }
 
-/* Shared responsive filter, view-switch, and entry-card layout. */
 @include M.media-query-max(V.$bp-tablet) {
   .catalogue-filters, .hero-catalogue-filters, .status-catalogue-filters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -250,14 +241,13 @@
 @include M.media-query(V.$bp-wide) {
   .filters > .filter-group { margin-inline: V.$gap-small; }
 }
-/* Low-emphasis catalogue data-status notes */
+
 .catalogue-progress-note {
   margin: V.$gap-small 0 0;
   font-size: V.$font-size-small;
   line-height: 1.4;
   opacity: 0.7;
 }
-
 
 .catalogue-view-label-compact {
   display: none;
@@ -273,8 +263,6 @@
   }
 }
 
-
-/* Catalogue filter visibility controls. */
 .catalogue-filter-actions {
   display: flex;
   flex-wrap: wrap;

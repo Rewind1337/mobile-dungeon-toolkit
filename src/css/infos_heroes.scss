@@ -1,7 +1,7 @@
+// Hero catalogue and preview styles.
+
 @use './_variables.scss' as V;
 @use './mixins.scss' as M;
-
-/* Hero catalogue */
 
 .hero-catalogue-grid {
   display: grid;
@@ -61,7 +61,6 @@
 .hero-catalogue-name[data-rarity="2"] { color: #83b5ff; }
 .hero-catalogue-name[data-rarity="3"] { color: #d3a0ff; }
 .hero-catalogue-name[data-rarity="4"] { color: #ffc56e; }
-
 
 .hero-catalogue-meta-row {
   display: flex; flex-wrap: wrap; align-items: center; gap: V.$gap-small; min-width: 0;
@@ -206,7 +205,6 @@
   .hero-catalogue-name { border-radius: 0; }
 }
 
-
 .hero-catalogue-collapsible > summary {
   cursor: pointer;
   list-style-position: inside;
@@ -218,7 +216,6 @@
   margin-bottom: V.$gap-small;
 }
 
-/* Hero preview talent rows use a full-width two-column layout for left/right pairs. */
 .hero-preview-talent-grid {
   display: flex;
   flex-direction: column;
@@ -280,7 +277,6 @@
   .hero-preview-talent-entry .talent-catalogue-name { font-size: V.$font-size-small; }
 }
 
-/* Virtualized hero catalogue rows keep the existing two/three-column card design. */
 .hero-catalogue-grid-spacer { width: 100%; min-width: 0; }
 .hero-catalogue-grid-row {
   display: grid;
@@ -290,7 +286,6 @@
 }
 .hero-catalogue-grid-row > .virtualized-grid-cell { min-width: 0; }
 
-/* The hero preview responds to its own pane width, including split and full-width modes. */
 @container hero-preview-pane (max-width: 760px) {
   .hero-preview .details { flex-direction: column; }
 }
@@ -311,7 +306,6 @@
     justify-items: center;
   }
 }
-
 
 .hero-catalogue-role-chip .catalogue-chip-icon {
   filter: drop-shadow(0 0 2px black);

@@ -1,7 +1,7 @@
+// Information overview page styles.
+
 @use './_variables.scss' as V;
 @use './mixins.scss' as M;
-
-/* Item catalogue overview */
 
 .catalogue-overview {
   position: relative;
@@ -103,8 +103,6 @@
 .catalogue-overview-rarity-icon[data-rarity="6"] { background: #fd5d47; }
 .catalogue-overview-rarity-icon[data-rarity="7"] { background: #7efffe; }
 .catalogue-overview-rarity-icon[data-rarity="8"] { background: #d6e6ff; }
-
-/* Info splash page */
 
 .info-overview {
   display: flex;
@@ -238,7 +236,6 @@
 @include M.media-query-max(V.$bp-small) {
   .catalogue-overview-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-
 
 .catalogue-overview-slot[role="button"] {
   cursor: pointer;

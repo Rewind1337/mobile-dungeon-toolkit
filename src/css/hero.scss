@@ -1,3 +1,5 @@
+// Hero list and preview styles.
+
 @use './_variables.scss' as V;
 @use './mixins.scss' as M;
 
@@ -301,7 +303,6 @@
 .export-items-checkbox-label > *{
   align-self: center;
 }
-/* Responsive filters, metadata, and consistent hero sprite bounds */
 
 .hero .hero-sprite {
   width: V.$hero-sprite-width;
@@ -334,8 +335,8 @@
   gap: 6px;
   flex: 1 1 0;
 }
-.hero-preview .hero-metadata > .hero-metadata-name { 
-  flex: 1 1; 
+.hero-preview .hero-metadata > .hero-metadata-name {
+  flex: 1 1;
   font-size: V.$font-size-button-large;
 }
 .hero-preview .hero-metadata .catalogue-chip-icon {
@@ -365,7 +366,6 @@
   .hero-preview .hero-metadata .catalogue-chip-icon { width: 31px; height: 31px; }
   .hero-preview .hero-preview-skills-toggle { margin-top: V.$gap-small; }
 }
-
 
 .hero-preview .equipment {
   display: grid;
@@ -423,7 +423,6 @@
   .hero-preview .hero-stat { min-width:0; gap:6px; }
 }
 
-
 .back-to-top-button.hero-list-back-to-top {
   right: 7px;
   bottom: 6px;
@@ -447,10 +446,6 @@
   }
 }
 
-
-
-
-/* The hero stays centered while skills and talents are shown in a separate dialog. */
 .hero-preview-identity {
   display: flex;
   justify-content: center;

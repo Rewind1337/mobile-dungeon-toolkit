@@ -1,3 +1,5 @@
+// Global layout, utility classes, and shared page styles.
+
 @use './_variables.scss' as V;
 @use './mixins.scss' as M;
 
@@ -83,8 +85,6 @@ body::after {
     gap: 0;
   }
 }
-
-
 
 .flex-row {
   display: flex;
@@ -202,7 +202,6 @@ body::after {
     border-radius: 0;
   }
 
-  // Add alongside .card for display-only cards that should not lift on hover.
   &.card-static {
     transition: none;
 
@@ -1054,7 +1053,7 @@ input[type="number"] {
     color: inherit; background: rgba(0, 0, 0, 0.25); outline: 2px solid black; border: none;
     border-radius: V.$border-radius; font-family: V.$font-family-stats; font-size: V.$font-size-button;
     text-shadow: -1px 0 2px black, 1px 0 2px black, 0 -1px 2px black, 0 1px 2px black; user-select: text;
-  
+
     @include M.media-query-max(V.$bp-mobile, ()) {
       height: 32px;
       border-radius: 0;
@@ -1063,7 +1062,6 @@ input[type="number"] {
   @include M.media-query-max(V.$bp-mobile, ()) { gap: 6px; select { min-height: 32px; } }
 }
 
-/* Keep primary filters together and place advanced groups underneath. */
 .filters-primary-row {
   display: flex;
   flex-wrap: wrap;
@@ -1147,7 +1145,6 @@ input[type="number"] {
 .other-overview-breakdown { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: V.$gap; }
 .other-overview-breakdown > .card { min-width: 0; }
 
-/* Mobile filters retain a predictable flow and expose native selectors. */
 @include M.media-query-max(V.$bp-mobile) {
   .filters { justify-content: flex-start; gap: 6px; padding: 6px; }
   .filters-primary-row .filter-group > button { display: none; }
@@ -1180,7 +1177,6 @@ input[type="number"] {
   .filters .mobile-filter-specials { display: none !important; }
 }
 
-/* Shared catalogue chips and preview metadata */
 .catalogue-chip {
   display: inline-flex;
   flex: 0 1 auto;
@@ -1255,8 +1251,6 @@ input[type="number"] {
   .item-preview-metadata { justify-content: space-between; }
 }
 
-
-/* Team equipped-item chips are always available; do not keep these in lazy-loaded other.scss. */
 .team-hero-slot { container-type: inline-size; }
 
 .team-equipped-items {
@@ -1301,7 +1295,6 @@ input[type="number"] {
   .team-equipped-item-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 }
 
-/* Teams */
 #page-teams {
   align-items: stretch;
   min-width: 0;
@@ -1621,8 +1614,6 @@ input[type="number"] {
   }
 }
 
-
-/* Splash page: keep each disclaimer phrase intact while footer groups themselves may wrap. */
 #page-splash .under-construction-caption {
   display: inline;
 }
@@ -1706,8 +1697,6 @@ input[type="number"] {
   }
 }
 
-
-/* Keep the splash sections together at the top and use the footer to fill the remaining space. */
 #page-splash {
   justify-content: flex-start;
   gap: V.$gap;
@@ -1747,8 +1736,6 @@ input[type="number"] {
   }
 }
 
-
-/* Simulator pages share the same selectable-list and detail-pane layout. */
 .simulator-selection-layout {
   display: grid;
   grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.65fr);
@@ -1952,8 +1939,6 @@ input[type="number"] {
   .custom-combat-vs { min-height: 34px; }
 }
 
-
-/* Splash navigation labels stay legible over the image tiles. */
 #page-splash .home-navigation-tile > .header {
   align-self: center;
   width: auto;
@@ -1974,7 +1959,6 @@ input[type="number"] {
   pointer-events: none;
 }
 
-/* Collapsed teams fit into one horizontal, compact summary row. */
 .team-header .team-collapse-button {
   margin: 0;
   align-self: center;
@@ -2036,7 +2020,6 @@ input[type="number"] {
   gap: 0;
 }
 
-/* Small base-stat strip under each hero and their equipped items. */
 .team-base-stat-summary {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2060,7 +2043,6 @@ input[type="number"] {
 .team-base-stat strong { opacity: 0.7; font-size: 0.9em; }
 .team-base-stat > span { overflow-wrap: anywhere; font-weight: 700; }
 
-/* Detail panels read like encounter summaries instead of raw metadata dumps. */
 .simulator-entry-metadata {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
@@ -2096,7 +2078,6 @@ input[type="number"] {
   box-shadow: inset 0 0 24px rgba(150, 80, 210, 0.16), 0 0 14px rgba(100, 45, 150, 0.18);
 }
 
-/* Keep the regular chapter and its three Shadow World buttons evenly aligned. */
 .chapter-wrapper {
   width: 100%;
   align-items: stretch;
@@ -2117,14 +2098,12 @@ input[type="number"] {
   font-weight: 700;
 }
 
-/* The simulator pagination belongs directly above its content. */
 #page-simulators {
   flex: 1 1 auto;
   min-height: 0;
   width: 100%;
 }
 
-/* The matchup card header gives the saved-team selector room without growing vertically. */
 .custom-combat-team-header {
   display: flex;
   flex-direction: row;
@@ -2153,7 +2132,6 @@ input[type="number"] {
   min-width: 160px;
 }
 
-/* Rarity values remain inline with the unique-effect sentence. */
 .rarity-effect-array { white-space: nowrap; }
 .rarity-effect-bracket,
 .rarity-effect-unit { color: rgba(255, 255, 255, 0.95); font-weight: 700; }
@@ -2179,8 +2157,6 @@ input[type="number"] {
   .custom-combat-team-picker { max-width: 100%; }
 }
 
-
-/* Virtualized catalogue list and grid primitives. */
 .virtualized-list-scroll {
   display: block;
   flex: 1 1 auto;
@@ -2207,13 +2183,11 @@ input[type="number"] {
   margin-inline: auto;
 }
 
-/* Text starts at a consistent inset across every form control. */
 input,
 select {
   text-indent: 4px;
 }
 
-/* Responsive previews establish independent query containers, not viewport-bound breakpoints. */
 .hero-preview-pane {
   container-name: hero-preview-pane;
   container-type: inline-size;
@@ -2225,7 +2199,6 @@ select {
   min-width: 0;
 }
 
-/* Consistent element colours across Guild Hunt and the hero catalogue. */
 .catalogue-chip-element-fire {
   color: #ffc0a8;
   border-color: rgba(235, 104, 64, 0.78);
@@ -2263,8 +2236,6 @@ select {
   justify-content: center;
 }
 
-
-/* Large, readable element and name chips on Titan and Guild Boss selectors. */
 .simulator-selection-chips {
   display: flex;
   flex-direction: column;
@@ -2301,20 +2272,17 @@ select {
   flex: 0 0 38px;
 }
 
-
 .catalogue-chip.catalogue-chip-element-outline {
   color: inherit;
   background: rgba(0, 0, 0, 0.2);
   box-shadow: none;
 }
 
-/* Compact home-page navigation labels. */
 .home-navigation-tile > .header {
   height: auto;
   margin: auto;
 }
 
-/* Calculated stats switch to a two-by-two grid when a team hero card narrows. */
 .team-hero-slot {
   container-type: inline-size;
   container-name: team-hero-slot;
@@ -2338,7 +2306,6 @@ select {
   }
 }
 
-/* Chapter text fills a consistent center area while the shadow buttons stay compact. */
 .chapter-wrapper {
   width: 100%;
   align-items: stretch;
@@ -2403,7 +2370,6 @@ select {
   filter: drop-shadow(0 0 3px black);
 }
 
-/* Keep team-name fields useful without allowing the action buttons to wrap. */
 .team-header:not(.is-collapsed) {
   grid-template-columns: auto minmax(0, 360px) minmax(0, 1fr);
 }
@@ -2436,7 +2402,6 @@ select {
   }
 }
 
-/* Add a scrollable tail so mobile browser/OS toolbars don't cover the page end. */
 @include M.media-query-max(V.$bp-mobile) {
   .page,
   #page-info,
@@ -2448,8 +2413,6 @@ select {
   }
 }
 
-
-/* Hero and item list filters use the same labelled-control treatment as the catalogues. */
 .filters-primary-row .name-search-filter {
   display: flex;
   flex-direction: column;
@@ -2514,8 +2477,6 @@ select {
   }
 }
 
-
-/* On narrow simulator screens, show the selectable list without the detail pane. */
 @include M.media-query-max(V.$bp-mobile, ()) {
   .simulator-selection-layout {
     grid-template-columns: minmax(0, 1fr);
