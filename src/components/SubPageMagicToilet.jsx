@@ -282,15 +282,15 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                     <span className="text">Only defined Epic and Legendary heroes are shown.</span>
                 </header>
 
-                {heroResults.length === 0 ? (
-                    <p className="text magic-toilet-empty">No Epic or Legendary heroes pulled yet. Uncommon and Rare pulls are counted above.</p>
-                ) : (
-                    <div
-                        ref={listRef}
-                        {...events}
-                        className="magic-toilet-pulls-list virtualized-list-scroll"
-                        style={{ height: Math.max(140, listHeight) }}
-                    >
+                <div
+                    ref={listRef}
+                    {...events}
+                    className="magic-toilet-pulls-list virtualized-list-scroll"
+                    style={{ height: Math.max(140, listHeight) }}
+                >
+                    {heroResults.length === 0 ? (
+                        <p className="text magic-toilet-empty">No Epic or Legendary heroes pulled yet. Uncommon and Rare pulls are counted above.</p>
+                    ) : (
                         <VirtualizedGrid
                             items={heroResults}
                             scrollElementRef={listRef}
@@ -301,8 +301,8 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                             estimatedRowHeight={190}
                             overscan={3}
                         />
-                    </div>
-                )}
+                    )}
+                </div>
             </section>
         </main>
     )
