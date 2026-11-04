@@ -19,6 +19,7 @@ const MAX_PITY = 9999
 const EPIC_PITY_RESET = 10
 const LEGENDARY_PITY_RESET = 90
 const LEGENDARY_BOOSTER_PULL_CHANCE = FEATURED_HERO_PULL_CHANCE / 4
+const REGULAR_LEGENDARY_BOOSTER_PULL_CHANCE = FEATURED_HERO_PULL_CHANCE / 2
 const EPIC_BOOSTER_PULL_CHANCE = BANNER_RARITY_PULL_CHANCES[EPIC] / 2
 
 // These are full-pool chances; the tracked banner hero list only defines the Epic and Legendary hero identities.
@@ -60,7 +61,11 @@ function pickHero(heroes, banner, rarity, boostedHeroId = null) {
         ? FEATURED_HERO_PULL_CHANCE - (rarity === LEGENDARY && boosted ? LEGENDARY_BOOSTER_PULL_CHANCE : 0)
         : 0
     const boosterChance = boosted
-        ? rarity === LEGENDARY ? LEGENDARY_BOOSTER_PULL_CHANCE : EPIC_BOOSTER_PULL_CHANCE
+        ? rarity === LEGENDARY
+            ? boosted.isStarred === true
+                ? LEGENDARY_BOOSTER_PULL_CHANCE
+                : REGULAR_LEGENDARY_BOOSTER_PULL_CHANCE
+            : EPIC_BOOSTER_PULL_CHANCE
         : 0
 
     // Hero-level odds are absolute pull chances within the selected rarity, not equal hero weights.
