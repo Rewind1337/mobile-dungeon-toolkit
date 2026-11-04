@@ -90,6 +90,7 @@ const SIMULATOR_TAB_TO_ROUTE = {
   titans: '/simulators/titans/',
   'guild-hunt': '/simulators/guild-hunt/',
   custom: '/simulators/custom/',
+  'magic-toilet': '/simulators/magic-toilet/',
 };
 
 const getSimulatorTabFromPath = () => {
