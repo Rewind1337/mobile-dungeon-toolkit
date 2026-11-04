@@ -229,7 +229,6 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
             <span className="magic-toilet-pull-number text">Pull #{result.pullNumber}</span>
             <Hero heroObj={result.hero} selected={false} level={null} onClick={() => {}} className="hero-static" />
             <span className="catalogue-chip text magic-toilet-hero-name">{result.hero.name}</span>
-            <span className="catalogue-chip text">{result.rarity === LEGENDARY ? "Legendary" : "Epic"}</span>
         </article>
     )
 

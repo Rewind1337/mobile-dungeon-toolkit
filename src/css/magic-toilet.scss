@@ -199,9 +199,6 @@
   background: rgba(0, 0, 0, 0.2);
 }
 
-.magic-toilet-result[data-rarity="3"] { outline: 1px solid rgba(150, 80, 255, 0.65); }
-.magic-toilet-result[data-rarity="4"] { outline: 1px solid rgba(255, 190, 45, 0.75); }
-
 // Keep the Hero component at its natural sprite width inside each fixed-width horizontal result tile.
 .magic-toilet-result > .hero {
   flex: 0 0 auto;
