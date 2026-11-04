@@ -35,6 +35,12 @@ function VirtualizedHorizontalList({
         virtualizer.measure()
     }, [itemSignature, itemWidth, virtualizer])
 
+    // Keep the newest pulls visible when another batch is appended to the end of the row.
+    useLayoutEffect(() => {
+        const scrollElement = scrollElementRef?.current
+        if (scrollElement) scrollElement.scrollLeft = scrollElement.scrollWidth
+    }, [itemSignature, scrollElementRef])
+
     return (
         <div
             className="magic-toilet-horizontal-spacer"
