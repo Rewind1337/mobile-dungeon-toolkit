@@ -2,15 +2,31 @@ import { useMemo, useState } from "react"
 import Hero from "./Hero.jsx"
 import Button from "./Button.jsx"
 import BannerCatalogueCard from "./BannerCatalogueCard.jsx"
+import VirtualizedGrid from "./VirtualizedGrid.jsx"
+import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import { BANNERS, BANNER_RARITY_PULL_CHANCES, FEATURED_HERO_PULL_CHANCE, STARRED_HERO_PULL_WEIGHT } from "../js/bannerCatalogueUtils.jsx"
 import { RARITY_DEFINITIONS } from "../database/enums.jsx"
+import "../css/hero.scss"
 import "../css/magic-toilet.scss"
 
+const UNCOMMON = RARITY_DEFINITIONS.UNCOMMON.id
+const RARE = RARITY_DEFINITIONS.RARE.id
 const EPIC = RARITY_DEFINITIONS.EPIC.id
 const LEGENDARY = RARITY_DEFINITIONS.LEGENDARY.id
-const MAX_PULLS = 9999
+const MAX_FLUSHES_PER_ACTION = 1000
+const MAX_PITY = 9999
 
-function clamp(value, min = 1, max = MAX_PULLS) {
+// These are full-pool chances; the tracked banner hero list only defines the Epic and Legendary hero identities.
+const MAGIC_TOILET_PULL_CHANCES = {
+    [UNCOMMON]: 0.55,
+    [RARE]: 0.35,
+    [EPIC]: BANNER_RARITY_PULL_CHANCES[EPIC],
+    [LEGENDARY]: BANNER_RARITY_PULL_CHANCES[LEGENDARY],
+}
+
+const FLUSH_AMOUNT_OPTIONS = [1, 10, 25, 50, 100, 250, 500, 1000]
+
+function clamp(value, min = 1, max = MAX_PITY) {
     const number = Number.parseInt(value, 10)
     return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : min
 }
@@ -28,13 +44,28 @@ function weightedPick(heroes) {
 
 function pickHero(heroes, banner, rarity) {
     const pool = heroes.filter(hero => Number(hero.rarity) === rarity)
-    if (!pool.length) return weightedPick(heroes)
+    // Never fall back to another rarity: the rolled result must remain the rarity that its odds selected.
+    if (!pool.length) return null
+
     const featured = pool.find(hero => hero.id === banner.featuredHeroId)
-    const chance = BANNER_RARITY_PULL_CHANCES[rarity]
+    const chance = MAGIC_TOILET_PULL_CHANCES[rarity]
     if (featured && chance && Math.random() < Math.min(1, FEATURED_HERO_PULL_CHANCE / chance)) return featured
-    return weightedPick(pool.filter(hero => hero.id !== featured?.id).length
-        ? pool.filter(hero => hero.id !== featured?.id)
-        : pool)
+
+    const regularPool = pool.filter(hero => hero.id !== featured?.id)
+    return weightedPick(regularPool.length ? regularPool : pool)
+}
+
+function rollRarity(epicPity, legendaryPity) {
+    if (legendaryPity <= 1) return LEGENDARY
+    if (epicPity <= 1) return EPIC
+
+    const roll = Math.random()
+    let cumulativeChance = 0
+    for (const [rarity, chance] of Object.entries(MAGIC_TOILET_PULL_CHANCES)) {
+        cumulativeChance += chance
+        if (roll < cumulativeChance) return Number(rarity)
+    }
+    return UNCOMMON
 }
 
 function expectedLegendaries(pulls, startingPity, pityLimit) {
@@ -48,7 +79,7 @@ function expectedLegendaries(pulls, startingPity, pityLimit) {
                 expected += probability
                 add(pityLimit, probability)
             } else {
-                const chance = BANNER_RARITY_PULL_CHANCES[LEGENDARY]
+                const chance = MAGIC_TOILET_PULL_CHANCES[LEGENDARY]
                 expected += probability * chance
                 add(pityLimit, probability * chance)
                 add(pity - 1, probability * (1 - chance))
@@ -69,15 +100,25 @@ function luckLabel(actual, expected) {
     return "Very unlucky"
 }
 
+const EMPTY_PULL_COUNTS = {
+    [UNCOMMON]: 0,
+    [RARE]: 0,
+    [EPIC]: 0,
+    [LEGENDARY]: 0,
+}
+
 export default function SubPageMagicToilet({ heroesRef = [] }) {
     const [bannerId, setBannerId] = useState("everyday_heroes")
     const [epicLimit, setEpicLimit] = useState(10)
     const [legendaryLimit, setLegendaryLimit] = useState(90)
     const [epicPity, setEpicPity] = useState(10)
     const [legendaryPity, setLegendaryPity] = useState(90)
-    const [customCount, setCustomCount] = useState(25)
-    const [results, setResults] = useState([])
+    const [flushAmount, setFlushAmount] = useState("10")
+    const [heroResults, setHeroResults] = useState([])
+    const [pullCounts, setPullCounts] = useState(EMPTY_PULL_COUNTS)
     const [totalPulls, setTotalPulls] = useState(0)
+
+    const { listHeight, listRef, events } = useDynamicList(0, true)
 
     const heroData = Array.isArray(heroesRef)
         ? heroesRef
@@ -97,8 +138,8 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
     const selected = bannerResults.find(result => result.banner.id === bannerId) ?? bannerResults[0]
     const banner = selected?.banner
     const heroes = selected?.allHeroes ?? []
-    const legendaryCount = results.filter(result => result.rarity === LEGENDARY).length
-    const epicCount = results.filter(result => result.rarity === EPIC).length
+    const epicCount = pullCounts[EPIC]
+    const legendaryCount = pullCounts[LEGENDARY]
     const expected = expectedLegendaries(totalPulls, legendaryLimit, legendaryLimit)
 
     const updateEpicLimit = value => {
@@ -113,89 +154,108 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
     }
 
     const runPulls = (stopAtLegendary = false, requested = 1) => {
-        if (!banner || !heroes.length) return
+        if (!banner) return
+
         let epic = epicPity
         let legendary = legendaryPity
-        const added = []
-        const limit = stopAtLegendary ? Math.min(MAX_PULLS, legendaryPity) : clamp(requested)
+        const addedHeroes = []
+        const addedCounts = { ...EMPTY_PULL_COUNTS }
+        const limit = stopAtLegendary
+            ? MAX_FLUSHES_PER_ACTION
+            : Math.min(MAX_FLUSHES_PER_ACTION, clamp(requested))
 
         for (let index = 0; index < limit; index += 1) {
-            let targetRarity = null
-            if (legendary <= 1) targetRarity = LEGENDARY
-            else if (epic <= 1) targetRarity = EPIC
-            else {
-                const roll = Math.random()
-                if (roll < BANNER_RARITY_PULL_CHANCES[LEGENDARY]) targetRarity = LEGENDARY
-                else if (roll < BANNER_RARITY_PULL_CHANCES[LEGENDARY] + BANNER_RARITY_PULL_CHANCES[EPIC]) targetRarity = EPIC
+            const rarity = rollRarity(epic, legendary)
+            addedCounts[rarity] += 1
+
+            const hero = rarity === EPIC || rarity === LEGENDARY
+                ? pickHero(heroes, banner, rarity)
+                : null
+
+            // Low-rarity pulls contribute to the counts, but only defined Epic and Legendary heroes get result cards.
+            if (hero) {
+                const pullNumber = totalPulls + index + 1
+                addedHeroes.push({
+                    id: pullNumber,
+                    pullNumber,
+                    hero,
+                    rarity,
+                })
             }
 
-            const lowerPool = heroes.filter(hero => Number(hero.rarity) !== EPIC && Number(hero.rarity) !== LEGENDARY)
-            const hero = targetRarity === null
-                ? weightedPick(lowerPool) ?? weightedPick(heroes)
-                : pickHero(heroes, banner, targetRarity)
-            if (!hero) break
-
-            const rarity = Number(hero.rarity)
             legendary = rarity === LEGENDARY ? legendaryLimit : Math.max(1, legendary - 1)
             epic = rarity === EPIC ? epicLimit : Math.max(1, epic - 1)
-            added.push({
-                id: `${totalPulls + index}-${Date.now()}-${Math.random()}`,
-                pullNumber: totalPulls + index + 1,
-                hero,
-                rarity,
-            })
+
             if (stopAtLegendary && rarity === LEGENDARY) break
         }
 
+        const pullsThisFlush = Object.values(addedCounts).reduce((total, count) => total + count, 0)
         setEpicPity(epic)
         setLegendaryPity(legendary)
-        setResults(previous => [...previous, ...added])
-        setTotalPulls(previous => previous + added.length)
+        setHeroResults(previous => [...previous, ...addedHeroes])
+        setPullCounts(previous => ({
+            [UNCOMMON]: previous[UNCOMMON] + addedCounts[UNCOMMON],
+            [RARE]: previous[RARE] + addedCounts[RARE],
+            [EPIC]: previous[EPIC] + addedCounts[EPIC],
+            [LEGENDARY]: previous[LEGENDARY] + addedCounts[LEGENDARY],
+        }))
+        setTotalPulls(previous => previous + pullsThisFlush)
     }
 
     const reset = () => {
-        setResults([])
+        setHeroResults([])
+        setPullCounts(EMPTY_PULL_COUNTS)
         setTotalPulls(0)
         setEpicPity(epicLimit)
         setLegendaryPity(legendaryLimit)
     }
 
+    const renderHeroResult = result => (
+        <article className="magic-toilet-result" key={result.id} data-rarity={result.rarity}>
+            <span className="magic-toilet-pull-number text">Pull #{result.pullNumber}</span>
+            <Hero heroObj={result.hero} selected={false} level={null} onClick={() => {}} className="hero-static" />
+            <span className="catalogue-chip text magic-toilet-hero-name">{result.hero.name}</span>
+            <span className="catalogue-chip text">{result.rarity === LEGENDARY ? "Legendary" : "Epic"}</span>
+        </article>
+    )
+
     return (
-        <main className="magic-toilet page flex-col w-100">
+        <main className="magic-toilet page card flex-col w-100">
             <header className="card magic-toilet-header">
                 <h1 className="header-big">Magic Toilet</h1>
-                <p className="text">Simulate banner flushes, track epic and legendary pity, and compare your legendary results with the expected average.</p>
+                <p className="text">Simulate banner flushes, track Epic and Legendary pity, and compare your Legendary results with the expected average.</p>
             </header>
 
             <section className="card magic-toilet-controls">
                 <div className="magic-toilet-control-grid">
                     <label className="magic-toilet-field">
                         <span className="text">Banner</span>
-                        <select className="magic-toilet-input" value={bannerId} onChange={event => setBannerId(event.target.value)}>
+                        <select value={bannerId} onChange={event => setBannerId(event.target.value)}>
                             {BANNERS.map(entry => <option key={entry.id} value={entry.id}>{entry.name}</option>)}
                         </select>
                     </label>
                     <label className="magic-toilet-field">
                         <span className="text">Pity to next Epic</span>
-                        <input className="magic-toilet-input" type="number" min="1" max={MAX_PULLS} value={epicLimit} onChange={event => updateEpicLimit(event.target.value)} />
+                        <input type="number" min="1" max={MAX_PITY} value={epicLimit} onChange={event => updateEpicLimit(event.target.value)} />
                     </label>
                     <label className="magic-toilet-field">
                         <span className="text">Pity to next Legendary</span>
-                        <input className="magic-toilet-input" type="number" min="1" max={MAX_PULLS} value={legendaryLimit} onChange={event => updateLegendaryLimit(event.target.value)} />
+                        <input type="number" min="1" max={MAX_PITY} value={legendaryLimit} onChange={event => updateLegendaryLimit(event.target.value)} />
+                    </label>
+                    <label className="magic-toilet-field">
+                        <span className="text">Flush amount</span>
+                        <select value={flushAmount} onChange={event => setFlushAmount(event.target.value)}>
+                            {FLUSH_AMOUNT_OPTIONS.map(amount => <option key={amount} value={String(amount)}>{amount.toLocaleString()}</option>)}
+                        </select>
                     </label>
                 </div>
                 <div className="magic-toilet-pity-status">
                     <span className="catalogue-chip text">Epic pity: {epicPity}</span>
                     <span className="catalogue-chip text">Legendary pity: {legendaryPity}</span>
+                    <span className="catalogue-chip text">Max flushes per action: {MAX_FLUSHES_PER_ACTION.toLocaleString()}</span>
                 </div>
                 <div className="magic-toilet-actions">
-                    <Button text="Flush 1" color="magic-toilet" onClick={() => runPulls(false, 1)} />
-                    <Button text="Flush 10" color="magic-toilet" onClick={() => runPulls(false, 10)} />
-                    <label className="magic-toilet-custom-count">
-                        <span className="text">Custom flushes</span>
-                        <input className="magic-toilet-input" type="number" min="1" max={MAX_PULLS} value={customCount} onChange={event => setCustomCount(clamp(event.target.value))} />
-                    </label>
-                    <Button text={`Flush ${clamp(customCount)}`} color="magic-toilet" onClick={() => runPulls(false, customCount)} />
+                    <Button text={`Flush ${Number(flushAmount).toLocaleString()}`} color="magic-toilet" onClick={() => runPulls(false, Number(flushAmount))} />
                     <Button text="Flush until Legendary" color="magic-toilet" onClick={() => runPulls(true)} />
                     <Button text="Reset Results" color={6} onClick={reset} />
                 </div>
@@ -206,27 +266,41 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                 <BannerCatalogueCard result={selected} heroesById={heroesById} />
             </details>}
 
-            <section className="magic-toilet-summary">
-                <div className="card magic-toilet-stat"><span className="text">Souls used</span><strong className="header-big">{totalPulls.toLocaleString()}</strong></div>
-                <div className="card magic-toilet-stat"><span className="text">Flushes</span><strong className="header-big">{totalPulls.toLocaleString()}</strong></div>
-                <div className="card magic-toilet-stat"><span className="text">Epics</span><strong className="header-big">{epicCount.toLocaleString()}</strong></div>
-                <div className="card magic-toilet-stat"><span className="text">Legendaries</span><strong className="header-big">{legendaryCount.toLocaleString()}</strong></div>
-                <div className="card magic-toilet-stat"><span className="text">Expected Legendaries</span><strong className="header-big">{expected.toFixed(2)}</strong></div>
-                <div className="card magic-toilet-stat magic-toilet-luck"><span className="text">Luck</span><strong className="header-big">{luckLabel(legendaryCount, expected)}</strong></div>
-            </section>
-
             <section className="card magic-toilet-results">
+                <div className="magic-toilet-stats" aria-label="Magic Toilet pull statistics">
+                    <span className="catalogue-chip text magic-toilet-stat-chip">Souls used: {totalPulls.toLocaleString()}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip">Uncommon (55%): {pullCounts[UNCOMMON].toLocaleString()}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip">Rare (35%): {pullCounts[RARE].toLocaleString()}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={EPIC}>Epic (9%): {epicCount.toLocaleString()}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={LEGENDARY}>Legendary (1%): {legendaryCount.toLocaleString()}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip">Expected Legendaries: {expected.toFixed(2)}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip">Luck: {luckLabel(legendaryCount, expected)}</span>
+                </div>
+
                 <header className="magic-toilet-results-header">
-                    <h2 className="header">Pull Results ({results.length})</h2>
-                    <span className="text">One soul per flush</span>
+                    <h2 className="header">Pulled Heroes ({heroResults.length})</h2>
+                    <span className="text">Only defined Epic and Legendary heroes are shown.</span>
                 </header>
-                {results.length === 0 ? <p className="text magic-toilet-empty">No flushes yet. Pick a banner and start pulling!</p> : (
-                    <div className="magic-toilet-result-grid">
-                        {results.map(result => <article className="magic-toilet-result" key={result.id} data-rarity={result.rarity}>
-                            <span className="magic-toilet-pull-number text">#{result.pullNumber}</span>
-                            <Hero heroObj={result.hero} selected={false} level={null} onClick={() => {}} className="hero-static" />
-                            <span className="catalogue-chip text">{result.rarity === LEGENDARY ? "Legendary" : result.rarity === EPIC ? "Epic" : "Other"}</span>
-                        </article>)}
+
+                {heroResults.length === 0 ? (
+                    <p className="text magic-toilet-empty">No Epic or Legendary heroes pulled yet. Uncommon and Rare pulls are counted above.</p>
+                ) : (
+                    <div
+                        ref={listRef}
+                        {...events}
+                        className="magic-toilet-pulls-list virtualized-list-scroll"
+                        style={{ height: Math.max(140, listHeight) }}
+                    >
+                        <VirtualizedGrid
+                            items={heroResults}
+                            scrollElementRef={listRef}
+                            renderItem={renderHeroResult}
+                            minColumnWidth={112}
+                            columnGap={8}
+                            rowGap={8}
+                            estimatedRowHeight={190}
+                            overscan={3}
+                        />
                     </div>
                 )}
             </section>
