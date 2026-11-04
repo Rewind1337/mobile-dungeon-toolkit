@@ -162,6 +162,46 @@ button {
     }
   }
 
+  &[data-color="button-gradient-5-1"]:not(.disabled) {
+    background: V.$button-gradient-5-1;
+    &:hover {
+      background: V.$button-gradient-5-1-hover;
+      &:active { background: V.$button-gradient-5-1-click; }
+    }
+  }
+
+  &[data-color="button-gradient-5-2"]:not(.disabled) {
+    background: V.$button-gradient-5-2;
+    &:hover {
+      background: V.$button-gradient-5-2-hover;
+      &:active { background: V.$button-gradient-5-2-click; }
+    }
+  }
+
+  &[data-color="button-gradient-5-3"]:not(.disabled) {
+    background: V.$button-gradient-5-3;
+    &:hover {
+      background: V.$button-gradient-5-3-hover;
+      &:active { background: V.$button-gradient-5-3-click; }
+    }
+  }
+
+  &[data-color="button-gradient-5-4"]:not(.disabled) {
+    background: V.$button-gradient-5-4;
+    &:hover {
+      background: V.$button-gradient-5-4-hover;
+      &:active { background: V.$button-gradient-5-4-click; }
+    }
+  }
+
+  &[data-color="button-gradient-5-5"]:not(.disabled) {
+    background: V.$button-gradient-5-5;
+    &:hover {
+      background: V.$button-gradient-5-5-hover;
+      &:active { background: V.$button-gradient-5-5-click; }
+    }
+  }
+
   &[data-color="6"]:not(.disabled) {
     background: V.$button-seven-gradient;
     &:hover {
