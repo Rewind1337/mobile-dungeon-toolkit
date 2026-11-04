@@ -215,6 +215,8 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
         setTotalPulls(0)
         setEpicPity(epicLimit)
         setLegendaryPity(legendaryLimit)
+        if (legendaryList.listRef.current) legendaryList.listRef.current.scrollLeft = 0
+        if (epicList.listRef.current) epicList.listRef.current.scrollLeft = 0
     }
 
     const handleBannerChange = event => {
