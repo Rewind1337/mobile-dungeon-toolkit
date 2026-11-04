@@ -2,10 +2,11 @@ import { useMemo, useState } from "react"
 import Hero from "./Hero.jsx"
 import Button from "./Button.jsx"
 import BannerCatalogueCard from "./BannerCatalogueCard.jsx"
-import VirtualizedGrid from "./VirtualizedGrid.jsx"
+import VirtualizedHorizontalList from "./VirtualizedHorizontalList.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import { BANNERS, BANNER_RARITY_PULL_CHANCES, FEATURED_HERO_PULL_CHANCE, STARRED_HERO_PULL_WEIGHT } from "../js/bannerCatalogueUtils.jsx"
 import { RARITY_DEFINITIONS } from "../database/enums.jsx"
+import { resourceSprites } from "../database/db_sprites.jsx"
 import "../css/hero.scss"
 import "../css/magic-toilet.scss"
 
@@ -119,7 +120,8 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
     const [pullCounts, setPullCounts] = useState(EMPTY_PULL_COUNTS)
     const [totalPulls, setTotalPulls] = useState(0)
 
-    const { listHeight, listRef, events } = useDynamicList(0, true)
+    const legendaryList = useDynamicList(0, true)
+    const epicList = useDynamicList(0, true)
 
     const heroData = Array.isArray(heroesRef)
         ? heroesRef
@@ -141,6 +143,10 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
     const heroes = selected?.allHeroes ?? []
     const epicCount = pullCounts[EPIC]
     const legendaryCount = pullCounts[LEGENDARY]
+    const epicResults = useMemo(() => heroResults.filter(result => result.rarity === EPIC), [heroResults])
+    const legendaryResults = useMemo(() => heroResults.filter(result => result.rarity === LEGENDARY), [heroResults])
+    const soulSprite = bannerId === "everyday_heroes" ? resourceSprites.soul : resourceSprites.shimmering_soul
+    const soulLabel = bannerId === "everyday_heroes" ? "Souls used" : "Shimmering Souls used"
     const expected = expectedLegendaries(totalPulls, legendaryLimit, legendaryLimit)
 
     const updateEpicLimit = value => {
@@ -203,12 +209,17 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
         setTotalPulls(previous => previous + pullsThisFlush)
     }
 
-    const reset = () => {
+    const resetResults = () => {
         setHeroResults([])
         setPullCounts(EMPTY_PULL_COUNTS)
         setTotalPulls(0)
         setEpicPity(epicLimit)
         setLegendaryPity(legendaryLimit)
+    }
+
+    const handleBannerChange = event => {
+        setBannerId(event.target.value)
+        resetResults()
     }
 
     const renderHeroResult = result => (
@@ -223,7 +234,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
     return (
         <main className="magic-toilet page card flex-col w-100">
             <header className="card magic-toilet-header">
-                <h1 className="header-big">Magic Toilet</h1>
+                <div className="header-big">Magic Toilet</div>
                 <p className="text">Simulate banner flushes, track Epic and Legendary pity, and compare your Legendary results with the expected average.</p>
             </header>
 
@@ -231,7 +242,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                 <div className="magic-toilet-control-grid">
                     <label className="magic-toilet-field">
                         <span className="text">Banner</span>
-                        <select value={bannerId} onChange={event => setBannerId(event.target.value)}>
+                        <select value={bannerId} onChange={handleBannerChange}>
                             {BANNERS.map(entry => <option key={entry.id} value={entry.id}>{entry.name}</option>)}
                         </select>
                     </label>
@@ -253,12 +264,11 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                 <div className="magic-toilet-pity-status">
                     <span className="catalogue-chip text">Epic pity: {epicPity}</span>
                     <span className="catalogue-chip text">Legendary pity: {legendaryPity}</span>
-                    <span className="catalogue-chip text">Max flushes per action: {MAX_FLUSHES_PER_ACTION.toLocaleString()}</span>
                 </div>
                 <div className="magic-toilet-actions">
+                    <Button text="Flush 1" color="magic-toilet" onClick={() => runPulls(false, 1)} />
                     <Button text={`Flush ${Number(flushAmount).toLocaleString()}`} color="magic-toilet" onClick={() => runPulls(false, Number(flushAmount))} />
                     <Button text="Flush until Legendary" color="magic-toilet" onClick={() => runPulls(true)} />
-                    <Button text="Reset Results" color={6} onClick={reset} />
                 </div>
             </section>
 
@@ -269,8 +279,10 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
 
             <section className="card magic-toilet-results">
                 <div className="magic-toilet-stats" aria-label="Magic Toilet pull statistics">
-                    <span className="catalogue-chip text magic-toilet-stat-chip">Souls used: {totalPulls.toLocaleString()}</span>
-                    <span className="catalogue-chip text magic-toilet-stat-chip">Flushes: {totalPulls.toLocaleString()}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip magic-toilet-souls-chip">
+                        <img className="catalogue-chip-icon" src={soulSprite} alt="" />
+                        {soulLabel}: {totalPulls.toLocaleString()}
+                    </span>
                     <span className="catalogue-chip text magic-toilet-stat-chip">Uncommon (55%): {pullCounts[UNCOMMON].toLocaleString()}</span>
                     <span className="catalogue-chip text magic-toilet-stat-chip">Rare (35%): {pullCounts[RARE].toLocaleString()}</span>
                     <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={EPIC}>Epic (9%): {epicCount.toLocaleString()}</span>
@@ -281,30 +293,59 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
 
                 <header className="magic-toilet-results-header">
                     <h2 className="header">Pulled Heroes ({heroResults.length})</h2>
-                    <span className="text">Only defined Epic and Legendary heroes are shown.</span>
+                    <div className="magic-toilet-results-note-actions">
+                        <span className="text magic-toilet-results-note">Only defined Epic and Legendary heroes are shown.</span>
+                        <Button text="Reset Results" color={6} onClick={resetResults} />
+                    </div>
                 </header>
 
-                <div
-                    ref={listRef}
-                    {...events}
-                    className="magic-toilet-pulls-list virtualized-list-scroll"
-                    style={{ height: Math.max(140, listHeight) }}
-                >
-                    {heroResults.length === 0 ? (
-                        <p className="text magic-toilet-empty">No Epic or Legendary heroes pulled yet. Uncommon and Rare pulls are counted above.</p>
-                    ) : (
-                        <VirtualizedGrid
-                            items={heroResults}
-                            scrollElementRef={listRef}
-                            renderItem={renderHeroResult}
-                            minColumnWidth={112}
-                            columnGap={8}
-                            rowGap={8}
-                            estimatedRowHeight={190}
-                            overscan={3}
-                        />
-                    )}
-                </div>
+                <section className="magic-toilet-hero-row">
+                    <header className="magic-toilet-hero-row-header">
+                        <h3 className="header">Legendary Heroes ({legendaryResults.length})</h3>
+                    </header>
+                    <div
+                        ref={legendaryList.listRef}
+                        {...legendaryList.events}
+                        className="magic-toilet-horizontal-list"
+                        aria-label="Pulled Legendary heroes"
+                    >
+                        {legendaryResults.length === 0 ? (
+                            <p className="text magic-toilet-empty">No Legendary heroes pulled yet.</p>
+                        ) : (
+                            <VirtualizedHorizontalList
+                                items={legendaryResults}
+                                scrollElementRef={legendaryList.listRef}
+                                renderItem={renderHeroResult}
+                                itemWidth={116}
+                                gap={8}
+                            />
+                        )}
+                    </div>
+                </section>
+
+                <section className="magic-toilet-hero-row">
+                    <header className="magic-toilet-hero-row-header">
+                        <h3 className="header">Epic Heroes ({epicResults.length})</h3>
+                    </header>
+                    <div
+                        ref={epicList.listRef}
+                        {...epicList.events}
+                        className="magic-toilet-horizontal-list"
+                        aria-label="Pulled Epic heroes"
+                    >
+                        {epicResults.length === 0 ? (
+                            <p className="text magic-toilet-empty">No Epic heroes pulled yet.</p>
+                        ) : (
+                            <VirtualizedHorizontalList
+                                items={epicResults}
+                                scrollElementRef={epicList.listRef}
+                                renderItem={renderHeroResult}
+                                itemWidth={116}
+                                gap={8}
+                            />
+                        )}
+                    </div>
+                </section>
             </section>
         </main>
     )
