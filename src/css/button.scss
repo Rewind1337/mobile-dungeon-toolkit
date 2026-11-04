@@ -21,6 +21,7 @@ button {
   transition: V.$transition-button;
   z-index: 5;
 
+// At widths up to 900px, make buttons shorter, reduce their text size, and square their corners.
   @include M.media-query-max(V.$bp-mobile, ()) {
     font-size: 12px;
     border-radius: 0;
@@ -28,6 +29,7 @@ button {
   }
 
   &:not(.disabled) {
+// At widths of 900px and wider, enable the small upward hover lift for clickable buttons on larger screens.
     @include M.media-query(V.$bp-mobile, ()) {
       &:hover {
         transform: translate(0, -1px);
@@ -204,6 +206,7 @@ button {
     align-items: center;
     padding: 4px;
 
+// At widths up to 900px, make round buttons 36px square.
     @include M.media-query-max(V.$bp-mobile, ()) {
       height: 36px;
       width: 36px;
@@ -212,6 +215,7 @@ button {
     svg {
       transform: translate(0px, 3px) scale(1.3);
 
+// At widths up to 900px, shrink the SVG icon inside round buttons to fit the smaller 36px control.
       @include M.media-query-max(V.$bp-mobile, ()) {
         transform: translate(0px, 3px) scale(0.7);
         height: 36px;
@@ -306,6 +310,7 @@ button {
   display: none;
 }
 
+// At widths up to 900px, pin the filter and back-to-top controls near the bottom edge, where they remain reachable above the mobile safe area.
 @include M.media-query-max(V.$bp-mobile, ()) {
   .catalogue-show-filters-fab {
     position: fixed;

@@ -18,6 +18,18 @@ const OTHER_STAT_DEFAULTS = {
 const MUTATION_PERK_ALIASES = { HEAL_RECOVERY: "HEALING_RECEIVED" }
 const ITEM_MAIN_STATS = { 0: "attack", 1: "defence", 2: "agility" }
 
+/** Returns how many set bonuses are active for the currently equipped piece count. */
+export function getActiveSetBonusCount(set, pieceCount) {
+    if (!set) return 0
+    const bonuses = Array.isArray(set.setBonus) ? set.setBonus : []
+    const count = Math.max(0, Number(pieceCount) || 0)
+    const requiredPieces = Number(set.pieces)
+
+    if (requiredPieces === 2) return count >= 2 ? bonuses.length : 0
+    if (requiredPieces === 4) return Math.min(bonuses.length, Math.max(0, Math.min(count, 4) - 1))
+    return count >= requiredPieces ? bonuses.length : 0
+}
+
 function addValue(target, key, value) {
     target[key] = (target[key] ?? 0) + (Number(value) || 0)
 }
@@ -43,12 +55,17 @@ export function calculateItemStats(item) {
     const masterworkLevel = Math.max(0, Number(item.masterworkLevel) || 0)
     const masterworkMultiplier = 1 + masterworkLevel / 10
     const selectedMutations = []
+    const seenMutationSelections = new Set()
     for (const milestone of [5, 10]) {
         if (masterworkLevel < milestone) continue
         const selection = item.mutations?.[milestone]
         if (!selection || typeof selection !== "object" || !selection.perkKey || selection.id == null) continue
+        const selectionKey = `${selection.perkKey}:${Number(selection.id)}`
+        if (seenMutationSelections.has(selectionKey)) continue
         const mutation = MASTERWORK_MUTATION_DEFINITIONS[selection.perkKey]?.find(entry => entry.id === Number(selection.id))
-        if (mutation) selectedMutations.push({ perkKey: selection.perkKey, mutation })
+        if (!mutation) continue
+        seenMutationSelections.add(selectionKey)
+        selectedMutations.push({ perkKey: selection.perkKey, mutation })
     }
 
     const itemMainStat = ITEM_MAIN_STATS[Number(item.mainAttribute)]
@@ -94,9 +111,10 @@ export function calculateHeroStats(hero, sets = []) {
     for (const { item } of itemStats) {
         if (item.set == null || item.set === -1 || appliedSets.has(item.set)) continue
         const set = (sets ?? []).find(entry => entry.id === item.set)
-        if (!set || (setCounts.get(item.set) ?? 0) < Number(set.pieces ?? 0)) continue
+        if (!set) continue
         appliedSets.add(item.set)
-        for (let index = 0; index < (set.setBonus ?? []).length; index++) {
+        const activeBonusCount = getActiveSetBonusCount(set, setCounts.get(item.set) ?? 0)
+        for (let index = 0; index < activeBonusCount; index++) {
             const perk = set.setBonus[index]
             const key = Object.keys(PERK_DEFINITIONS).find(name => PERK_DEFINITIONS[name].id === perk.id)
             if (!key) continue

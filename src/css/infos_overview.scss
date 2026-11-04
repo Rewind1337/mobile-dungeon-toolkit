@@ -1,7 +1,7 @@
+// Information overview page styles.
+
 @use './_variables.scss' as V;
 @use './mixins.scss' as M;
-
-/* Item catalogue overview */
 
 .catalogue-overview {
   position: relative;
@@ -103,8 +103,6 @@
 .catalogue-overview-rarity-icon[data-rarity="6"] { background: #fd5d47; }
 .catalogue-overview-rarity-icon[data-rarity="7"] { background: #7efffe; }
 .catalogue-overview-rarity-icon[data-rarity="8"] { background: #d6e6ff; }
-
-/* Info splash page */
 
 .info-overview {
   display: flex;
@@ -217,9 +215,11 @@
   white-space: nowrap;
 }
 
+// At widths of 1800px and wider, let overview statistic cards auto-fit into columns at least 140px wide on ultra-wide screens.
 @include M.media-query(V.$bp-ultra) {
   .catalogue-overview-stats { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
 }
+// At widths up to 1200px, make overview statistics and slot lists denser, and stack the breakdown panels into one column on tablet-sized screens.
 @include M.media-query-max(V.$bp-tablet) {
   .catalogue-overview-stats { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
   .info-overview-breakdown, .info-overview-item-breakdown { grid-template-columns: minmax(0, 1fr); }
@@ -227,6 +227,7 @@
     grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
   }
 }
+// At widths up to 900px, tighten overview padding and allow smaller statistic/slot cards on mobile while keeping breakdown panels in one column.
 @include M.media-query-max(V.$bp-mobile) {
   .info-overview { padding: 0 V.$gap-small; }
   .catalogue-overview-stats { grid-template-columns: repeat(auto-fit, minmax(88px, 1fr)); }
@@ -235,10 +236,10 @@
     grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
   }
 }
+// At widths up to 600px, keep overview statistics in exactly two columns on very small screens.
 @include M.media-query-max(V.$bp-small) {
   .catalogue-overview-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-
 
 .catalogue-overview-slot[role="button"] {
   cursor: pointer;

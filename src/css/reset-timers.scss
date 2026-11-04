@@ -138,6 +138,7 @@
   font-size: clamp(0.8rem, 1.1vw, 1rem);
 }
 
+// At widths up to 600px, stack reset timers into one column and tighten their labels and construction-status layout on very small screens.
 @include M.media-query-max(V.$bp-small) {
   .reset-timers-row {
     grid-template-columns: minmax(0, 1fr);
@@ -168,6 +169,7 @@
 }
 
 
+// At widths up to 900px, use a three-part reset-timer row with a fixed 42px center clock, and stack each timer's details where the viewport is narrow.
 @include M.media-query-max(V.$bp-mobile) {
   .reset-timers-row {
     grid-template-columns: minmax(0, 1fr) 42px minmax(0, 1fr);

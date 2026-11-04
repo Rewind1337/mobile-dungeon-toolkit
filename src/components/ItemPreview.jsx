@@ -3,28 +3,16 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { CONSTANTS } from '../database/constants.jsx'
 import { DEFAULT_MASTERWORK_MUTATIONS, MASTERWORK_MUTATION_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, getEnumNameById, getItemPerkCount, getMaxMasterworkLevel } from '../database/enums.jsx'
 import { attributeSprites, iconSprites } from '../database/db_sprites.jsx'
+import { getActiveSetBonusCount } from '../utils/calculatedStats.js'
 import ExpandSrc from '../sprites/expand.webp'
 import CrossSrc from '../sprites/cross.png'
 import DamagedItemIndicator from './DamagedItemIndicator.jsx'
-import DamagedBorderSrc from '../sprites/damaged_border.webp'
 import MasterworkSrc from '../sprites/masterwork.webp'
 
 import Button from './Button.jsx'
 import ItemPerk from './ItemPerk.jsx'
 
 import '../css/item.scss'
-
-const RARITY_ACCENT_COLORS = {
-    0: "#ddd0b2",
-    1: "#9de260",
-    2: "#0099ff",
-    3: "#9f5fff",
-    4: "#ffe900",
-    5: "#ffa100",
-    6: "#fd5d47",
-    7: "#7efffe",
-    8: "#9511a1"
-}
 
 const SLOT_INDEX_TO_NAME_MAP = {
     0: "WEAPONS",
@@ -83,10 +71,15 @@ function normalizeMutationSelections(mutations, masterworkLevel, maxMasterworkLe
             normalized[milestone] = null
         }
     }
+    const first = normalized[5]
+    const second = normalized[10]
+    if (first && second && first.perkKey === second.perkKey && Number(first.id) === Number(second.id)) {
+        normalized[10] = null
+    }
     return normalized
 }
 
-function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, onEquipItem, onExportItem, setsRef }) {
+function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, onEquipItem, onExportItem, setsRef, equippedItems = [] }) {
     const [itemObj, setItemObj] = useState(null)
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
@@ -200,7 +193,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                 nextPerks,
                 itemObj.mainAttribute
             ))
-        })
+        }, selectedPerks.filter((_, perkIndex) => perkIndex !== index))
     }
 
     const getConfiguredItem = () => {
@@ -270,6 +263,13 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
     const selectedSet = itemObj.set !== undefined && itemObj.set !== null && itemObj.set !== -1
         ? setsRef?.find(set => set.id === itemObj.set)
         : null
+    const equippedSetPieceCount = selectedSet
+        ? (equippedItems ?? []).reduce((count, equippedItem, slotIndex) => (
+            slotIndex !== Number(itemObj.slot) && equippedItem?.set === selectedSet.id ? count + 1 : count
+        ), 0) + 1
+        : 0
+    const activeSetBonusCount = getActiveSetBonusCount(selectedSet, equippedSetPieceCount)
+    const isEquipping = typeof onEquipItem === "function"
     const maxMasterworkLevel = getMaxMasterworkLevel(selectedRarity)
     const itemMainStat = ({ 0: "attack", 1: "defence", 2: "agility" })[Number(itemObj.mainAttribute)]
     const getPerkSpriteName = name => {
@@ -291,29 +291,30 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                     {getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? SLOT_INDEX_TO_NAME_MAP[itemObj.slot] ?? 'Unknown slot'}
                 </span>
                 <div className='catalogue-chip text header item-preview-name' data-rarity={selectedRarity}>{itemObj.name}</div>
-                <span className={'catalogue-chip text item-preview-attribute ' + (Number(itemObj.attributeRequirement) === 1 ? 'catalogue-chip-attribute-strength' : Number(itemObj.attributeRequirement) === 2 ? 'catalogue-chip-attribute-dexterity' : Number(itemObj.attributeRequirement) === 3 ? 'catalogue-chip-attribute-intelligence' : '')}>
-                    {attributeSprites[Number(itemObj.attributeRequirement)] && <img className='catalogue-chip-icon' src={attributeSprites[Number(itemObj.attributeRequirement)]} alt='' />}
-                    {getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? 'Attribute not specified'}
-                </span>
+                {Number(itemObj.attributeRequirement) === ATTRIBUTE_DEFINITIONS.NONE.id
+                    ? <span className="catalogue-chip text item-preview-attribute item-preview-attribute-all">
+                        {[ATTRIBUTE_DEFINITIONS.STRENGTH.id, ATTRIBUTE_DEFINITIONS.DEXTERITY.id, ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id].map(attributeId => (
+                            <img className="catalogue-chip-icon" key={attributeId} src={attributeSprites[attributeId]} alt="" />
+                        ))}
+                        All
+                    </span>
+                    : <span className={'catalogue-chip text item-preview-attribute ' + (Number(itemObj.attributeRequirement) === 1 ? 'catalogue-chip-attribute-strength' : Number(itemObj.attributeRequirement) === 2 ? 'catalogue-chip-attribute-dexterity' : Number(itemObj.attributeRequirement) === 3 ? 'catalogue-chip-attribute-intelligence' : '')}>
+                        {attributeSprites[Number(itemObj.attributeRequirement)] && <img className='catalogue-chip-icon' src={attributeSprites[Number(itemObj.attributeRequirement)]} alt='' />}
+                        {getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? 'Attribute not specified'}
+                    </span>}
             </div>
             <div className='flex-col'>
                 <div className='flex-row'>
-                    <div
-                        className={"item-preview-damaged-frame" + (selectedItemDamaged ? " is-damaged" : "")}
-                        style={{
-                            "--item-damage-color": RARITY_ACCENT_COLORS[selectedRarity] ?? "#ffffff",
-                            "--item-damage-mask": `url(${DamagedBorderSrc})`
-                        }}
-                    >
-                        {selectedItemDamaged && <div className="item-preview-damaged-effect" aria-hidden="true" />}
-                        <div className={"item card selected" + (selectedItemDamaged ? " is-damaged" : "")} data-rarity={selectedRarity} data-type={itemObj.iconType}>
-                            <div className="item-icon"><img src={itemObj.iconSrc} draggable={false} alt="" /></div>
-                            {selectedItemDamaged && (
+                    <div className={"item card selected" + (selectedItemDamaged ? " is-damaged" : "")} data-rarity={selectedRarity} data-type={itemObj.iconType}>
+                        <div className="item-icon"><img src={itemObj.iconSrc} draggable={false} alt="" /></div>
+                        {selectedItemDamaged && (
+                            <div className="item-icon item-icon-damaged">
                                 <DamagedItemIndicator loading="eager" />
-                            )}
-                            <div className="flex-col">
-                                <div className="item-sprite"><img className="item-sprite-img" src={itemObj.itemSrc} draggable={false} alt="" /></div>
-                                <div className="input-wrapper">
+                            </div>
+                        )}
+                        <div className="flex-col">
+                            <div className="item-sprite"><img className="item-sprite-img" src={itemObj.itemSrc} draggable={false} alt="" /></div>
+                            <div className="input-wrapper">
                                     <input
                                         type='number'
                                         min='1'
@@ -321,7 +322,6 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                                         value={selectedLevel}
                                         onChange={event => setSelectedLevel(event.target.value)}
                                     />
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -390,17 +390,25 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                                 disabled={selectedMasterworkLevel < milestone || maxMasterworkLevel < milestone}
                                 onChange={event => {
                                     const [perkKey, id] = event.target.value.split(":")
+                                    const otherSelection = selectedMutations[milestone === 5 ? 10 : 5]
+                                    if (event.target.value && otherSelection?.perkKey === perkKey && Number(otherSelection.id) === Number(id)) return
                                     setSelectedMutations(previous => ({ ...previous, [milestone]: event.target.value ? { perkKey, id: Number(id) } : null }))
                                 }}
                             >
                                 <option value="">Unlocked at Masterwork {milestone}</option>
                                 {Object.entries(MASTERWORK_MUTATION_DEFINITIONS)
                                     .filter(([perkKey]) => availableMutationPerks.has(perkKey) || (perkKey === "HEAL_RECOVERY" && availableMutationPerks.has("HEALING_RECEIVED")))
-                                    .flatMap(([perkKey, mutations]) => mutations.map(mutation => (
-                                        <option key={`${perkKey}:${mutation.id}`} value={`${perkKey}:${mutation.id}`}>
-                                            {`${perkKey.replace(/_/g, " ")} — ${mutation.name}`}
-                                        </option>
-                                    )))}
+                                    .flatMap(([perkKey, mutations]) => mutations
+                                        .filter(mutation => {
+                                            const otherSelection = selectedMutations[milestone === 5 ? 10 : 5]
+                                            return !otherSelection || otherSelection.perkKey !== perkKey || Number(otherSelection.id) !== Number(mutation.id)
+                                        })
+                                        .map(mutation => (
+                                            <option key={`${perkKey}:${mutation.id}`} value={`${perkKey}:${mutation.id}`}>
+                                                {`${perkKey.replace(/_/g, " ")} — ${mutation.name}`}
+                                            </option>
+                                        ))
+                                    )}
                             </select>
                         </div>
                     ))}
@@ -449,20 +457,25 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
 
                 {selectedSet?.setBonus && <>
                     <div className='header'>Set Bonus</div>
-                    {selectedSet.setBonus.map((bonus, index) => (
-                        <ItemPerk
-                            key={"setperk_" + bonus.id + "_" + index}
-                            name={getPerkKey(bonus)}
-                            spriteName={getPerkSpriteName(getPerkKey(bonus))}
-                            value={selectedSetBonusValues[index] ?? 0}
-                            editable={true}
-                            onValueChange={value => setSelectedSetBonusValues(previous => {
-                                const nextValues = [...previous]
-                                nextValues[index] = value
-                                return nextValues
-                            })}
-                        />
-                    ))}
+                    {selectedSet.setBonus.map((bonus, index) => {
+                        const isActive = isEquipping && index < activeSetBonusCount
+                        return (
+                            <div className={"item-set-bonus-state" + (isEquipping ? (isActive ? " is-active" : " is-inactive") : "")} key={"setperk_" + bonus.id + "_" + index}>
+                                <ItemPerk
+                                    name={getPerkKey(bonus)}
+                                    spriteName={getPerkSpriteName(getPerkKey(bonus))}
+                                    value={selectedSetBonusValues[index] ?? 0}
+                                    editable={true}
+                                    onValueChange={value => setSelectedSetBonusValues(previous => {
+                                        const nextValues = [...previous]
+                                        nextValues[index] = value
+                                        return nextValues
+                                    })}
+                                />
+                                {isEquipping && <span className="text item-set-bonus-status">{isActive ? "Active" : "Inactive"}</span>}
+                            </div>
+                        )
+                    })}
                 </>}
 
                 <div className='header'>Perks</div>

@@ -1,3 +1,5 @@
+// Shared modal and dialog styles.
+
 @use './_variables.scss' as V;
 @use './mixins.scss' as M;
 
@@ -16,7 +18,6 @@
     }
 }
 
-// Centered dialogs are portaled to document.body so page columns/overflow cannot constrain them.
 .modal-center {
     z-index: 101;
     top: 50%;
@@ -40,7 +41,7 @@
     }
 }
 
-
+// At widths up to 900px, make centered dialogs fit within the mobile viewport, with compact padding and internal scrolling.
 @include M.media-query-max(V.$bp-mobile, ()) {
     .modal.modal-center.card {
         width: calc(100vw - 24px);
@@ -70,6 +71,7 @@
         left: V.$gap;
     }
 
+// At widths up to 900px, make the left modal panel occupy half the mobile viewport below the navigation bar.
     @include M.media-query-max(V.$bp-mobile, ()) {
         top: 45.5px;
         width: calc(50vw - V.$gap-small);
@@ -93,6 +95,7 @@
         left: calc(50vw + V.$gap-small);
     }
 
+// At widths up to 900px, make the right modal panel occupy the other half of the mobile viewport below the navigation bar.
     @include M.media-query-max(V.$bp-mobile, ()) {
         top: 45.5px;
         width: calc(50vw - V.$gap-small);

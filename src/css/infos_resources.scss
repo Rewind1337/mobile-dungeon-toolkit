@@ -1,7 +1,7 @@
+// Banner and resource catalogue styles.
+
 @use './_variables.scss' as V;
 @use './mixins.scss' as M;
-
-/* Banner and resource catalogues */
 
 .banner-catalogue-list,
 .resource-catalogue {
@@ -98,7 +98,6 @@
 
 .banner-catalogue-hero-grid {
   display: grid;
-  // Keep each hero card fixed-width; only the number of columns changes with available space.
   grid-template-columns: repeat(auto-fill, 116px);
   justify-content: start;
   align-items: start;
@@ -120,13 +119,10 @@
   overflow: visible;
 }
 
-/* Only the nested Hero card in banner odds stays still; the surrounding odds card can hover. */
 .banner-catalogue-hero > .hero.hero-static,
 .banner-catalogue-hero > .hero.hero-static:hover,
 .banner-catalogue-hero > .hero.hero-static.hover {
   transition: none;
-  // Keep the transform as a containing block for the absolutely positioned
-  // element and starred indicators, but cancel the hover lift.
   transform: translate(0, 0);
 }
 
@@ -352,11 +348,13 @@
   overflow-wrap: anywhere;
 }
 
+// At widths of 1500px and wider, show banner cards in two columns and resource cards in three columns on wide screens.
 @include M.media-query(V.$bp-wide) {
   .banner-catalogue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .resource-catalogue-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+// At widths up to 900px, remove outer list padding and collapse banner/resource grids to one column on mobile.
 @include M.media-query-max(V.$bp-mobile) {
   .banner-catalogue-list,
   .resource-catalogue { padding: 0; }
@@ -364,7 +362,6 @@
   .banner-catalogue-groups,
   .resource-catalogue-grid { grid-template-columns: minmax(0, 1fr); }
 }
-
 
 .banner-catalogue-search {
   position: sticky;
@@ -380,7 +377,6 @@
   width: 100%;
 }
 
-
 .resource-location-filter {
   display: flex;
   flex: 0 1 250px;
@@ -388,12 +384,15 @@
   gap: V.$gap-small;
   min-width: 180px;
 }
+// At widths of 1500px and wider, show gem catalogue cards in three columns on wide screens.
 @include M.media-query(V.$bp-wide) {
   .gem-catalogue-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+// At widths up to 1200px, reduce the gem catalogue to two columns at tablet widths.
 @include M.media-query-max(V.$bp-tablet) {
   .gem-catalogue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+// At widths up to 900px, center the conditional banner hero grid, keep its hero cards compact, and stack resource filters on mobile.
 @include M.media-query-max(V.$bp-mobile) {
   .banner-catalogue-conditional .banner-catalogue-hero-grid {
     grid-template-columns: repeat(2, minmax(0, 116px));
@@ -406,7 +405,6 @@
   .banner-catalogue-card.card-dark { grid-column: 1 / -1; }
   .resource-catalogue-filters { align-items: stretch; flex-direction: column; }
 }
-
 
 .resource-catalogue-additional-info,
 .resource-catalogue-location-chips {
@@ -436,7 +434,6 @@
   font-weight: 700;
   opacity: 0.8;
 }
-
 
 .resource-catalogue-filters .resource-location-filter {
   flex: 0 1 220px;

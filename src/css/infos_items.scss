@@ -1,7 +1,7 @@
+// Item and set catalogue styles.
+
 @use './_variables.scss' as V;
 @use './mixins.scss' as M;
-
-/* Item cards and set cards */
 
 .catalogue-item-grid,
 .catalogue-set-grid {
@@ -106,7 +106,6 @@
 .catalogue-item-source .catalogue-chip,
 .catalogue-item-location .catalogue-chip { display: inline-flex; max-width: 100%; }
 
-
 .catalogue-statuses {
   display: flex;
   flex-wrap: wrap;
@@ -207,7 +206,6 @@
   margin-inline: auto;
 }
 
-
 .catalogue-piece-list {
   flex-direction: row;
 }
@@ -233,15 +231,16 @@
   overflow-wrap: anywhere;
 }
 
+// At widths of 1500px and wider, expand the item and set catalogue grids to three columns on wide screens.
 @include M.media-query(V.$bp-wide) {
   .catalogue-item-grid, .catalogue-set-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+// At widths up to 900px, collapse the item and set catalogue grids to one column on mobile and square the item-name card corners.
 @include M.media-query-max(V.$bp-mobile) {
   .catalogue-item-grid, .catalogue-set-grid { grid-template-columns: minmax(0, 1fr); }
   .catalogue-item-name { border-radius: 0; }
 }
 
-/* Virtualized item and set rows preserve the catalogue grid's stretch behavior. */
 .catalogue-item-grid-spacer,
 .catalogue-set-grid-spacer { width: 100%; min-width: 0; }
 .catalogue-item-grid-row,
@@ -256,7 +255,6 @@
 .catalogue-item-grid-row .catalogue-item-card,
 .catalogue-set-grid-row .catalogue-set-card { width: 100%; }
 
-/* Item preview controls adapt to the width of the preview pane, not the window. */
 @container item-preview-pane (max-width: 620px) {
   .item-preview-metadata {
     flex-wrap: wrap;
@@ -280,8 +278,15 @@
   }
 }
 
+// At widths up to 900px, reduce only the item-catalogue preview sprites to the 60px mobile hero size while preserving the item's 3:4 aspect ratio.
+@include M.media-query-max(V.$bp-mobile) {
+  .catalogue-item-preview .item > .flex-col > .item-sprite {
+    width: 60px;
+    height: 80px;
+    flex-basis: 60px;
+  }
+}
 
-/* Keep equipment-slot sprites legible against the catalogue chips. */
 .catalogue-item-slot-chip .catalogue-chip-icon {
   filter: drop-shadow(0 0 2px black);
 }

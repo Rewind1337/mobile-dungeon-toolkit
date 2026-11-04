@@ -18,6 +18,7 @@ function VirtualizedGrid({
     className = "",
     rowClassName = "",
     minColumnWidth = 110,
+    mobileMinColumnWidth = null,
     maxColumns = Infinity,
     columnGap = 10,
     rowGap = 10,
@@ -27,12 +28,41 @@ function VirtualizedGrid({
 }) {
     const spacerRef = useRef(null)
     const [columns, setColumns] = useState(1)
+    const [isMobile, setIsMobile] = useState(() =>
+        typeof window !== "undefined" && typeof window.matchMedia === "function"
+            ? window.matchMedia("(max-width: 900px)").matches
+            : false
+    )
     const [scrollMargin, setScrollMargin] = useState(0)
 
     const itemSignature = useMemo(
         () => items.map((item, index) => String(getVirtualItemKey(item, index))).join("|"),
         [items]
     )
+
+    useEffect(() => {
+        if (mobileMinColumnWidth == null || typeof window === "undefined" || typeof window.matchMedia !== "function") {
+            return
+        }
+
+        const mediaQuery = window.matchMedia("(max-width: 900px)")
+        const updateMobile = () => setIsMobile(mediaQuery.matches)
+        updateMobile()
+
+        if (typeof mediaQuery.addEventListener === "function") {
+            mediaQuery.addEventListener("change", updateMobile)
+            return () => mediaQuery.removeEventListener("change", updateMobile)
+        }
+
+        if (typeof mediaQuery.addListener === "function") {
+            mediaQuery.addListener(updateMobile)
+            return () => mediaQuery.removeListener(updateMobile)
+        }
+    }, [mobileMinColumnWidth])
+
+    const activeMinColumnWidth = mobileMinColumnWidth != null && isMobile
+        ? mobileMinColumnWidth
+        : minColumnWidth
 
     const measureLayout = useCallback(() => {
         const spacer = spacerRef.current
@@ -42,7 +72,7 @@ function VirtualizedGrid({
         if (width > 0) {
             const nextColumns = Math.max(1, Math.min(
                 maxColumns,
-                Math.floor((width + columnGap) / (minColumnWidth + columnGap))
+                Math.floor((width + columnGap) / (activeMinColumnWidth + columnGap))
             ))
             setColumns(current => current === nextColumns ? current : nextColumns)
         }
@@ -57,7 +87,7 @@ function VirtualizedGrid({
             )
             setScrollMargin(current => Math.abs(current - nextMargin) < 1 ? current : nextMargin)
         }
-    }, [columnGap, maxColumns, minColumnWidth, scrollElementRef])
+    }, [activeMinColumnWidth, columnGap, maxColumns, scrollElementRef])
 
     // Recalculate on parent renders too: expanding the filter controls above a
     // catalogue changes its scrollMargin even if the scroll pane itself stays

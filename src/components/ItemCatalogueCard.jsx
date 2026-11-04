@@ -1,5 +1,5 @@
 import { attributeSprites, iconSprites } from "../database/db_sprites.jsx"
-import { RARITY_DEFINITIONS } from "../database/enums.jsx"
+import { ATTRIBUTE_DEFINITIONS, RARITY_DEFINITIONS } from "../database/enums.jsx"
 import { humanize } from "../js/util.jsx"
 import Item from "./Item.jsx"
 import CataloguePerkList from "./CataloguePerkList.jsx"
@@ -38,6 +38,9 @@ function renderUniqueEffectDescription(item) {
 export default function ItemCatalogueCard({ item, set }) {
     const statuses = getEffectStatuses(item)
     const effectDescription = item.unique?.description
+    const hasAllAttributeRequirement = item.attributeRequirement !== null
+        && item.attributeRequirement !== undefined
+        && Number(item.attributeRequirement) === ATTRIBUTE_DEFINITIONS.NONE.id
 
     return (
         <article className="catalogue-item-card card" data-rarity={item.rarity}>
@@ -53,10 +56,17 @@ export default function ItemCatalogueCard({ item, set }) {
                                 {iconSprites[SLOT_ICON_KEYS[String(item.slotLabel ?? "").toUpperCase()]] && <img className="catalogue-chip-icon" src={iconSprites[SLOT_ICON_KEYS[String(item.slotLabel ?? "").toUpperCase()]]} alt="" />}
                                 {humanize(item.slotLabel ?? "Unknown slot")}
                             </span>
-                            <span className={`catalogue-chip text catalogue-chip-attribute ${getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("strength") ? "catalogue-chip-attribute-strength" : getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("dexterity") ? "catalogue-chip-attribute-dexterity" : getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("intelligence") ? "catalogue-chip-attribute-intelligence" : ""}`}>
-                                {attributeSprites[ATTRIBUTE_ICON_KEYS[getAttributeRequirementLabel(item.attributeRequirement).toLowerCase()]] && <img className="catalogue-chip-icon" src={attributeSprites[ATTRIBUTE_ICON_KEYS[getAttributeRequirementLabel(item.attributeRequirement).toLowerCase()]]} alt="" />}
-                                {getAttributeRequirementLabel(item.attributeRequirement)}
-                            </span>
+                            {hasAllAttributeRequirement
+                                ? <span className="catalogue-chip text catalogue-chip-attribute catalogue-item-attribute-all">
+                                    {[ATTRIBUTE_DEFINITIONS.STRENGTH.id, ATTRIBUTE_DEFINITIONS.DEXTERITY.id, ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id].map(attributeId => (
+                                        <img className="catalogue-chip-icon" key={attributeId} src={attributeSprites[attributeId]} alt="" />
+                                    ))}
+                                    All
+                                </span>
+                                : <span className={`catalogue-chip text catalogue-chip-attribute ${getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("strength") ? "catalogue-chip-attribute-strength" : getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("dexterity") ? "catalogue-chip-attribute-dexterity" : getAttributeRequirementLabel(item.attributeRequirement).toLowerCase().includes("intelligence") ? "catalogue-chip-attribute-intelligence" : ""}`}>
+                                    {attributeSprites[ATTRIBUTE_ICON_KEYS[getAttributeRequirementLabel(item.attributeRequirement).toLowerCase()]] && <img className="catalogue-chip-icon" src={attributeSprites[ATTRIBUTE_ICON_KEYS[getAttributeRequirementLabel(item.attributeRequirement).toLowerCase()]]} alt="" />}
+                                    {getAttributeRequirementLabel(item.attributeRequirement)}
+                                </span>}
                             {set && <p className="catalogue-item-set catalogue-chip text">Set: {set.name}</p>}
                         </div>
                     </div>

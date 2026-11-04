@@ -1,3 +1,5 @@
+// Not-found page styles.
+
 @use './_variables.scss' as V;
 @use './mixins.scss' as M;
 
@@ -70,7 +72,7 @@
     font-weight: 500;
     text-decoration: none;
     transition: V.$transition-button;
-    
+
     &:hover {
       transform: translateY(-1px);
       filter: brightness(1.2);
@@ -95,6 +97,7 @@
   }
 }
 
+// At widths up to 600px, compact the not-found page, tighten its card spacing, and size its navigation links as mobile buttons.
 @include M.media-query-max(V.$bp-small) {
   #page-not-found {
     padding: 8px;
@@ -123,7 +126,6 @@
   }
 }
 
-/* Keep the intentionally empty 404 navigation slot identical to disabled nav buttons. */
 .not-found-links .not-found-link.disabled {
   background: rgb(53, 53, 53);
   cursor: default;
