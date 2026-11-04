@@ -62,7 +62,7 @@ function getBoosterPullChance(hero, rarity, banner) {
 }
 
 function formatPullChance(chance) {
-    return `${(chance * 100).toFixed(3).replace(/\\.?0+$/, "")}%`
+    return `${(chance * 100).toFixed(3).replace(/\.?0+$/, "")}%`
 }
 
 function pickHero(heroes, banner, rarity, boostedHeroId = null) {
@@ -357,7 +357,11 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                                 type="checkbox"
                                 aria-label="Enable Legendary Banner Booster"
                                 checked={legendaryBoosterEnabled}
-                                onChange={event => setLegendaryBoosterEnabled(event.target.checked)}
+                                onChange={event => {
+                                    const enabled = event.target.checked
+                                    setLegendaryBoosterEnabled(enabled)
+                                    if (!enabled && !epicBoosterEnabled) setDontResetBoosters(false)
+                                }}
                             />
                             <img src={resourceSprites.legendary_banner_booster} alt="" />
                             {!legendaryBoosterEnabled && <span className="text">Legendary Banner Booster</span>}
@@ -383,7 +387,11 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                                 type="checkbox"
                                 aria-label="Enable Epic Banner Booster"
                                 checked={epicBoosterEnabled}
-                                onChange={event => setEpicBoosterEnabled(event.target.checked)}
+                                onChange={event => {
+                                    const enabled = event.target.checked
+                                    setEpicBoosterEnabled(enabled)
+                                    if (!enabled && !legendaryBoosterEnabled) setDontResetBoosters(false)
+                                }}
                             />
                             <img src={resourceSprites.epic_banner_booster} alt="" />
                             {!epicBoosterEnabled && <span className="text">Epic Banner Booster</span>}
