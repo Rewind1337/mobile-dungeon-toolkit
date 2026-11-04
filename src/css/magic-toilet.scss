@@ -71,6 +71,61 @@
   justify-content: flex-start;
 }
 
+.magic-toilet-booster-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.magic-toilet-booster-option {
+  display: flex;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.magic-toilet-booster-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.magic-toilet-booster-toggle > input {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.magic-toilet-booster-toggle > img {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.magic-toilet-booster-option > select {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+}
+
+.magic-toilet-booster-warning {
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+
+.magic-toilet-pull-booster-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  vertical-align: -3px;
+  object-fit: contain;
+}
+
 .magic-toilet-actions > button {
   flex: 0 1 auto;
   width: auto;
@@ -238,5 +293,6 @@
 // On mobile, stack the controls while keeping the number inputs the same height as the selects.
 @include M.media-query-max(V.$bp-mobile, ()) {
   .magic-toilet-control-grid { grid-template-columns: minmax(0, 1fr); }
+  .magic-toilet-booster-row { grid-template-columns: minmax(0, 1fr); }
   .magic-toilet-field > input[type="number"] { height: 32px; }
 }
