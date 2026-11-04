@@ -1,0 +1,127 @@
+// Magic Toilet banner-pull simulator styles.
+@use './_variables.scss' as V;
+@use './mixins.scss' as M;
+
+.magic-toilet {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.magic-toilet-header p { margin: 0; }
+
+.magic-toilet-controls,
+.magic-toilet-results,
+.magic-toilet-banner-details {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.magic-toilet-banner-details > summary {
+  cursor: pointer;
+  font-weight: 700;
+  padding: 4px;
+}
+
+.magic-toilet-banner-details[open] > .banner-catalogue-card { margin-top: V.$gap; }
+
+.magic-toilet-control-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: V.$gap;
+}
+
+.magic-toilet-field,
+.magic-toilet-custom-count {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.magic-toilet-input {
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  padding: 6px 8px;
+  border: 1px solid V.$border-color-medium;
+  border-radius: V.$border-radius-small;
+  background: rgba(0, 0, 0, 0.35);
+  color: inherit;
+  font: inherit;
+}
+
+.magic-toilet-pity-status,
+.magic-toilet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: V.$gap-small;
+}
+
+.magic-toilet-actions > button { flex: 1 1 140px; min-width: 0; }
+.magic-toilet-custom-count { flex: 0 1 140px; }
+
+.magic-toilet-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: V.$gap;
+}
+
+.magic-toilet-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  gap: 2px;
+  text-align: center;
+}
+
+.magic-toilet-stat .header-big { margin: 0; overflow-wrap: anywhere; }
+.magic-toilet-luck .header-big { font-size: V.$font-size-header; }
+
+.magic-toilet-results-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: V.$gap-small;
+}
+
+.magic-toilet-results-header h2 { margin: 0; }
+.magic-toilet-empty { text-align: center; }
+
+.magic-toilet-result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: V.$gap-small;
+}
+
+.magic-toilet-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+  padding: V.$padding-card;
+  border: 1px solid V.$border-color-light;
+  border-radius: V.$border-radius;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.magic-toilet-result[data-rarity="3"] { outline: 1px solid rgba(150, 80, 255, 0.65); }
+.magic-toilet-result[data-rarity="4"] { outline: 1px solid rgba(255, 190, 45, 0.75); }
+.magic-toilet-result .hero { width: 100%; max-width: 110px; }
+.magic-toilet-pull-number { align-self: flex-start; opacity: 0.8; }
+
+@include M.media-query-max(V.$bp-mobile) {
+  .magic-toilet-control-grid { grid-template-columns: minmax(0, 1fr); }
+  .magic-toilet-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .magic-toilet-actions > button { flex-basis: 100%; }
+  .magic-toilet-custom-count { flex: 1 1 100%; }
+  .magic-toilet-result-grid { grid-template-columns: repeat(auto-fill, minmax(82px, 1fr)); }
+}
