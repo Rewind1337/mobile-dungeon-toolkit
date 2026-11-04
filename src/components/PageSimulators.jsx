@@ -18,13 +18,13 @@ const SIMULATOR_TABS = [
     ['magic-toilet', 'Magic Toilet'],
 ]
 
-function PageSimulators({ activeTab = 'overview', onTabChange, savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
+function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
     return (
         <>
             <div className="sub-nav-bar flex-row">
                 <div className="pagination flex-row card w-100">
                     {SIMULATOR_TABS.map(([id, label]) => (
-                        <Button key={id} text={label} color={4} active={activeTab === id} onClick={() => onTabChange?.(id)} />
+                        <Button key={id} text={label} color={id === 'magic-toilet' ? 'magic-toilet' : 4} active={activeTab === id} onClick={() => onTabChange?.(id)} />
                     ))}
                 </div>
                 <div className="options flex-row card">
@@ -39,6 +39,7 @@ function PageSimulators({ activeTab = 'overview', onTabChange, savedHeroesRef, s
                         {activeTab === 'towers' && <SubPageTowers />}
                         {activeTab === 'titans' && <SubPageTitans />}
                         {activeTab === 'guild-hunt' && <SubPageGuildBoss />}
+                        {activeTab === 'magic-toilet' && <SubPageMagicToilet heroesRef={heroesRef} />}
                         {activeTab === 'custom' && (
                             <SubPageCustomCombat
                                 savedHeroesRef={savedHeroesRef}
