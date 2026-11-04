@@ -451,8 +451,8 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                         <img className="catalogue-chip-icon" src={resourceSprites.legendary_banner_booster} alt="" />
                         Legendary Boosters used: {legendaryBoostersUsed.toLocaleString()}
                     </span>
-                    <span className="catalogue-chip text magic-toilet-stat-chip">Uncommon (55%): {pullCounts[UNCOMMON].toLocaleString()}</span>
-                    <span className="catalogue-chip text magic-toilet-stat-chip">Rare (35%): {pullCounts[RARE].toLocaleString()}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={UNCOMMON}>Uncommon (55%): {pullCounts[UNCOMMON].toLocaleString()}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={RARE}>Rare (35%): {pullCounts[RARE].toLocaleString()}</span>
                     <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={EPIC}>Epic (9%): {epicCount.toLocaleString()}</span>
                     <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={LEGENDARY}>Legendary (1%): {legendaryCount.toLocaleString()}</span>
                     {totalPulls > 0 && (
