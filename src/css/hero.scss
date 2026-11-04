@@ -395,15 +395,15 @@
   margin: 0;
 }
 
-// At widths up to 1200px, change the six equipment slots in the hero preview to a three-column by two-row grid on tablet-sized screens.
-@include M.media-query-max(V.$bp-tablet, ()) {
+// At medium hero-preview pane widths, arrange the six equipment slots in three columns.
+@container hero-preview-pane (max-width: 680px) {
   .hero-preview .equipment {
     grid-template-columns: repeat(3, calc(V.$item-sprite-width + 10px));
   }
 }
 
-// At widths up to 900px, change the hero equipment grid to two 70px columns on phones and flatten the labels beneath each item.
-@include M.media-query-max(V.$bp-mobile, ()) {
+// At narrow hero-preview pane widths, use the compact two-column equipment layout.
+@container hero-preview-pane (max-width: 350px) {
   .hero-preview .equipment {
     grid-template-columns: repeat(2, 70px);
   }
@@ -411,7 +411,10 @@
   .hero-preview .equipment > .item {
     width: 70px;
   }
+}
 
+// At widths up to 900px, flatten the equipment labels beneath each item on phones.
+@include M.media-query-max(V.$bp-mobile, ()) {
   .hero > .flex-col > .text {
     border-radius: 0;
     outline: 0;
