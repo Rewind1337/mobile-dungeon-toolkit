@@ -170,7 +170,15 @@ button {
     }
   }
 
-  &[data-color="magic-toilet"]:not(.disabled) {\n    background: V.$button-magic-toilet-gradient;\n    &:hover {\n      background: V.$button-magic-toilet-gradient-hover;\n      &:active { background: V.$button-magic-toilet-gradient-click; }\n    }\n  }\n\n  &[data-color="confirm"]:not(.disabled) {
+  &[data-color="magic-toilet"]:not(.disabled) {
+    background: V.$button-magic-toilet-gradient;
+    &:hover {
+      background: V.$button-magic-toilet-gradient-hover;
+      &:active { background: V.$button-magic-toilet-gradient-click; }
+    }
+  }
+
+  &[data-color="confirm"]:not(.disabled) {
     background: V.$button-confirm-gradient;
 
     &:hover {
