@@ -137,6 +137,20 @@
   min-width: 0;
 }
 
+.magic-toilet-keep-boosters-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: V.$gap-small;
+  margin-left: V.$gap-small;
+  cursor: pointer;
+}
+
+.magic-toilet-keep-boosters-toggle > input {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
 .magic-toilet-results {
   display: flex;
   flex: 0 0 auto;
@@ -162,21 +176,28 @@
   text-align: center;
 }
 
-.magic-toilet-souls-chip .catalogue-chip-icon {
+.magic-toilet-souls-chip .catalogue-chip-icon,
+.magic-toilet-booster-stat-chip .catalogue-chip-icon {
   flex: 0 0 auto;
   width: 22px;
   height: 22px;
   object-fit: contain;
 }
 
+.magic-toilet-stat-chip[data-rarity="1"] {
+  border-color: rgba(175, 175, 175, 0.7);
+}
+
+.magic-toilet-stat-chip[data-rarity="2"] {
+  border-color: rgba(95, 165, 235, 0.75);
+}
+
 .magic-toilet-stat-chip[data-rarity="3"] {
-  border-color: rgba(180, 125, 245, 0.65);
-  background: rgba(110, 65, 155, 0.28);
+  border-color: rgba(180, 125, 245, 0.75);
 }
 
 .magic-toilet-stat-chip[data-rarity="4"] {
-  border-color: rgba(255, 205, 85, 0.72);
-  background: rgba(150, 105, 25, 0.28);
+  border-color: rgba(255, 205, 85, 0.8);
 }
 
 .magic-toilet-results-header {
