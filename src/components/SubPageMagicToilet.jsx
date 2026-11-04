@@ -17,12 +17,13 @@ const MAX_FLUSHES_PER_ACTION = 1000
 const MAX_PITY = 9999
 
 // These are full-pool chances; the tracked banner hero list only defines the Epic and Legendary hero identities.
-const MAGIC_TOILET_PULL_CHANCES = {
-    [UNCOMMON]: 0.55,
-    [RARE]: 0.35,
-    [EPIC]: BANNER_RARITY_PULL_CHANCES[EPIC],
-    [LEGENDARY]: BANNER_RARITY_PULL_CHANCES[LEGENDARY],
-}
+const MAGIC_TOILET_RARITY_DISTRIBUTION = [
+    [UNCOMMON, 0.55],
+    [RARE, 0.35],
+    [EPIC, BANNER_RARITY_PULL_CHANCES[EPIC]],
+    [LEGENDARY, BANNER_RARITY_PULL_CHANCES[LEGENDARY]],
+]
+const MAGIC_TOILET_PULL_CHANCES = Object.fromEntries(MAGIC_TOILET_RARITY_DISTRIBUTION)
 
 const FLUSH_AMOUNT_OPTIONS = [1, 10, 25, 50, 100, 250, 500, 1000]
 
@@ -61,9 +62,9 @@ function rollRarity(epicPity, legendaryPity) {
 
     const roll = Math.random()
     let cumulativeChance = 0
-    for (const [rarity, chance] of Object.entries(MAGIC_TOILET_PULL_CHANCES)) {
+    for (const [rarity, chance] of MAGIC_TOILET_RARITY_DISTRIBUTION) {
         cumulativeChance += chance
-        if (roll < cumulativeChance) return Number(rarity)
+        if (roll < cumulativeChance) return rarity
     }
     return UNCOMMON
 }
@@ -269,6 +270,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
             <section className="card magic-toilet-results">
                 <div className="magic-toilet-stats" aria-label="Magic Toilet pull statistics">
                     <span className="catalogue-chip text magic-toilet-stat-chip">Souls used: {totalPulls.toLocaleString()}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip">Flushes: {totalPulls.toLocaleString()}</span>
                     <span className="catalogue-chip text magic-toilet-stat-chip">Uncommon (55%): {pullCounts[UNCOMMON].toLocaleString()}</span>
                     <span className="catalogue-chip text magic-toilet-stat-chip">Rare (35%): {pullCounts[RARE].toLocaleString()}</span>
                     <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={EPIC}>Epic (9%): {epicCount.toLocaleString()}</span>
