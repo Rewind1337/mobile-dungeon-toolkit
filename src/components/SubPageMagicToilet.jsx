@@ -163,12 +163,14 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
     const legendaryList = useDynamicList(0, true)
     const epicList = useDynamicList(0, true)
 
-    const heroData = Array.isArray(heroesRef)
-        ? heroesRef
-        : Array.isArray(heroesRef?.current)
-            ? heroesRef.current
-            : []
-    const heroesById = useMemo(() => new Map(heroData.map(hero => [hero.id, hero])), [heroData])
+    const heroesById = useMemo(() => {
+        const heroData = Array.isArray(heroesRef)
+            ? heroesRef
+            : Array.isArray(heroesRef?.current)
+                ? heroesRef.current
+                : []
+        return new Map(heroData.map(hero => [hero.id, hero]))
+    }, [heroesRef])
     const bannerResults = useMemo(() => BANNERS.map((banner, sourceIndex) => {
         const heroes = banner.heroIds.map(id => heroesById.get(id)).filter(Boolean)
         const conditionalHeroes = (banner.conditionalHeroIDs ?? []).map(id => heroesById.get(id)).filter(Boolean)
