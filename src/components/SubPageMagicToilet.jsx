@@ -18,8 +18,10 @@ const MAX_FLUSHES_PER_ACTION = 1000
 const MAX_PITY = 9999
 const EPIC_PITY_RESET = 10
 const LEGENDARY_PITY_RESET = 90
+const EVERYDAY_HEROES_BANNER_ID = "everyday_heroes"
 const LEGENDARY_BOOSTER_PULL_CHANCE = FEATURED_HERO_PULL_CHANCE / 4
 const REGULAR_LEGENDARY_BOOSTER_PULL_CHANCE = FEATURED_HERO_PULL_CHANCE / 2
+const EVERYDAY_LEGENDARY_BOOSTER_PULL_CHANCE = 0.005
 const EPIC_BOOSTER_PULL_CHANCE = BANNER_RARITY_PULL_CHANCES[EPIC] / 2
 
 // These are full-pool chances; the tracked banner hero list only defines the Epic and Legendary hero identities.
@@ -62,9 +64,11 @@ function pickHero(heroes, banner, rarity, boostedHeroId = null) {
         : 0
     const boosterChance = boosted
         ? rarity === LEGENDARY
-            ? boosted.isStarred === true
-                ? LEGENDARY_BOOSTER_PULL_CHANCE
-                : REGULAR_LEGENDARY_BOOSTER_PULL_CHANCE
+            ? banner.id === EVERYDAY_HEROES_BANNER_ID
+                ? EVERYDAY_LEGENDARY_BOOSTER_PULL_CHANCE
+                : boosted.isStarred === true
+                    ? LEGENDARY_BOOSTER_PULL_CHANCE
+                    : REGULAR_LEGENDARY_BOOSTER_PULL_CHANCE
             : EPIC_BOOSTER_PULL_CHANCE
         : 0
 
