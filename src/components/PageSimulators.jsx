@@ -7,6 +7,7 @@ const SubPageTitans = lazy(() => import('./SubPageTitans.jsx'))
 const SubPageTowers = lazy(() => import('./SubPageTowers.jsx'))
 const SubPageChapters = lazy(() => import('./SubPageChapters.jsx'))
 const SubPageCustomCombat = lazy(() => import('./SubPageCustomCombat.jsx'))
+const SubPageMagicToilet = lazy(() => import('./SubPageMagicToilet.jsx'))
 
 const SIMULATOR_TABS = [
     ['adventure', 'Adventure Chapters'],
@@ -14,6 +15,7 @@ const SIMULATOR_TABS = [
     ['titans', 'Titans'],
     ['guild-hunt', 'Guild Hunt'],
     ['custom', 'Custom Combat'],
+    ['magic-toilet', 'Magic Toilet'],
 ]
 
 function PageSimulators({ activeTab = 'overview', onTabChange, savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
