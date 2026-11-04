@@ -1,0 +1,324 @@
+// Magic Toilet banner-pull simulator styles.
+@use './_variables.scss' as V;
+@use './mixins.scss' as M;
+
+.magic-toilet {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: V.$gap;
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.magic-toilet-header p { margin: 0; }
+
+.magic-toilet-controls,
+.magic-toilet-banner-details {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.magic-toilet-banner-details > summary {
+  cursor: pointer;
+  font-weight: 700;
+  padding: 4px;
+}
+
+.magic-toilet-banner-details[open] > .banner-catalogue-card { margin-top: V.$gap; }
+
+.magic-toilet-control-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: V.$gap;
+}
+
+.magic-toilet-field {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 0;
+  text-align: left;
+}
+
+.magic-toilet-field > select,
+.magic-toilet-field > input {
+  width: 100%;
+  min-width: 0;
+}
+
+// Number inputs use a shorter global default; match the full-height selects on this page.
+.magic-toilet-field > input[type="number"] {
+  height: 40px;
+}
+
+// Keep Magic Toilet actions compact and aligned to the start rather than stretching across the row.
+.magic-toilet-pity-status,
+.magic-toilet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: V.$gap-small;
+}
+
+.magic-toilet-actions {
+  justify-content: flex-start;
+}
+
+.magic-toilet-booster-row {
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.magic-toilet-booster-option {
+  display: flex;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+  height: 40px;
+}
+
+.magic-toilet-booster-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.magic-toilet-booster-toggle > input {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.magic-toilet-booster-toggle > img {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.magic-toilet-booster-toggle > span {
+  font-size: 20px;
+}
+
+.magic-toilet-booster-option > select {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+}
+
+.magic-toilet-booster-warning {
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+
+.magic-toilet-pull-booster-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  vertical-align: -3px;
+  object-fit: contain;
+}
+
+.magic-toilet-actions > button {
+  flex: 0 1 auto;
+  width: auto;
+  min-width: 0;
+}
+
+.magic-toilet-keep-boosters-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: V.$gap-small;
+  margin-left: V.$gap-small;
+  cursor: pointer;
+}
+
+.magic-toilet-keep-boosters-toggle > input {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.magic-toilet-results {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: V.$gap;
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+  overflow: visible;
+}
+
+.magic-toilet-stats {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.magic-toilet-stat-chip {
+  justify-content: center;
+  text-align: center;
+}
+
+.magic-toilet-souls-chip .catalogue-chip-icon,
+.magic-toilet-booster-stat-chip .catalogue-chip-icon {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.magic-toilet-stat-chip[data-rarity="1"] {
+  border-color: rgba(175, 175, 175, 0.7);
+}
+
+.magic-toilet-stat-chip[data-rarity="2"] {
+  border-color: rgba(95, 165, 235, 0.75);
+}
+
+.magic-toilet-stat-chip[data-rarity="3"] {
+  border-color: rgba(180, 125, 245, 0.75);
+}
+
+.magic-toilet-stat-chip[data-rarity="4"] {
+  border-color: rgba(255, 205, 85, 0.8);
+}
+
+.magic-toilet-results-header {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: V.$gap-small;
+}
+
+.magic-toilet-results-header h2 { margin: 0; }
+
+.magic-toilet-results-note-actions {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.magic-toilet-results-note {
+  opacity: 0.65;
+}
+
+.magic-toilet-results-note-actions > button {
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 0;
+}
+
+.magic-toilet-hero-row {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.magic-toilet-hero-row-header h3 {
+  margin: 0;
+}
+
+.magic-toilet-horizontal-list {
+  display: block;
+  flex: 0 0 174px;
+  width: 100%;
+  height: 174px;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  cursor: grab;
+}
+
+.magic-toilet-horizontal-list:active { cursor: grabbing; }
+
+.magic-toilet-horizontal-spacer {
+  display: block;
+  min-width: 100%;
+}
+
+.magic-toilet-horizontal-item {
+  min-width: 0;
+}
+
+.magic-toilet-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: V.$gap-small;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  padding: V.$padding-card;
+  border: 1px solid V.$border-color-light;
+  border-radius: V.$border-radius;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+// Keep the Hero component at its natural sprite width inside each fixed-width horizontal result tile.
+.magic-toilet-result > .hero {
+  flex: 0 0 auto;
+  align-self: center;
+  width: max-content;
+  max-width: none;
+  cursor: default;
+}
+
+.magic-toilet-result .magic-toilet-hero-name {
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.magic-toilet-pull-number {
+  align-self: flex-start;
+  opacity: 0.8;
+}
+
+.magic-toilet-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin: 0;
+  padding: V.$gap;
+  opacity: 0.7;
+}
+
+// At tablet widths, keep the controls in two balanced columns instead of squeezing their selectors.
+@include M.media-query-max(V.$bp-tablet, ()) {
+  .magic-toilet-control-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+// On mobile, stack the controls while keeping the number inputs the same height as the selects.
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .magic-toilet-control-grid { grid-template-columns: minmax(0, 1fr); }
+  .magic-toilet-booster-row { grid-template-columns: minmax(0, 1fr); }
+  .magic-toilet-field > input[type="number"] { height: 32px; }
+}

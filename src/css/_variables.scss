@@ -16,9 +16,9 @@ $button-three-gradient: linear-gradient(152deg, hsl(140, 100%, 30%) 0%, hsl(160,
 $button-three-gradient-hover: linear-gradient(152deg, hsl(140, 100%, 50%) 0%, hsl(160, 100%, 50%) 100%);
 $button-three-gradient-click: linear-gradient(152deg, hsl(140, 100%, 40%) 0%, hsl(160, 100%, 40%) 100%);
 
-$button-four-gradient: linear-gradient(152deg, hsl(180, 100%, 30%) 0%, hsl(180, 100%, 30%) 100%);
-$button-four-gradient-hover: linear-gradient(152deg, hsl(180, 100%, 50%) 0%, hsl(180, 100%, 50%) 100%);
-$button-four-gradient-click: linear-gradient(152deg, hsl(180, 100%, 40%) 0%, hsl(180, 100%, 40%) 100%);
+$button-four-gradient: linear-gradient(152deg, hsl(180, 100%, 30%) 0%, hsl(190, 100%, 30%) 100%);
+$button-four-gradient-hover: linear-gradient(152deg, hsl(180, 100%, 50%) 0%, hsl(190, 100%, 50%) 100%);
+$button-four-gradient-click: linear-gradient(152deg, hsl(180, 100%, 40%) 0%, hsl(190, 100%, 40%) 100%);
 
 $button-five-gradient: linear-gradient(152deg, hsl(233, 100%, 30%) 0%, hsl(253, 100%, 30%) 100%);
 $button-five-gradient-hover: linear-gradient(152deg, hsl(233, 100%, 50%) 0%, hsl(253, 100%, 50%) 100%);
@@ -27,6 +27,27 @@ $button-five-gradient-click: linear-gradient(152deg, hsl(233, 100%, 40%) 0%, hsl
 $button-six-gradient: linear-gradient(152deg, hsl(281, 100%, 30%) 0%, hsl(261, 100%, 30%) 100%);
 $button-six-gradient-hover: linear-gradient(152deg, hsl(281, 100%, 50%) 0%, hsl(261, 100%, 50%) 100%);
 $button-six-gradient-click: linear-gradient(152deg, hsl(281, 100%, 40%) 0%, hsl(261, 100%, 40%) 100%);
+
+// Five two-colour gradients blended into the standard indigo button gradient.
+$button-gradient-5-1: linear-gradient(152deg, hsl(20, 100%, 30%) 0%, hsl(40, 100%, 30%) 25%, hsl(233, 100%, 30%) 75%, hsl(253, 100%, 30%) 100%);
+$button-gradient-5-1-hover: linear-gradient(152deg, hsl(20, 100%, 50%) 0%, hsl(40, 100%, 50%) 25%, hsl(233, 100%, 50%) 75%, hsl(253, 100%, 50%) 100%);
+$button-gradient-5-1-click: linear-gradient(152deg, hsl(20, 100%, 40%) 0%, hsl(40, 100%, 40%) 25%, hsl(233, 100%, 40%) 75%, hsl(253, 100%, 40%) 100%);
+
+$button-gradient-5-2: linear-gradient(152deg, hsl(60, 100%, 30%) 0%, hsl(80, 100%, 30%) 25%, hsl(233, 100%, 30%) 75%, hsl(253, 100%, 30%) 100%);
+$button-gradient-5-2-hover: linear-gradient(152deg, hsl(60, 100%, 50%) 0%, hsl(80, 100%, 50%) 25%, hsl(233, 100%, 50%) 75%, hsl(253, 100%, 50%) 100%);
+$button-gradient-5-2-click: linear-gradient(152deg, hsl(60, 100%, 40%) 0%, hsl(80, 100%, 40%) 25%, hsl(233, 100%, 40%) 75%, hsl(253, 100%, 40%) 100%);
+
+$button-gradient-5-3: linear-gradient(152deg, hsl(140, 100%, 30%) 0%, hsl(160, 100%, 30%) 25%, hsl(233, 100%, 30%) 75%, hsl(253, 100%, 30%) 100%);
+$button-gradient-5-3-hover: linear-gradient(152deg, hsl(140, 100%, 50%) 0%, hsl(160, 100%, 50%) 25%, hsl(233, 100%, 50%) 75%, hsl(253, 100%, 50%) 100%);
+$button-gradient-5-3-click: linear-gradient(152deg, hsl(140, 100%, 40%) 0%, hsl(160, 100%, 40%) 25%, hsl(233, 100%, 40%) 75%, hsl(253, 100%, 40%) 100%);
+
+$button-gradient-5-4: linear-gradient(152deg, hsl(180, 100%, 30%) 0%, hsl(190, 100%, 30%) 25%, hsl(233, 100%, 30%) 75%, hsl(253, 100%, 30%) 100%);
+$button-gradient-5-4-hover: linear-gradient(152deg, hsl(180, 100%, 50%) 0%, hsl(190, 100%, 50%) 25%, hsl(233, 100%, 50%) 75%, hsl(253, 100%, 50%) 100%);
+$button-gradient-5-4-click: linear-gradient(152deg, hsl(180, 100%, 40%) 0%, hsl(190, 100%, 40%) 25%, hsl(233, 100%, 40%) 75%, hsl(253, 100%, 40%) 100%);
+
+$button-gradient-5-5: linear-gradient(152deg, hsl(281, 100%, 30%) 0%, hsl(261, 100%, 30%) 25%, hsl(233, 100%, 30%) 75%, hsl(253, 100%, 30%) 100%);
+$button-gradient-5-5-hover: linear-gradient(152deg, hsl(281, 100%, 50%) 0%, hsl(261, 100%, 50%) 25%, hsl(233, 100%, 50%) 75%, hsl(253, 100%, 50%) 100%);
+$button-gradient-5-5-click: linear-gradient(152deg, hsl(281, 100%, 40%) 0%, hsl(261, 100%, 40%) 25%, hsl(233, 100%, 40%) 75%, hsl(253, 100%, 40%) 100%);
 
 $button-seven-gradient: linear-gradient(152deg, hsl(0, 0%, 24%) 0%, hsl(0, 0%, 34%) 100%);
 $button-seven-gradient-hover: linear-gradient(152deg, hsl(0, 0%, 34%) 0%, hsl(0, 0%, 44%) 100%);
@@ -39,6 +60,10 @@ $button-confirm-gradient-click: linear-gradient(152deg, hsl(120, 100%, 40%) 0%, 
 $button-cancel-gradient: linear-gradient(152deg, hsl(0, 100%, 30%) 0%, hsl(10, 100%, 30%) 100%);
 $button-cancel-gradient-hover: linear-gradient(152deg, hsl(0, 100%, 50%) 0%, hsl(10, 100%, 50%) 100%);
 $button-cancel-gradient-click: linear-gradient(152deg, hsl(0, 100%, 40%) 0%, hsl(10, 100%, 40%) 100%);
+
+$button-magic-toilet-gradient: linear-gradient(110deg, hsl(0, 85%, 38%) 0%, hsl(35, 95%, 38%) 17%, hsl(60, 90%, 35%) 33%, hsl(125, 75%, 30%) 50%, hsl(205, 85%, 35%) 67%, hsl(265, 80%, 38%) 83%, hsl(320, 85%, 38%) 100%);
+$button-magic-toilet-gradient-hover: linear-gradient(110deg, hsl(0, 95%, 50%) 0%, hsl(35, 100%, 50%) 17%, hsl(60, 100%, 45%) 33%, hsl(125, 85%, 40%) 50%, hsl(205, 95%, 48%) 67%, hsl(265, 90%, 50%) 83%, hsl(320, 95%, 50%) 100%);
+$button-magic-toilet-gradient-click: linear-gradient(110deg, hsl(0, 90%, 44%) 0%, hsl(35, 95%, 44%) 17%, hsl(60, 95%, 40%) 33%, hsl(125, 80%, 35%) 50%, hsl(205, 90%, 42%) 67%, hsl(265, 85%, 44%) 83%, hsl(320, 90%, 44%) 100%);
 
 $mobile-button-height: 44px;
 $mobile-button-text: 12px;
