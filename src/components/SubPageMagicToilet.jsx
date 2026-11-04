@@ -16,6 +16,10 @@ const EPIC = RARITY_DEFINITIONS.EPIC.id
 const LEGENDARY = RARITY_DEFINITIONS.LEGENDARY.id
 const MAX_FLUSHES_PER_ACTION = 1000
 const MAX_PITY = 9999
+const EPIC_PITY_RESET = 10
+const LEGENDARY_PITY_RESET = 90
+const LEGENDARY_BOOSTER_PULL_CHANCE = FEATURED_HERO_PULL_CHANCE / 4
+const EPIC_BOOSTER_PULL_CHANCE = BANNER_RARITY_PULL_CHANCES[EPIC] / 2
 
 // These are full-pool chances; the tracked banner hero list only defines the Epic and Legendary hero identities.
 const MAGIC_TOILET_RARITY_DISTRIBUTION = [
@@ -44,17 +48,32 @@ function weightedPick(heroes) {
     return heroes[heroes.length - 1]
 }
 
-function pickHero(heroes, banner, rarity) {
+function pickHero(heroes, banner, rarity, boostedHeroId = null) {
     const pool = heroes.filter(hero => Number(hero.rarity) === rarity)
     // Never fall back to another rarity: the rolled result must remain the rarity that its odds selected.
     if (!pool.length) return null
 
     const featured = pool.find(hero => hero.id === banner.featuredHeroId)
-    const chance = MAGIC_TOILET_PULL_CHANCES[rarity]
-    if (featured && chance && Math.random() < Math.min(1, FEATURED_HERO_PULL_CHANCE / chance)) return featured
+    const boosted = pool.find(hero => hero.id === boostedHeroId && hero.id !== featured?.id)
+    const rarityChance = MAGIC_TOILET_PULL_CHANCES[rarity]
+    const featuredChance = featured
+        ? FEATURED_HERO_PULL_CHANCE - (rarity === LEGENDARY && boosted ? LEGENDARY_BOOSTER_PULL_CHANCE : 0)
+        : 0
+    const boosterChance = boosted
+        ? rarity === LEGENDARY ? LEGENDARY_BOOSTER_PULL_CHANCE : EPIC_BOOSTER_PULL_CHANCE
+        : 0
 
-    const regularPool = pool.filter(hero => hero.id !== featured?.id)
-    return weightedPick(regularPool.length ? regularPool : pool)
+    // Hero-level odds are absolute pull chances within the selected rarity, not equal hero weights.
+    // Any chance left after featured / boosted heroes is distributed using the existing starred weighting.
+    let roll = Math.random() * rarityChance
+    if (featured && roll < featuredChance) return featured
+    roll -= featuredChance
+
+    if (boosted && roll < boosterChance) return boosted
+    const regularPool = pool.filter(hero => hero.id !== featured?.id && hero.id !== boosted?.id)
+    if (!regularPool.length) return featured ?? boosted ?? pool[0]
+
+    return weightedPick(regularPool)
 }
 
 function rollRarity(epicPity, legendaryPity) {
@@ -111,10 +130,13 @@ const EMPTY_PULL_COUNTS = {
 
 export default function SubPageMagicToilet({ heroesRef = [] }) {
     const [bannerId, setBannerId] = useState("everyday_heroes")
-    const [epicLimit, setEpicLimit] = useState(10)
-    const [legendaryLimit, setLegendaryLimit] = useState(90)
-    const [epicPity, setEpicPity] = useState(10)
-    const [legendaryPity, setLegendaryPity] = useState(90)
+    const [epicPity, setEpicPity] = useState(EPIC_PITY_RESET)
+    const [legendaryPity, setLegendaryPity] = useState(LEGENDARY_PITY_RESET)
+    const [startingLegendaryPity, setStartingLegendaryPity] = useState(LEGENDARY_PITY_RESET)
+    const [legendaryBoosterEnabled, setLegendaryBoosterEnabled] = useState(false)
+    const [legendaryBoosterHeroId, setLegendaryBoosterHeroId] = useState("")
+    const [epicBoosterEnabled, setEpicBoosterEnabled] = useState(false)
+    const [epicBoosterHeroId, setEpicBoosterHeroId] = useState("")
     const [flushAmount, setFlushAmount] = useState("10")
     const [heroResults, setHeroResults] = useState([])
     const [pullCounts, setPullCounts] = useState(EMPTY_PULL_COUNTS)
@@ -147,21 +169,23 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
     const legendaryResults = useMemo(() => heroResults.filter(result => result.rarity === LEGENDARY), [heroResults])
     const soulSprite = bannerId === "everyday_heroes" ? resourceSprites.soul : resourceSprites.shimmering_soul
     const soulLabel = bannerId === "everyday_heroes" ? "Souls used" : "Shimmering Souls used"
-    const expected = expectedLegendaries(totalPulls, legendaryLimit, legendaryLimit)
+    const legendaryBoosterHeroes = heroes.filter(hero =>
+        Number(hero.rarity) === LEGENDARY && hero.id !== banner?.featuredHeroId
+    )
+    const epicBoosterHeroes = heroes.filter(hero => Number(hero.rarity) === EPIC)
+    const boostersReady = (!legendaryBoosterEnabled || Boolean(legendaryBoosterHeroId))
+        && (!epicBoosterEnabled || Boolean(epicBoosterHeroId))
+    const expected = expectedLegendaries(totalPulls, startingLegendaryPity, LEGENDARY_PITY_RESET)
 
-    const updateEpicLimit = value => {
+    const updateEpicPity = value => setEpicPity(clamp(value))
+    const updateLegendaryPity = value => {
         const next = clamp(value)
-        setEpicLimit(next)
-        setEpicPity(next)
-    }
-    const updateLegendaryLimit = value => {
-        const next = clamp(value)
-        setLegendaryLimit(next)
         setLegendaryPity(next)
+        setStartingLegendaryPity(next)
     }
 
     const runPulls = (stopAtLegendary = false, requested = 1) => {
-        if (!banner) return
+        if (!banner || !boostersReady) return
 
         let epic = epicPity
         let legendary = legendaryPity
@@ -175,8 +199,13 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
             const rarity = rollRarity(epic, legendary)
             addedCounts[rarity] += 1
 
+            const selectedBoosterId = rarity === LEGENDARY && legendaryBoosterEnabled
+                ? legendaryBoosterHeroId
+                : rarity === EPIC && epicBoosterEnabled
+                    ? epicBoosterHeroId
+                    : null
             const hero = rarity === EPIC || rarity === LEGENDARY
-                ? pickHero(heroes, banner, rarity)
+                ? pickHero(heroes, banner, rarity, selectedBoosterId)
                 : null
 
             // Low-rarity pulls contribute to the counts, but only defined Epic and Legendary heroes get result cards.
@@ -187,11 +216,12 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                     pullNumber,
                     hero,
                     rarity,
+                    boosterRarity: selectedBoosterId && hero.id === selectedBoosterId ? rarity : null,
                 })
             }
 
-            legendary = rarity === LEGENDARY ? legendaryLimit : Math.max(1, legendary - 1)
-            epic = rarity === EPIC ? epicLimit : Math.max(1, epic - 1)
+            legendary = rarity === LEGENDARY ? LEGENDARY_PITY_RESET : Math.max(1, legendary - 1)
+            epic = rarity === EPIC ? EPIC_PITY_RESET : Math.max(1, epic - 1)
 
             if (stopAtLegendary && rarity === LEGENDARY) break
         }
@@ -213,20 +243,31 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
         setHeroResults([])
         setPullCounts(EMPTY_PULL_COUNTS)
         setTotalPulls(0)
-        setEpicPity(epicLimit)
-        setLegendaryPity(legendaryLimit)
+        setEpicPity(EPIC_PITY_RESET)
+        setLegendaryPity(LEGENDARY_PITY_RESET)
+        setStartingLegendaryPity(LEGENDARY_PITY_RESET)
         if (legendaryList.listRef.current) legendaryList.listRef.current.scrollLeft = 0
         if (epicList.listRef.current) epicList.listRef.current.scrollLeft = 0
     }
 
     const handleBannerChange = event => {
         setBannerId(event.target.value)
+        setLegendaryBoosterHeroId("")
+        setEpicBoosterHeroId("")
         resetResults()
     }
 
     const renderHeroResult = result => (
         <article className="magic-toilet-result" key={result.id} data-rarity={result.rarity}>
-            <span className="magic-toilet-pull-number text">Pull #{result.pullNumber}</span>
+            <span className="magic-toilet-pull-number text">
+                Pull #{result.pullNumber}
+                {result.boosterRarity === LEGENDARY && (
+                    <img className="magic-toilet-pull-booster-icon" src={resourceSprites.legendary_banner_booster} alt="Legendary Banner Booster" />
+                )}
+                {result.boosterRarity === EPIC && (
+                    <img className="magic-toilet-pull-booster-icon" src={resourceSprites.epic_banner_booster} alt="Epic Banner Booster" />
+                )}
+            </span>
             <Hero heroObj={result.hero} selected={false} level={null} onClick={() => {}} className="hero-static" />
             <span className="catalogue-chip text magic-toilet-hero-name">{result.hero.name}</span>
         </article>
@@ -248,12 +289,12 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                         </select>
                     </label>
                     <label className="magic-toilet-field">
-                        <span className="text">Pity to next Epic</span>
-                        <input type="number" min="1" max={MAX_PITY} value={epicLimit} onChange={event => updateEpicLimit(event.target.value)} />
+                        <span className="text">Current Epic Pity</span>
+                        <input type="number" min="1" max={MAX_PITY} value={epicPity} onChange={event => updateEpicPity(event.target.value)} />
                     </label>
                     <label className="magic-toilet-field">
-                        <span className="text">Pity to next Legendary</span>
-                        <input type="number" min="1" max={MAX_PITY} value={legendaryLimit} onChange={event => updateLegendaryLimit(event.target.value)} />
+                        <span className="text">Current Legendary Pity</span>
+                        <input type="number" min="1" max={MAX_PITY} value={legendaryPity} onChange={event => updateLegendaryPity(event.target.value)} />
                     </label>
                     <label className="magic-toilet-field">
                         <span className="text">Flush amount</span>
@@ -266,10 +307,63 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                     <span className="catalogue-chip text">Epic pity: {epicPity}</span>
                     <span className="catalogue-chip text">Legendary pity: {legendaryPity}</span>
                 </div>
+                <div className="magic-toilet-booster-row">
+                    <div className="magic-toilet-booster-option">
+                        <label className="magic-toilet-booster-toggle">
+                            <input
+                                type="checkbox"
+                                aria-label="Enable Legendary Banner Booster"
+                                checked={legendaryBoosterEnabled}
+                                onChange={event => setLegendaryBoosterEnabled(event.target.checked)}
+                            />
+                            <img src={resourceSprites.legendary_banner_booster} alt="" />
+                            {!legendaryBoosterEnabled && <span className="text">Legendary Banner Booster</span>}
+                        </label>
+                        {legendaryBoosterEnabled && (
+                            <select
+                                aria-label="Legendary Banner Booster hero"
+                                value={legendaryBoosterHeroId}
+                                onChange={event => setLegendaryBoosterHeroId(event.target.value)}
+                            >
+                                <option value="">Select a Hero</option>
+                                {legendaryBoosterHeroes.map(hero => (
+                                    <option key={hero.id} value={hero.id}>{hero.name}</option>
+                                ))}
+                            </select>
+                        )}
+                    </div>
+                    <div className="magic-toilet-booster-option">
+                        <label className="magic-toilet-booster-toggle">
+                            <input
+                                type="checkbox"
+                                aria-label="Enable Epic Banner Booster"
+                                checked={epicBoosterEnabled}
+                                onChange={event => setEpicBoosterEnabled(event.target.checked)}
+                            />
+                            <img src={resourceSprites.epic_banner_booster} alt="" />
+                            {!epicBoosterEnabled && <span className="text">Epic Banner Booster</span>}
+                        </label>
+                        {epicBoosterEnabled && (
+                            <select
+                                aria-label="Epic Banner Booster hero"
+                                value={epicBoosterHeroId}
+                                onChange={event => setEpicBoosterHeroId(event.target.value)}
+                            >
+                                <option value="">Select a Hero</option>
+                                {epicBoosterHeroes.map(hero => (
+                                    <option key={hero.id} value={hero.id}>{hero.name}</option>
+                                ))}
+                            </select>
+                        )}
+                    </div>
+                </div>
+                {!boostersReady && (
+                    <span className="text magic-toilet-booster-warning">Select your boosted hero to enable flushing.</span>
+                )}
                 <div className="magic-toilet-actions">
-                    <Button text="Flush 1" color="magic-toilet" onClick={() => runPulls(false, 1)} />
-                    <Button text={`Flush ${Number(flushAmount).toLocaleString()}`} color="magic-toilet" onClick={() => runPulls(false, Number(flushAmount))} />
-                    <Button text="Flush until Legendary" color="magic-toilet" onClick={() => runPulls(true)} />
+                    <Button text="Flush 1" color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(false, 1)} />
+                    <Button text={`Flush ${Number(flushAmount).toLocaleString()}`} color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(false, Number(flushAmount))} />
+                    <Button text="Flush until Legendary" color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(true)} />
                 </div>
             </section>
 
