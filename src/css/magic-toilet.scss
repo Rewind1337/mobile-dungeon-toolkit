@@ -73,7 +73,7 @@
 
 .magic-toilet-booster-row {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
   gap: V.$gap;
   min-width: 0;
 }
@@ -83,6 +83,7 @@
   align-items: center;
   gap: V.$gap-small;
   min-width: 0;
+  height: 40px;
 }
 
 .magic-toilet-booster-toggle {
@@ -104,6 +105,10 @@
   width: 24px;
   height: 24px;
   object-fit: contain;
+}
+
+.magic-toilet-booster-toggle > span {
+  font-size: 20px;
 }
 
 .magic-toilet-booster-option > select {

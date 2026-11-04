@@ -366,14 +366,14 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                         )}
                     </div>
                 </div>
-                {!boostersReady && (
-                    <span className="text magic-toilet-booster-warning">Select your boosted hero to enable flushing.</span>
-                )}
                 <div className="magic-toilet-actions">
                     <Button text="Flush 1" color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(false, 1)} />
                     <Button text={`Flush ${Number(flushAmount).toLocaleString()}`} color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(false, Number(flushAmount))} />
                     <Button text="Flush until Legendary" color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(true)} />
                 </div>
+                {!boostersReady && (
+                    <span className="text magic-toilet-booster-warning">Select your boosted hero to enable flushing.</span>
+                )}
             </section>
 
             {selected && <details className="card magic-toilet-banner-details">
