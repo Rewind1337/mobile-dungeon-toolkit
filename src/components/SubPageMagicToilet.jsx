@@ -79,7 +79,12 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
     const [results, setResults] = useState([])
     const [totalPulls, setTotalPulls] = useState(0)
 
-    const heroesById = useMemo(() => new Map(heroesRef.map(hero => [hero.id, hero])), [heroesRef])
+    const heroData = Array.isArray(heroesRef)
+        ? heroesRef
+        : Array.isArray(heroesRef?.current)
+            ? heroesRef.current
+            : []
+    const heroesById = useMemo(() => new Map(heroData.map(hero => [hero.id, hero])), [heroData])
     const bannerResults = useMemo(() => BANNERS.map((banner, sourceIndex) => {
         const heroes = banner.heroIds.map(id => heroesById.get(id)).filter(Boolean)
         const conditionalHeroes = (banner.conditionalHeroIDs ?? []).map(id => heroesById.get(id)).filter(Boolean)
