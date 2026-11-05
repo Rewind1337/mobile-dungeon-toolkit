@@ -2580,7 +2580,6 @@ select {
 .modal.modal-center.card.page-help-dialog {
   width: min(92vw, 780px);
   max-width: calc(100vw - 24px);
-  max-height: min(84vh, 780px);
   padding: clamp(14px, 3vw, 24px);
   overflow: auto;
 }
@@ -2987,17 +2986,20 @@ select {
 
 .guide-eyebrow,
 .guide-example-kicker {
-  font-size: 12px;
+  font-family: V.$font-family-header;
+  font-size: 14px;
   font-weight: 800;
   letter-spacing: .08em;
   line-height: 1.2;
   text-transform: uppercase;
   opacity: .76;
 }
+.guide-eyebrow {
+  font-size: 22px;
+}
 
 .guide-lead-title {
   margin: 0;
-  font-family: V.$font-family-header;
   font-size: 24px;
   line-height: 1.15;
   text-align: left;
@@ -3010,7 +3012,14 @@ select {
   font-size: 14px;
   line-height: 1.45;
   text-align: left;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, .8);
+  overflow-wrap: anywhere;
+}
+
+.guide-copy-header {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.45;
+  text-align: left;
   overflow-wrap: anywhere;
 }
 
@@ -3101,9 +3110,11 @@ select {
 
 .guide-asset {
   display: flex;
-  flex: 0 1 76px;
+  flex: 1 1 76px;
+  height: 110px;
   flex-direction: column;
   align-items: center;
+  justify-content: space-around;
   gap: 5px;
   min-width: 0;
   text-align: center;
@@ -3111,8 +3122,8 @@ select {
 
 .guide-asset > img {
   display: block;
-  width: 52px;
-  height: 52px;
+  width: 64px;
+  height: 64px;
   object-fit: contain;
   image-rendering: optimizeQuality;
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .55));
@@ -3139,9 +3150,6 @@ select {
   gap: V.$gap-small;
   min-width: 0;
   padding: V.$gap;
-  border: 1px solid rgba(255, 255, 255, .14);
-  border-radius: V.$border-radius-small;
-  background: rgba(0, 0, 0, .16);
 }
 
 .guide-step-number {
@@ -3150,11 +3158,10 @@ select {
   justify-content: center;
   width: 30px;
   height: 30px;
-  border: 1px solid rgba(255, 255, 255, .25);
   border-radius: 50%;
   background: rgba(0, 0, 0, .35);
-  font-size: 12px;
   font-weight: 900;
+  font-size: 19px;
 }
 
 .guide-step-body {
@@ -3166,8 +3173,6 @@ select {
 
 .guide-step-title {
   margin: 0;
-  font-family: V.$font-family-header;
-  font-size: 16px;
   line-height: 1.2;
 }
 
@@ -3181,12 +3186,24 @@ select {
 
 .guide-tip {
   margin: 0;
+  font-family: V.$font-family-stats;
   padding: V.$gap V.$gap V.$gap V.$gap;
-  border-left: 4px solid rgba(247, 194, 83, .85);
-  border-radius: 0 V.$border-radius-small V.$border-radius-small 0;
+  border-left: 8px solid rgba(247, 194, 83, .85);
   background: rgba(0, 0, 0, .2);
   font-size: 14px;
   line-height: 1.4;
+  text-shadow: -2px 0 4px rgba(0, 0, 0, 0.3), 2px 0 4px rgba(0, 0, 0, 0.3), 0 -2px 4px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.3);
+
+  > strong {
+  font-size: 16px;
+  letter-spacing: 1px;
+  text-shadow: -2px 0 4px black, 2px 0 4px black, 0 -2px 4px black, 0 2px 4px black;
+  margin-right: 4px;
+  }
+
+  > strong::after {
+    content: ":";
+  }
 }
 
 .guide-team-roster {
@@ -3197,9 +3214,12 @@ select {
 }
 
 .guide-team-member {
+  align-self: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-around;
+  min-height: 110px;
   gap: 4px;
   min-width: 0;
   text-align: center;
@@ -3207,20 +3227,18 @@ select {
 
 .guide-team-member > img {
   display: block;
-  width: 54px;
-  height: 66px;
+  width: 64px;
+  height: 64px;
   object-fit: contain;
   image-rendering: optimizeQuality;
 }
 
 .guide-team-member > span:last-child {
-  font-size: 11px;
   font-weight: 700;
   overflow-wrap: anywhere;
 }
 
 .guide-team-slot {
-  font-size: 10px;
   font-weight: 800;
   opacity: .65;
 }
@@ -3232,20 +3250,6 @@ select {
 
   .guide-hero-showcase {
     grid-template-columns: 76px minmax(0, 1fr);
-  }
-
-  .guide-hero-sprite {
-    width: 76px;
-    height: 96px;
-  }
-
-  .guide-team-roster {
-    gap: 4px;
-  }
-
-  .guide-team-member > img {
-    width: 44px;
-    height: 54px;
   }
 
   .guide-example {
