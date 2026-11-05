@@ -431,7 +431,7 @@
   }
 }
 
-// At narrow preview-pane widths, change only the equipment grid's column count.
+// On very narrow preview panes, stack the four main stats and Other Stats.
 @container hero-preview-pane (max-width: 420px) {
   .hero-preview .base-stats:not(.calculated-stats),
   .hero-preview .calculated-stats {
@@ -458,7 +458,7 @@
 }
 
 // In medium preview panes, show the four main stats as a 2x2 grid and stack Other Stats.
-@container hero-preview-pane (min-width: 421px) and (max-width: 660px) {
+@container hero-preview-pane (min-width: 420.01px) and (max-width: 660px) {
   .hero-preview .base-stats:not(.calculated-stats),
   .hero-preview .calculated-stats {
     display: grid;
@@ -482,6 +482,7 @@
   }
 }
 
+// At narrow preview-pane widths, change only the equipment grid's column count.
 @container hero-preview-pane (max-width: 420px) {
   .hero-preview .equipment {
     grid-template-columns: repeat(2, var(--equipment-card-width));
