@@ -165,19 +165,21 @@
   align-self: end;
   gap: V.$gap-small;
   min-width: 0;
-  min-height: 38px;
-  padding: 6px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: V.$border-radius-small;
-  background: rgba(0, 0, 0, 0.2);
+  height: 40px;
+  padding: 4px 8px;
+  outline: 2px solid black;
+  border: 0;
+  border-radius: V.$border-radius;
+  background: rgba(0, 0, 0, 0.25);
   cursor: pointer;
   white-space: nowrap;
 }
 
 .catalogue-filter-checkbox input {
-  flex: 0 0 auto;
+  flex: 0 0 18px;
   width: 18px;
   height: 18px;
+  min-height: 0;
   margin: 0;
   accent-color: #f2bd55;
 }
@@ -288,7 +290,11 @@
   .catalogue-search, .hero-catalogue-filters .catalogue-search, .status-catalogue-filters .catalogue-search { grid-column: auto; }
   .catalogue-filter-actions { justify-content: space-between; }
   .catalogue-filter-actions-hidden { justify-content: flex-start; }
-  .catalogue-filter-checkbox { align-self: stretch; }
+  .catalogue-filter-checkbox {
+    align-self: stretch;
+    height: 32px;
+    border-radius: 0;
+  }
   .catalogue-result-count { flex-basis: 100%; text-align: left; }
 }
 // At widths of 1500px and wider, add the shared horizontal margin around filter groups on wide screens.
