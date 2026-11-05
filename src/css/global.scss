@@ -2655,3 +2655,315 @@ select {
     border-radius: 0;
   }
 }
+
+
+/* Shared catalogue filter controls. Kept global so direct routes such as /heroes and /items
+   receive the same styling as the lazy-loaded Information Hub catalogues. */
+.catalogue-view-switch {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: V.$gap;
+}
+
+.catalogue-filters,
+.hero-catalogue-filters,
+.status-catalogue-filters,
+.perk-catalogue-filters,
+.skills-talents-catalogue-filters {
+  position: sticky;
+  top: V.$gap-small;
+  z-index: 100;
+  display: grid;
+  gap: V.$gap;
+  align-items: start;
+  min-width: 0;
+  padding: V.$padding-card;
+}
+
+.catalogue-filters {
+  grid-template-columns: minmax(240px, 2fr) repeat(4, minmax(120px, 1fr)) auto;
+}
+
+.catalogue-filters.is-set-view {
+  grid-template-columns: minmax(220px, 2fr) repeat(4, minmax(115px, 1fr)) auto;
+}
+
+.catalogue-filters.is-list-view,
+.hero-catalogue-filters.has-sort-order {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.catalogue-filters.is-list-view > .catalogue-search,
+.hero-catalogue-filters.has-sort-order > .catalogue-search {
+  grid-column: span 4;
+}
+
+.catalogue-filters.is-list-view > .catalogue-filter-sort,
+.hero-catalogue-filters.has-sort-order > .catalogue-filter-sort {
+  grid-column: span 2;
+}
+
+.catalogue-filters.is-list-view > .catalogue-filter:not(.catalogue-filter-sort),
+.hero-catalogue-filters.has-sort-order > .catalogue-filter:not(.catalogue-filter-sort) {
+  grid-column: span 2;
+}
+
+.hero-catalogue-filters {
+  grid-template-columns: minmax(220px, 2fr) repeat(4, minmax(120px, 1fr)) minmax(100px, .8fr) auto;
+}
+
+.status-catalogue-filters {
+  grid-template-columns: minmax(260px, 2fr) minmax(180px, 1fr) auto;
+  align-items: end;
+}
+
+.perk-catalogue-filters {
+  grid-template-columns: minmax(240px, 2fr) minmax(170px, 1fr) auto;
+}
+
+.skills-talents-catalogue-filters {
+  grid-template-columns: minmax(240px, 2fr) auto;
+}
+
+.catalogue-search,
+.catalogue-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  text-align: left;
+}
+
+.catalogue-control-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px V.$gap-small;
+  padding-inline: 2px;
+  font-size: V.$font-size-small;
+  opacity: 0.85;
+}
+
+.catalogue-control-label .catalogue-result-count {
+  font-size: V.$font-size-small;
+}
+
+.catalogue-input,
+.catalogue-filter select {
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  font-family: V.$font-family-stats;
+}
+
+.catalogue-filter-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: V.$gap-small;
+  width: 100%;
+  min-width: 0;
+  height: auto;
+}
+
+.catalogue-filter-actions > button {
+  align-self: center;
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.catalogue-filter-actions-hidden {
+  justify-content: flex-start;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.catalogue-filter-actions-hidden button,
+.catalogue-show-filters-inline {
+  width: auto;
+}
+
+.catalogue-filter-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-end;
+  grid-column: span 2;
+  gap: V.$gap-small;
+  min-width: 0;
+  height: 40px;
+  padding: 4px 8px;
+  outline: 2px solid black;
+  border: 0;
+  border-radius: V.$border-radius;
+  background: rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.catalogue-filter-checkbox > .text {
+  font-size: 18px;
+}
+
+.catalogue-filter-checkbox input {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  min-height: 0;
+  margin: 0;
+  accent-color: #f2bd55;
+}
+
+.catalogue-filter-heading {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding-bottom: V.$gap-small;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  text-align: center;
+}
+
+.catalogue-result-count {
+  flex: 0 1 auto;
+  opacity: 0.85;
+}
+
+.catalogue-view-label-compact {
+  display: none;
+}
+
+// At widths up to 1200px, keep Search and Sort Order in a consistent 4:2 ratio and use two columns for remaining controls.
+@include M.media-query-max(V.$bp-tablet) {
+  .catalogue-filters,
+  .hero-catalogue-filters,
+  .status-catalogue-filters,
+  .perk-catalogue-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .catalogue-filters.is-set-view {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .catalogue-filters.is-list-view,
+  .hero-catalogue-filters.has-sort-order {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .catalogue-filters.is-list-view > .catalogue-search,
+  .hero-catalogue-filters.has-sort-order > .catalogue-search {
+    grid-column: span 4;
+  }
+
+  .catalogue-filters.is-list-view > .catalogue-filter-sort,
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter-sort {
+    grid-column: span 2;
+  }
+
+  .catalogue-filters.is-list-view > .catalogue-filter:not(.catalogue-filter-sort),
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter:not(.catalogue-filter-sort) {
+    grid-column: span 3;
+  }
+
+  .catalogue-filters:not(.is-list-view) > .catalogue-search,
+  .hero-catalogue-filters:not(.has-sort-order) > .catalogue-search,
+  .status-catalogue-filters > .catalogue-search {
+    grid-column: 1 / -1;
+  }
+
+  .catalogue-filter-checkbox {
+    grid-column: span 3;
+    align-self: flex-end;
+  }
+}
+
+// At widths up to 900px, preserve the same two-column filter layout and compact only control heights.
+@include M.media-query-max(V.$bp-mobile) {
+  .catalogue-filters,
+  .hero-catalogue-filters,
+  .status-catalogue-filters,
+  .perk-catalogue-filters {
+    top: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .skills-talents-catalogue-filters { top: 0; }
+
+  .catalogue-input,
+  .catalogue-filter select {
+    min-height: 32px;
+  }
+
+  .catalogue-filters.is-set-view {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .catalogue-filters.is-list-view,
+  .hero-catalogue-filters.has-sort-order {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .catalogue-filters.is-list-view > .catalogue-search,
+  .hero-catalogue-filters.has-sort-order > .catalogue-search {
+    grid-column: span 4;
+  }
+
+  .catalogue-filters.is-list-view > .catalogue-filter-sort,
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter-sort {
+    grid-column: span 2;
+  }
+
+  .catalogue-filters.is-list-view > .catalogue-filter:not(.catalogue-filter-sort),
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter:not(.catalogue-filter-sort) {
+    grid-column: span 3;
+  }
+
+  .catalogue-filters:not(.is-list-view) > .catalogue-search,
+  .hero-catalogue-filters:not(.has-sort-order) > .catalogue-search,
+  .status-catalogue-filters > .catalogue-search {
+    grid-column: 1 / -1;
+  }
+
+  .catalogue-filter-checkbox {
+    grid-column: span 3;
+    align-self: flex-end;
+    height: 32px;
+    border-radius: 0;
+  }
+
+  .catalogue-filter-actions:not(.catalogue-filter-actions-hidden) {
+    justify-content: space-between;
+    grid-column: 1 / -1;
+  }
+
+  .catalogue-filter-actions-hidden {
+    justify-content: flex-start;
+  }
+
+  .catalogue-filter-actions-hidden .catalogue-show-filters-inline {
+    display: none;
+  }
+
+  .catalogue-view-switch { gap: 0; }
+
+  .catalogue-view-label-full { display: none; }
+  .catalogue-view-label-compact { display: inline; }
+}
+
+// On very wide screens, fit more hero and item filters per row without changing Search or Sort Order widths.
+@include M.media-query(1800px) {
+  .catalogue-filters.is-list-view > .catalogue-filter:not(.catalogue-filter-sort),
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter:not(.catalogue-filter-sort),
+  .catalogue-filter-checkbox {
+    grid-column: span 1;
+  }
+}
+
+// Keep shared catalogue descriptions readable on mobile.
+@include M.media-query-max(V.$bp-mobile) {
+  .catalogue-description.text { font-size: 14px; }
+}
