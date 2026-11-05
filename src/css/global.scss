@@ -2577,7 +2577,7 @@ select {
   object-fit: contain;
 }
 
-.modal.modal-center.page-help-dialog {
+.modal.modal-center.card.page-help-dialog {
   width: min(92vw, 780px);
   max-width: calc(100vw - 24px);
   max-height: min(84vh, 780px);
@@ -2821,11 +2821,6 @@ select {
   text-align: center;
 }
 
-.catalogue-result-count {
-  flex: 0 1 auto;
-  opacity: 0.85;
-}
-
 .catalogue-view-label-compact {
   display: none;
 }
@@ -2957,11 +2952,6 @@ select {
   }
 }
 
-// Keep shared catalogue descriptions readable on mobile.
-@include M.media-query-max(V.$bp-mobile) {
-  .catalogue-description.text { font-size: 14px; }
-}
-
 
 .catalogue-filter-heading-hidden {
   width: 100%;
@@ -2970,14 +2960,6 @@ select {
 }
 
 /* The modal wrapper supplies the single card surface; the guide content stays transparent and fills it. */
-.modal.modal-center.card.page-help-dialog {
-  width: min(92vw, 780px);
-  max-width: calc(100vw - 24px);
-  max-height: min(84vh, 780px);
-  padding: clamp(14px, 3vw, 24px);
-  overflow: auto;
-}
-
 .page-help-modal {
   justify-content: flex-start;
 }
