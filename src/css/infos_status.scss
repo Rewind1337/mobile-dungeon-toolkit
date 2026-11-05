@@ -12,11 +12,6 @@
   padding: V.$padding-card;
 }
 
-.status-catalogue-filters {
-  grid-template-columns: minmax(260px, 2fr) minmax(180px, 1fr) auto;
-  align-items: end;
-}
-
 .status-catalogue-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
