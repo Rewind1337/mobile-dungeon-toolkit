@@ -33,7 +33,7 @@
 .perk-catalogue-filters {
   grid-template-columns: minmax(240px, 2fr) minmax(170px, 1fr) auto;
 }
-// At widths up to 900px, stack perk catalogue filter controls into one column on mobile.
+// At widths up to 900px, keep perk search and slot filters side by side on mobile.
 @include M.media-query-max(V.$bp-mobile) {
-  .perk-catalogue-filters { grid-template-columns: minmax(0, 1fr); }
+  .perk-catalogue-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
