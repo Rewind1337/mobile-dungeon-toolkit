@@ -54,6 +54,7 @@ function CatalogueItemFilters({
         "card",
         view === "sets" ? "is-set-view" : "",
         listMode ? "is-list-view" : "",
+        isListView && !showSlotFilter ? "is-slot-specific" : "",
         onSortChange ? "has-sort-order" : ""
     ].filter(Boolean).join(" ")
 
