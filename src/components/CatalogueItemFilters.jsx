@@ -4,7 +4,7 @@ import {
     PRIMARY_STAT_DEFINITIONS,
     RARITY_DEFINITIONS
 } from "../database/enums.jsx"
-import { humanize } from "../js/util.jsx"
+import { humanize } from "../js/utils.js"
 import CatalogueFilterActions from "./CatalogueFilterActions.jsx"
 
 function CatalogueItemFilters({
