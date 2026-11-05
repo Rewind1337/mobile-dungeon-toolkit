@@ -380,7 +380,7 @@
 /* Equipment sizing is driven by the preview pane, so viewport media queries cannot resize these cards independently. */
 .hero-preview .equipment {
   display: grid;
-  grid-template-columns: repeat(6, calc(V.$item-sprite-width + 10px));
+  grid-template-columns: repeat(6, var(--equipment-card-width));
   justify-content: center;
   align-items: start;
   gap: V.$gap-small;
