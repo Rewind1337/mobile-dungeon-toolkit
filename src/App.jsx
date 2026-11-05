@@ -18,6 +18,7 @@ const PageHeroes = lazy(() => import('./components/PageHeroes.jsx'))
 const PageSimulators = lazy(() => import('./components/PageSimulators.jsx'))
 const PageTeams = lazy(() => import('./components/PageTeams.jsx'))
 const PageWiki = lazy(() => import('./components/PageWiki.jsx'))
+const PageGames = lazy(() => import('./components/PageGames.jsx'))
 
 
 const BASE_HEROES = init_hero_db()
@@ -29,6 +30,7 @@ const PAGE_TO_ROUTE = {
   teams: '/teams/',
   simulator: '/simulators/',
   wiki: '/wiki/',
+  games: '/games/',
 };
 
 const WIKI_TAB_TO_ROUTE = {
@@ -286,7 +288,7 @@ function App() {
                 <Button className="not-found-link" text="Items" color={1} onClick={() => switchTabTo('items')} />
                 <Button className="not-found-link" text="Teams" color={2} onClick={() => switchTabTo('teams')} />
                 <Button className="not-found-link" text="Home" color={6} onClick={() => switchTabTo('splash')} />
-                <Button className="not-found-link" text="" color={3} disabled={true} />
+                <Button className="not-found-link" text="Fun & Games" color={3} disabled={true} />
                 <Button className="not-found-link" text="Simulators" color={4} onClick={() => switchTabTo("simulator")} />
                 <Button className="not-found-link" text="Wiki" color={5} onClick={() => switchTabTo('wiki')} />
               </nav>
@@ -396,7 +398,9 @@ function App() {
 
         {pageContent === 'simulator' && <PageSimulators activeTab={activeSimulatorTab} onTabChange={switchSimulatorTo} itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedTeamsRef={savedTeamsRef} savedItemsRef={savedItemsRef} />}
 
-        {pageContent === 'wiki' && (
+        {{pageContent === 'games' && <PageGames />}
+
+        pageContent === 'wiki' && (
           <PageWiki
             itemsRef={itemsRef}
             heroesRef={heroesRef}
