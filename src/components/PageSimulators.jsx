@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import Button from './Button.jsx'
 import PageHelpButton from './PageHelpButton.jsx'
+import { SimulatorsGuide } from './Guides.jsx'
 import SimulatorOverview from './SimulatorOverview.jsx'
 
 const SubPageGuildBoss = lazy(() => import('./SubPageGuildBoss.jsx'))
@@ -39,8 +40,7 @@ function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedH
                 </div>
                 <div className="options flex-row card">
                     <PageHelpButton title="Simulators">
-                        <p className="text">Choose a simulator from the navigation above. Magic Toilet is currently the available simulator.</p>
-                        <p className="text">The other simulator pages are temporarily disabled while they are being developed.</p>
+                        <SimulatorsGuide />
                     </PageHelpButton>
                 </div>
             </div>
