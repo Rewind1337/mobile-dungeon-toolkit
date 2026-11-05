@@ -18,6 +18,7 @@ function CatalogueItemFilters({
     attributeFilter = "all",
     setAttributeFilter,
     setAttributeFilterForSets,
+    setMainAttributeFilter,
     setPieceCountFilter,
     locationFilter = "all",
     setLocationFilter,
@@ -111,7 +112,7 @@ function CatalogueItemFilters({
                 <>
                     <label className="catalogue-filter">
                         <span className="catalogue-control-label text">Set attribute</span>
-                        <select aria-label="Filter sets by main attribute" value={attributeFilter} onChange={event => setAttributeFilterForSets?.(event.target.value)}>
+                        <select aria-label="Filter sets by main attribute" value={setMainAttributeFilter ?? "all"} onChange={event => setAttributeFilterForSets?.(event.target.value)}>
                             <option value="all">All attributes</option>
                             {Object.values(PRIMARY_STAT_DEFINITIONS).map(attribute =>
                                 <option key={attribute.id} value={String(attribute.id)}>{humanize(attribute.name)}</option>
