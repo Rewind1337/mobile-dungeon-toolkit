@@ -339,7 +339,7 @@ function App() {
                   <div className='card custom-combat flex-col home-navigation-tile is-disabled' aria-disabled="true" aria-label="Custom Combat temporarily unavailable">
                     <div className='header card card-static'>Custom Combat</div>
                   </div>
-                  <div className='card magic-toilet flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Magic Toilet simulator" onClick={() => switchSimulatorTo('magic-toilet')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('magic-toilet'); } }}>
+                  <div className='card magic-toilet-tile flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Magic Toilet simulator" onClick={() => switchSimulatorTo('magic-toilet')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('magic-toilet'); } }}>
                     <div className='header card card-static'>Magic Toilet</div>
                   </div>
                 </div>
