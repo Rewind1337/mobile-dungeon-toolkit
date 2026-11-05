@@ -24,11 +24,11 @@ const RESOURCE_DATA = init_resource_db()
 const RESOURCE_COUNT = RESOURCE_DATA.filter(resource => !resource.isGem).length
 const GEM_TYPE_COUNT = new Set(RESOURCE_DATA.filter(resource => resource.isGem).map(resource => resource.gemType)).size
 const TABS = [
-    ["hero-catalogue", "Hero Catalogue"],
+    ["hero-catalogue", "Heroes & Banners"],
     ["item-catalogue", "Items & Sets"],
-    ["perk-catalogue", "Perk Catalogue"],
+    ["perk-catalogue", "Perk Catalogue", "Perks"],
     ["skills-talents-catalogue", "Skills & Talents"],
-    ["status-catalogue", "Status Catalogue"],
+    ["status-catalogue", "Status Catalogue", "Statuses"],
     ["resources-catalogue", "Resources & Gems"],
 ]
 
@@ -240,7 +240,9 @@ function PageWiki({ itemsRef, heroesRef, activeTab = "overview", onTabChange }) 
     return <div id="page-info-layout">
         <div className="sub-nav-bar flex-row" style={{ flex: "0 0 auto" }}>
             <div className="pagination flex-row card w-100">
-                {TABS.map(([id, label]) => <Button key={id} text={label} color={5} active={id === "item-catalogue" ? activeTab === "item-catalogue" || activeTab === "set-catalogue" : id === "hero-catalogue" ? activeTab === "hero-catalogue" || activeTab === "hero-tier-list-catalogue" || activeTab === "hero-banners-catalogue" : id === "resources-catalogue" ? activeTab === "resources-catalogue" || activeTab === "gems-catalogue" : id === "skills-talents-catalogue" ? activeTab === "skills-talents-catalogue" || activeTab === "skills-catalogue" || activeTab === "talents-catalogue" : activeTab === id} onClick={() => setActiveTab(id)} />)}
+                {TABS.map(([id, label, compactLabel]) => <Button key={id} text={compactLabel
+                    ? <><span className="catalogue-view-label-full">{label}</span><span className="catalogue-view-label-compact">{compactLabel}</span></>
+                    : label} color={5} active={id === "item-catalogue" ? activeTab === "item-catalogue" || activeTab === "set-catalogue" : id === "hero-catalogue" ? activeTab === "hero-catalogue" || activeTab === "hero-tier-list-catalogue" || activeTab === "hero-banners-catalogue" : id === "resources-catalogue" ? activeTab === "resources-catalogue" || activeTab === "gems-catalogue" : id === "skills-talents-catalogue" ? activeTab === "skills-talents-catalogue" || activeTab === "skills-catalogue" || activeTab === "talents-catalogue" : activeTab === id} onClick={() => setActiveTab(id)} />)}
             </div>
         </div>
         <div id="page-info" className="page card w-100" ref={listRef} {...events} style={{ display:"flex", flexDirection:"column", alignItems:"stretch", flex:"1 1 0", minHeight:0, minWidth:0, overflowY:"auto", overflowX:"hidden", alignContent:"start" }}>
