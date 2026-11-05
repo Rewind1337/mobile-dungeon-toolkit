@@ -10,6 +10,7 @@ import CatalogueFilterActions from "./CatalogueFilterActions.jsx"
 function CatalogueItemFilters({
     search,
     setSearch,
+    headerText,
     onSearchBlur,
     sourceFilter = "all",
     setSourceFilter,
@@ -43,7 +44,12 @@ function CatalogueItemFilters({
     onSortChange
 }) {
     if (!filtersVisible) {
-        return <CatalogueFilterActions filtersVisible={false} onShow={onShowFilters} />
+        return (
+            <>
+                {headerText && <div className="header-big catalogue-filter-heading-hidden">{headerText}</div>}
+                <CatalogueFilterActions filtersVisible={false} onShow={onShowFilters} />
+            </>
+        )
     }
 
     const className = [
@@ -56,6 +62,7 @@ function CatalogueItemFilters({
 
     return (
         <div className={className} style={topOffset ? { top: topOffset } : undefined}>
+            {headerText && <div className="header-big catalogue-filter-heading">{headerText}</div>}
             <label className="catalogue-search">
                 <span className="catalogue-control-label text">
                     Search ({resultCount} of {totalCount})
