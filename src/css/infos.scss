@@ -281,6 +281,14 @@
   .catalogue-search, .hero-catalogue-filters .catalogue-search, .status-catalogue-filters .catalogue-search {
     grid-column: 1 / -1;
   }
+  .hero-catalogue-filters.has-sort-order > .catalogue-search,
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter-sort,
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter:not(.catalogue-filter-sort) {
+    grid-column: span 1;
+  }
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter-actions {
+    grid-column: 1 / -1;
+  }
   .catalogue-filter-actions { justify-content: space-between; }
 }
 
@@ -408,5 +416,13 @@
 
   .hero-catalogue-filters.has-sort-order > .catalogue-filter-actions {
     grid-column: 1 / -1;
+  }
+}
+
+
+// Keep catalogue descriptions comfortably readable on mobile instead of shrinking them with generic text.
+@include M.media-query-max(V.$bp-mobile) {
+  .catalogue-description.text {
+    font-size: 14px;
   }
 }
