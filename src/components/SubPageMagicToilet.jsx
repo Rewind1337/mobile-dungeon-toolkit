@@ -325,6 +325,11 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                 <p className="text">Simulate banner flushes, track Epic and Legendary pity, and compare your Legendary results with the expected average.</p>
             </header>
 
+            {selected && <details className="card magic-toilet-banner-details">
+                <summary className="text">View selected Banner</summary>
+                <BannerCatalogueCard result={selected} heroesById={heroesById} />
+            </details>}
+
             <section className="card magic-toilet-controls">
                 <div className="magic-toilet-control-grid">
                     <label className="magic-toilet-field">
@@ -434,10 +439,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                 )}
             </section>
 
-            {selected && <details className="card magic-toilet-banner-details">
-                <summary className="text">View selected banner catalogue card</summary>
-                <BannerCatalogueCard result={selected} heroesById={heroesById} />
-            </details>}
+
 
             <section className="card magic-toilet-results">
                 <div className="magic-toilet-stats" aria-label="Magic Toilet pull statistics">
