@@ -3045,69 +3045,8 @@ select {
     rgba(0, 0, 0, .2);
 }
 
-.guide-example-heading {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: V.$gap-small;
-}
-
-.guide-example-heading > strong {
-  font-family: V.$font-family-header;
-  font-size: 18px;
-}
-
-.guide-hero-showcase {
-  display: grid;
-  grid-template-columns: 96px minmax(0, 1fr);
-  align-items: center;
-  gap: V.$gap;
-  min-width: 0;
-}
-
-.guide-hero-sprite {
-  display: block;
-  width: 96px;
-  height: 112px;
-  object-fit: contain;
-  image-rendering: optimizeQuality;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .6));
-}
-
-.guide-hero-details {
-  display: flex;
-  flex-direction: column;
-  gap: V.$gap-small;
-  min-width: 0;
-}
-
-.guide-example-label {
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  opacity: .72;
-}
-
-.guide-mini-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.guide-mini-chips > span {
-  padding: 4px 8px;
-  border: 1px solid rgba(255, 255, 255, .22);
-  border-radius: V.$border-radius-small;
-  background: rgba(0, 0, 0, .24);
-  font-size: 12px;
-  font-weight: 700;
-}
-
 .guide-equipment-strip,
-.guide-equipment-showcase,
-.guide-resource-row {
+.guide-equipment-showcase {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -3254,10 +3193,6 @@ select {
 @media (max-width: 620px) {
   .guide-steps {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .guide-hero-showcase {
-    grid-template-columns: 76px minmax(0, 1fr);
   }
 
   .guide-example {
