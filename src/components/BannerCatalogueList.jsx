@@ -97,10 +97,7 @@ export default function BannerCatalogueList({ heroesRef, search, setSearch, comm
             {filtersVisible ? (
                 <div className="banner-catalogue-search card">
                     <label className="catalogue-search">
-                        <span className="catalogue-control-label text">
-                            Search banners, heroes, and banner details
-                            <span className="catalogue-result-count text">Showing {filteredBanners.length} of {BANNERS.length} banners</span>
-                        </span>
+                        <span className="catalogue-control-label text">Search ({filteredBanners.length} of {BANNERS.length})</span>
                         <input className="selectable catalogue-input" type="search" aria-label="Search all banner and hero details" placeholder="Search banners, heroes, and details..." value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
                     </label>
                     <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={() => { setSearch(""); commitSearch(""); }} />
