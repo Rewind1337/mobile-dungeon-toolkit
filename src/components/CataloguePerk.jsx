@@ -37,7 +37,7 @@ function CataloguePerk() {
         {filtersVisible ? (
             <div className="perk-catalogue-filters card">
                 <label className="catalogue-search">
-                    <span className="catalogue-control-label text">Search perks ({filtered.length} of {entries.length} perks)</span>
+                    <span className="catalogue-control-label text">Search ({filtered.length} of {entries.length})</span>
                     <input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} placeholder="Search perks or equipment slots…" />
                 </label>
                 <label className="catalogue-filter">
@@ -59,7 +59,7 @@ function CataloguePerk() {
                 )}
                 <div className="perk-catalogue-content">
                     <div className="perk-catalogue-heading">
-                        <span className="text-big perk-catalogue-name">{entry.name}</span>
+                        <span className="text-big catalogue-entry-name perk-catalogue-name">{entry.name}</span>
                     </div>
                     <div className="perk-catalogue-slots">{entry.slots.map(slot => {
                         const slotLabel = slot.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())
