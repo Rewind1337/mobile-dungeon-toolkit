@@ -105,6 +105,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
         <CatalogueItemFilters
             search={search}
             setSearch={setSearch}
+            headerText={headerText}
             onSearchBlur={() => commitSearch(search)}
             slotFilter={filters.slot === null ? "all" : String(filters.slot)}
             setSlotFilter={value => setFilters(previous => ({ ...previous, slot: value === "all" ? null : Number(value) }))}
@@ -127,7 +128,6 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
             sortOrder={sortOrder}
             onSortChange={setSortOrder}
         />
-        <div className='header-big'>{headerText}</div>
 
         <div className='list item-list flex-row virtualized-list-scroll' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
             {filteredItems.length === 0 ? (
