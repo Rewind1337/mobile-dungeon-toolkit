@@ -2616,3 +2616,16 @@ select {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+
+/* Preview expand and deselect buttons follow the standard desktop and mobile corner radii. */
+.preview-top-row .preview-action-chip {
+  border-radius: 8px;
+}
+
+// At widths up to 900px, square preview action buttons like the other mobile buttons.
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .preview-top-row .preview-action-chip {
+    border-radius: 0;
+  }
+}
