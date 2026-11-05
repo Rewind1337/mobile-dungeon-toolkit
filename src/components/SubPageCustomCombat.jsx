@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { EQUIPMENT_SLOT_DEFINITIONS } from "../database/enums.jsx"
 import { itemSprites } from "../database/db_sprites.jsx"
 import Hero from "./Hero.jsx"
-import { TeamOverview, TeamHeroStats } from "./PageTeams.jsx"
+import { TeamOverview, TeamHeroStats } from "./pages/PageTeams.jsx"
 
 const EMPTY_TEAMS = []
 
