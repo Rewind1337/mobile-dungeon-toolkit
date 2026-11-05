@@ -63,14 +63,14 @@ function HeroCatalogueFilters({
                 <span className="catalogue-control-label text">Main attribute</span>
                 <select aria-label="Filter by main attribute" value={attributeFilter} onChange={event => setAttributeFilter(event.target.value)}>
                     <option value="all">All attributes</option>
-                    {Object.values(ATTRIBUTE_DEFINITIONS).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
+                    {Object.values(ATTRIBUTE_DEFINITIONS).filter(value => value.id !== ATTRIBUTE_DEFINITIONS.NONE.id).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
                 </select>
             </label>
             <label className="catalogue-filter">
                 <span className="catalogue-control-label text">Element</span>
                 <select aria-label="Filter by element" value={elementFilter} onChange={event => setElementFilter(event.target.value)}>
                     <option value="all">All elements</option>
-                    {Object.values(ELEMENT_DEFINITIONS).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
+                    {Object.values(ELEMENT_DEFINITIONS).filter(value => value.id !== ELEMENT_DEFINITIONS.VOID.id).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
                 </select>
             </label>
             <label className="catalogue-filter">
