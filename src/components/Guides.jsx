@@ -62,7 +62,7 @@ export function HeroManagementGuide() {
                         <div className="guide-mini-chips">
                             <span>Dexterity</span>
                             <span>Support</span>
-                            <span>Starred-ready</span>
+                            <span>Starred</span>
                         </div>
                         <p className="guide-copy">Selecting a hero opens their preview with their attributes, equipment slots, main stats, calculated stats, skills, talents, and other stat details.</p>
                     </div>
