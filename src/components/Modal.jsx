@@ -6,7 +6,7 @@ import Button from './Button';
 const openModals = []
 let modalEscapeHandler = null
 
-function Modal({ isVisible, onClose, position = 'left', hasCloseButton, children }) {
+function Modal({ isVisible, onClose, position = 'left', hasCloseButton, className = "", children }) {
     const onCloseRef = useRef(onClose)
     onCloseRef.current = onClose
     const modalEntryRef = useRef(null)
@@ -47,7 +47,7 @@ function Modal({ isVisible, onClose, position = 'left', hasCloseButton, children
                 event.stopPropagation()
                 onClose?.()
             }} />
-            <div className={`modal modal-${position} card visible`}>
+            <div className={`modal modal-${position} card visible ${className}`.trim()}>
                 {children}
                 {hasCloseButton && (
                     <div className="modal-footer visible">
