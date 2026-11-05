@@ -170,9 +170,9 @@ function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null
     return (
         <section className="hero-catalogue">
             <CatalogueViewSwitch ariaLabel="Hero catalogue sections" view={initialView} onViewChange={onViewChange} options={[
-                { label: "Heroes", value: "heroes" },
+                { label: "Hero Catalogue", compactLabel: "Heroes", value: "heroes" },
                 { label: "Tier List", value: "tier-list" },
-                { label: "Banners", value: "banners" },
+                { label: "Banner Catalogue", compactLabel: "Banners", value: "banners" },
             ]} />
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
