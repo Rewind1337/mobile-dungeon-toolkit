@@ -490,7 +490,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                         </article>
                         )
                     })}
-                    <div className="team team-new card flex-row">
+                    <div className="team team-new card flex-row sticky-bottom">
                         <Button text="Create New Team" color="confirm" onClick={createTeam} />
                     </div>
                 </section>
