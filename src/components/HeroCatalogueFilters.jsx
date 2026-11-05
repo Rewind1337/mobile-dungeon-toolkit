@@ -5,7 +5,7 @@ import {
     RARITY_DEFINITIONS,
     ROLE_DEFINITIONS
 } from "../database/enums.jsx"
-import { humanize } from "../js/util.jsx"
+import { humanize } from "../js/utils.js"
 
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
     rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
