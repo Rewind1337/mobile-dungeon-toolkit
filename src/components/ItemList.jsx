@@ -5,11 +5,11 @@ import '../css/item.scss'
 
 import Item from './Item.jsx'
 import VirtualizedGrid from './VirtualizedGrid.jsx'
-import { filterSprites } from '../database/db_sprites.jsx'
-import ItemFilters from './ItemFilters.jsx'
+import CatalogueItemFilters from './CatalogueItemFilters.jsx'
 import BackToTopButton from './BackToTopButton.jsx'
 import { ATTRIBUTE_DEFINITIONS, DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
 import { isSearchAssetField, matchesSearchQuery, useUrlSearch } from '../js/search.jsx'
+import { getLocations, getSourceName } from '../js/catalogueItemUtils.jsx'
 
 function getSearchableValues(value, seen = new Set()) {
     if (value === null || value === undefined) return []
@@ -31,8 +31,10 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
         slot: null,
         attributeRequirement: null,
         rarity: null,
+        source: null,
+        location: null,
     });
-    const [filtersAdvanced, setFiltersAdvanced] = useState(false)
+    const [filtersVisible, setFiltersVisible] = useState(true)
     const [sortOrder, setSortOrder] = useState("alphabetic")
 
     const allItems = useMemo(() => {
@@ -45,26 +47,24 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
         ];
     }, [itemsRef]);
 
+    const allSources = useMemo(
+        () => [...new Set(allItems.map(item => getSourceName(item.dropSource)))].sort(),
+        [allItems]
+    );
+    const allLocations = useMemo(
+        () => [...new Set(allItems.flatMap(getLocations))].sort((a, b) => a.localeCompare(b, undefined, { numeric: true })),
+        [allItems]
+    );
+
     const toggleFilter = (type, value) => {
-        setFilters(previous => {
-            if (type === "rarity") {
-                return {
-                    set: null,
-                    unique: null,
-                    slot: null,
-                    attributeRequirement: null,
-                    rarity: previous.rarity === value ? null : value
-                }
-            }
-            return {
-                set: null, unique: null, slot: null, attributeRequirement: null, rarity: null,
-                [type]: previous[type] === value ? null : value
-            }
-        })
+        setFilters(previous => ({
+            ...previous,
+            [type]: previous[type] === value ? null : value
+        }))
     };
 
     const clearFilters = () => {
-        setFilters({ set: null, unique: null, slot: null, attributeRequirement: null, rarity: null });
+        setFilters({ set: null, unique: null, slot: null, attributeRequirement: null, rarity: null, source: null, location: null });
         setSearch("");
         commitSearch("");
     };
@@ -84,7 +84,11 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
             const matchesUnique = filters.unique === null || (filters.unique === 'unique' ? hasUnique : !hasUnique);
             const matchesSlot = filters.slot === null || itemObj.slot === filters.slot;
             const matchesAttribute = filters.attributeRequirement === null || itemObj.attributeRequirement === filters.attributeRequirement;
-            const matchesRarity = filters.rarity === null || filters.rarity === itemObj.rarity;
+            const matchesRarity = filters.rarity === null || Number(filters.rarity) === Number(itemObj.rarity);
+            const sourceName = getSourceName(itemObj.dropSource);
+            const locations = getLocations(itemObj);
+            const matchesSource = filters.source === null || filters.source === sourceName;
+            const matchesLocation = filters.location === null || locations.includes(filters.location);
             const set = (setsRef ?? []).find(setEntry => setEntry.id === itemObj.set)
             const searchable = [...getSearchableValues(itemObj), itemObj.name,
                 getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? '',
@@ -101,7 +105,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                 return undefined;
             });
 
-            return matchesItemType && matchesHeroAttribute && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity && matchesName;
+            return matchesItemType && matchesHeroAttribute && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity && matchesSource && matchesLocation && matchesName;
         });
 
         return result.sort((a, b) => {
@@ -113,9 +117,39 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
     }, [allItems, filters, search, itemType, heroAttributeRequirement, sortOrder, setsRef]);
 
     return (<>
-        <div className='flex-row'>
-            <ItemFilters savedItems={savedItems} setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={setSearch} onSearchBlur={() => commitSearch(search)} clearFilters={clearFilters} filters={{ ...filters, name: search }} filterSprites={filterSprites} topOffset={filtersOffset} sortOrder={sortOrder} onSortChange={setSortOrder} />
-        </div>
+        <CatalogueItemFilters
+            search={search}
+            setSearch={setSearch}
+            onSearchBlur={() => commitSearch(search)}
+            sourceFilter={filters.source ?? "all"}
+            setSourceFilter={value => setFilters(previous => ({ ...previous, source: value === "all" ? null : value }))}
+            locationFilter={filters.location ?? "all"}
+            setLocationFilter={value => setFilters(previous => ({ ...previous, location: value === "all" ? null : value }))}
+            allSources={allSources}
+            allLocations={allLocations}
+            slotFilter={filters.slot === null ? "all" : String(filters.slot)}
+            setSlotFilter={value => setFilters(previous => ({ ...previous, slot: value === "all" ? null : Number(value) }))}
+            showSlotFilter={itemType === null}
+            attributeFilter={filters.attributeRequirement === null ? "all" : String(filters.attributeRequirement)}
+            setAttributeFilter={value => setFilters(previous => ({ ...previous, attributeRequirement: value === "all" ? null : Number(value) }))}
+            attributeLabel="Attribute requirement"
+            rarityFilter={filters.rarity === null ? "all" : String(filters.rarity)}
+            setRarityFilter={value => setFilters(previous => ({ ...previous, rarity: value === "all" ? null : Number(value) }))}
+            uniqueFilter={filters.unique ?? "all"}
+            setUniqueFilter={value => setFilters(previous => ({ ...previous, unique: value === "all" ? null : value }))}
+            setFilter={filters.set ?? "all"}
+            setSetFilter={value => setFilters(previous => ({ ...previous, set: value === "all" ? null : value }))}
+            isListView
+            resultCount={filteredItems.length}
+            totalCount={allItems.length}
+            clearFilters={clearFilters}
+            filtersVisible={filtersVisible}
+            onHideFilters={() => setFiltersVisible(false)}
+            onShowFilters={() => setFiltersVisible(true)}
+            topOffset={filtersOffset}
+            sortOrder={sortOrder}
+            onSortChange={setSortOrder}
+        />
         <div className='header-big'>{headerText}</div>
 
         <div className='list item-list flex-row virtualized-list-scroll' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
