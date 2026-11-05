@@ -13,7 +13,7 @@
 
 // At widths up to 900px, remove the extra padding from the hero list on mobile.
   @include M.media-query-max(V.$bp-mobile, ()) {
-    padding: 0;
+    padding: 6px 0 0;
   }
 }
 
@@ -433,6 +433,56 @@
 
 // At narrow preview-pane widths, change only the equipment grid's column count.
 @container hero-preview-pane (max-width: 420px) {
+  .hero-preview .base-stats:not(.calculated-stats),
+  .hero-preview .calculated-stats {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-preview .base-stats:not(.calculated-stats) > .card,
+  .hero-preview .calculated-stats .calculated-stat {
+    width: 100%;
+    min-width: 0;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .hero-preview .details {
+    flex-direction: column;
+  }
+
+  .hero-preview .details > .flex-col {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+// In medium preview panes, show the four main stats as a 2x2 grid and stack Other Stats.
+@container hero-preview-pane (min-width: 421px) and (max-width: 660px) {
+  .hero-preview .base-stats:not(.calculated-stats),
+  .hero-preview .calculated-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+  }
+
+  .hero-preview .base-stats:not(.calculated-stats) > .card,
+  .hero-preview .calculated-stats .calculated-stat {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .hero-preview .details {
+    flex-direction: column;
+  }
+
+  .hero-preview .details > .flex-col {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@container hero-preview-pane (max-width: 420px) {
   .hero-preview .equipment {
     grid-template-columns: repeat(2, var(--equipment-card-width));
   }
@@ -487,12 +537,6 @@
   .filters-group-rarities { order: 1; }
   .filters-starred-group { order: 2; }
   .hero-preview .calculated-stats-heading small { font-size:.75em; }
-  .hero-preview .base-stats:not(.calculated-stats) { flex-direction:column; align-items:stretch; }
-  .hero-preview .base-stats:not(.calculated-stats) > .card { width:100%; min-width:0; justify-content:flex-start; gap:8px; }
-  .hero-preview .calculated-stats { flex-direction:column; align-items:stretch; }
-  .hero-preview .calculated-stats .calculated-stat { width:100%; min-width:0; justify-content:flex-start; gap:8px; }
-  .hero-preview .details { flex-direction:column; }
-  .hero-preview .details > .flex-col { width:100%; min-width:0; }
   .hero-preview .hero-stat { min-width:0; gap:6px; }
 }
 
