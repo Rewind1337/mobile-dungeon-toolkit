@@ -206,6 +206,24 @@
   margin-inline: auto;
 }
 
+.catalogue-set-attribute-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.catalogue-set-attribute-row > .catalogue-chip {
+  flex: 0 1 auto;
+  max-width: 100%;
+}
+
+.catalogue-chip-main-attribute {
+  white-space: nowrap;
+}
+
 .catalogue-piece-list {
   flex-direction: row;
 }
