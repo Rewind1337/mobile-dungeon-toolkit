@@ -16,8 +16,8 @@ function PageHelpButton({ title, children }) {
                 color={6}
                 onClick={() => setIsVisible(true)}
             />
-            <Modal position="center" isVisible={isVisible} onClose={() => setIsVisible(false)}>
-                <section className="page-help-modal card flex-col">
+            <Modal position="center" className="page-help-dialog" isVisible={isVisible} onClose={() => setIsVisible(false)}>
+                <section className="page-help-modal flex-col">
                     <div className="header-big">{title} Guide</div>
                     <div className="page-help-content flex-col">
                         {children}
