@@ -1,7 +1,6 @@
 import { attributeSprites, perkSprites } from "../database/db_sprites.jsx"
 import CataloguePerkList from "./CataloguePerkList.jsx"
 import { PRIMARY_STAT_DEFINITIONS } from "../database/enums.jsx"
-import { humanize } from "../js/util.jsx"
 import { ATTRIBUTE_ICON_KEYS, getAttributeRequirementLabel, getDropSourceLabel, getSetLocations } from "../js/catalogueItemUtils.jsx"
 import "../css/item.scss"
 import "../css/infos.scss"
@@ -13,7 +12,7 @@ export default function SetCatalogueCard({ set, pieces }) {
     const attributeKey = ATTRIBUTE_ICON_KEYS[attributeLabel.toLowerCase()]
     const mainAttribute = Object.values(PRIMARY_STAT_DEFINITIONS).find(attribute => attribute.id === Number(set.mainAttribute))
     const mainAttributeSprite = mainAttribute ? perkSprites[`${mainAttribute.name}_FLAT`] : null
-    const mainAttributeShortName = { ATTACK: "ATK", DEFENCE: "DEF", AGILITY: "AGI" }[mainAttribute?.name] ?? ""
+    const mainAttributeLabel = { ATTACK: "Attack", DEFENCE: "Defense", AGILITY: "Agility" }[mainAttribute?.name] ?? ""
     const attributeClass = attributeLabel.toLowerCase().includes("strength")
         ? "catalogue-chip-attribute-strength"
         : attributeLabel.toLowerCase().includes("dexterity")
@@ -31,9 +30,9 @@ export default function SetCatalogueCard({ set, pieces }) {
                         {attributeSprites[attributeKey] && <img className="catalogue-chip-icon" src={attributeSprites[attributeKey]} alt="" />}
                         {attributeLabel}
                     </span>
-                    {mainAttribute && <span className="catalogue-chip text catalogue-chip-main-attribute" title={humanize(mainAttribute.name)}>
+                    {mainAttribute && <span className="catalogue-chip text catalogue-chip-main-attribute" title={mainAttributeLabel}>
                         {mainAttributeSprite && <img className="catalogue-chip-icon" src={mainAttributeSprite} alt="" />}
-                        {mainAttributeShortName}
+                        {mainAttributeLabel}
                     </span>}
                 </div>
                 <div className="catalogue-set-meta flex-row justify-center text">
