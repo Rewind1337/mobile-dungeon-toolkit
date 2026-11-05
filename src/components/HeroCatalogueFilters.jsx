@@ -42,7 +42,7 @@ function HeroCatalogueFilters({
     return (
         <div className={`hero-catalogue-filters card${onSortChange ? " has-sort-order" : ""}`} style={topOffset ? { top: topOffset } : undefined}>
             <label className="catalogue-search">
-                <span className="catalogue-control-label text">Search heroes ({resultCount} of {totalCount} heroes)</span>
+                <span className="catalogue-control-label text">Search ({resultCount} of {totalCount})</span>
                 <input
                     className="selectable catalogue-input"
                     aria-label="Search hero catalogue"
@@ -52,6 +52,16 @@ function HeroCatalogueFilters({
                     onBlur={onSearchBlur}
                 />
             </label>
+            {onSortChange && (
+                <label className="catalogue-filter catalogue-filter-sort">
+                    <span className="catalogue-control-label text">Sort Order</span>
+                    <select aria-label="Sort order" value={sortOrder} onChange={event => onSortChange(event.target.value)}>
+                        <option value="alphabetic">Alphabetic</option>
+                        <option value="rarity">Rarity</option>
+                        <option value="level">Level</option>
+                    </select>
+                </label>
+            )}
             <label className="catalogue-filter">
                 <span className="catalogue-control-label text">Rarity</span>
                 <select aria-label="Filter by rarity" value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
@@ -84,16 +94,6 @@ function HeroCatalogueFilters({
                 <label className="catalogue-filter-checkbox">
                     <input type="checkbox" checked={starredOnly} onChange={event => setStarredOnly(event.target.checked)} />
                     <span className="text">Starred</span>
-                </label>
-            )}
-            {onSortChange && (
-                <label className="catalogue-filter">
-                    <span className="catalogue-control-label text">Sort Order</span>
-                    <select aria-label="Sort order" value={sortOrder} onChange={event => onSortChange(event.target.value)}>
-                        <option value="alphabetic">Alphabetic</option>
-                        <option value="rarity">Rarity</option>
-                        <option value="level">Level</option>
-                    </select>
                 </label>
             )}
             <CatalogueFilterActions filtersVisible onHide={onHideFilters} onClear={clearFilters} />
