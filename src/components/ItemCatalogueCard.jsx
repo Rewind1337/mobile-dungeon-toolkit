@@ -1,5 +1,5 @@
-import { attributeSprites, iconSprites } from "../database/db_sprites.jsx"
-import { ATTRIBUTE_DEFINITIONS, RARITY_DEFINITIONS } from "../database/enums.jsx"
+import { attributeSprites, iconSprites, perkSprites } from "../database/db_sprites.jsx"
+import { ATTRIBUTE_DEFINITIONS, PRIMARY_STAT_DEFINITIONS, RARITY_DEFINITIONS } from "../database/enums.jsx"
 import { humanize } from "../js/util.jsx"
 import Item from "./Item.jsx"
 import CataloguePerkList from "./CataloguePerkList.jsx"
@@ -38,6 +38,8 @@ function renderUniqueEffectDescription(item) {
 export default function ItemCatalogueCard({ item, set }) {
     const statuses = getEffectStatuses(item)
     const effectDescription = item.unique?.description
+    const mainAttribute = Object.values(PRIMARY_STAT_DEFINITIONS).find(attribute => attribute.id === Number(item.mainAttribute))
+    const mainAttributeSprite = mainAttribute ? perkSprites[`${mainAttribute.name}_FLAT`] : null
     const hasAllAttributeRequirement = item.attributeRequirement !== null
         && item.attributeRequirement !== undefined
         && Number(item.attributeRequirement) === ATTRIBUTE_DEFINITIONS.NONE.id
@@ -56,6 +58,10 @@ export default function ItemCatalogueCard({ item, set }) {
                                 {iconSprites[SLOT_ICON_KEYS[String(item.slotLabel ?? "").toUpperCase()]] && <img className="catalogue-chip-icon" src={iconSprites[SLOT_ICON_KEYS[String(item.slotLabel ?? "").toUpperCase()]]} alt="" />}
                                 {humanize(item.slotLabel ?? "Unknown slot")}
                             </span>
+                            {mainAttribute && <span className="catalogue-chip text catalogue-chip-main-attribute">
+                                {mainAttributeSprite && <img className="catalogue-chip-icon" src={mainAttributeSprite} alt="" />}
+                                {humanize(mainAttribute.name)}
+                            </span>}
                             {hasAllAttributeRequirement
                                 ? <span className="catalogue-chip text catalogue-chip-attribute catalogue-item-attribute-all">
                                     {[ATTRIBUTE_DEFINITIONS.STRENGTH.id, ATTRIBUTE_DEFINITIONS.DEXTERITY.id, ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id].map(attributeId => (
