@@ -11,7 +11,7 @@
   padding: 6px 2px 2px;
   gap: V.$gap-small;
 
-// At widths up to 900px, remove the extra padding from the hero list on mobile.
+// On mobile, preserve the 6px top inset while removing horizontal and bottom padding.
   @include M.media-query-max(V.$bp-mobile, ()) {
     padding: 6px 0 0;
   }
