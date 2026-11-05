@@ -384,6 +384,7 @@
   justify-content: center;
   align-items: start;
   gap: V.$gap-small;
+  --equipment-card-width: calc(V.$item-sprite-width + 10px);
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -395,10 +396,6 @@
   width: calc(V.$item-sprite-width + 6px);
   min-width: 0;
   margin: 0;
-
-  @include M.media-query-max(V.$bp-mobile, ()) {
-    width: calc(V.$item-sprite-width + 2px);
-  }
 }
 
 .hero-preview .equipment > .item .item-sprite {
@@ -427,35 +424,24 @@
   border: none;
 }
 
-// At medium preview-pane widths, keep the tablet-sized three-column grid while preventing viewport-only mobile rules from shrinking the sprites.
+// At medium preview-pane widths, change only the equipment grid's column count.
 @container hero-preview-pane (max-width: 660px) {
   .hero-preview .equipment {
-    grid-template-columns: repeat(3, calc(V.$item-sprite-width + 10px));
-  }
-
-  .hero-preview .equipment > .item .item-sprite {
-    flex: 0 0 92px;
-    width: 92px;
-    border-radius: 4px;
-  }
-
-  .hero-preview .equipment > .item .item-sprite-img {
-    width: 92px;
-  }
-
-  .hero-preview .equipment > .item .text {
-    border-radius: V.$border-radius;
-    outline: 2px solid black;
-    margin: 6px auto 0;
-    width: 100%;
-    border: none;
+    grid-template-columns: repeat(3, var(--equipment-card-width));
   }
 }
 
-// At narrow preview-pane widths, use two fixed 70px columns with 60px sprites and compact flat labels.
+// At narrow preview-pane widths, change only the equipment grid's column count.
 @container hero-preview-pane (max-width: 420px) {
   .hero-preview .equipment {
-    grid-template-columns: repeat(2, 70px);
+    grid-template-columns: repeat(2, var(--equipment-card-width));
+  }
+}
+
+// At widths up to 900px, use compact 60px sprites and 70px equipment tracks regardless of the preview pane's width.
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .hero-preview .equipment {
+    --equipment-card-width: 70px;
   }
 
   .hero-preview .equipment > .item.card {
@@ -475,7 +461,8 @@
     border-radius: 0;
   }
 
-  .hero-preview .equipment > .item .item-icon {
+  .hero-preview .equipment > .item .item-icon,
+  .hero-preview .equipment > .item .item-icon-damaged {
     width: 20px;
     height: 20px;
     border-radius: 0;
@@ -492,26 +479,6 @@
 
   .hero-preview .equipment > .item:not([data-type]) .text {
     font-size: 16px;
-  }
-}
-
-// At widths up to 900px, keep every equipped item component square even when its preview-pane container still matches the medium layout.
-@include M.media-query-max(V.$bp-mobile, ()) {
-  .hero-preview .equipment > .item.card,
-  .hero-preview .equipment > .item .item-sprite,
-  .hero-preview .equipment > .item .item-sprite-img,
-  .hero-preview .equipment > .item .item-icon,
-  .hero-preview .equipment > .item .item-icon-damaged,
-  .hero-preview .equipment > .item .text {
-    border-radius: 0;
-  }
-
-  .hero-preview .equipment > .item .text {
-    outline: 0;
-    margin-inline: -2px;
-    width: calc(100% + 4px);
-    border: 2px solid black;
-    margin-top: 0;
   }
 }
 
