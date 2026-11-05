@@ -10,7 +10,7 @@
 .perk-catalogue-icon { display:block; flex:0 0 auto; aspect-ratio: 1; height: 60px; object-fit:contain; }
 .perk-catalogue-content { display:flex; flex:1 1 auto; flex-direction:column; justify-content:center; gap:V.$gap-small; min-width:0; }
 .perk-catalogue-heading { display:flex; align-items:center; gap:V.$gap-small; min-width:0; }
-.perk-catalogue-name { min-width:0; overflow-wrap:anywhere; font-size:24px; }
+.perk-catalogue-row .perk-catalogue-name { min-width:0; overflow-wrap:anywhere; font-size:24px; }
 .perk-catalogue-slots { display:flex; flex-wrap:wrap; gap:V.$gap-small; min-width:0; overflow-wrap:anywhere; justify-content:flex-start; }
 
 // At widths of 1200px and wider, show perk catalogue entries in two columns from tablet width upward.
