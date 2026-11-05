@@ -67,6 +67,10 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
     }, []);
 
     useLayoutEffect(() => {
+        if (listRef.current) listRef.current.scrollTop = 0
+    }, [selectedHeroId, heroesRef])
+
+    useLayoutEffect(() => {
         const preview = listRef.current
         if (!preview) return
 
