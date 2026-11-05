@@ -2460,7 +2460,7 @@ select {
   }
 }
 
-// At widths up to 900px, add bottom padding to scrollable virtualized lists so their final row is not covered by mobile browser controls.
+// At widths up to 900px, add safe-area bottom padding to every top-level .page and scrollable list so the final row clears mobile browser controls.
 @include M.media-query-max(V.$bp-mobile) {
   .page,
   #page-info,
