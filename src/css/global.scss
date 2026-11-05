@@ -2536,3 +2536,67 @@ select {
     display: none;
   }
 }
+
+
+/* Page help controls share the neutral home-button treatment and open a centered, scrollable guide. */
+.page-help-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: V.$gap-small;
+  min-width: 88px;
+  width: auto;
+}
+
+.page-help-button .icon-left {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.page-help-button .icon-left img {
+  display: block;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.page-help-modal {
+  width: min(92vw, 680px);
+  max-width: 100%;
+  max-height: min(82vh, 760px);
+  overflow: auto;
+  gap: V.$gap;
+}
+
+.page-help-modal > .header-big {
+  width: 100%;
+  text-align: center;
+}
+
+.page-help-content {
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+/* Keep the six simulator destinations in a stable three-by-two grid on the splash page. */
+#page-splash .simulation-navigation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: V.$gap;
+  width: 100%;
+  min-width: 0;
+}
+
+#page-splash .simulation-navigation-grid > .home-navigation-tile {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+// At widths up to 600px, use two splash simulator columns so all six destinations remain readable.
+@include M.media-query-max(V.$bp-small) {
+  #page-splash .simulation-navigation-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
