@@ -1,5 +1,5 @@
 import { getStatusPolarity } from "./statusPolarity.jsx"
-import { humanize } from "./util.jsx"
+import { humanize } from "./utils.js"
 
 export const STATUS_DESCRIPTIONS = {
     attack_up: "Increases Attack.",
