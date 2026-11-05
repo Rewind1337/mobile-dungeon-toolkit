@@ -1,13 +1,14 @@
 import { useMemo, useState } from "react"
-import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
-import CatalogueFilterActions from "./CatalogueFilterActions.jsx"
-import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"
-import ResourceCatalogueCard from "./ResourceCatalogueCard.jsx"
-import { init_resource_db } from "../database/db_resources.jsx"
-import { RESOURCE_LOCATIONS } from "../database/enums.jsx"
+import { matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
+import CatalogueFilterActions from "../CatalogueFilterActions.jsx"
+import CatalogueViewSwitch from "../CatalogueViewSwitch.jsx"
+import ResourceCatalogueCard from "../ResourceCatalogueCard.jsx"
+import { init_resource_db } from "../../database/db_resources.jsx"
+import { RESOURCE_LOCATIONS } from "../../database/enums.jsx"
 
 const RESOURCE_DATA = init_resource_db()
 const GEM_VARIANTS = RESOURCE_DATA.filter(resource => resource.isGem)
+const DUNGEON_LOCATIONS = Array.from({ length: 17 }, (_, index) => [`C${index + 1}-D1`, `C${index + 1}-D2`]).flat()
 const GEM_BASES = [...new Map(GEM_VARIANTS.map(gem => [
     gem.gemType,
     { id: gem.gemType.toLowerCase(), name: gem.gemType, spriteSrc: gem.spriteSrc, gemType: gem.gemType }
@@ -17,6 +18,7 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
     const [search, setSearch, commitSearch] = useUrlSearch()
     const [obtainedFromFilter, setObtainedFromFilter] = useState("all")
     const [usedForFilter, setUsedForFilter] = useState("all")
+    const [dungeonFilter, setDungeonFilter] = useState("all")
     const [filtersVisible, setFiltersVisible] = useState(true)
     const isGemsView = initialView === "gems"
 
@@ -39,7 +41,9 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                 )
             ], search))
             .filter(resource => {
-                if (isGemsView) return true
+                if (isGemsView) {
+                    return dungeonFilter === "all" || (resource.sourceLocations ?? []).includes(dungeonFilter)
+                }
                 const matchesLocation = (locations, selected) => selected === "all" || (locations ?? []).some(location =>
                     location === selected || RESOURCE_LOCATIONS[location] === selected
                 )
@@ -47,7 +51,7 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                     && matchesLocation(resource.sourceLocations, obtainedFromFilter)
             })
             .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }))
-    }, [sourceResources, search, isGemsView, obtainedFromFilter, usedForFilter])
+    }, [sourceResources, search, isGemsView, obtainedFromFilter, usedForFilter, dungeonFilter])
 
     const gemGroups = useMemo(() => GEM_BASES.map(gem => ({
         ...gem,
@@ -59,6 +63,7 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
         commitSearch("")
         setObtainedFromFilter("all")
         setUsedForFilter("all")
+        setDungeonFilter("all")
     }
 
     return (
@@ -81,16 +86,16 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
             </header>
 
             {filtersVisible ? (
-                <div className={`resource-catalogue-filters card${!isGemsView ? " is-resource-view" : ""}`}>
+                <div className={`resource-catalogue-filters card ${isGemsView ? "is-gem-view" : "is-resource-view"}`}>
                     <div className="resource-catalogue-search-group">
                         <label className="catalogue-search">
                             <span className="catalogue-control-label text">
-                                Search by name or description (showing {filteredResources.length} of {sourceResources.length} {isGemsView ? "gems" : "resources"})
+                                Search ({filteredResources.length} of {sourceResources.length})
                             </span>
                             <input className="selectable catalogue-input" type="search" aria-label={isGemsView ? "Search gems by name or rarity" : "Search resources by name or description"} placeholder={isGemsView ? "Search gems..." : "Search resources..."} value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
                         </label>
                     </div>
-                    {!isGemsView && (
+                    {!isGemsView ? (
                         <>
                             <label className="catalogue-filter resource-location-filter">
                                 <span className="catalogue-control-label text">Used for</span>
@@ -106,9 +111,20 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                                     {Object.entries(RESOURCE_LOCATIONS).map(([key, label]) => <option key={key} value={label}>{label}</option>)}
                                 </select>
                             </label>
+                            <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={clearSearch} />
+                        </>
+                    ) : (
+                        <>
+                            <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={clearSearch} />
+                            <label className="catalogue-filter resource-location-filter gem-dungeon-filter">
+                                <span className="catalogue-control-label text">Dungeon</span>
+                                <select aria-label="Filter gems by dungeon" value={dungeonFilter} onChange={event => setDungeonFilter(event.target.value)}>
+                                    <option value="all">All dungeons</option>
+                                    {DUNGEON_LOCATIONS.map(location => <option key={location} value={location}>{location}</option>)}
+                                </select>
+                            </label>
                         </>
                     )}
-                    <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={clearSearch} />
                 </div>
             ) : <CatalogueFilterActions filtersVisible={false} onShow={() => setFiltersVisible(true)} />}
 

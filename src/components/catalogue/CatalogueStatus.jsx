@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react"
-import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
-import { STATUS_EFFECT_DEFINITIONS } from "../database/enums.jsx"
-import CatalogueFilterActions from "./CatalogueFilterActions.jsx"
-import StatusCatalogueCard from "./StatusCatalogueCard.jsx"
-import { STATUS_DESCRIPTIONS, getCategory } from "../js/statusCatalogueUtils.jsx"
-import { humanize } from "../js/util.jsx"
+import { matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
+import { STATUS_EFFECT_DEFINITIONS } from "../../database/enums.jsx"
+import CatalogueFilterActions from "../CatalogueFilterActions.jsx"
+import StatusCatalogueCard from "../StatusCatalogueCard.jsx"
+import { STATUS_DESCRIPTIONS, getCategory } from "../../js/statusCatalogueUtils.jsx"
+import { humanize } from "../../js/utils.js"
 
 function matchesStatusSearch(status, rawQuery) {
     // Polarity flags are handled as query predicates instead of searching their property names.
@@ -94,7 +94,7 @@ function CatalogueStatus() {
             {filtersVisible ? (
                 <div className="status-catalogue-filters card">
                     <label className="catalogue-search">
-                        <span className="catalogue-control-label text">Search status effects ({filteredStatuses.length} of {statuses.length} status effects)</span>
+                        <span className="catalogue-control-label text">Search ({filteredStatuses.length} of {statuses.length})</span>
                         <input className="selectable catalogue-input" aria-label="Search status effects" placeholder="Name, effect, stat, mechanic…" value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
                     </label>
                     <label className="catalogue-filter">

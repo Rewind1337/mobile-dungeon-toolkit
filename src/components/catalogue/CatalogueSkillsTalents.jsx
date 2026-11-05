@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react"
-import { matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
-import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"
-import CatalogueFilterActions from "./CatalogueFilterActions.jsx"
-import SkillCatalogueCard from "./SkillCatalogueCard.jsx"
-import TalentCatalogueCard from "./TalentCatalogueCard.jsx"
-import { stringify, getTalentPosition } from "../js/skillsTalentsUtils.jsx"
+import { matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
+import CatalogueViewSwitch from "../CatalogueViewSwitch.jsx"
+import CatalogueFilterActions from "../CatalogueFilterActions.jsx"
+import SkillCatalogueCard from "../SkillCatalogueCard.jsx"
+import TalentCatalogueCard from "../TalentCatalogueCard.jsx"
+import { stringify, getTalentPosition } from "../../js/skillsTalentsUtils.jsx"
 
 function CatalogueSkillsTalents({ heroes = [], initialView = "skills", onViewChange }) {
     const [view, setView] = useState(initialView)
@@ -44,7 +44,7 @@ function CatalogueSkillsTalents({ heroes = [], initialView = "skills", onViewCha
         <header className="catalogue-header"><div className="catalogue-heading-copy"><div className="catalogue-title header-big">{view === "skills" ? "Skills Catalogue" : "Talents Catalogue"}</div><p className="catalogue-description text">{view === "skills" ? "Every skill currently present in the hero database, with its source hero." : "Every unique talent currently present in the hero database, with its source hero and position. Shared talents list all source heroes."}</p><p className="catalogue-progress-note text">This section is still in progress; some skill and talent data may be incomplete.</p></div></header>
         {filtersVisible ? (
             <div className="skills-talents-catalogue-filters card">
-                <label className="catalogue-search"><span className="catalogue-control-label text">Search {view} ({filtered.length} of {entries.length} {view === "skills" ? "skills" : "talents"})</span><input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} placeholder="Name, hero, effect…" /></label>
+                <label className="catalogue-search"><span className="catalogue-control-label text">Search ({filtered.length} of {entries.length})</span><input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} placeholder="Name, hero, effect…" /></label>
                 <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={() => { setSearch(""); commitSearch(""); }} />
             </div>
         ) : <CatalogueFilterActions filtersVisible={false} onShow={() => setFiltersVisible(true)} />}

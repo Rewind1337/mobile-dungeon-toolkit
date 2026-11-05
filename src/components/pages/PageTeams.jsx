@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react"
-import HeroList from "./HeroList.jsx"
-import Hero from "./Hero.jsx"
-import EmptyHero from "./EmptyHero.jsx"
-import Button from "./Button.jsx"
-import Modal from "./Modal.jsx"
-import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
-import { attributeSprites, heroSprites, itemSprites, statusSprites } from "../database/db_sprites.jsx"
-import { useDynamicList } from "../hooks/useDynamicList.jsx"
-import { getStatusPolarity } from "../js/statusPolarity.jsx"
-import { createTeamShareToken, decodeTeamShareInput, restoreSharedTeam } from "../utils/heroShare.js"
-import { calculateTeamStats } from "../utils/calculatedStats.js"
-import { createSavedItemRecord } from "../js/ids.jsx"
-import { formatNumber } from "../js/util.jsx"
-import LockedSrc from "../sprites/locked.webp"
+import HeroList from "../HeroList.jsx"
+import Hero from "../Hero.jsx"
+import EmptyHero from "../EmptyHero.jsx"
+import Button from "../Button.jsx"
+import Modal from "../Modal.jsx"
+import HelpButton from "../HelpButton.jsx"
+import { TeamManagementGuide } from "../Guides.jsx"
+import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from "../../database/enums.jsx"
+import { attributeSprites, heroSprites, itemSprites, statusSprites } from "../../database/db_sprites.jsx"
+import { useDynamicList } from "../../hooks/useDynamicList.jsx"
+import { getStatusPolarity } from "../../js/statusPolarity.jsx"
+import { createTeamShareToken, decodeTeamShareInput, restoreSharedTeam } from "../../utils/heroShare.js"
+import { calculateTeamStats } from "../../utils/calculatedStats.js"
+import { createSavedItemRecord } from "../../js/ids.jsx"
+import { formatNumber } from "../../js/utils.js"
+import LockedSrc from "../../sprites/locked.webp"
 
 const createDefaultTeams = () => [
     { id: 0, name: "Default Team", heroes: Array(5).fill(null) },
@@ -364,7 +366,9 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                     <Button text="Import Team" color={2} onClick={() => setImportTeamModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">
-                    <Button text="Manual Save" color={2} onClick={manualSaveFunction} />
+                    <HelpButton title="Team Management">
+                        <TeamManagementGuide />
+                    </HelpButton>
                 </div>
             </div>
 
@@ -486,7 +490,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                         </article>
                         )
                     })}
-                    <div className="team team-new card flex-row">
+                    <div className="team team-new card flex-row sticky-bottom">
                         <Button text="Create New Team" color="confirm" onClick={createTeam} />
                     </div>
                 </section>

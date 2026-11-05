@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react"
-import ItemList from "./ItemList.jsx"
-import Button from "./Button.jsx"
-import ItemPreview from "./ItemPreview.jsx"
-import ItemPerk from "./ItemPerk.jsx"
-import { POSSIBLE_PERKS } from "../database/enums.jsx"
-import { createSavedItemRecord } from "../js/ids.jsx"
-import Modal from "./Modal.jsx"
-import { createItemShareToken, decodeItemShareInput, decodeItemsShareInput, restoreSharedItem, restoreSharedItems } from "../utils/heroShare.js"
-import { clearSearchFromUrl } from "../js/search.jsx"
+import ItemList from "../ItemList.jsx"
+import Button from "../Button.jsx"
+import ItemPreview from "../ItemPreview.jsx"
+import ItemPerk from "../ItemPerk.jsx"
+import { POSSIBLE_PERKS } from "../../database/enums.jsx"
+import { createSavedItemRecord } from "../../js/ids.jsx"
+import Modal from "../Modal.jsx"
+import HelpButton from "../HelpButton.jsx"
+import { ItemManagementGuide } from "../Guides.jsx"
+import { createItemShareToken, decodeItemShareInput, decodeItemsShareInput, restoreSharedItem, restoreSharedItems } from "../../utils/heroShare.js"
+import { clearSearchFromUrl } from "../../js/search.jsx"
 
 function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
     const [pageContent, setPageContent] = useState(0)
@@ -19,6 +21,12 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
     const [previewFullWidth, setPreviewFullWidth] = useState(false)
     const [selectedItemId, setSelectedItemId] = useState({ slot: null, id: null })
     const [selectedSavedItemId, setSelectedSavedItemId] = useState({ slot: null, id: null })
+
+    const selectItemForPreview = (setSelection, itemId) => {
+        setSelection(itemId)
+        const isMobileViewport = window.matchMedia("(max-width: 900px)").matches
+        setPreviewFullWidth(isMobileViewport || previewFullWidth)
+    }
     const clearItemSelection = () => {
         setSelectedItemId({ slot: null, id: null })
         setSelectedSavedItemId({ slot: null, id: null })
@@ -293,7 +301,9 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                     <Button text={"Import Item"} color={1} onClick={() => setItemImportModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">
-                    <Button text={"Manual Save"} color={5} onClick={() => { manualSaveFunction() }} />
+                    <HelpButton title="Item Management">
+                        <ItemManagementGuide />
+                    </HelpButton>
                 </div>
             </div>
 
@@ -305,7 +315,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                                 headerText={"All Items"}
                                 filtersOffset={"5px"}
                                 itemsRef={itemsRef.current.BASE_ITEMS}
-                                setSelectedItemId={setSelectedItemId}
+                                setSelectedItemId={itemId => selectItemForPreview(setSelectedItemId, itemId)}
                                 setsRef={itemsRef.current.BASE_SETS}
                             />
                         </div>
@@ -329,7 +339,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                                 headerText={"Saved Items"}
                                 filtersOffset={"5px"}
                                 itemsRef={savedItemsRef.current}
-                                setSelectedItemId={setSelectedSavedItemId}
+                                setSelectedItemId={itemId => selectItemForPreview(setSelectedSavedItemId, itemId)}
                                 setsRef={itemsRef.current.ITEM_SETS}
                             />
                         </div>

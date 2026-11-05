@@ -5,22 +5,18 @@ import {
     RARITY_DEFINITIONS,
     ROLE_DEFINITIONS,
     getEnumNameById
-} from "../database/enums.jsx"
-import CatalogueFilterActions from "./CatalogueFilterActions.jsx"
-import Hero from "./Hero.jsx"
-import { attributeSprites, elementSprites, roleSprites } from "../database/db_sprites.jsx"
-import { getSearchableValues, matchesSearchQuery, useUrlSearch } from "../js/search.jsx"
-import { humanize } from "../js/util.jsx"
-import BannerCatalogueList from "./BannerCatalogueList.jsx"
-import CatalogueViewSwitch from "./CatalogueViewSwitch.jsx"
-import SkillCatalogueCard from "./SkillCatalogueCard.jsx"
-import TalentCatalogueCard from "./TalentCatalogueCard.jsx"
-import VirtualizedGrid from "./VirtualizedGrid.jsx"
-import "../css/infos_heroes.scss"
-
-const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
-    rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
-)
+} from "../../database/enums.jsx"
+import Hero from "../Hero.jsx"
+import HeroCatalogueFilters from "../HeroCatalogueFilters.jsx"
+import { attributeSprites, elementSprites, roleSprites } from "../../database/db_sprites.jsx"
+import { getSearchableValues, matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
+import { humanize } from "../../js/utils.js"
+import BannerCatalogueList from "../BannerCatalogueList.jsx"
+import CatalogueViewSwitch from "../CatalogueViewSwitch.jsx"
+import SkillCatalogueCard from "../SkillCatalogueCard.jsx"
+import TalentCatalogueCard from "../TalentCatalogueCard.jsx"
+import VirtualizedGrid from "../VirtualizedGrid.jsx"
+import "../../css/infos_heroes.scss"
 
 function HeroCatalogueCard({ hero, expandedSections = {}, onSectionToggle }) {
     const rarity = getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? "Unknown rarity"
@@ -107,6 +103,7 @@ function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null
     const [attributeFilter, setAttributeFilter] = useState("all")
     const [elementFilter, setElementFilter] = useState("all")
     const [roleFilter, setRoleFilter] = useState("all")
+    const [starredOnly, setStarredOnly] = useState(false)
     const [filtersVisible, setFiltersVisible] = useState(true)
 
     useEffect(() => {
@@ -156,8 +153,9 @@ function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null
                 && (attributeFilter === "all" || String(hero.mainAttribute) === attributeFilter)
                 && (elementFilter === "all" || String(hero.element) === elementFilter)
                 && (roleFilter === "all" || String(hero.role) === roleFilter)
+                && (!starredOnly || hero.isStarred === true)
         }).sort((a, b) => String(a.name).localeCompare(String(b.name)))
-    }, [catalogueHeroes, search, rarityFilter, attributeFilter, elementFilter, roleFilter])
+    }, [catalogueHeroes, search, rarityFilter, attributeFilter, elementFilter, roleFilter, starredOnly])
 
     const clearFilters = () => {
         setSearch("")
@@ -166,14 +164,15 @@ function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null
         setAttributeFilter("all")
         setElementFilter("all")
         setRoleFilter("all")
+        setStarredOnly(false)
     }
 
     return (
         <section className="hero-catalogue">
             <CatalogueViewSwitch ariaLabel="Hero catalogue sections" view={initialView} onViewChange={onViewChange} options={[
-                { label: "Heroes", value: "heroes" },
+                { label: "Hero Catalogue", compactLabel: "Heroes", value: "heroes" },
                 { label: "Tier List", value: "tier-list" },
-                { label: "Banners", value: "banners" },
+                { label: "Banner Catalogue", compactLabel: "Banners", value: "banners" },
             ]} />
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
@@ -193,43 +192,27 @@ function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null
                 <BannerCatalogueList heroesRef={heroesRef} search={search} setSearch={setSearch} commitSearch={commitSearch} />
             ) : (
                 <>
-            {filtersVisible ? (
-                <div className="hero-catalogue-filters card">
-                    <label className="catalogue-search">
-                        <span className="catalogue-control-label text">Search heroes ({filteredHeroes.length} of {catalogueHeroes.length} heroes)</span>
-                        <input className="selectable catalogue-input" aria-label="Search hero catalogue" placeholder="Name, skill, talent, effect, ID…" value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
-                    </label>
-                    <label className="catalogue-filter">
-                        <span className="catalogue-control-label text">Rarity</span>
-                        <select aria-label="Filter by rarity" value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
-                            <option value="all">All rarities</option>
-                            {HERO_CATALOGUE_RARITIES.map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
-                        </select>
-                    </label>
-                    <label className="catalogue-filter">
-                        <span className="catalogue-control-label text">Main attribute</span>
-                        <select aria-label="Filter by main attribute" value={attributeFilter} onChange={event => setAttributeFilter(event.target.value)}>
-                            <option value="all">All attributes</option>
-                            {Object.values(ATTRIBUTE_DEFINITIONS).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
-                        </select>
-                    </label>
-                    <label className="catalogue-filter">
-                        <span className="catalogue-control-label text">Element</span>
-                        <select aria-label="Filter by element" value={elementFilter} onChange={event => setElementFilter(event.target.value)}>
-                            <option value="all">All elements</option>
-                            {Object.values(ELEMENT_DEFINITIONS).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
-                        </select>
-                    </label>
-                    <label className="catalogue-filter">
-                        <span className="catalogue-control-label text">Role</span>
-                        <select aria-label="Filter by role" value={roleFilter} onChange={event => setRoleFilter(event.target.value)}>
-                            <option value="all">All roles</option>
-                            {Object.values(ROLE_DEFINITIONS).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
-                        </select>
-                    </label>
-                    <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={clearFilters} />
-                </div>
-            ) : <CatalogueFilterActions filtersVisible={false} onShow={() => setFiltersVisible(true)} />}
+            <HeroCatalogueFilters
+                search={search}
+                setSearch={setSearch}
+                onSearchBlur={() => commitSearch(search)}
+                rarityFilter={rarityFilter}
+                setRarityFilter={setRarityFilter}
+                attributeFilter={attributeFilter}
+                setAttributeFilter={setAttributeFilter}
+                elementFilter={elementFilter}
+                setElementFilter={setElementFilter}
+                roleFilter={roleFilter}
+                setRoleFilter={setRoleFilter}
+                starredOnly={starredOnly}
+                setStarredOnly={setStarredOnly}
+                resultCount={filteredHeroes.length}
+                totalCount={catalogueHeroes.length}
+                clearFilters={clearFilters}
+                filtersVisible={filtersVisible}
+                onHideFilters={() => setFiltersVisible(false)}
+                onShowFilters={() => setFiltersVisible(true)}
+            />
 
             {filteredHeroes.length === 0
                 ? <p className="catalogue-empty card">No heroes match these filters.</p>

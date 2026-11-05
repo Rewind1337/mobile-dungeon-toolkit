@@ -13,11 +13,12 @@ import { init_hero_db } from './database/db_heroes.jsx'
 import { init_item_db } from './database/db_items.jsx'
 import { clearSearchFromUrl } from './js/search.jsx'
 
-const PageItems = lazy(() => import('./components/PageItems.jsx'))
-const PageHeroes = lazy(() => import('./components/PageHeroes.jsx'))
-const PageSimulators = lazy(() => import('./components/PageSimulators.jsx'))
-const PageTeams = lazy(() => import('./components/PageTeams.jsx'))
-const PageWiki = lazy(() => import('./components/PageWiki.jsx'))
+const PageItems = lazy(() => import('./components/pages/PageItems.jsx'))
+const PageHeroes = lazy(() => import('./components/pages/PageHeroes.jsx'))
+const PageSimulators = lazy(() => import('./components/pages/PageSimulators.jsx'))
+const PageTeams = lazy(() => import('./components/pages/PageTeams.jsx'))
+const PageWiki = lazy(() => import('./components/pages/PageWiki.jsx'))
+const PageGames = lazy(() => import('./components/pages/PageGames.jsx'))
 
 
 const BASE_HEROES = init_hero_db()
@@ -29,6 +30,7 @@ const PAGE_TO_ROUTE = {
   teams: '/teams/',
   simulator: '/simulators/',
   wiki: '/wiki/',
+  games: '/games/',
 };
 
 const WIKI_TAB_TO_ROUTE = {
@@ -286,8 +288,8 @@ function App() {
                 <Button className="not-found-link" text="Items" color={1} onClick={() => switchTabTo('items')} />
                 <Button className="not-found-link" text="Teams" color={2} onClick={() => switchTabTo('teams')} />
                 <Button className="not-found-link" text="Home" color={6} onClick={() => switchTabTo('splash')} />
-                <Button className="not-found-link" text="" color={3} disabled={true} />
-                <Button className="not-found-link" text="Simulators" color={4} disabled={true} />
+                <Button className="not-found-link" text="Fun & Games" color={3} disabled={true} />
+                <Button className="not-found-link" text="Simulators" color={4} onClick={() => switchTabTo("simulator")} />
                 <Button className="not-found-link" text="Wiki" color={5} onClick={() => switchTabTo('wiki')} />
               </nav>
             </section>
@@ -323,7 +325,7 @@ function App() {
             <div className='flex-row bottom'>
               <div className='card simulations flex-col'>
                 <div className='header-big'>Simulations</div>
-                <div className='flex-row'>
+                <div className='simulation-navigation-grid'>
                   <div className='card chapters flex-col home-navigation-tile is-disabled' aria-disabled="true" aria-label="Adventure Chapters temporarily unavailable">
                     <div className='header card card-static'>Adventure Chapters</div>
                   </div>
@@ -338,6 +340,9 @@ function App() {
                   </div>
                   <div className='card custom-combat flex-col home-navigation-tile is-disabled' aria-disabled="true" aria-label="Custom Combat temporarily unavailable">
                     <div className='header card card-static'>Custom Combat</div>
+                  </div>
+                  <div className='card magic-toilet-tile flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Magic Toilet simulator" onClick={() => switchSimulatorTo('magic-toilet')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('magic-toilet'); } }}>
+                    <div className='header card card-static'>Magic Toilet</div>
                   </div>
                 </div>
               </div>
@@ -391,7 +396,9 @@ function App() {
 
         {pageContent === 'teams' && <PageTeams itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedTeamsRef={savedTeamsRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
 
-        {pageContent === 'simulator' && <PageSimulators activeTab={activeSimulatorTab} onTabChange={switchSimulatorTo} itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedTeamsRef={savedTeamsRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
+        {pageContent === 'simulator' && <PageSimulators activeTab={activeSimulatorTab} onTabChange={switchSimulatorTo} itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedTeamsRef={savedTeamsRef} savedItemsRef={savedItemsRef} />}
+
+        {pageContent === 'games' && <PageGames />}
 
         {pageContent === 'wiki' && (
           <PageWiki

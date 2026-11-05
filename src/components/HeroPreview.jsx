@@ -18,7 +18,7 @@ import TalentCatalogueCard from './TalentCatalogueCard.jsx'
 import '../css/hero.scss'
 import HeroStat from './HeroStat.jsx'
 import { calculateHeroStats, MAIN_STAT_PERKS } from '../utils/calculatedStats.js'
-import { formatNumber } from '../js/util.jsx'
+import { formatNumber } from '../js/utils.js'
 
 
 function cloneTalentSelections(talents) {
@@ -65,6 +65,10 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
         onResize();
         return () => window.removeEventListener('resize', onResize);
     }, []);
+
+    useLayoutEffect(() => {
+        if (listRef.current) listRef.current.scrollTop = 0
+    }, [selectedHeroId, heroesRef])
 
     useLayoutEffect(() => {
         const preview = listRef.current
@@ -390,7 +394,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
     } else {
         return (
             <div ref={listRef} className='hero-preview flex-col' style={{ maxHeight: listHeight }}>
-                <div className='preview-top-row flex-row'>
+                <div className='preview-top-row flex-row sticky-top'>
                     <Button className='preview-back-button preview-action-chip' prefix={<img className="preview-direction-icon" src={ExpandSrc} alt="" style={{ transform: isFullWidth ? 'rotate(-90deg)' : 'rotate(90deg)' }} />} title={isFullWidth ? 'Show hero list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} />
                     <Button className='preview-close-button preview-action-chip' prefix={<img className="preview-close-icon" src={CrossSrc} alt="" />} title='Deselect this hero and close the preview' text='Deselect Hero' onClick={onClosePreview} color='cancel' />
                 </div>
@@ -565,7 +569,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                             ))}
                         </div>
                     </div>
-                    {(saveHero || deleteSavedHero) && <div className='flex-row'>
+                    {(saveHero || deleteSavedHero) && <div className='flex-row sticky-bottom'>
                         {saveHero && <Button text={"Save Hero"} onClick={handleSaveHero} color={"confirm"}/>}
                         {deleteSavedHero && <Button text={"Export Hero"} onClick={handleExportSavedHero} color={0}/>}
                         {deleteSavedHero && <Button text={"Delete Saved Hero"} onClick={handleDeleteSavedHero} color={"cancel"}/>}

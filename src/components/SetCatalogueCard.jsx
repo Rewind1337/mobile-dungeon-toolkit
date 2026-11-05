@@ -1,5 +1,6 @@
-import { attributeSprites } from "../database/db_sprites.jsx"
+import { attributeSprites, perkSprites } from "../database/db_sprites.jsx"
 import CataloguePerkList from "./CataloguePerkList.jsx"
+import { PRIMARY_STAT_DEFINITIONS } from "../database/enums.jsx"
 import { ATTRIBUTE_ICON_KEYS, getAttributeRequirementLabel, getDropSourceLabel, getSetLocations } from "../js/catalogueItemUtils.jsx"
 import "../css/item.scss"
 import "../css/infos.scss"
@@ -9,6 +10,9 @@ export default function SetCatalogueCard({ set, pieces }) {
     const locations = getSetLocations(set, pieces)
     const attributeLabel = getAttributeRequirementLabel(set.attributeRequirement)
     const attributeKey = ATTRIBUTE_ICON_KEYS[attributeLabel.toLowerCase()]
+    const mainAttribute = Object.values(PRIMARY_STAT_DEFINITIONS).find(attribute => attribute.id === Number(set.mainAttribute))
+    const mainAttributeSprite = mainAttribute ? perkSprites[`${mainAttribute.name}_FLAT`] : null
+    const mainAttributeLabel = { ATTACK: "Attack", DEFENCE: "Defense", AGILITY: "Agility" }[mainAttribute?.name] ?? ""
     const attributeClass = attributeLabel.toLowerCase().includes("strength")
         ? "catalogue-chip-attribute-strength"
         : attributeLabel.toLowerCase().includes("dexterity")
@@ -21,10 +25,16 @@ export default function SetCatalogueCard({ set, pieces }) {
         <article className="catalogue-set-card card">
             <header className="catalogue-set-header">
                 <div className="catalogue-set-name text">{set.name}</div>
-                <p className={`catalogue-set-requirement catalogue-chip text catalogue-chip-attribute ${attributeClass}`}>
-                    {attributeSprites[attributeKey] && <img className="catalogue-chip-icon" src={attributeSprites[attributeKey]} alt="" />}
-                    {attributeLabel}
-                </p>
+                <div className="catalogue-set-attribute-row flex-row justify-center">
+                    <span className={`catalogue-set-requirement catalogue-chip text catalogue-chip-attribute ${attributeClass}`}>
+                        {attributeSprites[attributeKey] && <img className="catalogue-chip-icon" src={attributeSprites[attributeKey]} alt="" />}
+                        {attributeLabel}
+                    </span>
+                    {mainAttribute && <span className="catalogue-chip text catalogue-chip-main-attribute" title={mainAttributeLabel}>
+                        {mainAttributeSprite && <img className="catalogue-chip-icon" src={mainAttributeSprite} alt="" />}
+                        {mainAttributeLabel}
+                    </span>}
+                </div>
                 <div className="catalogue-set-meta flex-row justify-center text">
                     <span className="catalogue-chip text">{getDropSourceLabel(set.dropSource, locations)}</span>
                 </div>

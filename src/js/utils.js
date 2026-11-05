@@ -27,3 +27,6 @@ export const humanize = value => String(value ?? "")
     .replaceAll("_", " ")
     .toLowerCase()
     .replace(/\b\w/g, letter => letter.toUpperCase())
+
+/** Normalize a name for matching sprite and asset keys. */
+export const normalizeName = name => name.toLowerCase().replace(/[^a-z]/g, '_')

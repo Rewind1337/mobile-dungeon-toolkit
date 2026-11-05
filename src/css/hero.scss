@@ -8,12 +8,12 @@
   overflow: auto;
   justify-content: space-between;
   align-content: start;
-  padding: 2px;
+  padding: 6px 2px 2px;
   gap: V.$gap-small;
 
-// At widths up to 900px, remove the extra padding from the hero list on mobile.
+// On mobile, preserve the 6px top inset while removing horizontal and bottom padding.
   @include M.media-query-max(V.$bp-mobile, ()) {
-    padding: 0;
+    padding: 6px 0 0;
   }
 }
 
@@ -377,48 +377,159 @@
   .hero-preview > .flex-col {margin-top: V.$gap-small; }
 }
 
+/* Equipment sizing is driven by the preview pane, so viewport media queries cannot resize these cards independently. */
 .hero-preview .equipment {
   display: grid;
-  grid-template-columns: repeat(6, calc(V.$item-sprite-width + 10px));
+  grid-template-columns: repeat(6, var(--equipment-card-width));
   justify-content: center;
   align-items: start;
   gap: V.$gap-small;
+  --equipment-card-width: #{V.$item-sprite-width + 10px};
   width: 100%;
   max-width: 100%;
   min-width: 0;
 }
 
-.hero-preview .equipment > .item {
+.hero-preview .equipment > .item.card {
   box-sizing: border-box;
-  width: calc(V.$item-sprite-width + 10px);
+  display: block;
+  width: calc(V.$item-sprite-width + 6px);
   min-width: 0;
   margin: 0;
 }
 
-// At widths up to 1200px, change the six equipment slots in the hero preview to a three-column by two-row grid on tablet-sized screens.
-@include M.media-query-max(V.$bp-tablet, ()) {
+.hero-preview .equipment > .item .item-sprite {
+  flex: 0 0 92px;
+  width: 92px;
+  border-radius: 4px;
+}
+
+.hero-preview .equipment > .item .item-sprite-img {
+  width: 92px;
+}
+
+.hero-preview .equipment > .item .item-icon {
+  width: V.$icon-width;
+  height: V.$icon-height;
+  border-radius: V.$border-radius-small;
+  border-top-left-radius: V.$border-radius;
+  border-bottom-right-radius: V.$border-radius;
+}
+
+.hero-preview .equipment > .item .text {
+  border-radius: V.$border-radius;
+  outline: 2px solid black;
+  margin: 6px auto 0;
+  width: 100%;
+  border: none;
+}
+
+// At medium preview-pane widths, change only the equipment grid's column count.
+@container hero-preview-pane (max-width: 660px) {
   .hero-preview .equipment {
-    grid-template-columns: repeat(3, calc(V.$item-sprite-width + 10px));
+    grid-template-columns: repeat(3, var(--equipment-card-width));
   }
 }
 
-// At widths up to 900px, change the hero equipment grid to two 70px columns on phones and flatten the labels beneath each item.
+// On very narrow preview panes, stack the four main stats and Other Stats.
+@container hero-preview-pane (max-width: 420px) {
+  .hero-preview .base-stats:not(.calculated-stats),
+  .hero-preview .calculated-stats {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-preview .base-stats:not(.calculated-stats) > .card,
+  .hero-preview .calculated-stats .calculated-stat {
+    width: 100%;
+    min-width: 0;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .hero-preview .details {
+    flex-direction: column;
+  }
+
+  .hero-preview .details > .flex-col {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+// In medium preview panes, show the four main stats as a 2x2 grid and stack Other Stats.
+@container hero-preview-pane (min-width: 420.01px) and (max-width: 660px) {
+  .hero-preview .base-stats:not(.calculated-stats),
+  .hero-preview .calculated-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+  }
+
+  .hero-preview .base-stats:not(.calculated-stats) > .card,
+  .hero-preview .calculated-stats .calculated-stat {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .hero-preview .details {
+    flex-direction: column;
+  }
+
+  .hero-preview .details > .flex-col {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+// At narrow preview-pane widths, change only the equipment grid's column count.
+@container hero-preview-pane (max-width: 420px) {
+  .hero-preview .equipment {
+    grid-template-columns: repeat(2, var(--equipment-card-width));
+  }
+}
+
+// At widths up to 900px, use compact 60px sprites and 70px equipment tracks regardless of the preview pane's width.
 @include M.media-query-max(V.$bp-mobile, ()) {
   .hero-preview .equipment {
-    grid-template-columns: repeat(2, 70px);
+    --equipment-card-width: 70px;
   }
 
-  .hero-preview .equipment > .item {
-    width: 70px;
+  .hero-preview .equipment > .item.card {
+    flex: 0 0 70px;
+    width: 66px;
+    border-radius: 0;
   }
 
-  .hero > .flex-col > .text {
+  .hero-preview .equipment > .item .item-sprite {
+    flex: 0 0 60px;
+    width: 60px;
+    border-radius: 0;
+  }
+
+  .hero-preview .equipment > .item .item-sprite-img {
+    width: 60px;
+    border-radius: 0;
+  }
+
+  .hero-preview .equipment > .item .item-icon,
+  .hero-preview .equipment > .item .item-icon-damaged {
+    width: 20px;
+    height: 20px;
+    border-radius: 0;
+  }
+
+  .hero-preview .equipment > .item .text {
     border-radius: 0;
     outline: 0;
     margin-inline: -2px;
     width: calc(100% + 4px);
     border: 2px solid black;
     margin-top: 0;
+  }
+
+  .hero-preview .equipment > .item:not([data-type]) .text {
+    font-size: 16px;
   }
 }
 
@@ -427,12 +538,6 @@
   .filters-group-rarities { order: 1; }
   .filters-starred-group { order: 2; }
   .hero-preview .calculated-stats-heading small { font-size:.75em; }
-  .hero-preview .base-stats:not(.calculated-stats) { flex-direction:column; align-items:stretch; }
-  .hero-preview .base-stats:not(.calculated-stats) > .card { width:100%; min-width:0; justify-content:flex-start; gap:8px; }
-  .hero-preview .calculated-stats { flex-direction:column; align-items:stretch; }
-  .hero-preview .calculated-stats .calculated-stat { width:100%; min-width:0; justify-content:flex-start; gap:8px; }
-  .hero-preview .details { flex-direction:column; }
-  .hero-preview .details > .flex-col { width:100%; min-width:0; }
   .hero-preview .hero-stat { min-width:0; gap:6px; }
 }
 
@@ -451,13 +556,6 @@
 
 .hero-preview .hero-sprite-container {
   margin-bottom: -2px;
-}
-
-// At widths up to 900px, let the empty equipment-slot label fill its card and use a readable 16px font on mobile.
-@include M.media-query-max(V.$bp-mobile, ()) {
-  .hero-preview .equipment > .item:not([data-type]) .text {
-    font-size: 16px;
-  }
 }
 
 .hero-preview-identity {

@@ -176,6 +176,18 @@ body::after {
   margin-inline: auto;
 }
 
+.sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.sticky-bottom {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+}
+
 .status-effect-img {
   background-color: rgba(0, 0, 0, 0.25);
   border-radius: 6px;
@@ -201,6 +213,10 @@ body::after {
 
 // At widths up to 900px, reduce card padding and remove rounded corners for compact mobile cards.
   @include M.media-query-max(V.$bp-mobile, ()) {
+    > .hero-preview.flex-col {
+      transition: none !important;
+    }
+    
     padding: 3px;
     border-radius: 0;
   }
@@ -914,7 +930,7 @@ a {
 
     &.teams {
       background-image: url('../sprites/splash/teams.webp');
-      background-position: 50% 65%;
+      background-position: 50% 25%;
     }
 
     &.chapters {
@@ -922,19 +938,29 @@ a {
       background-position: 50% 50%;
     }
 
+    &.towers {
+      background-image: url('../sprites/simulation/tower_crystal_bore.webp');
+      background-position: 75% 50%;
+    }
+
     &.titans {
       background-image: url('../sprites/splash/titans.webp');
       background-position: 50% 25%;
     }
 
-    &.towers {
-      background-image: url('../sprites/simulation/tower_crystal_bore.webp');
-      background-position: 70% 0%;
-    }
-
     &.guildbosses {
       background-image: url('../sprites/splash/guildbosses.webp');
       background-position: 50% 10%;
+    }
+
+    &.custom-combat {
+      background-image: url('../sprites/splash/custom_combat.webp');
+      background-position: 50% 50%;
+    }
+
+    &.magic-toilet-tile {
+      background-image: url('../sprites/splash/magic_toilet.webp');
+      background-position: 50% 0;
     }
   }
 
@@ -2444,7 +2470,7 @@ select {
   }
 }
 
-// At widths up to 900px, add bottom padding to scrollable virtualized lists so their final row is not covered by mobile browser controls.
+// At widths up to 900px, add safe-area bottom padding to every top-level .page and scrollable list so the final row clears mobile browser controls.
 @include M.media-query-max(V.$bp-mobile) {
   .page,
   #page-info,
@@ -2535,4 +2561,770 @@ select {
   .simulator-selection-detail {
     display: none;
   }
+}
+
+
+/* Page help controls share the neutral home-button treatment and open a centered, scrollable guide. */
+.page-help-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: V.$gap-small;
+  min-width: 88px;
+  width: auto;
+}
+
+.page-help-button .icon-left {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.page-help-button .icon-left img {
+  display: block;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.modal.modal-center.card.page-help-dialog {
+  width: min(92vw, 780px);
+  max-width: calc(100vw - 24px);
+  padding: clamp(14px, 3vw, 24px);
+  overflow: auto;
+}
+
+.page-help-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  min-width: 0;
+  gap: V.$gap;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.page-help-modal > .header-big {
+  width: 100%;
+  margin: 0;
+  padding-bottom: V.$gap-small;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  text-align: center;
+}
+
+.page-help-content {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap;
+  min-width: 0;
+  line-height: 1.45;
+}
+
+/* Keep the six simulator destinations in a stable three-by-two grid on the splash page. */
+#page-splash .simulation-navigation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: V.$gap;
+  width: 100%;
+  min-width: 0;
+}
+
+#page-splash .simulation-navigation-grid > .home-navigation-tile {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+// At widths up to 600px, use two splash simulator columns so all six destinations remain readable.
+@include M.media-query-max(V.$bp-small) {
+  #page-splash .simulation-navigation-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* Preview expand and deselect buttons follow the standard desktop and mobile corner radii. */
+.preview-top-row .preview-action-chip {
+  border-radius: 8px;
+}
+
+// At widths up to 900px, square preview action buttons like the other mobile buttons.
+@include M.media-query-max(V.$bp-mobile, ()) {
+  .preview-top-row .preview-action-chip {
+    border-radius: 0;
+  }
+}
+
+
+/* Shared catalogue filter controls. Kept global so direct routes such as /heroes and /items
+   receive the same styling as the lazy-loaded Information Hub catalogues. */
+.catalogue-view-switch {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: V.$gap;
+}
+
+.catalogue-filters,
+.hero-catalogue-filters,
+.status-catalogue-filters,
+.perk-catalogue-filters,
+.skills-talents-catalogue-filters {
+  position: sticky;
+  top: V.$gap-small;
+  z-index: 100;
+  display: grid;
+  gap: V.$gap;
+  align-items: start;
+  min-width: 0;
+  padding: V.$padding-card;
+}
+
+.catalogue-filters {
+  grid-template-columns: minmax(240px, 2fr) repeat(4, minmax(120px, 1fr)) auto;
+}
+
+.catalogue-filters.is-set-view {
+  grid-template-columns: minmax(220px, 2fr) repeat(4, minmax(115px, 1fr)) auto;
+}
+
+.catalogue-filters.is-list-view,
+.hero-catalogue-filters.has-sort-order {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.catalogue-filters.is-list-view > .catalogue-search,
+.hero-catalogue-filters.has-sort-order > .catalogue-search {
+  grid-column: span 4;
+}
+
+.catalogue-filters.is-list-view > .catalogue-filter-sort,
+.hero-catalogue-filters.has-sort-order > .catalogue-filter-sort {
+  grid-column: span 2;
+}
+
+.catalogue-filters.is-list-view > .catalogue-filter:not(.catalogue-filter-sort),
+.hero-catalogue-filters.has-sort-order > .catalogue-filter:not(.catalogue-filter-sort) {
+  grid-column: span 2;
+}
+
+.hero-catalogue-filters {
+  grid-template-columns: minmax(220px, 2fr) repeat(4, minmax(120px, 1fr)) minmax(100px, .8fr) auto;
+}
+
+.status-catalogue-filters {
+  grid-template-columns: minmax(260px, 2fr) minmax(180px, 1fr) auto;
+  align-items: end;
+}
+
+.perk-catalogue-filters {
+  grid-template-columns: minmax(240px, 2fr) minmax(170px, 1fr) auto;
+}
+
+.skills-talents-catalogue-filters {
+  grid-template-columns: minmax(240px, 2fr) auto;
+}
+
+.catalogue-search,
+.catalogue-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  text-align: left;
+}
+
+.catalogue-control-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px V.$gap-small;
+  padding-inline: 2px;
+  font-size: V.$font-size-small;
+  opacity: 0.85;
+}
+
+.catalogue-control-label .catalogue-result-count {
+  font-size: V.$font-size-small;
+}
+
+.catalogue-input,
+.catalogue-filter select {
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  font-family: V.$font-family-stats;
+}
+
+.catalogue-filter-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: V.$gap-small;
+  width: 100%;
+  min-width: 0;
+  height: auto;
+}
+
+.catalogue-filter-actions > button {
+  align-self: center;
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.catalogue-filter-actions-hidden {
+  justify-content: flex-start;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.catalogue-filter-actions-hidden button,
+.catalogue-show-filters-inline {
+  width: auto;
+}
+
+.catalogue-filter-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-end;
+  grid-column: span 2;
+  gap: V.$gap-small;
+  min-width: 0;
+  height: 40px;
+  padding: 4px 8px;
+  outline: 2px solid black;
+  border: 0;
+  border-radius: V.$border-radius;
+  background: rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.catalogue-filter-checkbox > .text {
+  font-size: 18px;
+}
+
+.catalogue-filter-checkbox input {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  min-height: 0;
+  margin: 0;
+  accent-color: #f2bd55;
+}
+
+.catalogue-filter-heading {
+  grid-column: 1 / -1;
+  margin: 0;
+  text-align: center;
+}
+
+.catalogue-view-label-compact {
+  display: none;
+}
+
+// At widths up to 1200px, keep Search and Sort Order in a consistent 4:2 ratio and use two columns for remaining controls.
+@include M.media-query-max(V.$bp-tablet) {
+  .catalogue-filters,
+  .hero-catalogue-filters,
+  .status-catalogue-filters,
+  .perk-catalogue-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .catalogue-filters.is-set-view {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .catalogue-filters.is-list-view,
+  .hero-catalogue-filters.has-sort-order {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .catalogue-filters.is-list-view > .catalogue-search,
+  .hero-catalogue-filters.has-sort-order > .catalogue-search {
+    grid-column: span 4;
+  }
+
+  .catalogue-filters.is-list-view > .catalogue-filter-sort,
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter-sort {
+    grid-column: span 2;
+  }
+
+  .catalogue-filters.is-list-view > .catalogue-filter:not(.catalogue-filter-sort),
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter:not(.catalogue-filter-sort) {
+    grid-column: span 3;
+  }
+
+  .catalogue-filters:not(.is-list-view) > .catalogue-search,
+  .hero-catalogue-filters:not(.has-sort-order) > .catalogue-search,
+  .status-catalogue-filters > .catalogue-search {
+    grid-column: 1 / -1;
+  }
+
+  .catalogue-filter-checkbox {
+    grid-column: span 3;
+    align-self: flex-end;
+  }
+}
+
+// At widths up to 900px, preserve the same two-column filter layout and compact only control heights.
+@include M.media-query-max(V.$bp-mobile) {
+  .catalogue-filters,
+  .hero-catalogue-filters,
+  .status-catalogue-filters,
+  .perk-catalogue-filters {
+    top: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .skills-talents-catalogue-filters { top: 0; }
+
+  .catalogue-input,
+  .catalogue-filter select {
+    min-height: 32px;
+  }
+
+  .catalogue-filters.is-set-view {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .catalogue-filters.is-list-view,
+  .hero-catalogue-filters.has-sort-order {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .catalogue-filters.is-list-view > .catalogue-search,
+  .hero-catalogue-filters.has-sort-order > .catalogue-search {
+    grid-column: span 4;
+  }
+
+  .catalogue-filters.is-list-view > .catalogue-filter-sort,
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter-sort {
+    grid-column: span 2;
+  }
+
+  .catalogue-filters.is-list-view > .catalogue-filter:not(.catalogue-filter-sort),
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter:not(.catalogue-filter-sort) {
+    grid-column: span 3;
+  }
+
+  .catalogue-filters:not(.is-list-view) > .catalogue-search,
+  .hero-catalogue-filters:not(.has-sort-order) > .catalogue-search,
+  .status-catalogue-filters > .catalogue-search {
+    grid-column: 1 / -1;
+  }
+
+  .catalogue-filter-checkbox {
+    grid-column: span 3;
+    align-self: flex-end;
+    height: 32px;
+    border-radius: 0;
+  }
+
+  .catalogue-filter-actions:not(.catalogue-filter-actions-hidden) {
+    justify-content: space-between;
+    grid-column: 1 / -1;
+  }
+
+  .catalogue-filter-actions-hidden {
+    justify-content: flex-start;
+  }
+
+  .catalogue-filter-actions-hidden .catalogue-show-filters-inline {
+    display: none;
+  }
+
+  .catalogue-view-switch { gap: 0; }
+
+  .catalogue-view-label-full { display: none; }
+  .catalogue-view-label-compact { display: inline; }
+}
+
+// On very wide screens, fit more hero and item filters per row without changing Search or Sort Order widths.
+@include M.media-query(1800px) {
+  .catalogue-filters.is-list-view > .catalogue-filter:not(.catalogue-filter-sort),
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter:not(.catalogue-filter-sort),
+  .catalogue-filter-checkbox {
+    grid-column: span 1;
+  }
+}
+
+
+.catalogue-filter-heading-hidden {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+}
+
+/* The modal wrapper supplies the single card surface; the guide content stays transparent and fills it. */
+.page-help-modal > button {
+  align-self: flex-end;
+  width: auto;
+  min-width: 112px;
+  margin-top: V.$gap-small;
+}
+
+/* Reusable illustrated guide layout. */
+.page-guide {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap;
+  width: 100%;
+  min-width: 0;
+  text-align: left;
+}
+
+.guide-lead {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.guide-eyebrow,
+.guide-example-kicker {
+  font-family: V.$font-family-header;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  opacity: .76;
+}
+.guide-eyebrow {
+  font-size: 22px;
+}
+
+.guide-lead-title {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.15;
+  text-align: left;
+  text-shadow: -2px 0 4px black, 2px 0 4px black, 0 -2px 4px black, 0 2px 4px black;
+}
+
+.guide-copy {
+  margin: 0;
+  color: rgba(255, 255, 255, .92);
+  font-size: 14px;
+  line-height: 1.45;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.guide-copy-header {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.45;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.guide-example {
+  display: flex;
+  flex-direction: column;
+  gap: V.$gap;
+  width: 100%;
+  min-width: 0;
+  padding: V.$gap;
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: V.$border-radius-small;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .08), transparent 58%),
+    rgba(0, 0, 0, .2);
+}
+
+.guide-equipment-strip,
+.guide-equipment-showcase {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.guide-asset {
+  display: flex;
+  flex: 1 1 76px;
+  height: 110px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  gap: 5px;
+  min-width: 0;
+  text-align: center;
+}
+
+.guide-asset > img {
+  display: block;
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  image-rendering: optimizeQuality;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .55));
+}
+
+.guide-asset > span {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.guide-steps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: V.$gap;
+  min-width: 0;
+}
+
+.guide-step {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  align-items: start;
+  gap: V.$gap-small;
+  min-width: 0;
+  padding: V.$gap;
+}
+
+.guide-step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .35);
+  font-weight: 900;
+  font-size: 19px;
+}
+
+.guide-step-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.guide-step-title {
+  margin: 0;
+  line-height: 1.2;
+}
+
+.guide-step-copy,
+.guide-step-copy > p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.guide-tip {
+  margin: 0;
+  font-family: V.$font-family-stats;
+  padding: V.$gap V.$gap V.$gap V.$gap;
+  border-left: 8px solid rgba(247, 194, 83, .85);
+  background: rgba(0, 0, 0, .2);
+  font-size: 14px;
+  line-height: 1.4;
+  text-shadow: -2px 0 4px rgba(0, 0, 0, 0.3), 2px 0 4px rgba(0, 0, 0, 0.3), 0 -2px 4px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.3);
+
+  > strong {
+  font-size: 16px;
+  letter-spacing: 1px;
+  text-shadow: -2px 0 4px black, 2px 0 4px black, 0 -2px 4px black, 0 2px 4px black;
+  margin-right: 4px;
+  }
+
+  > strong::after {
+    content: ":";
+  }
+}
+
+.guide-team-roster {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.guide-team-member {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  min-height: 110px;
+  gap: 4px;
+  min-width: 0;
+  text-align: center;
+}
+
+.guide-team-member > img {
+  display: block;
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  image-rendering: optimizeQuality;
+}
+
+.guide-team-member > span:last-child {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.guide-team-slot {
+  font-weight: 800;
+  opacity: .65;
+}
+
+@media (max-width: 620px) {
+  .guide-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .guide-example {
+    padding: V.$gap-small;
+  }
+}
+
+
+/* Shared catalogue structure and typography, used by multiple Information Hub sections. */
+.catalogue-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: V.$gap;
+}
+
+.catalogue-heading-copy {
+  display: flex;
+  flex: 1 1 420px;
+  flex-direction: column;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.catalogue-title,
+.catalogue-overview-title {
+  margin: 0;
+}
+
+.catalogue-description,
+.catalogue-item-meta,
+.catalogue-item-set,
+.catalogue-set-meta,
+.catalogue-set-locations,
+.catalogue-effect-description,
+.catalogue-muted,
+.catalogue-item-source,
+.catalogue-item-location,
+.hero-catalogue-name,
+.hero-catalogue-meta,
+.hero-catalogue-variant,
+.hero-catalogue-description {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.catalogue-results {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: V.$gap;
+  min-width: 0;
+  height: auto;
+  max-height: none;
+  overflow: visible;
+}
+
+.catalogue-empty {
+  margin: 0;
+  padding: V.$gap;
+}
+
+.catalogue-entry-card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: V.$gap;
+  min-width: 0;
+  padding: V.$padding-card;
+  text-align: left;
+}
+
+.catalogue-entry-icon-wrap {
+  display: flex;
+  flex: 0 0 68px;
+  align-self: stretch;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 64px;
+}
+
+.catalogue-entry-icon {
+  display: block;
+  flex: 0 0 auto;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.catalogue-entry-content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.catalogue-entry-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: V.$gap-small;
+  min-width: 0;
+}
+
+.catalogue-entry-name {
+  margin: 0;
+  min-width: 0;
+  font-size: V.$font-size-header-small;
+  overflow-wrap: anywhere;
+}
+
+.catalogue-progress-note {
+  margin: V.$gap-small 0 0;
+  font-size: V.$font-size-small;
+  line-height: 1.4;
+  opacity: 0.7;
+}
+
+.catalogue-result-count {
+  flex: 0 1 auto;
+  opacity: 0.85;
+}
+
+// At widths up to 900px, compact reusable catalogue entry cards.
+@include M.media-query-max(V.$bp-mobile) {
+  .catalogue-entry-card { gap: V.$gap-small; }
+  .catalogue-entry-icon-wrap { flex-basis: 48px; }
+  .catalogue-entry-icon { max-width: 100%; }
+  .catalogue-description.text { font-size: 14px; }
 }

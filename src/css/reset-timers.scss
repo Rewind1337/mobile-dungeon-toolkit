@@ -156,11 +156,6 @@
     font-size: clamp(0.8rem, 3.1vw, 1rem);
   }
 
-  .under-construction-row {
-    min-height: 68px;
-    padding-inline: 10px;
-  }
-
   .under-construction-sign {
     flex-direction: column;
     align-items: center;
@@ -198,5 +193,9 @@
     text-align: center;
     white-space: normal;
     overflow-wrap: anywhere;
+  }
+
+  .under-construction-row {
+    margin-top: 10px;
   }
 }

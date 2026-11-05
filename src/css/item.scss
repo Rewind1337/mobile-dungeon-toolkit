@@ -8,13 +8,13 @@
   overflow: auto;
   justify-content: space-between;
   align-content: start;
-  padding: 2px;
+  padding: 6px 2px 2px;
   gap: V.$gap-small;
 
-// At widths up to 900px, remove the gaps from the item list, reduce its padding, and cap its height on mobile.
+// On mobile, keep the 6px top inset, reduce horizontal and bottom padding, and cap the list height.
   @include M.media-query-max(V.$bp-mobile, ()) {
     gap: 0;
-    padding: 1px;
+    padding: 6px 1px 1px;
     max-height: 994px;
   }
 }

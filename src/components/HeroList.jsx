@@ -5,8 +5,7 @@ import '../css/hero.scss'
 
 import Hero from './Hero.jsx'
 import VirtualizedGrid from './VirtualizedGrid.jsx'
-import { filterSprites } from '../database/db_sprites.jsx'
-import HeroFilters from './HeroFilters.jsx';
+import HeroCatalogueFilters from './HeroCatalogueFilters.jsx'
 import BackToTopButton from './BackToTopButton.jsx';
 import { ATTRIBUTE_DEFINITIONS, ELEMENT_DEFINITIONS, RARITY_DEFINITIONS, ROLE_DEFINITIONS, getEnumNameById } from '../database/enums.jsx';
 import { isSearchAssetField, matchesSearchQuery, useUrlSearch } from '../js/search.jsx';
@@ -18,7 +17,7 @@ function getSearchableValues(value, seen = new Set()) {
     seen.add(value)
     return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : [key, ...getSearchableValues(child, seen)])
 }
-function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId, onDoubleClick }) {
+function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId, onSelectHero, onDoubleClick }) {
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
     const [search, setSearch, commitSearch] = useUrlSearch();
     const [filters, setFilters] = useState({
@@ -28,25 +27,14 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
         rarity: null,
         isStarred: null
     });
-    const [filtersAdvanced, setFiltersAdvanced] = useState(false)
+    const [filtersVisible, setFiltersVisible] = useState(true)
     const [sortOrder, setSortOrder] = useState("alphabetic")
 
     const toggleFilter = (type, value) => {
-        setFilters(previous => {
-            if (type === "rarity") {
-                return {
-                    element: null,
-                    role: null,
-                    mainAttribute: null,
-                    rarity: previous.rarity === value ? null : value,
-                    isStarred: null
-                }
-            }
-            return {
-                element: null, role: null, mainAttribute: null, rarity: null, isStarred: null,
-                [type]: previous[type] === value ? null : value
-            }
-        })
+        setFilters(previous => ({
+            ...previous,
+            [type]: previous[type] === value ? null : value
+        }))
     };
 
     const clearFilters = () => {
@@ -84,10 +72,30 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
     }, [heroesRef, filters, search, sortOrder]);
 
     return (<>
-        <div className='flex-row'>
-            <HeroFilters setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={setSearch} onSearchBlur={() => commitSearch(search)} clearFilters={clearFilters} filters={{ ...filters, name: search }} filterSprites={filterSprites} sortOrder={sortOrder} onSortChange={setSortOrder} />
-        </div>
-        <div className='header-big'>{headerText}</div>
+        <HeroCatalogueFilters
+            search={search}
+            setSearch={setSearch}
+            headerText={headerText}
+            onSearchBlur={() => commitSearch(search)}
+            rarityFilter={filters.rarity === null ? "all" : String(filters.rarity)}
+            setRarityFilter={value => toggleFilter("rarity", value === "all" ? null : Number(value))}
+            attributeFilter={filters.mainAttribute === null ? "all" : String(filters.mainAttribute)}
+            setAttributeFilter={value => toggleFilter("mainAttribute", value === "all" ? null : Number(value))}
+            elementFilter={filters.element === null ? "all" : String(filters.element)}
+            setElementFilter={value => toggleFilter("element", value === "all" ? null : Number(value))}
+            roleFilter={filters.role === null ? "all" : String(filters.role)}
+            setRoleFilter={value => toggleFilter("role", value === "all" ? null : Number(value))}
+            starredOnly={filters.isStarred === true}
+            setStarredOnly={value => setFilters(previous => ({ ...previous, isStarred: value ? true : null }))}
+            resultCount={filteredHeroes.length}
+            totalCount={heroesRef.length}
+            clearFilters={clearFilters}
+            filtersVisible={filtersVisible}
+            onHideFilters={() => setFiltersVisible(false)}
+            onShowFilters={() => setFiltersVisible(true)}
+            sortOrder={sortOrder}
+            onSortChange={setSortOrder}
+        />
         <div className='list hero-list flex-row virtualized-list-scroll' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
             {filteredHeroes.length === 0 ? (
                 <div className="text-big margin-auto">No heroes match the selected filters</div>
@@ -109,7 +117,11 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
                             level={savedHeroes ? (heroObj.level ?? null) : null}
                             onClick={() => {
                                 const clickedId = savedHeroes ? heroObj.saveId : heroObj.id
-                                setSelectedHeroId(currentId => currentId === clickedId ? null : clickedId)
+                                if (onSelectHero) {
+                                    onSelectHero(clickedId)
+                                } else {
+                                    setSelectedHeroId(currentId => currentId === clickedId ? null : clickedId)
+                                }
                             }}
                             onDoubleClick={onDoubleClick ? () => onDoubleClick(heroObj) : undefined}
                         />

@@ -1,6 +1,6 @@
 import { resourceSprites } from "./db_sprites.jsx"
 import { RARITY_DEFINITIONS, RESOURCE_LOCATIONS } from "./enums.jsx"
-import { humanize } from "../js/util.jsx"
+import { humanize } from "../js/utils.js"
 
 let BASE_RESOURCES = []
 

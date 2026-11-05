@@ -5,8 +5,7 @@ import '../css/item.scss'
 
 import Item from './Item.jsx'
 import VirtualizedGrid from './VirtualizedGrid.jsx'
-import { filterSprites } from '../database/db_sprites.jsx'
-import ItemFilters from './ItemFilters.jsx'
+import CatalogueItemFilters from './CatalogueItemFilters.jsx'
 import BackToTopButton from './BackToTopButton.jsx'
 import { ATTRIBUTE_DEFINITIONS, DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
 import { isSearchAssetField, matchesSearchQuery, useUrlSearch } from '../js/search.jsx'
@@ -26,13 +25,12 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
     const setSearch = localSearch ? setModalSearch : setUrlSearch;
     const commitSearch = localSearch ? () => {} : commitUrlSearch;
     const [filters, setFilters] = useState({
-        set: null,
-        unique: null,
+        itemCategory: null,
         slot: null,
         attributeRequirement: null,
         rarity: null,
     });
-    const [filtersAdvanced, setFiltersAdvanced] = useState(false)
+    const [filtersVisible, setFiltersVisible] = useState(true)
     const [sortOrder, setSortOrder] = useState("alphabetic")
 
     const allItems = useMemo(() => {
@@ -45,26 +43,8 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
         ];
     }, [itemsRef]);
 
-    const toggleFilter = (type, value) => {
-        setFilters(previous => {
-            if (type === "rarity") {
-                return {
-                    set: null,
-                    unique: null,
-                    slot: null,
-                    attributeRequirement: null,
-                    rarity: previous.rarity === value ? null : value
-                }
-            }
-            return {
-                set: null, unique: null, slot: null, attributeRequirement: null, rarity: null,
-                [type]: previous[type] === value ? null : value
-            }
-        })
-    };
-
     const clearFilters = () => {
-        setFilters({ set: null, unique: null, slot: null, attributeRequirement: null, rarity: null });
+        setFilters({ itemCategory: null, slot: null, attributeRequirement: null, rarity: null });
         setSearch("");
         commitSearch("");
     };
@@ -78,13 +58,15 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                 || itemRequirement == null
                 || Number(itemRequirement) === ATTRIBUTE_DEFINITIONS.NONE.id
                 || Number(itemRequirement) === Number(heroAttributeRequirement)
-            const hasSet = itemObj.set !== undefined && itemObj.set !== null && itemObj.set !== -1;
             const hasUnique = itemObj.unique !== undefined && itemObj.unique !== null && itemObj.unique !== 0 && itemObj.unique !== 'NOTHING';
-            const matchesSet = filters.set === null || (filters.set === 'noSet' ? !hasSet : itemObj.iconType === filters.set);
-            const matchesUnique = filters.unique === null || (filters.unique === 'unique' ? hasUnique : !hasUnique);
+            const matchesCategory = filters.itemCategory === null || (
+                filters.itemCategory === 'unique'
+                    ? hasUnique
+                    : itemObj.iconType === filters.itemCategory
+            );
             const matchesSlot = filters.slot === null || itemObj.slot === filters.slot;
             const matchesAttribute = filters.attributeRequirement === null || itemObj.attributeRequirement === filters.attributeRequirement;
-            const matchesRarity = filters.rarity === null || filters.rarity === itemObj.rarity;
+            const matchesRarity = filters.rarity === null || Number(filters.rarity) === Number(itemObj.rarity);
             const set = (setsRef ?? []).find(setEntry => setEntry.id === itemObj.set)
             const searchable = [...getSearchableValues(itemObj), itemObj.name,
                 getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? '',
@@ -101,7 +83,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                 return undefined;
             });
 
-            return matchesItemType && matchesHeroAttribute && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity && matchesName;
+            return matchesItemType && matchesHeroAttribute && matchesCategory && matchesSlot && matchesAttribute && matchesRarity && matchesName;
         });
 
         return result.sort((a, b) => {
@@ -113,10 +95,32 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
     }, [allItems, filters, search, itemType, heroAttributeRequirement, sortOrder, setsRef]);
 
     return (<>
-        <div className='flex-row'>
-            <ItemFilters savedItems={savedItems} setFiltersAdvanced={setFiltersAdvanced} advanced={filtersAdvanced} toggleFilter={toggleFilter} setSearch={setSearch} onSearchBlur={() => commitSearch(search)} clearFilters={clearFilters} filters={{ ...filters, name: search }} filterSprites={filterSprites} topOffset={filtersOffset} sortOrder={sortOrder} onSortChange={setSortOrder} />
-        </div>
-        <div className='header-big'>{headerText}</div>
+        <CatalogueItemFilters
+            search={search}
+            setSearch={setSearch}
+            headerText={headerText}
+            onSearchBlur={() => commitSearch(search)}
+            slotFilter={filters.slot === null ? "all" : String(filters.slot)}
+            setSlotFilter={value => setFilters(previous => ({ ...previous, slot: value === "all" ? null : Number(value) }))}
+            showSlotFilter={itemType === null}
+            attributeFilter={filters.attributeRequirement === null ? "all" : String(filters.attributeRequirement)}
+            setAttributeFilter={value => setFilters(previous => ({ ...previous, attributeRequirement: value === "all" ? null : Number(value) }))}
+            attributeLabel="Attribute requirement"
+            itemCategoryFilter={filters.itemCategory ?? "all"}
+            setItemCategoryFilter={value => setFilters(previous => ({ ...previous, itemCategory: value === "all" ? null : value }))}
+            rarityFilter={savedItems ? (filters.rarity === null ? "all" : String(filters.rarity)) : undefined}
+            setRarityFilter={savedItems ? value => setFilters(previous => ({ ...previous, rarity: value === "all" ? null : Number(value) })) : undefined}
+            isListView
+            resultCount={filteredItems.length}
+            totalCount={allItems.length}
+            clearFilters={clearFilters}
+            filtersVisible={filtersVisible}
+            onHideFilters={() => setFiltersVisible(false)}
+            onShowFilters={() => setFiltersVisible(true)}
+            topOffset={filtersOffset}
+            sortOrder={sortOrder}
+            onSortChange={setSortOrder}
+        />
 
         <div className='list item-list flex-row virtualized-list-scroll' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
             {filteredItems.length === 0 ? (

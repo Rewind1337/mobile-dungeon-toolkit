@@ -1,6 +1,6 @@
 import { ATTRIBUTE_DEFINITIONS, DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
 import { statusSprites } from "../database/db_sprites.jsx"
-import { humanize } from "./util.jsx"
+import { humanize } from "./utils.js"
 
 export const SLOT_NAMES = Object.fromEntries(
     Object.values(EQUIPMENT_SLOT_DEFINITIONS).map(({ id, name }) => [id, name])

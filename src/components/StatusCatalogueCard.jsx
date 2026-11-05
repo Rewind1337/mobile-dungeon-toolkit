@@ -5,7 +5,7 @@ import CollapseSrc from "../sprites/collapse.webp"
 import ExpandSrc from "../sprites/expand.webp"
 import CatalogueEntryCard from "./CatalogueEntryCard.jsx"
 import { STATUS_DESCRIPTIONS, getCategory, getDetails } from "../js/statusCatalogueUtils.jsx"
-import { humanize } from "../js/util.jsx"
+import { humanize } from "../js/utils.js"
 import "../css/infos.scss"
 import "../css/infos_status.scss"
 

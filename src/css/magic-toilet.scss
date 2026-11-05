@@ -47,6 +47,10 @@
   text-align: left;
 }
 
+.magic-toilet-field > .text {
+  font-size: 14px;
+}
+
 .magic-toilet-field > select,
 .magic-toilet-field > input {
   width: 100%;
@@ -149,6 +153,10 @@
 .magic-toilet-keep-boosters-toggle > input {
   flex: 0 0 auto;
   margin: 0;
+}
+
+.magic-toilet-keep-boosters-toggle > .text {
+  font-size: 14px;
 }
 
 .magic-toilet-results {
@@ -316,9 +324,11 @@
   .magic-toilet-control-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-// On mobile, stack the controls while keeping the number inputs the same height as the selects.
+// On mobile, pair the pity inputs while letting the banner and flush amount controls use the full row.
 @include M.media-query-max(V.$bp-mobile, ()) {
-  .magic-toilet-control-grid { grid-template-columns: minmax(0, 1fr); }
+  .magic-toilet-control-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .magic-toilet-field-banner,
+  .magic-toilet-field-flush-amount { grid-column: 1 / -1; }
   .magic-toilet-booster-row { grid-template-columns: minmax(0, 1fr); }
   .magic-toilet-field > input[type="number"] { height: 32px; }
 }
