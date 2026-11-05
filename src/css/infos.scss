@@ -67,128 +67,6 @@
   opacity: 0.85;
 }
 
-.catalogue-view-switch {
-  position: absolute;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: V.$gap;
-}
-
-.catalogue-filters,
-.hero-catalogue-filters,
-.status-catalogue-filters,
-.perk-catalogue-filters,
-.skills-talents-catalogue-filters {
-  position: sticky;
-  top: V.$gap-small;
-  z-index: 100;
-  display: grid;
-  gap: V.$gap;
-  align-items: start;
-  padding: V.$padding-card;
-}
-
-.catalogue-filters {
-  grid-template-columns: minmax(240px, 2fr) repeat(4, minmax(120px, 1fr)) auto;
-}
-.catalogue-filters.is-set-view {
-  grid-template-columns: minmax(220px, 2fr) repeat(4, minmax(115px, 1fr)) auto;
-}
-.catalogue-filters.is-list-view,
-.catalogue-filters.is-list-view.is-slot-specific {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-}
-.catalogue-filters.is-list-view .catalogue-search { grid-column: span 4; }
-.catalogue-filters.is-list-view .catalogue-filter { grid-column: span 2; }
-.catalogue-filters.is-list-view .catalogue-filter-sort { grid-column: span 2; }
-
-.hero-catalogue-filters {
-  grid-template-columns: minmax(220px, 2fr) repeat(4, minmax(120px, 1fr)) minmax(100px, .8fr) auto;
-}
-.hero-catalogue-filters.has-sort-order {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-}
-.hero-catalogue-filters.has-sort-order > .catalogue-search { grid-column: span 4; }
-.hero-catalogue-filters.has-sort-order > .catalogue-filter-sort { grid-column: span 2; }
-.hero-catalogue-filters.has-sort-order > .catalogue-filter:not(.catalogue-filter-sort) { grid-column: span 2; }
-.catalogue-filter-checkbox > .text { font-size: 18px; }
-
-.catalogue-search,
-.catalogue-filter {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-  text-align: left;
-}
-
-.catalogue-control-label {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 2px V.$gap-small;
-  padding-inline: 2px;
-  font-size: V.$font-size-small;
-  opacity: 0.85;
-}
-
-.catalogue-control-label .catalogue-result-count {
-  font-size: V.$font-size-small;
-}
-
-.catalogue-input,
-.catalogue-filter select {
-  width: 100%;
-  min-width: 0;
-  min-height: 38px;
-  font-family: V.$font-family-stats;
-}
-
-.catalogue-filter-actions {
-  grid-column: 1 / -1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: V.$gap-small;
-  width: 100%;
-  min-width: 0;
-  height: auto;
-
-  > button {
-    align-self: center;
-    flex: 0 0 auto;
-    width: auto;
-  }
-}
-
-.catalogue-filter-checkbox {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  align-self: end;
-  gap: V.$gap-small;
-  min-width: 0;
-  height: 40px;
-  padding: 4px 8px;
-  outline: 2px solid black;
-  border: 0;
-  border-radius: V.$border-radius;
-  background: rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.catalogue-filter-checkbox input {
-  flex: 0 0 18px;
-  width: 18px;
-  height: 18px;
-  min-height: 0;
-  margin: 0;
-  accent-color: #f2bd55;
-}
-
 .catalogue-results {
   display: flex;
   flex: 0 0 auto;
@@ -258,85 +136,13 @@
   overflow-wrap: anywhere;
 }
 
-// At widths up to 1200px, reduce the catalogue and search filter grids to two columns on tablet-sized screens.
-@include M.media-query-max(V.$bp-tablet) {
-  .catalogue-filters, .hero-catalogue-filters, .status-catalogue-filters,
-  .perk-catalogue-filters {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .catalogue-filters.is-list-view,
-  .catalogue-filters.is-list-view.is-slot-specific {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-  .catalogue-filters.is-list-view .catalogue-filter:not(.catalogue-filter-sort) {
-    grid-column: span 3;
-  }
-  .hero-catalogue-filters.has-sort-order {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .hero-catalogue-filters.has-sort-order > .catalogue-search,
-  .hero-catalogue-filters.has-sort-order > .catalogue-filter-sort {
-    grid-column: span 1;
-  }
-  .catalogue-filters.is-set-view { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .catalogue-search, .hero-catalogue-filters .catalogue-search, .status-catalogue-filters .catalogue-search {
-    grid-column: 1 / -1;
-  }
-  .hero-catalogue-filters.has-sort-order > .catalogue-search,
-  .hero-catalogue-filters.has-sort-order > .catalogue-filter-sort,
-  .hero-catalogue-filters.has-sort-order > .catalogue-filter:not(.catalogue-filter-sort) {
-    grid-column: span 1;
-  }
-  .hero-catalogue-filters.has-sort-order > .catalogue-filter-actions {
-    grid-column: 1 / -1;
-  }
-  .catalogue-filter-actions { justify-content: space-between; }
-}
-
-// At widths up to 900px, compact catalogue controls and entry cards, and collapse filter groups and catalogue breakdowns to one column on mobile.
+// At widths up to 900px, compact catalogue entry cards and page spacing on mobile.
 @include M.media-query-max(V.$bp-mobile) {
-  .catalogue-input, .catalogue-filter select { min-height: 32px; }
   .catalogue-entry-card { gap: V.$gap-small; }
   .catalogue-entry-icon-wrap { flex-basis: 48px; }
   .catalogue-entry-icon { max-width: 100%; }
-  #page-info-layout, .catalogue-view-switch { gap: 0; }
-  .catalogue-filters, .hero-catalogue-filters, .status-catalogue-filters,
-  .perk-catalogue-filters, .skills-talents-catalogue-filters { top: 0; }
+  #page-info-layout { gap: 0; }
   .item-catalogue, .hero-catalogue, .status-catalogue, .perk-catalogue { padding: 0; }
-  .catalogue-filters, .hero-catalogue-filters, .status-catalogue-filters,
-  .catalogue-filters.is-set-view, .perk-catalogue-filters {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .catalogue-filters.is-list-view,
-  .catalogue-filters.is-list-view.is-slot-specific {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-  .catalogue-filters.is-list-view .catalogue-filter:not(.catalogue-filter-sort) {
-    grid-column: span 3;
-  }
-  .hero-catalogue-filters.has-sort-order {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .hero-catalogue-filters.has-sort-order > .catalogue-search,
-  .hero-catalogue-filters.has-sort-order > .catalogue-filter-sort {
-    grid-column: span 1;
-  }
-  .hero-catalogue-filters.has-sort-order > .catalogue-filter:not(.catalogue-filter-sort) {
-    grid-column: span 1;
-  }
-  .catalogue-search, .hero-catalogue-filters .catalogue-search, .status-catalogue-filters .catalogue-search { grid-column: auto; }
-  .catalogue-filters:not(.is-list-view) > .catalogue-search,
-  .status-catalogue-filters > .catalogue-search {
-    grid-column: 1 / -1;
-  }
-  .catalogue-filter-actions { justify-content: space-between; }
-  .catalogue-filter-actions-hidden { justify-content: flex-start; }
-  .catalogue-filter-checkbox {
-    align-self: stretch;
-    height: 32px;
-    border-radius: 0;
-  }
-  .catalogue-result-count { flex-basis: 100%; text-align: left; }
 }
 // At widths of 1500px and wider, add the shared horizontal margin around filter groups on wide screens.
 @include M.media-query(V.$bp-wide) {
@@ -348,21 +154,6 @@
   font-size: V.$font-size-small;
   line-height: 1.4;
   opacity: 0.7;
-}
-
-.catalogue-view-label-compact {
-  display: none;
-}
-
-// At widths up to 900px, hide the full catalogue view labels and show their shorter compact versions on mobile.
-@include M.media-query-max(V.$bp-mobile) {
-  .catalogue-view-label-full {
-    display: none;
-  }
-
-  .catalogue-view-label-compact {
-    display: inline;
-  }
 }
 
 .catalogue-filter-actions {
@@ -381,55 +172,4 @@
   width: fit-content;
   max-width: 100%;
 }
-.catalogue-filter-actions-hidden button,
-.catalogue-show-filters-inline {
-  width: auto;
-}
-
-// At widths up to 900px, left-align catalogue filter actions and hide the inline show-filters control when the mobile filter layout is active.
-@include M.media-query-max(V.$bp-mobile) {
-  .catalogue-filter-actions:not(.catalogue-filter-actions-hidden) {
-    justify-content: space-between;
-    grid-column: 1 / -1;
-  }
-
-  .catalogue-filter-actions-hidden {
-    justify-content: flex-start;
-  }
-
-  .catalogue-filter-actions-hidden .catalogue-show-filters-inline {
-    display: none;
-  }
-}
-
-
-/* The hero filter panel follows the list pane when a preview reduces the available width on desktop. */
-.hero-list-pane {
-  container-name: hero-list-pane;
-  container-type: inline-size;
-  min-width: 0;
-}
-
-@container hero-list-pane (max-width: 700px) {
-  .hero-catalogue-filters.has-sort-order {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .hero-catalogue-filters.has-sort-order > .catalogue-search,
-  .hero-catalogue-filters.has-sort-order > .catalogue-filter-sort,
-  .hero-catalogue-filters.has-sort-order > .catalogue-filter:not(.catalogue-filter-sort) {
-    grid-column: span 1;
-  }
-
-  .hero-catalogue-filters.has-sort-order > .catalogue-filter-actions {
-    grid-column: 1 / -1;
-  }
-}
-
-
-// Keep catalogue descriptions comfortably readable on mobile instead of shrinking them with generic text.
-@include M.media-query-max(V.$bp-mobile) {
-  .catalogue-description.text {
-    font-size: 14px;
-  }
-}
+.c
