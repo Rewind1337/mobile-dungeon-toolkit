@@ -1,6 +1,6 @@
 import { elementSprites } from "../database/db_sprites.jsx"
 import { ELEMENT_DEFINITIONS, RARITY_DEFINITIONS, RESOURCE_LOCATIONS } from "../database/enums.jsx"
-import { humanize } from "../js/util.jsx"
+import { humanize } from "../js/utils.js"
 import "../css/infos.scss"
 import "../css/infos_resources.scss"
 
