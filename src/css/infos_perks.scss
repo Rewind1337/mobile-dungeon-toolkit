@@ -29,17 +29,3 @@
 .perk-catalogue-slot-chip .catalogue-chip-icon {
   filter: drop-shadow(0 0 2px black);
 }
-
-.perk-catalogue-filters {
-  grid-template-columns: minmax(240px, 2fr) minmax(170px, 1fr) auto;
-}
-
-// At widths up to 1200px, keep perk search and slot filters in a paired two-column layout.
-@include M.media-query-max(V.$bp-tablet) {
-  .perk-catalogue-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-// At widths up to 900px, keep perk search and slot filters side by side on mobile.
-@include M.media-query-max(V.$bp-mobile) {
-  .perk-catalogue-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
