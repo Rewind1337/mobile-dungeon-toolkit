@@ -75,6 +75,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
         <HeroCatalogueFilters
             search={search}
             setSearch={setSearch}
+            headerText={headerText}
             onSearchBlur={() => commitSearch(search)}
             rarityFilter={filters.rarity === null ? "all" : String(filters.rarity)}
             setRarityFilter={value => toggleFilter("rarity", value === "all" ? null : Number(value))}
@@ -95,7 +96,6 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
             sortOrder={sortOrder}
             onSortChange={setSortOrder}
         />
-        <div className='header-big'>{headerText}</div>
         <div className='list hero-list flex-row virtualized-list-scroll' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
             {filteredHeroes.length === 0 ? (
                 <div className="text-big margin-auto">No heroes match the selected filters</div>
