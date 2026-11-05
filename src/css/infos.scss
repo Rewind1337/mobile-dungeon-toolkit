@@ -260,7 +260,8 @@
 
 // At widths up to 1200px, reduce the catalogue and search filter grids to two columns on tablet-sized screens.
 @include M.media-query-max(V.$bp-tablet) {
-  .catalogue-filters, .hero-catalogue-filters, .status-catalogue-filters {
+  .catalogue-filters, .hero-catalogue-filters, .status-catalogue-filters,
+  .perk-catalogue-filters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .catalogue-filters.is-list-view,
@@ -303,7 +304,9 @@
   .perk-catalogue-filters, .skills-talents-catalogue-filters { top: 0; }
   .item-catalogue, .hero-catalogue, .status-catalogue, .perk-catalogue { padding: 0; }
   .catalogue-filters, .hero-catalogue-filters, .status-catalogue-filters,
-  .catalogue-filters.is-set-view { grid-template-columns: minmax(0, 1fr); }
+  .catalogue-filters.is-set-view, .perk-catalogue-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .catalogue-filters.is-list-view,
   .catalogue-filters.is-list-view.is-slot-specific {
     grid-template-columns: repeat(6, minmax(0, 1fr));
