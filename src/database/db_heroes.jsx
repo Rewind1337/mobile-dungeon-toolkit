@@ -1,10 +1,11 @@
 import { ATTRIBUTE_DEFINITIONS, RARITY_DEFINITIONS, ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, PRIMARY_STAT_DEFINITIONS, STATUS_EFFECT_DEFINITIONS } from "./enums.jsx"
 import { heroSprites, elementSprites } from "./db_sprites.jsx"
+import { normalizeName } from "../js/utils.js"
 
 let BASE_HEROES = []
 
 function add_hero(name, mainAttribute, rarity, isStarred, element, role, variant = null, skills, talents) {
-    let normalizedName = name.toLowerCase().replace(/[^a-z]/g, '_') + (variant !== null ? "_" + variant : "");
+    let normalizedName = normalizeName(name) + (variant !== null ? "_" + variant : "");
     let id = normalizedName
     if (BASE_HEROES.some(hero => hero.id === id)) {
         throw new Error(`Duplicate stable hero ID "${id}". Give this hero variant a distinct value.`)
