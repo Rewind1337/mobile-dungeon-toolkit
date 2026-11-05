@@ -5,6 +5,7 @@ import HeroList from "./HeroList.jsx"
 import HeroPreview from "./HeroPreview.jsx"
 import Button from "./Button.jsx"
 import Modal from "./Modal.jsx"
+import PageHelpButton from "./PageHelpButton.jsx"
 import { decodeHeroShareInput, restoreSharedHero } from "../utils/heroShare.js"
 import { clearSearchFromUrl } from "../js/search.jsx"
 import { ATTRIBUTE_DEFINITIONS } from "../database/enums.jsx"
@@ -293,7 +294,10 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                     <Button text={"Import Hero"} color={0} onClick={() => setImportModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">
-                    <Button text={"Manual Save"} color={5} onClick={() => { manualSaveFunction() }} />
+                    <PageHelpButton title="Hero Management">
+                        <p className="text">Search and combine the available hero filters to find the heroes you need.</p>
+                        <p className="text">Select a hero to inspect its stats, equip items, and save a configured copy for your teams.</p>
+                    </PageHelpButton>
                 </div>
             </div>
 
