@@ -94,7 +94,7 @@ function CatalogueStatus() {
             {filtersVisible ? (
                 <div className="status-catalogue-filters card">
                     <label className="catalogue-search">
-                        <span className="catalogue-control-label text">Search status effects ({filteredStatuses.length} of {statuses.length} status effects)</span>
+                        <span className="catalogue-control-label text">Search ({filteredStatuses.length} of {statuses.length})</span>
                         <input className="selectable catalogue-input" aria-label="Search status effects" placeholder="Name, effect, stat, mechanic…" value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
                     </label>
                     <label className="catalogue-filter">
