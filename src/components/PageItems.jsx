@@ -21,6 +21,12 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
     const [previewFullWidth, setPreviewFullWidth] = useState(false)
     const [selectedItemId, setSelectedItemId] = useState({ slot: null, id: null })
     const [selectedSavedItemId, setSelectedSavedItemId] = useState({ slot: null, id: null })
+
+    const selectItemForPreview = (setSelection, itemId) => {
+        setSelection(itemId)
+        const isMobileViewport = window.matchMedia("(max-width: 900px)").matches
+        setPreviewFullWidth(isMobileViewport || previewFullWidth)
+    }
     const clearItemSelection = () => {
         setSelectedItemId({ slot: null, id: null })
         setSelectedSavedItemId({ slot: null, id: null })
@@ -309,7 +315,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                                 headerText={"All Items"}
                                 filtersOffset={"5px"}
                                 itemsRef={itemsRef.current.BASE_ITEMS}
-                                setSelectedItemId={setSelectedItemId}
+                                setSelectedItemId={itemId => selectItemForPreview(setSelectedItemId, itemId)}
                                 setsRef={itemsRef.current.BASE_SETS}
                             />
                         </div>
@@ -333,7 +339,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                                 headerText={"Saved Items"}
                                 filtersOffset={"5px"}
                                 itemsRef={savedItemsRef.current}
-                                setSelectedItemId={setSelectedSavedItemId}
+                                setSelectedItemId={itemId => selectItemForPreview(setSelectedSavedItemId, itemId)}
                                 setsRef={itemsRef.current.ITEM_SETS}
                             />
                         </div>
