@@ -58,7 +58,7 @@ function CatalogueItemFilters({
         <div className={className} style={topOffset ? { top: topOffset } : undefined}>
             <label className="catalogue-search">
                 <span className="catalogue-control-label text">
-                    Search {view === "sets" ? "sets" : "items"} ({resultCount} of {totalCount} {view === "sets" ? "sets" : "items"})
+                    Search ({resultCount} of {totalCount})
                 </span>
                 <input
                     className="selectable catalogue-input"
