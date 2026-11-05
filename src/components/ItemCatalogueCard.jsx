@@ -40,7 +40,7 @@ export default function ItemCatalogueCard({ item, set }) {
     const effectDescription = item.unique?.description
     const mainAttribute = Object.values(PRIMARY_STAT_DEFINITIONS).find(attribute => attribute.id === Number(item.mainAttribute))
     const mainAttributeSprite = mainAttribute ? perkSprites[`${mainAttribute.name}_FLAT`] : null
-    const mainAttributeShortName = { ATTACK: "ATK", DEFENCE: "DEF", AGILITY: "AGI" }[mainAttribute?.name] ?? ""
+    const mainAttributeLabel = { ATTACK: "Attack", DEFENCE: "Defense", AGILITY: "Agility" }[mainAttribute?.name] ?? ""
     const hasAllAttributeRequirement = item.attributeRequirement !== null
         && item.attributeRequirement !== undefined
         && Number(item.attributeRequirement) === ATTRIBUTE_DEFINITIONS.NONE.id
@@ -59,9 +59,9 @@ export default function ItemCatalogueCard({ item, set }) {
                                 {iconSprites[SLOT_ICON_KEYS[String(item.slotLabel ?? "").toUpperCase()]] && <img className="catalogue-chip-icon" src={iconSprites[SLOT_ICON_KEYS[String(item.slotLabel ?? "").toUpperCase()]]} alt="" />}
                                 {humanize(item.slotLabel ?? "Unknown slot")}
                             </span>
-                            {mainAttribute && <span className="catalogue-chip text catalogue-chip-main-attribute" title={humanize(mainAttribute.name)}>
+                            {mainAttribute && <span className="catalogue-chip text catalogue-chip-main-attribute" title={mainAttributeLabel}>
                                 {mainAttributeSprite && <img className="catalogue-chip-icon" src={mainAttributeSprite} alt="" />}
-                                {mainAttributeShortName}
+                                {mainAttributeLabel}
                             </span>}
                             {hasAllAttributeRequirement
                                 ? <span className="catalogue-chip text catalogue-chip-attribute catalogue-item-attribute-all">
