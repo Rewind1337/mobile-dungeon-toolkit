@@ -7,6 +7,7 @@ import { POSSIBLE_PERKS } from "../database/enums.jsx"
 import { createSavedItemRecord } from "../js/ids.jsx"
 import Modal from "./Modal.jsx"
 import PageHelpButton from "./PageHelpButton.jsx"
+import { ItemManagementGuide } from "./Guides.jsx"
 import { createItemShareToken, decodeItemShareInput, decodeItemsShareInput, restoreSharedItem, restoreSharedItems } from "../utils/heroShare.js"
 import { clearSearchFromUrl } from "../js/search.jsx"
 
@@ -295,8 +296,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                 </div>
                 <div className="options flex-row card">
                     <PageHelpButton title="Item Management">
-                        <p className="text">Search and combine the item filters to narrow down the available equipment.</p>
-                        <p className="text">Select an item to inspect its properties, adjust its available settings, or save a copy for later use.</p>
+                        <ItemManagementGuide />
                     </PageHelpButton>
                 </div>
             </div>
