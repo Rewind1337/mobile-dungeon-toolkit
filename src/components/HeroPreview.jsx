@@ -18,7 +18,7 @@ import TalentCatalogueCard from './TalentCatalogueCard.jsx'
 import '../css/hero.scss'
 import HeroStat from './HeroStat.jsx'
 import { calculateHeroStats, MAIN_STAT_PERKS } from '../utils/calculatedStats.js'
-import { formatNumber } from '../js/util.jsx'
+import { formatNumber } from '../js/utils.js'
 
 
 function cloneTalentSelections(talents) {
