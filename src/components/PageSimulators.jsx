@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import Button from './Button.jsx'
+import PageHelpButton from './PageHelpButton.jsx'
 import SimulatorOverview from './SimulatorOverview.jsx'
 
 const SubPageGuildBoss = lazy(() => import('./SubPageGuildBoss.jsx'))
@@ -24,11 +25,14 @@ function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedH
             <div className="sub-nav-bar flex-row">
                 <div className="pagination flex-row card w-100">
                     {SIMULATOR_TABS.map(([id, label, color]) => (
-                        <Button key={id} text={label} color={color} active={activeTab === id} onClick={() => onTabChange?.(id)} />
+                        <Button key={id} text={label} color={color} active={activeTab === id} disabled={id !== 'magic-toilet'} onClick={() => onTabChange?.(id)} />
                     ))}
                 </div>
                 <div className="options flex-row card">
-                    <Button text="Manual Save" color={4} onClick={manualSaveFunction} />
+                    <PageHelpButton title="Simulators">
+                        <p className="text">Choose a simulator from the navigation above. Magic Toilet is currently the available simulator.</p>
+                        <p className="text">The other simulator pages are temporarily disabled while they are being developed.</p>
+                    </PageHelpButton>
                 </div>
             </div>
 
