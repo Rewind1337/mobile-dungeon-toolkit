@@ -201,40 +201,60 @@
   position: sticky;
   top: V.$gap-small;
   z-index: 100;
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) repeat(2, minmax(0, 1fr));
+  align-items: end;
   gap: V.$gap;
   min-width: 0;
   padding: V.$padding-card;
 }
 
-.resource-catalogue-filters.is-resource-view .resource-location-filter {
-  align-self: flex-start;
-  height: auto;
-  flex: 0 0 auto;
-}
-
-.resource-catalogue-filters.is-resource-view .catalogue-filter-actions {
-  align-self: flex-end;
-  align-items: flex-end;
-  justify-content: flex-end;
-  height: auto;
-  flex: 0 0 auto;
-  margin-left: auto;
+.resource-catalogue-filters.is-gem-view {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
 }
 
 .resource-catalogue-search-group {
   display: flex;
-  flex: 1 1 300px;
   flex-direction: column;
   gap: V.$gap-small;
+  width: 100%;
   min-width: 0;
+}
+
+.resource-catalogue-filters.is-gem-view .resource-catalogue-search-group {
+  grid-column: 1 / -1;
 }
 
 .resource-catalogue-filters .catalogue-search {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
+  width: 100%;
+  min-width: 0;
+}
+
+.resource-catalogue-filters.is-resource-view .catalogue-filter-actions {
+  grid-column: 1 / -1;
+  align-self: stretch;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+}
+
+.resource-catalogue-filters.is-gem-view .catalogue-filter-actions {
+  grid-column: 1;
+  align-self: end;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+}
+
+.resource-catalogue-filters.is-gem-view .gem-dungeon-filter {
+  grid-column: 2;
+  align-self: end;
+  width: 100%;
   min-width: 0;
 }
 
@@ -398,12 +418,19 @@
     grid-template-columns: repeat(2, minmax(0, 116px));
     justify-content: center;
   }
-  .resource-catalogue-search-group { flex-basis: auto; }
-  .resource-location-filter { width: 100%; min-width: 0; }
+  .resource-catalogue-filters.is-resource-view {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .resource-catalogue-filters.is-gem-view {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+  .resource-catalogue-filters .resource-location-filter {
+    width: 100%;
+    min-width: 0;
+  }
   .banner-catalogue-hero-odds { max-width: 100%; white-space: normal; }
   .banner-catalogue-hero-grid { grid-template-columns: repeat(auto-fill, 116px); justify-content: space-evenly; }
   .banner-catalogue-card.card-dark { grid-column: 1 / -1; }
-  .resource-catalogue-filters { align-items: stretch; flex-direction: column; }
 }
 
 .resource-catalogue-additional-info,
@@ -436,12 +463,11 @@
 }
 
 .resource-catalogue-filters .resource-location-filter {
-  flex: 0 1 220px;
-  min-width: 160px;
+  width: 100%;
+  min-width: 0;
 }
 .resource-catalogue-filters .catalogue-filter-actions {
-  align-self: flex-end;
-  margin-left: auto;
+  min-width: 0;
 }
 .banner-catalogue-search {
   display: flex;
