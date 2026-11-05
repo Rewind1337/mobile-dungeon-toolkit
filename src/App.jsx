@@ -398,9 +398,9 @@ function App() {
 
         {pageContent === 'simulator' && <PageSimulators activeTab={activeSimulatorTab} onTabChange={switchSimulatorTo} itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedTeamsRef={savedTeamsRef} savedItemsRef={savedItemsRef} />}
 
-        {{pageContent === 'games' && <PageGames />}
+        {pageContent === 'games' && <PageGames />}
 
-        pageContent === 'wiki' && (
+        {pageContent === 'wiki' && (
           <PageWiki
             itemsRef={itemsRef}
             heroesRef={heroesRef}
