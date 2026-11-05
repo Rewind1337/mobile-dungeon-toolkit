@@ -114,6 +114,10 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
         return () => window.removeEventListener('resize', onResize)
     }, [])
 
+    useLayoutEffect(() => {
+        if (listRef.current) listRef.current.scrollTop = 0
+    }, [selectedItemId.slot, selectedItemId.id, itemsRef])
+
     const getPerkKey = (perk) => Object.keys(PERK_DEFINITIONS).find(key => PERK_DEFINITIONS[key].id === perk.id) ?? "NOTHING"
 
     useEffect(() => {
