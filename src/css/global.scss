@@ -2588,6 +2588,7 @@ select {
 .page-help-modal {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   width: 100%;
   min-width: 0;
   gap: V.$gap;
@@ -2960,10 +2961,6 @@ select {
 }
 
 /* The modal wrapper supplies the single card surface; the guide content stays transparent and fills it. */
-.page-help-modal {
-  justify-content: flex-start;
-}
-
 .page-help-modal > button {
   align-self: flex-end;
   width: auto;
