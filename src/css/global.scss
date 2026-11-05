@@ -930,7 +930,7 @@ a {
 
     &.teams {
       background-image: url('../sprites/splash/teams.webp');
-      background-position: 50% 65%;
+      background-position: 50% 25%;
     }
 
     &.chapters {
@@ -938,19 +938,29 @@ a {
       background-position: 50% 50%;
     }
 
+    &.towers {
+      background-image: url('../sprites/simulation/tower_crystal_bore.webp');
+      background-position: 75% 50%;
+    }
+
     &.titans {
       background-image: url('../sprites/splash/titans.webp');
       background-position: 50% 25%;
     }
 
-    &.towers {
-      background-image: url('../sprites/simulation/tower_crystal_bore.webp');
-      background-position: 70% 0%;
-    }
-
     &.guildbosses {
       background-image: url('../sprites/splash/guildbosses.webp');
       background-position: 50% 10%;
+    }
+
+    &.custom-combat {
+      background-image: url('../sprites/splash/custom_combat.webp');
+      background-position: 50% 50%;
+    }
+
+    &.magic-toilet-tile {
+      background-image: url('../sprites/splash/magic_toilet.webp');
+      background-position: 50% 0;
     }
   }
 
