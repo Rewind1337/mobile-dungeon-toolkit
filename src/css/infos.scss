@@ -107,8 +107,12 @@
   grid-template-columns: minmax(220px, 2fr) repeat(4, minmax(120px, 1fr)) minmax(100px, .8fr) auto;
 }
 .hero-catalogue-filters.has-sort-order {
-  grid-template-columns: minmax(210px, 2fr) repeat(4, minmax(110px, 1fr)) minmax(100px, .8fr) minmax(110px, .9fr) auto;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 }
+.hero-catalogue-filters.has-sort-order > .catalogue-search { grid-column: span 4; }
+.hero-catalogue-filters.has-sort-order > .catalogue-filter-sort { grid-column: span 2; }
+.hero-catalogue-filters.has-sort-order > .catalogue-filter:not(.catalogue-filter-sort) { grid-column: span 2; }
+.catalogue-filter-checkbox > .text { font-size: 18px; }
 
 .catalogue-search,
 .catalogue-filter {
@@ -269,6 +273,10 @@
   .hero-catalogue-filters.has-sort-order {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  .hero-catalogue-filters.has-sort-order > .catalogue-search,
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter-sort {
+    grid-column: span 1;
+  }
   .catalogue-filters.is-set-view { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .catalogue-search, .hero-catalogue-filters .catalogue-search, .status-catalogue-filters .catalogue-search {
     grid-column: 1 / -1;
@@ -296,7 +304,14 @@
     grid-column: span 3;
   }
   .hero-catalogue-filters.has-sort-order {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .hero-catalogue-filters.has-sort-order > .catalogue-search,
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter-sort {
+    grid-column: span 1;
+  }
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter:not(.catalogue-filter-sort) {
+    grid-column: span 1;
   }
   .catalogue-search, .hero-catalogue-filters .catalogue-search, .status-catalogue-filters .catalogue-search { grid-column: auto; }
   .catalogue-filter-actions { justify-content: space-between; }
@@ -369,5 +384,29 @@
 
   .catalogue-filter-actions-hidden .catalogue-show-filters-inline {
     display: none;
+  }
+}
+
+
+/* The hero filter panel follows the list pane when a preview reduces the available width on desktop. */
+.hero-list-pane {
+  container-name: hero-list-pane;
+  container-type: inline-size;
+  min-width: 0;
+}
+
+@container hero-list-pane (max-width: 700px) {
+  .hero-catalogue-filters.has-sort-order {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-catalogue-filters.has-sort-order > .catalogue-search,
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter-sort,
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter:not(.catalogue-filter-sort) {
+    grid-column: span 1;
+  }
+
+  .hero-catalogue-filters.has-sort-order > .catalogue-filter-actions {
+    grid-column: 1 / -1;
   }
 }
