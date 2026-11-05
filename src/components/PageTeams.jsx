@@ -4,6 +4,7 @@ import Hero from "./Hero.jsx"
 import EmptyHero from "./EmptyHero.jsx"
 import Button from "./Button.jsx"
 import Modal from "./Modal.jsx"
+import PageHelpButton from "./PageHelpButton.jsx"
 import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
 import { attributeSprites, heroSprites, itemSprites, statusSprites } from "../database/db_sprites.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
@@ -364,7 +365,10 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                     <Button text="Import Team" color={2} onClick={() => setImportTeamModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">
-                    <Button text="Manual Save" color={2} onClick={manualSaveFunction} />
+                    <PageHelpButton title="Team Management">
+                        <p className="text">Create teams and fill their five hero slots using your saved heroes.</p>
+                        <p className="text">Expand a team to review its equipment, stats, and status effects. Changes are saved automatically.</p>
+                    </PageHelpButton>
                 </div>
             </div>
 
