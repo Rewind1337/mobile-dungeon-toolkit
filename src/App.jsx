@@ -287,7 +287,7 @@ function App() {
                 <Button className="not-found-link" text="Teams" color={2} onClick={() => switchTabTo('teams')} />
                 <Button className="not-found-link" text="Home" color={6} onClick={() => switchTabTo('splash')} />
                 <Button className="not-found-link" text="" color={3} disabled={true} />
-                <Button className="not-found-link" text="Simulators" color={4} disabled={true} />
+                <Button className="not-found-link" text="Simulators" color={4} onClick={() => switchTabTo("simulator")} />
                 <Button className="not-found-link" text="Wiki" color={5} onClick={() => switchTabTo('wiki')} />
               </nav>
             </section>
@@ -323,7 +323,7 @@ function App() {
             <div className='flex-row bottom'>
               <div className='card simulations flex-col'>
                 <div className='header-big'>Simulations</div>
-                <div className='flex-row'>
+                <div className='simulation-navigation-grid'>
                   <div className='card chapters flex-col home-navigation-tile is-disabled' aria-disabled="true" aria-label="Adventure Chapters temporarily unavailable">
                     <div className='header card card-static'>Adventure Chapters</div>
                   </div>
@@ -338,6 +338,9 @@ function App() {
                   </div>
                   <div className='card custom-combat flex-col home-navigation-tile is-disabled' aria-disabled="true" aria-label="Custom Combat temporarily unavailable">
                     <div className='header card card-static'>Custom Combat</div>
+                  </div>
+                  <div className='card magic-toilet flex-col home-navigation-tile' role="button" tabIndex={0} aria-label="Open Magic Toilet simulator" onClick={() => switchSimulatorTo('magic-toilet')} onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); switchSimulatorTo('magic-toilet'); } }}>
+                    <div className='header card card-static'>Magic Toilet</div>
                   </div>
                 </div>
               </div>
