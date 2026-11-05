@@ -392,11 +392,13 @@
 .hero-preview .equipment > .item.card {
   box-sizing: border-box;
   display: block;
-  flex: 0 0 calc(V.$item-sprite-width + 10px);
-  width: calc(V.$item-sprite-width + 10px);
-  max-width: calc(V.$item-sprite-width + 10px);
+  width: calc(V.$item-sprite-width + 6px);
   min-width: 0;
   margin: 0;
+
+  @include M.media-query-max(V.$bp-mobile, ()) {
+    width: calc(V.$item-sprite-width + 2px);
+  }
 }
 
 .hero-preview .equipment > .item .item-sprite {
@@ -458,8 +460,7 @@
 
   .hero-preview .equipment > .item.card {
     flex: 0 0 70px;
-    width: 70px;
-    max-width: 70px;
+    width: 66px;
     border-radius: 0;
   }
 
