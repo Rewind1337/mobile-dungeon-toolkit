@@ -253,6 +253,10 @@
   .catalogue-filters, .hero-catalogue-filters, .status-catalogue-filters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  .catalogue-filters.is-list-view,
+  .hero-catalogue-filters.has-sort-order {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .catalogue-filters.is-set-view { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .catalogue-search, .hero-catalogue-filters .catalogue-search, .status-catalogue-filters .catalogue-search {
     grid-column: 1 / -1;
@@ -272,6 +276,10 @@
   .item-catalogue, .hero-catalogue, .status-catalogue, .perk-catalogue { padding: 0; }
   .catalogue-filters, .hero-catalogue-filters, .status-catalogue-filters,
   .catalogue-filters.is-set-view { grid-template-columns: minmax(0, 1fr); }
+  .catalogue-filters.is-list-view,
+  .hero-catalogue-filters.has-sort-order {
+    grid-template-columns: minmax(0, 1fr);
+  }
   .catalogue-search, .hero-catalogue-filters .catalogue-search, .status-catalogue-filters .catalogue-search { grid-column: auto; }
   .catalogue-filter-actions { justify-content: space-between; }
   .catalogue-filter-actions-hidden { justify-content: flex-start; }
