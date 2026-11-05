@@ -2,6 +2,7 @@ import { ATTRIBUTE_DEFINITIONS, RARITY_DEFINITIONS, PERK_DEFINITIONS, UNIQUE_WEA
 import { itemSprites, iconSprites } from "./db_sprites";
 
 import { normalizeStableName } from "../js/ids.jsx"
+import { normalizeName } from "../js/utils.js"
 
 let ITEM_SETS = []
 let BASE_ITEMS = {
@@ -29,7 +30,7 @@ function get_set_id_by_name(name) {
 }
 
 function add_weapon(name, fixedPerks, unique, rarity, attributeRequirement, mainAttribute, dropSource, dropLocation) {
-    const normalizedName = name.toLowerCase().replace(/[^a-z']/g, '_').replace(/[']/g, '');
+    const normalizedName = normalizeName(name.replace(/'/g, ''));
     const id = `weapon:${normalizeStableName(name)}`
     if (BASE_ITEMS.WEAPONS.some(item => item.id === id)) {
         throw new Error(`Duplicate stable weapon ID "${id}". Give this weapon a distinct name/key.`)
@@ -50,7 +51,7 @@ function add_weapon(name, fixedPerks, unique, rarity, attributeRequirement, main
 }
 
 function add_equipment(slot, name, fixedPerks, set, rarity, attributeRequirement, dropSource, dropLocation) {
-    let normalizedName = name.toLowerCase().replace(/[^a-z]/g, '_');
+    let normalizedName = normalizeName(name);
     set = get_set_id_by_name(set);
     set = (set != undefined ? set : null)
     let setDefinition = ITEM_SETS.find(itemSet => itemSet.id === set) ?? null
