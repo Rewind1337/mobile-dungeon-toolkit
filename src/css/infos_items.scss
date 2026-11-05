@@ -309,3 +309,13 @@
 .catalogue-item-slot-chip .catalogue-chip-icon {
   filter: drop-shadow(0 0 2px black);
 }
+
+
+// Preserve readable 14px item-effect copy and set-piece names on mobile.
+@include M.media-query-max(V.$bp-mobile) {
+  .catalogue-effect .text,
+  .catalogue-effect-description,
+  .catalogue-piece-list .catalogue-piece-name {
+    font-size: 14px;
+  }
+}
