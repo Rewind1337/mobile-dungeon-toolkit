@@ -14,6 +14,7 @@ const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
 function HeroCatalogueFilters({
     search,
     setSearch,
+    headerText,
     onSearchBlur,
     rarityFilter,
     setRarityFilter,
@@ -36,11 +37,17 @@ function HeroCatalogueFilters({
     topOffset
 }) {
     if (!filtersVisible) {
-        return <CatalogueFilterActions filtersVisible={false} onShow={onShowFilters} />
+        return (
+            <>
+                {headerText && <div className="header-big catalogue-filter-heading-hidden">{headerText}</div>}
+                <CatalogueFilterActions filtersVisible={false} onShow={onShowFilters} />
+            </>
+        )
     }
 
     return (
         <div className={`hero-catalogue-filters card${onSortChange ? " has-sort-order" : ""}`} style={topOffset ? { top: topOffset } : undefined}>
+            {headerText && <div className="header-big catalogue-filter-heading">{headerText}</div>}
             <label className="catalogue-search">
                 <span className="catalogue-control-label text">Search ({resultCount} of {totalCount})</span>
                 <input
