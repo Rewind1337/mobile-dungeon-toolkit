@@ -95,9 +95,15 @@
 .catalogue-filters.is-set-view {
   grid-template-columns: minmax(220px, 2fr) repeat(4, minmax(115px, 1fr)) auto;
 }
+.catalogue-filters.is-list-view {
+  grid-template-columns: minmax(220px, 2fr) repeat(8, minmax(110px, 1fr)) auto;
+}
 
 .hero-catalogue-filters {
-  grid-template-columns: minmax(240px, 2fr) repeat(4, minmax(140px, 1fr)) auto;
+  grid-template-columns: minmax(220px, 2fr) repeat(4, minmax(120px, 1fr)) minmax(100px, .8fr) auto;
+}
+.hero-catalogue-filters.has-sort-order {
+  grid-template-columns: minmax(210px, 2fr) repeat(4, minmax(110px, 1fr)) minmax(100px, .8fr) minmax(110px, .9fr) auto;
 }
 
 .catalogue-search,
@@ -133,14 +139,44 @@
 }
 
 .catalogue-filter-actions {
+  grid-column: 1 / -1;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  height: 100%;
+  justify-content: space-between;
+  gap: V.$gap-small;
+  width: 100%;
+  min-width: 0;
+  height: auto;
 
   > button {
-    align-self: end;
+    align-self: center;
+    flex: 0 0 auto;
+    width: auto;
   }
+}
+
+.catalogue-filter-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: end;
+  gap: V.$gap-small;
+  min-width: 0;
+  min-height: 38px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: V.$border-radius-small;
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.catalogue-filter-checkbox input {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #f2bd55;
 }
 
 .catalogue-results {
@@ -221,7 +257,7 @@
   .catalogue-search, .hero-catalogue-filters .catalogue-search, .status-catalogue-filters .catalogue-search {
     grid-column: 1 / -1;
   }
-  .catalogue-filter-actions { justify-content: flex-end; }
+  .catalogue-filter-actions { justify-content: space-between; }
 }
 
 // At widths up to 900px, compact catalogue controls and entry cards, and collapse filter groups and catalogue breakdowns to one column on mobile.
@@ -237,7 +273,9 @@
   .catalogue-filters, .hero-catalogue-filters, .status-catalogue-filters,
   .catalogue-filters.is-set-view { grid-template-columns: minmax(0, 1fr); }
   .catalogue-search, .hero-catalogue-filters .catalogue-search, .status-catalogue-filters .catalogue-search { grid-column: auto; }
-  .catalogue-filter-actions { justify-content: flex-start; }
+  .catalogue-filter-actions { justify-content: space-between; }
+  .catalogue-filter-actions-hidden { justify-content: flex-start; }
+  .catalogue-filter-checkbox { align-self: stretch; }
   .catalogue-result-count { flex-basis: 100%; text-align: left; }
 }
 // At widths of 1500px and wider, add the shared horizontal margin around filter groups on wide screens.
@@ -268,11 +306,13 @@
 }
 
 .catalogue-filter-actions {
+  grid-column: 1 / -1;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: V.$gap-small;
+  width: 100%;
   min-width: 0;
   height: auto;
 }
