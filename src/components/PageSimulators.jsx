@@ -19,7 +19,7 @@ const SIMULATOR_TABS = [
     ['magic-toilet', 'Magic Toilet', 'magic-toilet'],
 ]
 
-function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedHeroesRef, savedTeamsRef, manualSaveFunction }) {
+function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedHeroesRef, savedTeamsRef }) {
     return (
         <>
             <div className="sub-nav-bar flex-row">
