@@ -43,13 +43,6 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
         ];
     }, [itemsRef]);
 
-    const toggleFilter = (type, value) => {
-        setFilters(previous => ({
-            ...previous,
-            [type]: previous[type] === value ? null : value
-        }))
-    };
-
     const clearFilters = () => {
         setFilters({ itemCategory: null, slot: null, attributeRequirement: null, rarity: null });
         setSearch("");
