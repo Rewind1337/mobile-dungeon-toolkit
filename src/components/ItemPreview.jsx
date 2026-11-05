@@ -281,7 +281,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
 
     return (
         <div ref={listRef} className='item-preview flex-col' style={{ maxHeight: listHeight }}>
-            <div className='preview-top-row flex-row'>
+            <div className='preview-top-row flex-row sticky-top'>
                 <Button className='preview-back-button preview-action-chip' prefix={<img className="preview-direction-icon" src={ExpandSrc} alt="" style={{ transform: isFullWidth ? 'rotate(-90deg)' : 'rotate(90deg)' }} />} title={isFullWidth ? 'Show item list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} />
                 <Button className='preview-close-button preview-action-chip' prefix={<img className="preview-close-icon" src={CrossSrc} alt="" />} title='Deselect this item and close the preview' text='Deselect Item' onClick={onClosePreview} color='cancel' />
             </div>
@@ -499,7 +499,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                     ))
                 }
 
-                {(saveItem || onEquipItem || deleteSavedItem || (onExportItem && deleteSavedItem)) && <div className='flex-row'>
+                {(saveItem || onEquipItem || deleteSavedItem || (onExportItem && deleteSavedItem)) && <div className='flex-row sticky-bottom'>
                     {saveItem && <Button text={"Save Item"} onClick={handleSaveItem} color={"confirm"} />}
                     {onEquipItem && <Button text={"Equip Item"} onClick={handleEquipItem} color={1} />}
                     {onExportItem && deleteSavedItem && <Button text={"Export Item"} onClick={() => onExportItem(getConfiguredItem())} color={1} />}
