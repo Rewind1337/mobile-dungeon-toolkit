@@ -336,10 +336,15 @@
 
 // At widths up to 900px, left-align catalogue filter actions and hide the inline show-filters control when the mobile filter layout is active.
 @include M.media-query-max(V.$bp-mobile) {
-  .catalogue-filter-actions {
-    justify-content: flex-start;
+  .catalogue-filter-actions:not(.catalogue-filter-actions-hidden) {
+    justify-content: space-between;
     grid-column: 1 / -1;
   }
+
+  .catalogue-filter-actions-hidden {
+    justify-content: flex-start;
+  }
+
   .catalogue-filter-actions-hidden .catalogue-show-filters-inline {
     display: none;
   }
