@@ -69,8 +69,8 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
 
     const allSources = useMemo(() => [...new Set([
         ...allItems.map(item => getSourceName(item.dropSource)),
-        ...(setsRef ?? []).filter(set => set.dropSource !== undefined).map(set => getSourceName(set.dropSource))
-    ])].sort(), [allItems, setsRef])
+        ...(setsRef ?? []).filter(set => set.dropSource !== undefined && set.dropSource !== null).map(set => getSourceName(set.dropSource))
+    ])].filter(source => source !== "Unspecified source").sort(), [allItems, setsRef])
 
     const filteredItems = useMemo(() => allItems.filter(item => {
         const sourceName = getSourceName(item.dropSource)
@@ -113,15 +113,18 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
     }, [allItems])
 
     const filteredSets = useMemo(() => (setsRef ?? []).filter(set => {
-        const sourceName = getSourceName(set.dropSource)
         const pieces = itemsBySet.get(set.id) ?? []
+        const sourceIds = set.dropSource !== undefined && set.dropSource !== null
+            ? [set.dropSource]
+            : pieces.map(item => item.dropSource).filter(source => source !== undefined && source !== null)
+        const sourceNames = [...new Set(sourceIds.map(getSourceName))]
         const locations = getSetLocations(set, pieces)
         const searchable = [
             ...getSearchableValues(set),
             set.name,
             set.id,
             getAttributeRequirementLabel(set.attributeRequirement),
-            sourceName,
+            ...sourceNames,
             ...locations,
             ...(set.setBonus ?? []).flatMap(perk => [getPerkLabel(perk), getPerkKey(perk)]),
             ...pieces.flatMap(item => [
@@ -136,7 +139,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
             ])
         ].join(" ").toLowerCase()
         const matchesSearch = matchesSearchQuery(searchable, search)
-        const matchesSource = sourceFilter === "all" || sourceName === sourceFilter
+        const matchesSource = sourceFilter === "all" || sourceNames.includes(sourceFilter)
         const matchesLocation = locationFilter === "all" || locations.includes(locationFilter)
         const matchesSetAttribute = setMainAttributeFilter === "all" || String(set.mainAttribute) === setMainAttributeFilter
         const matchesSetPieces = setPieceCountFilter === "all" || String(set.pieces) === setPieceCountFilter
