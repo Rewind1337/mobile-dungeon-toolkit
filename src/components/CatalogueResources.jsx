@@ -90,7 +90,7 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                     <div className="resource-catalogue-search-group">
                         <label className="catalogue-search">
                             <span className="catalogue-control-label text">
-                                Search by name or description (showing {filteredResources.length} of {sourceResources.length} {isGemsView ? "gems" : "resources"})
+                                Search ({filteredResources.length} of {sourceResources.length})
                             </span>
                             <input className="selectable catalogue-input" type="search" aria-label={isGemsView ? "Search gems by name or rarity" : "Search resources by name or description"} placeholder={isGemsView ? "Search gems..." : "Search resources..."} value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
                         </label>
