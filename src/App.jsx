@@ -394,7 +394,7 @@ function App() {
 
         {pageContent === 'teams' && <PageTeams itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedTeamsRef={savedTeamsRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
 
-        {pageContent === 'simulator' && <PageSimulators activeTab={activeSimulatorTab} onTabChange={switchSimulatorTo} itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedTeamsRef={savedTeamsRef} savedItemsRef={savedItemsRef} manualSaveFunction={saveToLocalStorage} />}
+        {pageContent === 'simulator' && <PageSimulators activeTab={activeSimulatorTab} onTabChange={switchSimulatorTo} itemsRef={itemsRef} heroesRef={heroesRef} savedHeroesRef={savedHeroesRef} savedTeamsRef={savedTeamsRef} savedItemsRef={savedItemsRef} />}
 
         {pageContent === 'wiki' && (
           <PageWiki
