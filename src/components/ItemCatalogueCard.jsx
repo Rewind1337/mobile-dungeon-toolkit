@@ -1,6 +1,6 @@
 import { attributeSprites, iconSprites, perkSprites } from "../database/db_sprites.jsx"
 import { ATTRIBUTE_DEFINITIONS, PRIMARY_STAT_DEFINITIONS, RARITY_DEFINITIONS } from "../database/enums.jsx"
-import { humanize } from "../js/util.jsx"
+import { humanize } from "../js/utils.js"
 import Item from "./Item.jsx"
 import CataloguePerkList from "./CataloguePerkList.jsx"
 import { ATTRIBUTE_ICON_KEYS, SLOT_ICON_KEYS, getAttributeRequirementLabel, getDropSourceLabel, getEffectStatuses, getLocations } from "../js/catalogueItemUtils.jsx"
