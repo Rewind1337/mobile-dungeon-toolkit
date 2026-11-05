@@ -14,7 +14,7 @@
 // At widths up to 900px, remove the gaps from the item list, reduce its padding, and cap its height on mobile.
   @include M.media-query-max(V.$bp-mobile, ()) {
     gap: 0;
-    padding: 1px;
+    padding: 6px 1px 1px;
     max-height: 994px;
   }
 }
