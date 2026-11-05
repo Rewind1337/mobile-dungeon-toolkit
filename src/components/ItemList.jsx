@@ -9,7 +9,6 @@ import CatalogueItemFilters from './CatalogueItemFilters.jsx'
 import BackToTopButton from './BackToTopButton.jsx'
 import { ATTRIBUTE_DEFINITIONS, DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
 import { isSearchAssetField, matchesSearchQuery, useUrlSearch } from '../js/search.jsx'
-import { getLocations, getSourceName } from '../js/catalogueItemUtils.jsx'
 
 function getSearchableValues(value, seen = new Set()) {
     if (value === null || value === undefined) return []
@@ -26,13 +25,10 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
     const setSearch = localSearch ? setModalSearch : setUrlSearch;
     const commitSearch = localSearch ? () => {} : commitUrlSearch;
     const [filters, setFilters] = useState({
-        set: null,
-        unique: null,
+        itemCategory: null,
         slot: null,
         attributeRequirement: null,
         rarity: null,
-        source: null,
-        location: null,
     });
     const [filtersVisible, setFiltersVisible] = useState(true)
     const [sortOrder, setSortOrder] = useState("alphabetic")
@@ -47,15 +43,6 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
         ];
     }, [itemsRef]);
 
-    const allSources = useMemo(
-        () => [...new Set(allItems.map(item => getSourceName(item.dropSource)))].sort(),
-        [allItems]
-    );
-    const allLocations = useMemo(
-        () => [...new Set(allItems.flatMap(getLocations))].sort((a, b) => a.localeCompare(b, undefined, { numeric: true })),
-        [allItems]
-    );
-
     const toggleFilter = (type, value) => {
         setFilters(previous => ({
             ...previous,
@@ -64,7 +51,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
     };
 
     const clearFilters = () => {
-        setFilters({ set: null, unique: null, slot: null, attributeRequirement: null, rarity: null, source: null, location: null });
+        setFilters({ itemCategory: null, slot: null, attributeRequirement: null, rarity: null });
         setSearch("");
         commitSearch("");
     };
@@ -78,17 +65,15 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                 || itemRequirement == null
                 || Number(itemRequirement) === ATTRIBUTE_DEFINITIONS.NONE.id
                 || Number(itemRequirement) === Number(heroAttributeRequirement)
-            const hasSet = itemObj.set !== undefined && itemObj.set !== null && itemObj.set !== -1;
             const hasUnique = itemObj.unique !== undefined && itemObj.unique !== null && itemObj.unique !== 0 && itemObj.unique !== 'NOTHING';
-            const matchesSet = filters.set === null || (filters.set === 'noSet' ? !hasSet : itemObj.iconType === filters.set);
-            const matchesUnique = filters.unique === null || (filters.unique === 'unique' ? hasUnique : !hasUnique);
+            const matchesCategory = filters.itemCategory === null || (
+                filters.itemCategory === 'unique'
+                    ? hasUnique
+                    : itemObj.iconType === filters.itemCategory
+            );
             const matchesSlot = filters.slot === null || itemObj.slot === filters.slot;
             const matchesAttribute = filters.attributeRequirement === null || itemObj.attributeRequirement === filters.attributeRequirement;
             const matchesRarity = filters.rarity === null || Number(filters.rarity) === Number(itemObj.rarity);
-            const sourceName = getSourceName(itemObj.dropSource);
-            const locations = getLocations(itemObj);
-            const matchesSource = filters.source === null || filters.source === sourceName;
-            const matchesLocation = filters.location === null || locations.includes(filters.location);
             const set = (setsRef ?? []).find(setEntry => setEntry.id === itemObj.set)
             const searchable = [...getSearchableValues(itemObj), itemObj.name,
                 getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? '',
@@ -105,7 +90,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
                 return undefined;
             });
 
-            return matchesItemType && matchesHeroAttribute && matchesSet && matchesUnique && matchesSlot && matchesAttribute && matchesRarity && matchesSource && matchesLocation && matchesName;
+            return matchesItemType && matchesHeroAttribute && matchesCategory && matchesSlot && matchesAttribute && matchesRarity && matchesName;
         });
 
         return result.sort((a, b) => {
@@ -121,24 +106,16 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
             search={search}
             setSearch={setSearch}
             onSearchBlur={() => commitSearch(search)}
-            sourceFilter={filters.source ?? "all"}
-            setSourceFilter={value => setFilters(previous => ({ ...previous, source: value === "all" ? null : value }))}
-            locationFilter={filters.location ?? "all"}
-            setLocationFilter={value => setFilters(previous => ({ ...previous, location: value === "all" ? null : value }))}
-            allSources={allSources}
-            allLocations={allLocations}
             slotFilter={filters.slot === null ? "all" : String(filters.slot)}
             setSlotFilter={value => setFilters(previous => ({ ...previous, slot: value === "all" ? null : Number(value) }))}
             showSlotFilter={itemType === null}
             attributeFilter={filters.attributeRequirement === null ? "all" : String(filters.attributeRequirement)}
             setAttributeFilter={value => setFilters(previous => ({ ...previous, attributeRequirement: value === "all" ? null : Number(value) }))}
             attributeLabel="Attribute requirement"
-            rarityFilter={filters.rarity === null ? "all" : String(filters.rarity)}
-            setRarityFilter={value => setFilters(previous => ({ ...previous, rarity: value === "all" ? null : Number(value) }))}
-            uniqueFilter={filters.unique ?? "all"}
-            setUniqueFilter={value => setFilters(previous => ({ ...previous, unique: value === "all" ? null : value }))}
-            setFilter={filters.set ?? "all"}
-            setSetFilter={value => setFilters(previous => ({ ...previous, set: value === "all" ? null : value }))}
+            itemCategoryFilter={filters.itemCategory ?? "all"}
+            setItemCategoryFilter={value => setFilters(previous => ({ ...previous, itemCategory: value === "all" ? null : value }))}
+            rarityFilter={savedItems ? (filters.rarity === null ? "all" : String(filters.rarity)) : undefined}
+            setRarityFilter={savedItems ? value => setFilters(previous => ({ ...previous, rarity: value === "all" ? null : Number(value) })) : undefined}
             isListView
             resultCount={filteredItems.length}
             totalCount={allItems.length}
