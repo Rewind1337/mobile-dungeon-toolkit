@@ -325,6 +325,10 @@
     grid-column: span 1;
   }
   .catalogue-search, .hero-catalogue-filters .catalogue-search, .status-catalogue-filters .catalogue-search { grid-column: auto; }
+  .catalogue-filters:not(.is-list-view) > .catalogue-search,
+  .status-catalogue-filters > .catalogue-search {
+    grid-column: 1 / -1;
+  }
   .catalogue-filter-actions { justify-content: space-between; }
   .catalogue-filter-actions-hidden { justify-content: flex-start; }
   .catalogue-filter-checkbox {
