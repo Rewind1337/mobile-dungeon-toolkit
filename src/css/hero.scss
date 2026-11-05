@@ -377,7 +377,7 @@
   .hero-preview > .flex-col {margin-top: V.$gap-small; }
 }
 
-/* Equipment card widths and columns are controlled by the preview pane, not the viewport. */
+/* Equipment sizing is driven by the preview pane, so viewport media queries cannot resize these cards independently. */
 .hero-preview .equipment {
   display: grid;
   grid-template-columns: repeat(6, calc(V.$item-sprite-width + 10px));
@@ -391,6 +391,7 @@
 
 .hero-preview .equipment > .item.card {
   box-sizing: border-box;
+  display: block;
   flex: 0 0 calc(V.$item-sprite-width + 10px);
   width: calc(V.$item-sprite-width + 10px);
   max-width: calc(V.$item-sprite-width + 10px);
@@ -398,10 +399,68 @@
   margin: 0;
 }
 
-// At medium preview-pane widths, use three fixed-width columns and the flatter compact equipment labels.
+.hero-preview .equipment > .item .item-sprite {
+  flex: 0 0 92px;
+  width: 92px;
+}
+
+.hero-preview .equipment > .item .item-sprite-img {
+  width: 92px;
+}
+
+// At medium preview-pane widths, keep the tablet-sized three-column grid while preventing viewport-only mobile rules from shrinking the sprites.
 @container hero-preview-pane (max-width: 660px) {
   .hero-preview .equipment {
     grid-template-columns: repeat(3, calc(V.$item-sprite-width + 10px));
+  }
+
+  .hero-preview .equipment > .item .item-sprite {
+    flex: 0 0 92px;
+    width: 92px;
+    border-radius: 4px;
+  }
+
+  .hero-preview .equipment > .item .item-sprite-img {
+    width: 92px;
+  }
+
+  .hero-preview .equipment > .item .text {
+    border-radius: V.$border-radius;
+    outline: 2px solid black;
+    margin: 6px auto 0;
+    width: 100%;
+    border: none;
+  }
+}
+
+// At narrow preview-pane widths, use two fixed 70px columns with 60px sprites and compact flat labels.
+@container hero-preview-pane (max-width: 420px) {
+  .hero-preview .equipment {
+    grid-template-columns: repeat(2, 70px);
+  }
+
+  .hero-preview .equipment > .item.card {
+    flex: 0 0 70px;
+    width: 70px;
+    max-width: 70px;
+    border-radius: 0;
+  }
+
+  .hero-preview .equipment > .item .item-sprite {
+    flex: 0 0 60px;
+    width: 60px;
+    border-radius: 0;
+  }
+
+  .hero-preview .equipment > .item .item-sprite-img {
+    width: 60px;
+    border-radius: 0;
+  }
+
+  .hero-preview .equipment > .item .item-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 0;
   }
 
   .hero-preview .equipment > .item .text {
@@ -415,40 +474,6 @@
 
   .hero-preview .equipment > .item:not([data-type]) .text {
     font-size: 16px;
-  }
-}
-
-// At narrow preview-pane widths, lock the equipment cards and sprites to the compact 70px layout.
-@container hero-preview-pane (max-width: 420px) {
-  .hero-preview .equipment {
-    grid-template-columns: repeat(2, 70px);
-  }
-
-  .hero-preview .equipment > .item.card {
-    flex: 0 0 70px;
-    width: 70px;
-    max-width: 70px;
-  }
-
-  .hero-preview .equipment > .item .item-sprite {
-    flex: 0 0 60px;
-    width: 60px;
-  }
-
-  .hero-preview .equipment > .item .item-sprite-img {
-    width: 60px;
-  }
-}
-
-// At widths up to 900px, flatten the hero character-card labels on phones.
-@include M.media-query-max(V.$bp-mobile, ()) {
-  .hero > .flex-col > .text {
-    border-radius: 0;
-    outline: 0;
-    margin-inline: -2px;
-    width: calc(100% + 4px);
-    border: 2px solid black;
-    margin-top: 0;
   }
 }
 
