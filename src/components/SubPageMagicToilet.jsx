@@ -15,6 +15,7 @@ const RARE = RARITY_DEFINITIONS.RARE.id
 const EPIC = RARITY_DEFINITIONS.EPIC.id
 const LEGENDARY = RARITY_DEFINITIONS.LEGENDARY.id
 const MAX_FLUSHES_PER_ACTION = 1000
+const MAX_BOOSTED_PULLS_PER_ACTION = 100000
 const MAX_PITY = 9999
 const EPIC_PITY_RESET = 10
 const LEGENDARY_PITY_RESET = 90
@@ -205,8 +206,14 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
         setStartingLegendaryPity(next)
     }
 
-    const runPulls = (stopAtLegendary = false, requested = 1) => {
+    const runPulls = (stopAtLegendary = false, requested = 1, stopAtBoosted = false) => {
         if (!banner || !boostersReady) return
+
+        const boostedHeroIds = new Set([
+            legendaryBoosterEnabled ? legendaryBoosterHeroId : "",
+            epicBoosterEnabled ? epicBoosterHeroId : "",
+        ].filter(Boolean))
+        if (stopAtBoosted && (!dontResetBoosters || boostedHeroIds.size === 0)) return
 
         let epic = epicPity
         let legendary = legendaryPity
@@ -216,9 +223,11 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
         let epicBoosterUsesThisFlush = 0
         const addedHeroes = []
         const addedCounts = { ...EMPTY_PULL_COUNTS }
-        const limit = stopAtLegendary
-            ? MAX_FLUSHES_PER_ACTION
-            : Math.min(MAX_FLUSHES_PER_ACTION, clamp(requested))
+        const limit = stopAtBoosted
+            ? MAX_BOOSTED_PULLS_PER_ACTION
+            : stopAtLegendary
+                ? MAX_FLUSHES_PER_ACTION
+                : Math.min(MAX_FLUSHES_PER_ACTION, clamp(requested))
 
         for (let index = 0; index < limit; index += 1) {
             const rarity = rollRarity(epic, legendary)
@@ -259,6 +268,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
             epic = rarity === EPIC ? EPIC_PITY_RESET : Math.max(1, epic - 1)
 
             if (stopAtLegendary && rarity === LEGENDARY) break
+            if (stopAtBoosted && hero && boostedHeroIds.has(hero.id)) break
         }
 
         const pullsThisFlush = Object.values(addedCounts).reduce((total, count) => total + count, 0)
@@ -332,21 +342,21 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
 
             <section className="card magic-toilet-controls">
                 <div className="magic-toilet-control-grid">
-                    <label className="magic-toilet-field">
+                    <label className="magic-toilet-field magic-toilet-field-banner">
                         <span className="text">Banner</span>
                         <select value={bannerId} onChange={handleBannerChange}>
                             {BANNERS.map(entry => <option key={entry.id} value={entry.id}>{entry.name}</option>)}
                         </select>
                     </label>
-                    <label className="magic-toilet-field">
+                    <label className="magic-toilet-field magic-toilet-field-epic-pity">
                         <span className="text">Current Epic Pity</span>
                         <input type="number" min="1" max={MAX_PITY} value={epicPity} onChange={event => updateEpicPity(event.target.value)} />
                     </label>
-                    <label className="magic-toilet-field">
+                    <label className="magic-toilet-field magic-toilet-field-legendary-pity">
                         <span className="text">Current Legendary Pity</span>
                         <input type="number" min="1" max={MAX_PITY} value={legendaryPity} onChange={event => updateLegendaryPity(event.target.value)} />
                     </label>
-                    <label className="magic-toilet-field">
+                    <label className="magic-toilet-field magic-toilet-field-flush-amount">
                         <span className="text">Flush amount</span>
                         <select value={flushAmount} onChange={event => setFlushAmount(event.target.value)}>
                             {FLUSH_AMOUNT_OPTIONS.map(amount => <option key={amount} value={String(amount)}>{amount.toLocaleString()}</option>)}
@@ -423,6 +433,15 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                     <Button text="Flush 1" color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(false, 1)} />
                     <Button text={`Flush ${Number(flushAmount).toLocaleString()}`} color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(false, Number(flushAmount))} />
                     <Button text="Flush until Legendary" color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(true)} />
+                    {dontResetBoosters && (
+                        <Button
+                            text="Flush until Boosted"
+                            title="Flush until one of your selected boosted heroes is pulled"
+                            color="magic-toilet"
+                            disabled={!boostersReady}
+                            onClick={() => runPulls(false, MAX_BOOSTED_PULLS_PER_ACTION, true)}
+                        />
+                    )}
                     {hasEnabledBooster && (
                         <label className="magic-toilet-keep-boosters-toggle">
                             <input
