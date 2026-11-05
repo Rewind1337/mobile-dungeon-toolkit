@@ -13,12 +13,12 @@ import { init_hero_db } from './database/db_heroes.jsx'
 import { init_item_db } from './database/db_items.jsx'
 import { clearSearchFromUrl } from './js/search.jsx'
 
-const PageItems = lazy(() => import('./components/PageItems.jsx'))
-const PageHeroes = lazy(() => import('./components/PageHeroes.jsx'))
-const PageSimulators = lazy(() => import('./components/PageSimulators.jsx'))
-const PageTeams = lazy(() => import('./components/PageTeams.jsx'))
-const PageWiki = lazy(() => import('./components/PageWiki.jsx'))
-const PageGames = lazy(() => import('./components/PageGames.jsx'))
+const PageItems = lazy(() => import('./components/pages/PageItems.jsx'))
+const PageHeroes = lazy(() => import('./components/pages/PageHeroes.jsx'))
+const PageSimulators = lazy(() => import('./components/pages/PageSimulators.jsx'))
+const PageTeams = lazy(() => import('./components/pages/PageTeams.jsx'))
+const PageWiki = lazy(() => import('./components/pages/PageWiki.jsx'))
+const PageGames = lazy(() => import('./components/pages/PageGames.jsx'))
 
 
 const BASE_HEROES = init_hero_db()
