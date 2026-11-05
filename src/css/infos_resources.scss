@@ -483,3 +483,11 @@
   flex: 0 0 auto;
   margin-left: auto;
 }
+
+
+// Resource catalogue descriptions should remain at the shared 14px reading size on mobile.
+@include M.media-query-max(V.$bp-mobile) {
+  .resource-catalogue-description.text {
+    font-size: 14px;
+  }
+}
