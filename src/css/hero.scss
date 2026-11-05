@@ -384,7 +384,7 @@
   justify-content: center;
   align-items: start;
   gap: V.$gap-small;
-  --equipment-card-width: calc(V.$item-sprite-width + 10px);
+  --equipment-card-width: #{V.$item-sprite-width + 10px};
   width: 100%;
   max-width: 100%;
   min-width: 0;
