@@ -2578,21 +2578,47 @@ select {
 }
 
 .page-help-modal {
-  width: min(92vw, 680px);
+  width: min(92vw, 720px);
   max-width: 100%;
-  max-height: min(82vh, 760px);
+  max-height: min(84vh, 780px);
   overflow: auto;
   gap: V.$gap;
+  padding: clamp(14px, 3vw, 24px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  outline: 2px solid rgba(0, 0, 0, 0.85);
+  border-radius: V.$border-radius;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.08), transparent 42%),
+    V.$primary-gradient;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55);
 }
 
 .page-help-modal > .header-big {
   width: 100%;
+  margin: 0;
+  padding-bottom: V.$gap-small;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
   text-align: center;
 }
 
 .page-help-content {
   gap: V.$gap-small;
   min-width: 0;
+  line-height: 1.45;
+}
+
+.page-help-content > .text {
+  margin: 0;
+  padding: V.$gap-small V.$gap;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: V.$border-radius-small;
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.page-help-modal > button {
+  align-self: flex-end;
+  width: auto;
+  min-width: 112px;
 }
 
 /* Keep the six simulator destinations in a stable three-by-two grid on the splash page. */
