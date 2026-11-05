@@ -155,21 +155,3 @@
   line-height: 1.4;
   opacity: 0.7;
 }
-
-.catalogue-filter-actions {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: V.$gap-small;
-  width: 100%;
-  min-width: 0;
-  height: auto;
-}
-.catalogue-filter-actions-hidden {
-  justify-content: flex-start;
-  width: fit-content;
-  max-width: 100%;
-}
-.c
