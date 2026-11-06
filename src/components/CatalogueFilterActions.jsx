@@ -4,7 +4,7 @@ import { useTranslation } from "../hooks/useTranslation.jsx"
 
 export default function CatalogueFilterActions({ filtersVisible, onHide, onShow, onClear }) {
     const showFilters = useTranslation("app.common.showFilters")
-    const showCatalogueFilters = useTranslation("app.common.showCatalogueFilters")
+    const showCatalogueFilters = useTranslation("app.common.showCatalogueFilters_tooltip")
     const hideFilters = useTranslation("app.common.hideFilters")
     const clearFilters = useTranslation("app.common.clearFilters")
     const floatingShowButton = !filtersVisible && typeof document !== "undefined"

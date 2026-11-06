@@ -15,6 +15,6 @@ function BackToTopButton({ scrollRef, className = "" }) {
         return () => element.removeEventListener("scroll", updateVisibility)
     }, [scrollRef])
     if (!visible) return null
-    return <Button className={`back-to-top-button ${className}`.trim()} prefix={<img className="back-to-top-icon" src={CollapseSrc} alt="" aria-hidden="true" />} text={t("app.shared.backToTop")} title={t("app.shared.scrollListToTop")} color={5} onClick={() => scrollRef?.current?.scrollTo({ top: 0, behavior: "smooth" })} />
+    return <Button className={`back-to-top-button ${className}`.trim()} prefix={<img className="back-to-top-icon" src={CollapseSrc} alt="" aria-hidden="true" />} text={t("app.shared.backToTop")} title={t("app.shared.scrollListToTop_tooltip")} color={5} onClick={() => scrollRef?.current?.scrollTo({ top: 0, behavior: "smooth" })} />
 }
 export default BackToTopButton

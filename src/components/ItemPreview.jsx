@@ -291,8 +291,8 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
     return (
         <div ref={listRef} className='item-preview flex-col' style={{ maxHeight: listHeight }}>
             <div className='preview-top-row flex-row sticky-top'>
-                <Button className='preview-back-button preview-action-chip' prefix={<img className="preview-direction-icon" src={ExpandSrc} alt="" style={{ transform: isFullWidth ? 'rotate(-90deg)' : 'rotate(90deg)' }} />} title={isFullWidth ? t("app.shared.showItemList") : t("app.shared.expandPreview")} text={isFullWidth ? t("app.shared.showList") : t("app.shared.expand")} onClick={onToggleFullWidth} color={1} />
-                <Button className='preview-close-button preview-action-chip' prefix={<img className="preview-close-icon" src={CrossSrc} alt="" />} title={t("app.shared.deselectItemClosePreview")} text={t("app.shared.deselectItem")} onClick={onClosePreview} color='cancel' />
+                <Button className='preview-back-button preview-action-chip' prefix={<img className="preview-direction-icon" src={ExpandSrc} alt="" style={{ transform: isFullWidth ? 'rotate(-90deg)' : 'rotate(90deg)' }} />} title={isFullWidth ? t("app.shared.showItemList_tooltip") : t("app.shared.expandPreview_tooltip")} text={isFullWidth ? t("app.shared.showList") : t("app.shared.expand")} onClick={onToggleFullWidth} color={1} />
+                <Button className='preview-close-button preview-action-chip' prefix={<img className="preview-close-icon" src={CrossSrc} alt="" />} title={t("app.shared.deselectItemClosePreview_tooltip")} text={t("app.shared.deselectItem")} onClick={onClosePreview} color='cancel' />
             </div>
             <div className='item-preview-metadata'>
                 <span className='catalogue-chip text item-preview-slot'>
@@ -364,7 +364,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                             <img className="masterwork-artwork" src={MasterworkSrc} alt="" draggable={false} />
                             <input
                                 className="masterwork-level-input"
-                                aria-label={t("app.pages.items.preview.masterworkAriaLabel")}
+                                
                                 type='number'
                                 min='0'
                                 max={maxMasterworkLevel}
@@ -446,7 +446,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                             })
                             return <span className='text'>
                                 {description}
-                                {effect.usesHighestAvailableValue && <span title={t("app.pages.items.preview.missingRarityValue")}> (?)</span>}
+                                {effect.usesHighestAvailableValue && <span title={t("app.pages.items.preview.missingRarityValue_tooltip")}> (?)</span>}
                             </span>
                         })()}
                     </div>

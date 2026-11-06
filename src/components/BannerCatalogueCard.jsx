@@ -110,7 +110,7 @@ export default function BannerCatalogueCard({ result, heroesById }) {
                     {featuredHero && <span className="catalogue-chip text">{t("app.pages.catalogues.featuredHero", { name: tc("hero", featuredHero.id, "name", featuredHero.name) })}</span>}
                     {!isEverydayBanner &&  <span
                         className="catalogue-chip banner-catalogue-live-date text"
-                        title={liveDateInfo.estimated ? t("app.pages.catalogues.estimatedBannerDate") : t("app.pages.catalogues.recordedLastLiveDate")}
+                        title={liveDateInfo.estimated ? t("app.pages.catalogues.estimatedBannerDate_tooltip") : t("app.pages.catalogues.recordedLastLiveDate_tooltip")}
                     >
                         {t("app.shared.lastLive", { date: liveDateText })}
                     </span>}
