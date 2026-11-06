@@ -29,7 +29,7 @@ export default function CatalogueFilterActions({ filtersVisible, onHide, onShow,
                         {onClear && <Button text={clearFilters} color="cancel" onClick={onClear} />}
                     </>
                 ) : (
-                    <Button className="catalogue-show-filters-inline" text="Show filters" color={5} onClick={onShow} />
+                    <Button className="catalogue-show-filters-inline" text={showFilters} color={5} onClick={onShow} />
                 )}
             </div>
             {floatingShowButton}
