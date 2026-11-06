@@ -134,7 +134,7 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
         <section className="info-overview">
             <header className="catalogue-header info-overview-heading">
                 <div className="catalogue-heading-copy">
-                    <div className="catalogue-title header-big">{t("app.pages.wiki.title")}</div>
+                    <div className="catalogue-title header-big">{t("app.navigation.wiki")}</div>
                     <p className="catalogue-description text">
                         {t("app.pages.wiki.description")}
                     </p>
