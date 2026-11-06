@@ -38,8 +38,8 @@ function HeroCatalogueFilters({
     topOffset
 }) {
     const searchLabel = useTranslation("app.pages.catalogues.searchCount", undefined, { resultCount, totalCount })
-    const searchAriaLabel = useTranslation("app.pages.catalogues.searchCountAriaLabel")
-    const searchPlaceholder = useTranslation("app.pages.catalogues.searchCountPlaceholder")
+    const searchAriaLabel = useTranslation("app.pages.heroes.filters.searchAriaLabel")
+    const searchPlaceholder = useTranslation("app.pages.heroes.filters.searchPlaceholder")
     const sortOrderLabel = useTranslation("app.shared.sortOrder")
     const sortOrderAriaLabel = useTranslation("app.shared.sortOrderAriaLabel")
     const alphabeticLabel = useTranslation("app.shared.alphabetic")
@@ -48,7 +48,7 @@ function HeroCatalogueFilters({
     const allRaritiesLabel = useTranslation("app.shared.allRarities")
     const rarityAriaLabel = useTranslation("app.shared.filterByRarity")
     const mainAttributeLabel = useTranslation("app.shared.mainAttribute")
-    const mainAttributeAriaLabel = useTranslation("app.shared.mainAttributeAriaLabel")
+    const mainAttributeAriaLabel = useTranslation("app.pages.heroes.filters.mainAttributeAriaLabel")
     const allAttributesLabel = useTranslation("app.shared.allAttributes")
     const elementLabel = useTranslation("app.pages.heroes.filters.element")
     const elementAriaLabel = useTranslation("app.pages.heroes.filters.elementAriaLabel")
