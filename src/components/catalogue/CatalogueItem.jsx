@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 
 import { getSearchableValues, matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
 import { humanize } from "../../js/utils.js"
+import { useTranslate } from "../../hooks/useTranslate.jsx"
 import { SLOT_NAMES, RARITY_NAMES, getLocations, getSetLocations, getSourceName, getAttributeRequirementLabel, getPerkKey, getPerkLabel, getEffectStatuses, isUniqueItem } from "../../js/catalogueItemUtils.jsx"
 import ItemCatalogueCard from "../ItemCatalogueCard.jsx"
 import SetCatalogueCard from "../SetCatalogueCard.jsx"
@@ -14,6 +15,7 @@ import "../../css/infos.scss"
 import "../../css/infos_items.scss"
 
 function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter = null, onViewChange, scrollElementRef }) {
+    const t = useTranslate()
     const [view, setView] = useState(initialView)
     const [search, setSearch, commitSearch] = useUrlSearch()
     const changeView = nextView => {
@@ -171,11 +173,11 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
 
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
-                    <div className="catalogue-title header-big">{view === "sets" ? "Set Catalogue" : "Item Catalogue"}</div>
+                    <div className="catalogue-title header-big">{view === "sets" ? t("app.pages.catalogues.setTitle") : t("app.pages.catalogues.itemTitle")}</div>
                     <p className="catalogue-description text">
                         {view === "sets"
-                            ? "Browse item sets, their required attributes, drop locations, set pieces, and set bonuses."
-                            : "Search item names, unique-effect descriptions, fixed perks, rarity, drop source, location, and other stored item data."}
+                            ? t("app.pages.catalogues.setDescription")
+                            : t("app.pages.catalogues.itemDescription")}
                     </p>
                 </div>
             </header>
@@ -209,7 +211,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
             {view === "items" && (
                 <div className="catalogue-results">
                     {filteredItems.length === 0
-                        ? <p className="catalogue-empty card">No items match these filters.</p>
+                        ? <p className="catalogue-empty card">{t("app.pages.catalogues.noItemsMatch")}</p>
                         : <VirtualizedGrid
                             items={sortedItems}
                             scrollElementRef={scrollElementRef}
@@ -233,7 +235,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
             {view === "sets" && (
                 <div className="catalogue-results">
                     {filteredSets.length === 0
-                        ? <p className="catalogue-empty card">No sets match these filters.</p>
+                        ? <p className="catalogue-empty card">{t("app.pages.catalogues.noSetsMatch")}</p>
                         : <VirtualizedGrid
                             items={filteredSets}
                             scrollElementRef={scrollElementRef}
