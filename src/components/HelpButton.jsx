@@ -8,7 +8,7 @@ function HelpButton({ title, children }) {
     const [isVisible, setIsVisible] = useState(false)
     const help = useTranslation("app.common.help")
     const helpFor = useTranslation("app.common.helpFor", undefined, { title })
-    const close = useTranslation("app.common.close")
+    const close = useTranslation("app.shared.close")
 
     return (
         <>
