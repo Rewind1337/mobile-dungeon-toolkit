@@ -145,6 +145,7 @@ const EMPTY_PULL_COUNTS = {
 }
 
 export default function SubPageMagicToilet({ heroesRef = [] }) {
+    const t = useTranslate()
     const [bannerId, setBannerId] = useState("everyday_heroes")
     const [epicPity, setEpicPity] = useState(EPIC_PITY_RESET)
     const [legendaryPity, setLegendaryPity] = useState(LEGENDARY_PITY_RESET)
@@ -331,48 +332,48 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
     return (
         <main className="magic-toilet page card flex-col w-100">
             <header className="card magic-toilet-header">
-                <div className="header-big">Magic Toilet</div>
-                <p className="text">Simulate banner flushes, track Epic and Legendary pity, and compare your Legendary results with the expected average.</p>
+                <div className="header-big">{t("app.pages.magicToilet.title")}</div>
+                <p className="text">{t("app.pages.magicToilet.description")}</p>
             </header>
 
             {selected && <details className="card magic-toilet-banner-details">
-                <summary className="text">View selected Banner</summary>
+                <summary className="text">{t("app.pages.magicToilet.viewSelectedBanner")}</summary>
                 <BannerCatalogueCard result={selected} heroesById={heroesById} />
             </details>}
 
             <section className="card magic-toilet-controls">
                 <div className="magic-toilet-control-grid">
                     <label className="magic-toilet-field magic-toilet-field-banner">
-                        <span className="text">Banner</span>
+                        <span className="text">{t("app.pages.magicToilet.banner")}</span>
                         <select value={bannerId} onChange={handleBannerChange}>
                             {BANNERS.map(entry => <option key={entry.id} value={entry.id}>{entry.name}</option>)}
                         </select>
                     </label>
                     <label className="magic-toilet-field magic-toilet-field-epic-pity">
-                        <span className="text">Current Epic Pity</span>
+                        <span className="text">{t("app.pages.magicToilet.currentEpicPity")}</span>
                         <input type="number" min="1" max={MAX_PITY} value={epicPity} onChange={event => updateEpicPity(event.target.value)} />
                     </label>
                     <label className="magic-toilet-field magic-toilet-field-legendary-pity">
-                        <span className="text">Current Legendary Pity</span>
+                        <span className="text">{t("app.pages.magicToilet.currentLegendaryPity")}</span>
                         <input type="number" min="1" max={MAX_PITY} value={legendaryPity} onChange={event => updateLegendaryPity(event.target.value)} />
                     </label>
                     <label className="magic-toilet-field magic-toilet-field-flush-amount">
-                        <span className="text">Flush amount</span>
+                        <span className="text">{t("app.pages.magicToilet.flushAmount")}</span>
                         <select value={flushAmount} onChange={event => setFlushAmount(event.target.value)}>
                             {FLUSH_AMOUNT_OPTIONS.map(amount => <option key={amount} value={String(amount)}>{amount.toLocaleString()}</option>)}
                         </select>
                     </label>
                 </div>
                 <div className="magic-toilet-pity-status">
-                    <span className="catalogue-chip text">Epic pity: {epicPity}</span>
-                    <span className="catalogue-chip text">Legendary pity: {legendaryPity}</span>
+                    <span className="catalogue-chip text">{t("app.pages.magicToilet.epicPity", { count: epicPity })}</span>
+                    <span className="catalogue-chip text">{t("app.pages.magicToilet.legendaryPity", { count: legendaryPity })}</span>
                 </div>
                 <div className="magic-toilet-booster-row">
                     <div className="magic-toilet-booster-option">
                         <label className="magic-toilet-booster-toggle">
                             <input
                                 type="checkbox"
-                                aria-label="Enable Legendary Banner Booster"
+                                aria-label={t("app.pages.magicToilet.enableLegendaryBooster")}
                                 checked={legendaryBoosterEnabled}
                                 onChange={event => {
                                     const enabled = event.target.checked
@@ -381,15 +382,15 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                                 }}
                             />
                             <img src={resourceSprites.legendary_banner_booster} alt="" />
-                            {!legendaryBoosterEnabled && <span className="text">Legendary Banner Booster</span>}
+                            {!legendaryBoosterEnabled && <span className="text">{t("app.pages.magicToilet.legendaryBooster")}</span>}
                         </label>
                         {legendaryBoosterEnabled && (
                             <select
-                                aria-label="Legendary Banner Booster hero"
+                                aria-label={t("app.pages.magicToilet.legendaryBoosterHero")}
                                 value={legendaryBoosterHeroId}
                                 onChange={event => setLegendaryBoosterHeroId(event.target.value)}
                             >
-                                <option value="">Select a Hero</option>
+                                <option value="">{t("app.shared.selectHero")}</option>
                                 {legendaryBoosterHeroes.map(hero => (
                                     <option key={hero.id} value={hero.id}>
                                         {hero.name} ({formatPullChance(getBoosterPullChance(hero, LEGENDARY, banner))})
@@ -402,7 +403,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                         <label className="magic-toilet-booster-toggle">
                             <input
                                 type="checkbox"
-                                aria-label="Enable Epic Banner Booster"
+                                aria-label={t("app.pages.magicToilet.enableEpicBooster")}
                                 checked={epicBoosterEnabled}
                                 onChange={event => {
                                     const enabled = event.target.checked
@@ -411,11 +412,11 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                                 }}
                             />
                             <img src={resourceSprites.epic_banner_booster} alt="" />
-                            {!epicBoosterEnabled && <span className="text">Epic Banner Booster</span>}
+                            {!epicBoosterEnabled && <span className="text">{t("app.pages.magicToilet.epicBooster")}</span>}
                         </label>
                         {epicBoosterEnabled && (
                             <select
-                                aria-label="Epic Banner Booster hero"
+                                aria-label={t("app.pages.magicToilet.epicBoosterHero")}
                                 value={epicBoosterHeroId}
                                 onChange={event => setEpicBoosterHeroId(event.target.value)}
                             >
@@ -430,13 +431,13 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                     </div>
                 </div>
                 <div className="magic-toilet-actions">
-                    <Button text="Flush 1" color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(false, 1)} />
-                    <Button text={`Flush ${Number(flushAmount).toLocaleString()}`} color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(false, Number(flushAmount))} />
-                    <Button text="Flush until Legendary" color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(true)} />
+                    <Button text={t("app.pages.magicToilet.flushOne")} color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(false, 1)} />
+                    <Button text={t("app.pages.magicToilet.flushAmountButton", { count: Number(flushAmount).toLocaleString() })} color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(false, Number(flushAmount))} />
+                    <Button text={t("app.pages.magicToilet.flushUntilLegendary")} color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(true)} />
                     {dontResetBoosters && (
                         <Button
-                            text="Flush until Boosted"
-                            title="Flush until one of your selected boosted heroes is pulled"
+                            text={t("app.pages.magicToilet.flushUntilBoosted")}
+                            title={t("app.pages.magicToilet.flushUntilBoostedTitle")}
                             color="magic-toilet"
                             disabled={!boostersReady}
                             onClick={() => runPulls(false, MAX_BOOSTED_PULLS_PER_ACTION, true)}
@@ -449,63 +450,63 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                                 checked={dontResetBoosters}
                                 onChange={event => setDontResetBoosters(event.target.checked)}
                             />
-                            <span className="text">Don't reset Boosters</span>
+                            <span className="text">{t("app.pages.magicToilet.dontResetBoosters")}</span>
                         </label>
                     )}
                 </div>
                 {!boostersReady && (
-                    <span className="text magic-toilet-booster-warning">Select your boosted hero to enable flushing.</span>
+                    <span className="text magic-toilet-booster-warning">{t("app.pages.magicToilet.selectBoostedHero")}</span>
                 )}
             </section>
 
 
 
             <section className="card magic-toilet-results">
-                <div className="magic-toilet-stats" aria-label="Magic Toilet pull statistics">
+                <div className="magic-toilet-stats" aria-label={t("app.pages.magicToilet.pullStatistics")}>
                     <span className="catalogue-chip text magic-toilet-stat-chip magic-toilet-souls-chip">
                         <img className="catalogue-chip-icon" src={soulSprite} alt="" />
                         {soulLabel}: {totalPulls.toLocaleString()}
                     </span>
                     <span className="catalogue-chip text magic-toilet-stat-chip magic-toilet-booster-stat-chip">
                         <img className="catalogue-chip-icon" src={resourceSprites.epic_banner_booster} alt="" />
-                        Epic Boosters used: {epicBoostersUsed.toLocaleString()}
+                        {t("app.pages.magicToilet.epicBoostersUsed", { count: epicBoostersUsed.toLocaleString() })}
                     </span>
                     <span className="catalogue-chip text magic-toilet-stat-chip magic-toilet-booster-stat-chip">
                         <img className="catalogue-chip-icon" src={resourceSprites.legendary_banner_booster} alt="" />
-                        Legendary Boosters used: {legendaryBoostersUsed.toLocaleString()}
+                        {t("app.pages.magicToilet.legendaryBoostersUsed", { count: legendaryBoostersUsed.toLocaleString() })}
                     </span>
-                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={UNCOMMON}>Uncommon (55%): {pullCounts[UNCOMMON].toLocaleString()}</span>
-                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={RARE}>Rare (35%): {pullCounts[RARE].toLocaleString()}</span>
-                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={EPIC}>Epic (9%): {epicCount.toLocaleString()}</span>
-                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={LEGENDARY}>Legendary (1%): {legendaryCount.toLocaleString()}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={UNCOMMON}>{t("app.pages.magicToilet.rarityCount", { rarity: "Uncommon", chance: "55%", count: pullCounts[UNCOMMON].toLocaleString() })}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={RARE}>{t("app.pages.magicToilet.rarityCount", { rarity: "Rare", chance: "35%", count: pullCounts[RARE].toLocaleString() })}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={EPIC}>{t("app.pages.magicToilet.rarityCount", { rarity: "Epic", chance: "9%", count: epicCount.toLocaleString() })}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={LEGENDARY}>{t("app.pages.magicToilet.rarityCount", { rarity: "Legendary", chance: "1%", count: legendaryCount.toLocaleString() })}</span>
                     {totalPulls > 0 && (
                         <>
-                            <span className="catalogue-chip text magic-toilet-stat-chip">Expected Legendaries: {expected.toFixed(2)}</span>
-                            <span className="catalogue-chip text magic-toilet-stat-chip">Luck: {luckLabel(legendaryCount, expected)}</span>
+                            <span className="catalogue-chip text magic-toilet-stat-chip">{t("app.pages.magicToilet.expectedLegendaries", { count: expected.toFixed(2) })}</span>
+                            <span className="catalogue-chip text magic-toilet-stat-chip">{t("app.pages.magicToilet.luck", { value: luckLabel(legendaryCount, expected) })}</span>
                         </>
                     )}
                 </div>
 
                 <header className="magic-toilet-results-header">
-                    <h2 className="header">Pulled Heroes ({totalPulls.toLocaleString()})</h2>
+                    <h2 className="header">{t("app.pages.magicToilet.pulledHeroes", { count: totalPulls.toLocaleString() })}</h2>
                     <div className="magic-toilet-results-note-actions">
-                        <span className="text magic-toilet-results-note">Only defined Epic and Legendary heroes are shown.</span>
-                        <Button text="Reset Results" color={6} onClick={resetResults} />
+                        <span className="text magic-toilet-results-note">{t("app.pages.magicToilet.onlyDefinedHeroes")}</span>
+                        <Button text={t("app.pages.magicToilet.resetResults")} color={6} onClick={resetResults} />
                     </div>
                 </header>
 
                 <section className="magic-toilet-hero-row">
                     <header className="magic-toilet-hero-row-header">
-                        <h3 className="header">Legendary Heroes ({legendaryResults.length})</h3>
+                        <h3 className="header">{t("app.pages.magicToilet.legendaryHeroes", { count: legendaryResults.length })}</h3>
                     </header>
                     <div
                         ref={legendaryList.listRef}
                         {...legendaryList.events}
                         className="magic-toilet-horizontal-list"
-                        aria-label="Pulled Legendary heroes"
+                        aria-label={t("app.pages.magicToilet.pulledLegendaryHeroes")}
                     >
                         {legendaryResults.length === 0 ? (
-                            <p className="text magic-toilet-empty">No Legendary heroes pulled yet.</p>
+                            <p className="text magic-toilet-empty">{t("app.pages.magicToilet.noLegendaryPulled")}</p>
                         ) : (
                             <VirtualizedHorizontalList
                                 items={legendaryResults}
@@ -520,16 +521,16 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
 
                 <section className="magic-toilet-hero-row">
                     <header className="magic-toilet-hero-row-header">
-                        <h3 className="header">Epic Heroes ({epicResults.length})</h3>
+                        <h3 className="header">{t("app.pages.magicToilet.epicHeroes", { count: epicResults.length })}</h3>
                     </header>
                     <div
                         ref={epicList.listRef}
                         {...epicList.events}
                         className="magic-toilet-horizontal-list"
-                        aria-label="Pulled Epic heroes"
+                        aria-label={t("app.pages.magicToilet.pulledEpicHeroes")}
                     >
                         {epicResults.length === 0 ? (
-                            <p className="text magic-toilet-empty">No Epic heroes pulled yet.</p>
+                            <p className="text magic-toilet-empty">{t("app.pages.magicToilet.noEpicPulled")}</p>
                         ) : (
                             <VirtualizedHorizontalList
                                 items={epicResults}
