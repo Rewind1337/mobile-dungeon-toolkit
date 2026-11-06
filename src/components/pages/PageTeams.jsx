@@ -165,7 +165,7 @@ export function TeamHeroStats({ hero, slotIndex, calculatedStats }) {
                 const hasMax = Number.isFinite(Number(maxValue)) && Math.abs(Number(maxValue) - Number(value)) > 0.001
                 const format = stat => Number.isFinite(Number(stat)) ? formatNumber(Number(stat), 2) : "—"
                 return (
-                    <span className="team-base-stat" key={key} title={hero.name + " · " + t("app.pages.teams." + fullLabel)}>
+                    <span className="team-base-stat" key={key} title={hero.name + " · " + t("app.shared." + fullLabel)}>
                         <strong>{label}</strong>
                         <span className="team-base-stat-value">{format(value)}</span>
                         {hasMax && <small className="team-base-stat-max">{t("app.pages.teams.max")} {format(maxValue)}</small>}
