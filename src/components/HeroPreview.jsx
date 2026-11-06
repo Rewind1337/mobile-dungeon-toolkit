@@ -548,7 +548,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                             </div>
                         ))}
                     </div>
-                    <div className='header calculated-stats-heading' title={t("app.pages.heroes.preview.calculatedStatsNote")}>Calculated Stats <small>(?)</small></div>
+                    <div className='header calculated-stats-heading' title={t("app.pages.heroes.preview.calculatedStatsNote")}>{t("app.pages.heroes.preview.calculatedStats")} <small>(?)</small></div>
                     <div className='flex-row base-stats calculated-stats' aria-label={t("app.pages.heroes.preview.calculatedMainStats")}>
                         {Object.entries(MAIN_STAT_PERKS).map(([name, mapping]) => {
                             const hasMax = Math.abs(calculatedStats.mainMax[name] - calculatedStats.main[name]) > 0.001
