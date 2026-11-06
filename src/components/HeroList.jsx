@@ -1,5 +1,6 @@
 import { memo, useMemo, useState } from 'react'
-import { useDynamicList } from '../hooks/useDynamicList.jsx';
+import { useDynamicList } from '../hooks/useDynamicList.jsx'
+import { useTranslate } from '../hooks/useTranslate.jsx';
 
 import '../css/hero.scss'
 
@@ -17,7 +18,8 @@ function getSearchableValues(value, seen = new Set()) {
     seen.add(value)
     return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : [key, ...getSearchableValues(child, seen)])
 }
-function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId, onSelectHero, onDoubleClick }) {
+function HeroList({
+    const t = useTranslate() extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId, onSelectHero, onDoubleClick }) {
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
     const [search, setSearch, commitSearch] = useUrlSearch();
     const [filters, setFilters] = useState({
@@ -98,7 +100,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
         />
         <div className='list hero-list flex-row virtualized-list-scroll' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
             {filteredHeroes.length === 0 ? (
-                <div className="text-big margin-auto">No heroes match the selected filters</div>
+                <div className="text-big margin-auto">{t("app.shared.noHeroesMatchFilters")}</div>
             ) : (
                 <VirtualizedGrid
                     items={filteredHeroes}
