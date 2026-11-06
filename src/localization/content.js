@@ -6,8 +6,7 @@
 export function interpolateContent(template, values = {}) {
     if (typeof template !== "string") return template
     const safeValues = values && typeof values === "object" ? values : {}
-    const normalizedTemplate = template.replaceAll("$e", "{{value}}")
-    return normalizedTemplate.replace(/\{\{\s*([a-zA-Z][\w]*)\s*\}\}/g, (placeholder, key) => (
+    return template.replace(/\{\{\s*([a-zA-Z][\w]*)\s*\}\}/g, (placeholder, key) => (
         Object.prototype.hasOwnProperty.call(safeValues, key)
             ? String(safeValues[key] ?? "")
             : placeholder
