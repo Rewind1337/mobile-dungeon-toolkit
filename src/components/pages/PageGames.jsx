@@ -14,7 +14,7 @@ export default function PageGames() {
                     <span className="text">{comingSoon}</span>
                 </div>
                 <div className="options flex-row card">
-                    <HelpButton title="Fun & Games">
+                    <HelpButton title={title}>
                         <GamesGuide />
                     </HelpButton>
                 </div>
