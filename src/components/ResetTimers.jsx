@@ -67,7 +67,7 @@ function ResetTimers() {
                     <span className="reset-timer-label header">{dailyLabel}</span>
                     <span className="reset-timer-countdown text-big">{formatRemaining(dailyReset.getTime() - now, unitLabels, zeroSeconds)}</span>
                 </div>
-                <div className="reset-timer-clock card" aria-label="Clock">
+                <div className="reset-timer-clock card" aria-label={useTranslation("app.shared.clock")}>
                     <img src={Clock} alt="" draggable={false} />
                 </div>
                 <div className="reset-timer card">
