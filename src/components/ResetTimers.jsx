@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import "../css/reset-timers.scss"
 import Clock from "../sprites/special/clock.webp"
+import { useTranslation } from "../hooks/useTranslation.jsx"
 
 function getNextDailyReset(now = new Date()) {
     const reset = new Date(now)
@@ -27,6 +28,9 @@ function formatRemaining(milliseconds) {
 
 function ResetTimers() {
     const [now, setNow] = useState(() => Date.now())
+    const ariaLabel = useTranslation("app.pages.resetTimers.ariaLabel")
+    const dailyLabel = useTranslation("app.pages.resetTimers.daily")
+    const weeklyLabel = useTranslation("app.pages.resetTimers.weekly")
 
     useEffect(() => {
         const interval = window.setInterval(() => setNow(Date.now()), 1000)
@@ -39,16 +43,16 @@ function ResetTimers() {
 
     return (
         <div className="splash-status-panel" style={{height: "50px"}}>
-            <section className="reset-timers-row" aria-label="Reset timers">
+            <section className="reset-timers-row" aria-label={ariaLabel}>
                 <div className="reset-timer card">
-                    <span className="reset-timer-label header">Daily Reset</span>
+                    <span className="reset-timer-label header">{dailyLabel}</span>
                     <span className="reset-timer-countdown text-big">{formatRemaining(dailyReset.getTime() - now)}</span>
                 </div>
                 <div className="reset-timer-clock card" aria-label="Clock">
                     <img src={Clock} alt="" draggable={false} />
                 </div>
                 <div className="reset-timer card">
-                    <span className="reset-timer-label header">Weekly Reset</span>
+                    <span className="reset-timer-label header">{weeklyLabel}</span>
                     <span className="reset-timer-countdown text-big">{formatRemaining(weeklyReset.getTime() - now)}</span>
                 </div>
             </section>
