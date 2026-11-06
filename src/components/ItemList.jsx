@@ -1,5 +1,6 @@
 import { memo, useMemo, useState } from 'react'
 import { useDynamicList } from '../hooks/useDynamicList.jsx'
+import { useTranslate } from '../hooks/useTranslate.jsx'
 
 import '../css/item.scss'
 
@@ -17,7 +18,8 @@ function getSearchableValues(value, seen = new Set()) {
     seen.add(value)
     return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : [key, ...getSearchableValues(child, seen)])
 }
-function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, setsRef = [], itemType = null, heroAttributeRequirement = null, localSearch = false, setSelectedItemId, onDoubleClick }) {
+function ItemList({
+    const t = useTranslate() extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, setsRef = [], itemType = null, heroAttributeRequirement = null, localSearch = false, setSelectedItemId, onDoubleClick }) {
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
     const [urlSearch, setUrlSearch, commitUrlSearch] = useUrlSearch();
     const [modalSearch, setModalSearch] = useState("");
@@ -124,7 +126,7 @@ function ItemList({ extraHeight = 0, filtersOffset = 0, savedItems, headerText, 
 
         <div className='list item-list flex-row virtualized-list-scroll' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
             {filteredItems.length === 0 ? (
-                <div className="text-big margin-auto">No items match the selected filters</div>
+                <div className="text-big margin-auto">{t("app.shared.noItemsMatchFilters")}</div>
             ) : (
                 <VirtualizedGrid
                     items={filteredItems}
