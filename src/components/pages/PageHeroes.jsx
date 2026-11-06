@@ -12,6 +12,7 @@ import { clearSearchFromUrl } from "../../js/search.jsx"
 import { ATTRIBUTE_DEFINITIONS } from "../../database/enums.jsx"
 import { createSavedItemRecord } from "../../js/ids.jsx"
 import { useTranslation } from "../../hooks/useTranslation.jsx"
+import { useTranslate } from "../../hooks/useTranslate.jsx"
 
 const isItemCompatibleWithHero = (item, hero) => {
     if (!item || !hero) return false
@@ -22,6 +23,7 @@ const isItemCompatibleWithHero = (item, hero) => {
 }
 
 function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
+    const t = useTranslate()
     const allHeroesHeader = useTranslation("app.pages.heroes.filter.header")
     const savedHeroesHeader = useTranslation("app.pages.heroes.filter.savedHeader")
     const [pageContent, setPageContent] = useState(0)
@@ -112,17 +114,17 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
 
     const handleImportHeroLink = async (input = heroShareInput) => {
         if (!String(input ?? "").trim()) {
-            window.alert("Paste a hero share link or its encoded data.")
+            window.alert(t("app.shared.pasteHeroSharePrompt"))
             return
         }
-        if (onImportStatusChange) onImportStatusChange("Importing Hero...")
+        if (onImportStatusChange) onImportStatusChange(t("app.shared.importingHero"))
         await new Promise(resolve => window.setTimeout(resolve, 0))
         try {
             const payload = decodeHeroShareInput(input)
             const hero = restoreSharedHero(payload, heroesRef.current, itemsRef.current.BASE_ITEMS)
             importHero(hero)
         } catch (error) {
-            window.alert(error.message || "Could not import this hero link.")
+            window.alert(error.message || t("app.shared.couldNotImportHero"))
         } finally {
             if (onImportStatusChange) onImportStatusChange("")
         }
@@ -269,25 +271,25 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
         <>
             <Modal position="center" isVisible={importModalVisible} onClose={() => setImportModalVisible(false)}>
                 <div className="flex-col card w-100">
-                    <div className="header-big margin-auto">Import Hero</div>
-                    <div className="text margin-auto">Paste a hero share link below. You can also paste the encoded data by itself.</div>
+                    <div className="header-big margin-auto">{t("app.shared.importHero")}</div>
+                    <div className="text margin-auto">{t("app.shared.pasteHeroShare")}</div>
                     <textarea
                         rows={3}
                         value={heroShareInput}
                         onChange={event => setHeroShareInput(event.target.value)}
                         placeholder="https://…/heroes/?hero=…"
-                        aria-label="Hero share link"
+                        aria-label={t("app.shared.heroShareLink")}
                     />
                     <div className="flex-row">
-                        <Button className="w-25" text={"Import Hero"} color={"confirm"} onClick={handleImportHeroLink} />
-                        <Button className="w-25" text={"Cancel"} color={"cancel"} onClick={() => setImportModalVisible(false)} />
+                        <Button className="w-25" text={t("app.shared.importHero")} color={"confirm"} onClick={handleImportHeroLink} />
+                        <Button className="w-25" text={t("app.shared.cancel")} color={"cancel"} onClick={() => setImportModalVisible(false)} />
                     </div>
                 </div>
             </Modal>
             <Modal position="left" isVisible={itemSelectionVisible} onClose={() => { setItemSelectionVisible(false); clearItemSelection(); }}>
                 <div className="flex-row card w-100" style={{ marginBottom: "10px" }}>
-                    <Button disabled text={"All Items"} color={1} onClick={() => setItemSelectionModalMode(0)} />
-                    <Button text={"Your Saved Items"} color={1} onClick={() => setItemSelectionModalMode(1)} />
+                    <Button disabled text={t("app.shared.allItems")} color={1} onClick={() => setItemSelectionModalMode(0)} />
+                    <Button text={t("app.shared.yourSavedItems")} color={1} onClick={() => setItemSelectionModalMode(1)} />
                 </div>
                 {itemSelectionModalMode === 0 ?
 /* NOT ACTIVE    */ <ItemList localSearch setsRef={itemsRef.current.ITEM_SETS} extraHeight={75} filtersOffset={"65px"} headerText={"All Items"} itemsRef={itemsRef.current.BASE_ITEMS} itemType={itemSelectionType} heroAttributeRequirement={activeHero?.mainAttribute} setSelectedItemId={setSelectedItemId} onDoubleClick={equipSelectedItem} /> :
@@ -304,12 +306,12 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
 
             <div className="sub-nav-bar flex-row">
                 <div className="pagination flex-row card w-100">
-                    <Button text={"All Heroes"} color={0} onClick={() => { switchListPage(0) }} />
-                    <Button text={"Saved Heroes"} color={0} onClick={() => { switchListPage(1) }} />
-                    <Button text={"Import Hero"} color={0} onClick={() => setImportModalVisible(true)} />
+                    <Button text={t("app.shared.allHeroes")} color={0} onClick={() => { switchListPage(0) }} />
+                    <Button text={t("app.pages.heroes.filter.savedHeader")} color={0} onClick={() => { switchListPage(1) }} />
+                    <Button text={t("app.shared.importHero")} color={0} onClick={() => setImportModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">
-                    <HelpButton title="Hero Management">
+                    <HelpButton title={t("app.shared.heroManagement")}>
                         <HeroManagementGuide />
                     </HelpButton>
                 </div>
