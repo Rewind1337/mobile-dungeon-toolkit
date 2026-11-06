@@ -1,4 +1,5 @@
 import { attributeSprites, perkSprites } from "../database/db_sprites.jsx"
+import { useTranslate } from "../hooks/useTranslate.jsx"
 import CataloguePerkList from "./CataloguePerkList.jsx"
 import { PRIMARY_STAT_DEFINITIONS } from "../database/enums.jsx"
 import { ATTRIBUTE_ICON_KEYS, getAttributeRequirementLabel, getDropSourceLabel, getSetLocations } from "../js/catalogueItemUtils.jsx"
@@ -7,6 +8,7 @@ import "../css/infos.scss"
 import "../css/infos_items.scss"
 
 export default function SetCatalogueCard({ set, pieces }) {
+    const t = useTranslate()
     const locations = getSetLocations(set, pieces)
     const attributeLabel = getAttributeRequirementLabel(set.attributeRequirement)
     const attributeKey = ATTRIBUTE_ICON_KEYS[attributeLabel.toLowerCase()]
