@@ -18,8 +18,8 @@ function getSearchableValues(value, seen = new Set()) {
     seen.add(value)
     return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : [key, ...getSearchableValues(child, seen)])
 }
-function HeroList({
-    const t = useTranslate() extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId, onSelectHero, onDoubleClick }) {
+function HeroList({extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId, onSelectHero, onDoubleClick }) {
+    const t = useTranslate()
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
     const [search, setSearch, commitSearch] = useUrlSearch();
     const [filters, setFilters] = useState({
