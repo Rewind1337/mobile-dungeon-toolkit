@@ -11,8 +11,10 @@ import { ItemManagementGuide } from "../Guides.jsx"
 import { createItemShareToken, decodeItemShareInput, decodeItemsShareInput, restoreSharedItem, restoreSharedItems } from "../../utils/heroShare.js"
 import { clearSearchFromUrl } from "../../js/search.jsx"
 import { useTranslation } from "../../hooks/useTranslation.jsx"
+import { useTranslate } from "../../hooks/useTranslate.jsx"
 
 function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
+    const t = useTranslate()
     const allItemsHeader = useTranslation("app.pages.items.filter.header")
     const savedItemsHeader = useTranslation("app.pages.items.filter.savedHeader")
     const [pageContent, setPageContent] = useState(0)
@@ -143,7 +145,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
             setItemShareUrl(buildItemShareUrl(item))
             setItemShareLinkCopied(false)
         } catch (error) {
-            window.alert(error.message || "Could not export this item.")
+            window.alert(error.message || t("app.shared.couldNotExportItem"))
         }
     }
 
@@ -153,7 +155,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
             await navigator.clipboard.writeText(itemShareUrl)
             setItemShareLinkCopied(true)
         } catch {
-            window.alert("Copying was blocked by your browser. Select and copy the link manually.")
+            window.alert(t("app.shared.copyingBlocked"))
         }
     }
 
@@ -172,10 +174,10 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
 
     const handleImportItemLink = async (input = itemShareInput, forcedType = null) => {
         if (!String(input ?? "").trim()) {
-            window.alert("Paste an item share link or its encoded data.")
+            window.alert(t("app.shared.pasteItemSharePrompt"))
             return
         }
-        if (onImportStatusChange) onImportStatusChange("Importing Item...")
+        if (onImportStatusChange) onImportStatusChange(t("app.shared.importingItem"))
         await new Promise(resolve => window.setTimeout(resolve, 0))
         try {
             const baseItems = itemsRef.current.BASE_ITEMS
@@ -198,7 +200,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
             setItemImportModalVisible(false)
             setItemShareInput("")
         } catch (error) {
-            window.alert(error.message || "Could not import this item.")
+            window.alert(error.message || t("app.shared.couldNotImportItem"))
         } finally {
             if (onImportStatusChange) onImportStatusChange("")
         }
@@ -250,29 +252,29 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
         <>
             <Modal position="center" isVisible={itemImportModalVisible} onClose={() => setItemImportModalVisible(false)}>
                 <div className="flex-col card w-100">
-                    <div className="header-big margin-auto">Import Item</div>
-                    <div className="text margin-auto">Paste an item share link, an equipped-items link, or the encoded data itself.</div>
+                    <div className="header-big margin-auto">{t("app.shared.importItem")}</div>
+                    <div className="text margin-auto">{t("app.shared.pasteItemShare")}</div>
                     <textarea
                         rows={3}
                         value={itemShareInput}
                         onChange={event => setItemShareInput(event.target.value)}
                         placeholder="https://…/items/?item=…"
-                        aria-label="Item share link"
+                        aria-label={t("app.shared.itemShareLink")}
                     />
                     <div className="flex-row">
-                        <Button className="w-25" text={"Import Item"} color={"confirm"} onClick={() => handleImportItemLink()} />
-                        <Button className="w-25" text={"Cancel"} color={"cancel"} onClick={() => setItemImportModalVisible(false)} />
+                        <Button className="w-25" text={t("app.shared.importItem")} color={"confirm"} onClick={() => handleImportItemLink()} />
+                        <Button className="w-25" text={t("app.shared.cancel")} color={"cancel"} onClick={() => setItemImportModalVisible(false)} />
                     </div>
                 </div>
             </Modal>
             <Modal position="center" isVisible={Boolean(itemShareUrl)} onClose={() => setItemShareUrl("")}>
                 <div className="flex-col card w-100">
-                    <div className="header-big margin-auto">Export Item</div>
-                    <div className="text margin-auto">Share this link to import this configured item into Saved Items.</div>
-                    <textarea rows={3} value={itemShareUrl} readOnly onFocus={event => event.target.select()} aria-label="Item share link" />
+                    <div className="header-big margin-auto">{t("app.shared.exportItem")}</div>
+                    <div className="text margin-auto">{t("app.shared.itemExportDescription")}</div>
+                    <textarea rows={3} value={itemShareUrl} readOnly onFocus={event => event.target.select()} aria-label={t("app.shared.itemShareLink")} />
                     <div className="flex-row">
-                        <Button className="w-25" text={itemShareLinkCopied ? "Link Copied!" : "Copy Item Link"} color={"confirm"} onClick={handleCopyItemLink} />
-                        <Button className="w-25" text={"Close"} color={"cancel"} onClick={() => setItemShareUrl("")} />
+                        <Button className="w-25" text={itemShareLinkCopied ? t("app.shared.linkCopied") : t("app.shared.copyItemLink")} color={"confirm"} onClick={handleCopyItemLink} />
+                        <Button className="w-25" text={t("app.shared.close")} color={"cancel"} onClick={() => setItemShareUrl("")} />
                     </div>
                 </div>
             </Modal>
@@ -280,10 +282,10 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                 setPendingPerkSelection(null)
                 setPerkSelectionVisible(false)
             }}>
-                <div className='flex-row header-big'>Select Perk</div>
+                <div className='flex-row header-big'>{t("app.shared.selectPerk")}</div>
                 <div className="list perk-list flex-row flex-wrap">
                     {possiblePerks.length === 0
-                        ? <div className="text">All available perks are already selected on this item.</div>
+                        ? <div className="text">{t("app.shared.allPerksSelected")}</div>
                         : possiblePerks.map(perk => (
                             <ItemPerk
                                 key={perk}
@@ -299,12 +301,12 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
 
             <div className="sub-nav-bar flex-row">
                 <div className="pagination flex-row card w-100">
-                    <Button text={"All Items"} color={1} onClick={() => { switchListPage(0) }} />
-                    <Button text={"Your Saved Items"} color={1} onClick={() => { switchListPage(1) }} />
-                    <Button text={"Import Item"} color={1} onClick={() => setItemImportModalVisible(true)} />
+                    <Button text={t("app.shared.allItems")} color={1} onClick={() => { switchListPage(0) }} />
+                    <Button text={t("app.shared.yourSavedItems")} color={1} onClick={() => { switchListPage(1) }} />
+                    <Button text={t("app.shared.importItem")} color={1} onClick={() => setItemImportModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">
-                    <HelpButton title="Item Management">
+                    <HelpButton title={t("app.shared.itemManagement")}>
                         <ItemManagementGuide />
                     </HelpButton>
                 </div>
