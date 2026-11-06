@@ -11,6 +11,7 @@ import HeroCatalogueFilters from "../HeroCatalogueFilters.jsx"
 import { attributeSprites, elementSprites, roleSprites } from "../../database/db_sprites.jsx"
 import { getSearchableValues, matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
 import { humanize } from "../../js/utils.js"
+import { useTranslate } from "../../hooks/useTranslate.jsx"
 import BannerCatalogueList from "../BannerCatalogueList.jsx"
 import CatalogueViewSwitch from "../CatalogueViewSwitch.jsx"
 import SkillCatalogueCard from "../SkillCatalogueCard.jsx"
@@ -19,6 +20,7 @@ import VirtualizedGrid from "../VirtualizedGrid.jsx"
 import "../../css/infos_heroes.scss"
 
 function HeroCatalogueCard({ hero, expandedSections = {}, onSectionToggle }) {
+    const t = useTranslate()
     const rarity = getEnumNameById(RARITY_DEFINITIONS, Number(hero.rarity)) ?? "Unknown rarity"
     const attribute = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? "Unknown attribute"
     const element = getEnumNameById(ELEMENT_DEFINITIONS, Number(hero.element)) ?? "Unknown element"
@@ -62,7 +64,7 @@ function HeroCatalogueCard({ hero, expandedSections = {}, onSectionToggle }) {
                     open={Boolean(expandedSections.skills)}
                     onToggle={event => onSectionToggle?.(hero.id, "skills", event.currentTarget.open)}
                 >
-                    <summary className="catalogue-section-label text">Skills</summary>
+                    <summary className="catalogue-section-label text">{t("app.pages.heroes.preview.skills")}</summary>
                     <div className="hero-catalogue-skills">
                         {skills.map((skill, index) => (
                             <SkillCatalogueCard key={hero.id + "-skill-" + index} hero={hero} skill={skill} skillIndex={index} />
@@ -77,7 +79,7 @@ function HeroCatalogueCard({ hero, expandedSections = {}, onSectionToggle }) {
                     open={Boolean(expandedSections.talents)}
                     onToggle={event => onSectionToggle?.(hero.id, "talents", event.currentTarget.open)}
                 >
-                    <summary className="catalogue-section-label text">Talents</summary>
+                    <summary className="catalogue-section-label text">{t("app.pages.heroes.preview.talents")}</summary>
                     <div className="hero-catalogue-talents">
                         {talents.map(([id, talent]) => (
                             <TalentCatalogueCard key={hero.id + "-talent-" + id} talent={talent} sources={[{ hero, id }]} />
@@ -91,6 +93,7 @@ function HeroCatalogueCard({ hero, expandedSections = {}, onSectionToggle }) {
 
 
 function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null, onViewChange, scrollElementRef }) {
+    const t = useTranslate()
     const [search, setSearch, commitSearch] = useUrlSearch()
     const [expandedHeroSections, setExpandedHeroSections] = useState({})
     const handleHeroSectionToggle = (heroId, section, isOpen) => {
@@ -170,24 +173,24 @@ function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null
     return (
         <section className="hero-catalogue">
             <CatalogueViewSwitch ariaLabel="Hero catalogue sections" view={initialView} onViewChange={onViewChange} options={[
-                { label: "Hero Catalogue", compactLabel: "Heroes", value: "heroes" },
+                { label: t("app.pages.catalogues.heroTitle"), compactLabel: t("app.navigation.heroes"), value: "heroes" },
                 { label: "Tier List", value: "tier-list" },
-                { label: "Banner Catalogue", compactLabel: "Banners", value: "banners" },
+                { label: t("app.pages.catalogues.bannerTitle"), compactLabel: t("app.pages.catalogues.banners"), value: "banners" },
             ]} />
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
-                    <div className="catalogue-title header-big">{initialView === "banners" ? "Banner Catalogue" : initialView === "tier-list" ? "Hero Tier List" : "Hero Catalogue"}</div>
+                    <div className="catalogue-title header-big">{initialView === "banners" ? t("app.pages.catalogues.bannerTitle") : initialView === "tier-list" ? t("app.pages.catalogues.heroTierListTitle") : t("app.pages.catalogues.heroTitle")}</div>
                     <p className="catalogue-description text">
                         {initialView === "banners"
-                            ? "Browse the banner definitions and their included heroes. Filter by hero name, rarity, element, role, main attribute, and starred status."
+                            ? t("app.pages.catalogues.bannerDescription")
                             : initialView === "tier-list"
-                                ? "Tier List view. Tier placements are not currently defined in the project data."
-                                : "Search heroes, skills, talents, effects, attributes, rarity, element, role, and other stored hero data."}
+                                ? t("app.pages.catalogues.tierListDescription")
+                                : t("app.pages.catalogues.heroDescription")}
                     </p>
                 </div>
             </header>
             {initialView === "tier-list" ? (
-                <div className="catalogue-empty card">No tier placements have been defined yet.</div>
+                <div className="catalogue-empty card">{t("app.pages.catalogues.noTierPlacements")}</div>
             ) : initialView === "banners" ? (
                 <BannerCatalogueList heroesRef={heroesRef} search={search} setSearch={setSearch} commitSearch={commitSearch} />
             ) : (
@@ -215,7 +218,7 @@ function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null
             />
 
             {filteredHeroes.length === 0
-                ? <p className="catalogue-empty card">No heroes match these filters.</p>
+                ? <p className="catalogue-empty card">{t("app.pages.catalogues.noHeroesMatch")}</p>
                 : <VirtualizedGrid
                     items={filteredHeroes}
                     scrollElementRef={scrollElementRef}
