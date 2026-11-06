@@ -521,7 +521,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                             const item = equippedItems[slot.id]
                             if (slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id) {
                                 return (
-                                    <div key={slot.id} className="item card item-slot-locked" aria-disabled="true" title={t("app.pages.heroes.preview.otherSlotUnavailable")}>
+                                    <div key={slot.id} className="item card item-slot-locked" aria-disabled="true" title={t("app.shared.otherUnavailable")}>
                                         <div className="item-icon item-icon-locked">
                                             <img src={LockedSrc} loading="eager" decoding="async" draggable={false} alt="" />
                                         </div>
