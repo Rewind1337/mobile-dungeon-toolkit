@@ -39,7 +39,7 @@ export default function SetCatalogueCard({ set, pieces }) {
                     <span className="catalogue-chip text">{getDropSourceLabel(set.dropSource, locations)}</span>
                 </div>
                 <section className="catalogue-set-pieces">
-                    <div className="catalogue-section-label text">Pieces ({pieces.length})</div>
+                    <div className="catalogue-section-label text">{t("app.pages.catalogues.piecesCount", { count: pieces.length })}</div>
                     {pieces.length > 0
                         ? <ul className="catalogue-piece-list">
                             {pieces.map(item => (
@@ -49,7 +49,7 @@ export default function SetCatalogueCard({ set, pieces }) {
                                 </li>
                             ))}
                         </ul>
-                        : <p className="catalogue-muted">No item pieces are currently linked to this set in the item database.</p>
+                        : <p className="catalogue-muted">{t("app.pages.catalogues.noSetPieces")}</p>
                     }
                 </section>
             </header>
