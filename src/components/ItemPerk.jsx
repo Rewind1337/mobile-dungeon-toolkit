@@ -1,5 +1,6 @@
 import { memo, useEffect, useState } from 'react'
 import Button from './Button.jsx'
+import { useTranslate } from '../hooks/useTranslate.jsx'
 
 import { perkSprites } from '../database/db_sprites.jsx'
 import { PERK_DEFINITIONS } from '../database/enums.jsx'
@@ -18,6 +19,7 @@ function ItemPerk({
     spriteName = name,
     hideChangeButton = false
 }) {
+    const t = useTranslate()
     const [_value, _setValue] = useState(value ?? 0)
     const _perk = PERK_DEFINITIONS[name]
     const isFlatPerk = ((_perk.id >= 4 && _perk.id <= 7) || _perk.id === 32)
@@ -60,7 +62,7 @@ function ItemPerk({
                             />
                             <div className='text perk-flat-percent'>{isFlatPerk ? " Flat" : " %"}</div>
                         </div>
-                        <div className='text perk-effective'>{multiplier > 1 && <small>Effective: {formatValue(effectiveValue)}{isFlatPerk ? " Flat" : " %"}</small>}</div>
+                        <div className='text perk-effective'>{multiplier > 1 && <small>{t("app.shared.effective")}: {formatValue(effectiveValue)}{isFlatPerk ? " " + t("app.shared.flat") : " " + t("app.shared.percent")}</small>}</div>
                     </div>
                     : <div className='text flex-col'>
                         <div className='text perk-flat-percent'>{displayedValue}{isFlatPerk ? " Flat" : " %"}</div>
@@ -71,7 +73,7 @@ function ItemPerk({
 
             {!hideChangeButton && (onClick
                 ? <Button slim text={buttonText} color={buttonColor} disabled={changeDisabled} onClick={() => onClick()} />
-                : <div className='text perk-not-changeable'>not changeable</div>
+                : <div className='text perk-not-changeable'>{t("app.shared.notChangeable")}</div>
             )}
         </div>
     )
