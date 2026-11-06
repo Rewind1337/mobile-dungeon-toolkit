@@ -36,7 +36,7 @@ function SubPageTitans() {
             <section className="card w-100 simulator-selection-detail">
                 {selectedTitan ? (
                     <>
-                        <SimulatorEntryDetails entry={selectedTitan} title={String(getEnumNameById(ELEMENT_DEFINITIONS, selectedTitan.element) ?? "Unknown").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase()) + " Titan - " + selectedTitan.name} elementIds={[selectedTitan.element]} emptyMessage="No titan stage entries have been defined yet." />
+                        <SimulatorEntryDetails entry={selectedTitan} title={t("app.pages.simulatorEntries.titanTitle", { element: String(getEnumNameById(ELEMENT_DEFINITIONS, selectedTitan.element) ?? "Unknown").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase()), name: selectedTitan.name })} elementIds={[selectedTitan.element]} emptyMessage={t("app.pages.simulatorEntries.noTitanStages")} />
                     </>
                 ) : (
                     <div className="header-big">{t("app.pages.simulatorEntries.selectATitan")}</div>
