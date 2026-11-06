@@ -307,7 +307,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
             <div className="sub-nav-bar flex-row">
                 <div className="pagination flex-row card w-100">
                     <Button text={t("app.shared.allHeroes")} color={0} onClick={() => { switchListPage(0) }} />
-                    <Button text={t("app.pages.heroes.filter.savedHeader")} color={0} onClick={() => { switchListPage(1) }} />
+                    <Button text={t("app.shared.savedHeroes")} color={0} onClick={() => { switchListPage(1) }} />
                     <Button text={t("app.shared.importHero")} color={0} onClick={() => setImportModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">
