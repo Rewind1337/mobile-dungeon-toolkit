@@ -47,7 +47,7 @@ function CatalogueSkillsTalents({ heroes = [], initialView = "skills", onViewCha
         return matchesSearchQuery([sourceText, stringify(value), translatedContent, entry.id ?? ""], search)
     })
     return <section className="hero-catalogue">
-        <CatalogueViewSwitch ariaLabel={t("app.pages.catalogues.skillsTabAriaLabel")} view={view} onViewChange={changeView} options={[
+        <CatalogueViewSwitch view={view} onViewChange={changeView} options={[
             { label: t("app.pages.catalogues.skillTab"), value: "skills" },
             { label: t("app.pages.catalogues.talentTab"), value: "talents" },
         ]} />
