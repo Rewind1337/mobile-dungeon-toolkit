@@ -370,7 +370,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                     <Button text={t("app.pages.teams.importTeam")} color={2} onClick={() => setImportTeamModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">
-                    <HelpButton title={t("app.pages.teams.teamManagement")}>
+                    <HelpButton title={t("app.shared.teamManagement")}>
                         <TeamManagementGuide />
                     </HelpButton>
                 </div>
