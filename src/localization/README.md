@@ -24,7 +24,7 @@ export const LANGUAGE_DICTIONARIES = {
 ## Use a translation
 
 ```jsx
-const filterHeading = useTranslation("app.pages.heroes.filters.mainAttribute")
+const filterHeading = useTranslation("app.pages.heroes.filter.header")
 const resultCount = useTranslation(
     "app.pages.heroes.filters.search",
     undefined,
