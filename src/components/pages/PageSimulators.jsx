@@ -13,12 +13,12 @@ const SubPageCustomCombat = lazy(() => import('../SubPageCustomCombat.jsx'))
 const SubPageMagicToilet = lazy(() => import('../SubPageMagicToilet.jsx'))
 
 const SIMULATOR_TABS = [
-    ['adventure', 'adventureChapters', 'button-gradient-5-1', 'adventure'],
-    ['towers', 'towers', 'button-gradient-5-2'],
-    ['titans', 'titans', 'button-gradient-5-3'],
-    ['guild-hunt', 'guildHunt', 'button-gradient-5-4'],
-    ['custom', 'custom', 'button-gradient-5-5', 'customCompact'],
-    ['magic-toilet', 'magicToilet', 'magic-toilet'],
+    ['adventure', 'app.pages.simulators.adventureChapters', 'button-gradient-5-1', 'app.pages.simulators.adventure'],
+    ['towers', 'app.pages.simulators.towers', 'button-gradient-5-2'],
+    ['titans', 'app.pages.simulators.titans', 'button-gradient-5-3'],
+    ['guild-hunt', 'app.pages.simulators.guildHunt', 'button-gradient-5-4'],
+    ['custom', 'app.pages.customCombat.title', 'button-gradient-5-5', 'app.pages.simulators.customCompact'],
+    ['magic-toilet', 'app.pages.magicToilet.title', 'magic-toilet'],
 ]
 
 function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedHeroesRef, savedTeamsRef }) {
@@ -31,7 +31,7 @@ function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedH
                         <Button
                             key={id}
                             text={compactLabel
-                                ? <><span className="catalogue-view-label-full">{t(`app.pages.simulators.${label}`)}</span><span className="catalogue-view-label-compact">{t(`app.pages.simulators.${compactLabel}`)}</span></>
+                                ? <><span className="catalogue-view-label-full">{t(label)}</span><span className="catalogue-view-label-compact">{t(compactLabel)}</span></>
                                 : t(`app.pages.simulators.${label}`)}
                             color={color}
                             active={activeTab === id}
