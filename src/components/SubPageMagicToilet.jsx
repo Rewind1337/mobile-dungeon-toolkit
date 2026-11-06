@@ -420,7 +420,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                                 value={epicBoosterHeroId}
                                 onChange={event => setEpicBoosterHeroId(event.target.value)}
                             >
-                                <option value="">Select a Hero</option>
+                                <option value="">{t("app.shared.selectHero")}</option>
                                 {epicBoosterHeroes.map(hero => (
                                     <option key={hero.id} value={hero.id}>
                                         {hero.name} ({formatPullChance(getBoosterPullChance(hero, EPIC, banner))})
