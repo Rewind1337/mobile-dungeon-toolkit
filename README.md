@@ -18,6 +18,10 @@ The toolkit is an independent fan project and is not affiliated with or endorsed
 
 The MIT License is intended to cover only original project code to the extent the author has the right to license it. It does not grant rights to Playa Games' intellectual property, third-party libraries, or other third-party material.
 
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for development setup and detailed instructions for contributing code, game data, and translations.
+
 ## Roadmap
 
 ### 0.0.x — Foundations
