@@ -11,18 +11,9 @@ const lang_enUS = {
             items: "Items",
             teams: "Teams",
             home: "Home",
-            homeTooltip: "Home",
             games: "Fun & Games",
             simulators: "Simulators",
             wiki: "Wiki",
-        },
-        common: {
-            help: "Help",
-            helpForTooltip: "Help for {{title}}",
-            showFilters: "Show filters",
-            showCatalogueFiltersTooltip: "Show catalogue filters",
-            hideFilters: "Hide filters",
-            clearFilters: "Clear filters",
         },
         shared: {
             // shared search
@@ -209,6 +200,10 @@ const lang_enUS = {
             copyingBlocked: "Copying was blocked by your browser. Select and copy the link manually.",
 
             // shared controls
+            help: "Help",
+            showFilters: "Show filters",
+            hideFilters: "Hide filters",
+            clearFilters: "Clear filters",
             sortOrder: "Sort Order",
             alphabetic: "Alphabetic",
             level: "Level",
@@ -225,6 +220,7 @@ const lang_enUS = {
             showList: "Show List",
 
             // shared tooltips
+            helpForTooltip: "Help for {{title}}",
             showOrHideAdvancedFiltersTooltip: "Show or hide advanced filters",
             showStarredHeroesTooltip: "Show starred heroes only",
             strengthTooltip: "Strength",
@@ -304,8 +300,6 @@ const lang_enUS = {
                     finalStatTooltip: "Final {{name}} after equipped gear",
                     exportEquippedItemsError: "Could not export equipped items.",
                 },
-                filter: {
-                },
 
                 // Hero catalogue filters
                 filters: {
@@ -340,8 +334,6 @@ const lang_enUS = {
                     active: "Active",
                     inactive: "Inactive",
                     noPerks: "No perks available",
-                },
-                filter: {
                 },
 
                 // Item catalogue filters
@@ -409,7 +401,6 @@ const lang_enUS = {
                 itemOverview: "Item Overview",
                 itemDistribution: "Distribution of the currently loaded item database.",
 
-                dungeonDropNote: "Dungeon drops include Any Dungeon and unspecified drops, including the General set.",
                 dataCountNote: "Counts reflect the data currently loaded in the project. Skills and talent entries are counted per hero, so repeated names are included.",
                 showEntriesTooltip: "Show {{label}} entries in the catalogue",
                 loadingCatalogue: "Loading catalogue...",
@@ -479,10 +470,6 @@ const lang_enUS = {
                 heroTitle: "Hero Catalogue",
                 heroDescription: "Search heroes, skills, talents, effects, attributes, rarity, element, role, and other stored hero data.",
                 noHeroesMatch: "No heroes match these filters.",
-                heroViews: "Hero catalogue views",
-                itemViews: "Item catalogue views",
-                resourceViews: "Resource and gem catalogue views",
-                sets: "Sets",
 
                 // Banner catalogue
                 banners: "Banners",
@@ -565,7 +552,6 @@ const lang_enUS = {
 
                 // Shared Catalogue Labels
                 searchCount: "Search ({{resultCount}} of {{totalCount}})",
-                searchSkillsTalents: "Search skills and talents",
                 skillsTalentsPlaceholder: "Name, hero, effect…",
                 skillsTalentsProgress: "This section is still in progress; some skill and talent data may be incomplete.",
                 usedFor: "Used for",
@@ -593,6 +579,7 @@ const lang_enUS = {
                 flushOne: "Flush 1",
                 flushAmountButton: "Flush {{count}}",
                 flushUntilLegendary: "Flush until Legendary",
+                flushUntilLegendaryTooltip: "Automatically flush until a Legendary rarity is rolled.",
                 flushUntilBoosted: "Flush until Boosted",
                 flushUntilBoostedTooltip: "Flush until one of your selected boosted heroes is pulled",
                 dontResetBoosters: "Don't reset Boosters",
