@@ -390,7 +390,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
     if (noSelection) {
         return (
             <div className='hero-preview no-selection'>
-                <div className='header-big'>{t("app.pages.heroes.preview.selectHero")}</div>
+                <div className='header-big'>{t("app.shared.selectHero")}</div>
             </div>
         )
     } else {
@@ -402,7 +402,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                 </div>
                 <Modal position="center" isVisible={exportModalVisible} onClose={() => setExportModalVisible(false)}>
                     <div className="flex-col card w-100">
-                        <div className="header-big margin-auto">{t("app.pages.heroes.preview.exportTitle")}</div>
+                        <div className="header-big margin-auto">{t("app.shared.exportHero")}</div>
                         <label className="flex-row text margin-auto export-items-checkbox-label">
                             <input type="checkbox" checked={exportItemsOnHero} onChange={handleExportItemsToggle} />
                             <div className='header'>{t("app.pages.heroes.preview.exportItemsOnHero")}</div>
@@ -461,7 +461,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                         <Button
                             className="hero-preview-skills-toggle"
                             color={0}
-                            text={t("app.pages.heroes.preview.skillsTalents")}
+                            text={t("app.shared.skillsAndTalents")}
                             onClick={() => setSkillsTalentsModalVisible(true)}
                         />
                     )}
