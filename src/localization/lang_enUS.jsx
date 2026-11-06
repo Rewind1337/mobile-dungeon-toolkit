@@ -400,6 +400,7 @@ const lang_enUS = {
                 heroDistribution: "Distribution of the currently loaded hero data.",
                 itemOverview: "Item Overview",
                 itemDistribution: "Distribution of the currently loaded item database.",
+                sets: "Item sets",
 
                 dataCountNote: "Counts reflect the data currently loaded in the project. Skills and talent entries are counted per hero, so repeated names are included.",
                 showEntriesTooltip: "Show {{label}} entries in the catalogue",
