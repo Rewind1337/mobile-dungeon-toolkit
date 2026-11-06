@@ -1,0 +1,106 @@
+/**
+ * English (United States) source language.
+ *
+ * Keep keys grouped by app area and use dot-separated paths when calling
+ * useTranslation(), e.g. "app.pages.heroes.filters.search".
+ */
+const lang_enUS = {
+    app: {
+        navigation: {
+            heroes: "Heroes",
+            items: "Items",
+            teams: "Teams",
+            home: "Home",
+            games: "Fun & Games",
+            simulators: "Simulators",
+            wiki: "Wiki",
+        },
+        common: {
+            help: "Help",
+            helpFor: "Help for {{title}}",
+            close: "Close",
+            loading: "Loading...",
+        },
+        pages: {
+            resetTimers: {
+                ariaLabel: "Reset timers",
+                daily: "Daily Reset",
+                weekly: "Weekly Reset",
+            },
+            heroes: {
+                filters: {
+                    search: "Search ({{resultCount}} of {{totalCount}})",
+                    searchAriaLabel: "Search hero catalogue",
+                    searchPlaceholder: "Name, skill, talent, effect, ID…",
+                    sortOrder: "Sort Order",
+                    sortOrderAriaLabel: "Sort order",
+                    alphabetic: "Alphabetic",
+                    rarity: "Rarity",
+                    level: "Level",
+                    rarityAriaLabel: "Filter by rarity",
+                    allRarities: "All rarities",
+                    mainAttribute: "Main attribute",
+                    mainAttributeAriaLabel: "Filter by main attribute",
+                    allAttributes: "All attributes",
+                    element: "Element",
+                    elementAriaLabel: "Filter by element",
+                    allElements: "All elements",
+                    role: "Role",
+                    roleAriaLabel: "Filter by role",
+                    allRoles: "All roles",
+                    starred: "Starred",
+                },
+            },
+            items: {
+                filters: {
+                    search: "Search ({{resultCount}} of {{totalCount}})",
+                    searchAriaLabel: "Search item catalogue",
+                    searchPlaceholder: "Name, effect text, perk, set, source, ID…",
+                    sortOrder: "Sort Order",
+                    sortOrderAriaLabel: "Sort order",
+                    alphabetic: "Alphabetic",
+                    rarity: "Rarity",
+                    level: "Level",
+                    source: "Source",
+                    sourceAriaLabel: "Filter by source",
+                    allSources: "All sources",
+                    location: "Location",
+                    locationAriaLabel: "Filter by location",
+                    allLocations: "All locations",
+                    slot: "Slot",
+                    slotAriaLabel: "Filter by slot",
+                    allSlots: "All slots",
+                    mainAttribute: "Main attribute",
+                    attributeAriaLabel: "Filter by {{attribute}}",
+                    allAttributes: "All attributes",
+                    setAttribute: "Set attribute",
+                    setAttributeAriaLabel: "Filter sets by main attribute",
+                    setPieces: "Set pieces",
+                    setPiecesAriaLabel: "Filter by set size",
+                    allSets: "All sets",
+                    twoPieceSets: "2 Piece Sets",
+                    fourPieceSets: "4 Piece Sets",
+                    itemType: "Item type",
+                    itemTypeAriaLabel: "Filter by item type",
+                    allItems: "All items",
+                    twoPieceSet: "2-piece set",
+                    fourPieceSet: "4-piece set",
+                    unique: "Unique",
+                    rarityAriaLabel: "Filter by rarity",
+                    allRarities: "All rarities",
+                },
+            },
+            simulators: {
+                title: "Simulators",
+                description: "Choose a simulator from the navigation above to browse encounters or set up a custom combat matchup.",
+            },
+            games: {
+                comingSoon: "More activities coming soon",
+                title: "Fun & Games",
+                description: "This section is reserved for future fun and game-related tools.",
+            },
+        },
+    },
+}
+
+export default lang_enUS
