@@ -1,12 +1,14 @@
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import '../css/modal.scss';
-import Button from './Button';
+import Button from './Button'
+import { useTranslation } from '../hooks/useTranslation.jsx';
 
 const openModals = []
 let modalEscapeHandler = null
 
 function Modal({ isVisible, onClose, position = 'left', hasCloseButton, className = "", children }) {
+    const closeLabel = useTranslation("app.common.close")
     const onCloseRef = useRef(onClose)
     onCloseRef.current = onClose
     const modalEntryRef = useRef(null)
@@ -51,7 +53,7 @@ function Modal({ isVisible, onClose, position = 'left', hasCloseButton, classNam
                 {children}
                 {hasCloseButton && (
                     <div className="modal-footer visible">
-                        <Button className="w-25" text="Close" color="cancel" onClick={() => onClose?.()} />
+                        <Button className="w-25" text={closeLabel} color="cancel" onClick={() => onClose?.()} />
                     </div>
                 )}
             </div>
