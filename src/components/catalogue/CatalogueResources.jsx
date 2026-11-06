@@ -16,6 +16,7 @@ const GEM_BASES = [...new Map(GEM_VARIANTS.map(gem => [
 ])).values()]
 
 function CatalogueResources({ initialView = "resources", onViewChange }) {
+    const t = useTranslate()
     const [search, setSearch, commitSearch] = useUrlSearch()
     const [obtainedFromFilter, setObtainedFromFilter] = useState("all")
     const [usedForFilter, setUsedForFilter] = useState("all")
