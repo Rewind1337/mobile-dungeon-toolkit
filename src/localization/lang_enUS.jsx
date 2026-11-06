@@ -39,6 +39,10 @@ const lang_enUS = {
                 },
             },
             heroes: {
+                filter: {
+                    header: "All Heroes",
+                    savedHeader: "Saved Heroes",
+                },
                 filters: {
                     search: "Search ({{resultCount}} of {{totalCount}})",
                     searchAriaLabel: "Search hero catalogue",
@@ -63,6 +67,10 @@ const lang_enUS = {
                 },
             },
             items: {
+                filter: {
+                    header: "All Items",
+                    savedHeader: "Saved Items",
+                },
                 filters: {
                     search: "Search ({{resultCount}} of {{totalCount}})",
                     searchAriaLabel: "Search item catalogue",
