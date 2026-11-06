@@ -99,11 +99,11 @@ function CatalogueStatus() {
                 <div className="status-catalogue-filters card">
                     <label className="catalogue-search">
                         <span className="catalogue-control-label text">{t("app.pages.catalogues.searchCount", { resultCount: filteredStatuses.length, totalCount: statuses.length })}</span>
-                        <input className="selectable catalogue-input" aria-label={t("app.pages.catalogues.searchStatus")} placeholder={t("app.pages.catalogues.statusSearchPlaceholder")} value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
+                        <input className="selectable catalogue-input"  placeholder={t("app.pages.catalogues.statusSearchPlaceholder")} value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
                     </label>
                     <label className="catalogue-filter">
                         <span className="catalogue-control-label text">{t("app.pages.catalogues.category")}</span>
-                        <select aria-label={t("app.pages.catalogues.filterByStatusCategory")} value={categoryFilter} onChange={event => setCategoryFilter(event.target.value)}>
+                        <select  value={categoryFilter} onChange={event => setCategoryFilter(event.target.value)}>
                             <option value="all">{t("app.pages.catalogues.allCategories")}</option>
                             <option value="buff">{t("app.shared.buffs")}</option>
                             <option value="debuff">{t("app.shared.debuffs")}</option>

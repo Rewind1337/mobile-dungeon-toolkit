@@ -259,7 +259,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                         value={itemShareInput}
                         onChange={event => setItemShareInput(event.target.value)}
                         placeholder="https://…/items/?item=…"
-                        aria-label={t("app.shared.itemShareLink")}
+                        
                     />
                     <div className="flex-row">
                         <Button className="w-25" text={t("app.shared.importItem")} color={"confirm"} onClick={() => handleImportItemLink()} />
@@ -271,7 +271,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                 <div className="flex-col card w-100">
                     <div className="header-big margin-auto">{t("app.shared.exportItem")}</div>
                     <div className="text margin-auto">{t("app.shared.itemExportDescription")}</div>
-                    <textarea rows={3} value={itemShareUrl} readOnly onFocus={event => event.target.select()} aria-label={t("app.shared.itemShareLink")} />
+                    <textarea rows={3} value={itemShareUrl} readOnly onFocus={event => event.target.select()}  />
                     <div className="flex-row">
                         <Button className="w-25" text={itemShareLinkCopied ? t("app.shared.linkCopied") : t("app.shared.copyItemLink")} color={"confirm"} onClick={handleCopyItemLink} />
                         <Button className="w-25" text={t("app.shared.close")} color={"cancel"} onClick={() => setItemShareUrl("")} />

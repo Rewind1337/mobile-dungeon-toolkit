@@ -34,7 +34,7 @@ export default function TalentCatalogueCard({
             <h3 className="catalogue-entry-name text-big talent-catalogue-name">{talentName}</h3>
         </header>
         {sourceListVisible && (
-            <div className="talent-source-list" aria-label={t("app.shared.talentPositions")}>
+            <div className="talent-source-list" >
                 {sources.map(({ hero, id }) => <div className="talent-source-entry" key={(hero?.id ?? "hero") + "-" + id}>
                     {showSourceHero && <span className="catalogue-chip text talent-source-hero">{tc("hero", hero?.id, "name", hero?.name)}</span>}
                     {showSourcePosition && <span className="catalogue-chip text talent-source-position">{getTalentPosition(id)}</span>}

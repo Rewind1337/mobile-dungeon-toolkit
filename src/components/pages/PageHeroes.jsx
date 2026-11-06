@@ -278,7 +278,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                         value={heroShareInput}
                         onChange={event => setHeroShareInput(event.target.value)}
                         placeholder="https://…/heroes/?hero=…"
-                        aria-label={t("app.shared.heroShareLink")}
+                        
                     />
                     <div className="flex-row">
                         <Button className="w-25" text={t("app.shared.importHero")} color={"confirm"} onClick={handleImportHeroLink} />

@@ -98,21 +98,21 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                             <span className="catalogue-control-label text">
                                 {t("app.pages.catalogues.searchCount", { resultCount: filteredResources.length, totalCount: sourceResources.length })}
                             </span>
-                            <input className="selectable catalogue-input" type="search" aria-label={isGemsView ? t("app.pages.catalogues.searchGems") : t("app.pages.catalogues.searchResources")} placeholder={isGemsView ? t("app.pages.catalogues.gemsPlaceholder") : t("app.pages.catalogues.resourcesPlaceholder")} value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
+                            <input className="selectable catalogue-input" type="search"  placeholder={isGemsView ? t("app.pages.catalogues.gemsPlaceholder") : t("app.pages.catalogues.resourcesPlaceholder")} value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
                         </label>
                     </div>
                     {!isGemsView ? (
                         <>
                             <label className="catalogue-filter resource-location-filter">
                                 <span className="catalogue-control-label text">{t("app.pages.catalogues.usedFor")}</span>
-                                <select aria-label={t("app.pages.catalogues.filterResourcesByUse")} value={usedForFilter} onChange={event => setUsedForFilter(event.target.value)}>
+                                <select  value={usedForFilter} onChange={event => setUsedForFilter(event.target.value)}>
                                     <option value="all">{t("app.pages.catalogues.allUses")}</option>
                                     {Object.entries(RESOURCE_LOCATIONS).map(([key, label]) => <option key={key} value={label}>{label}</option>)}
                                 </select>
                             </label>
                             <label className="catalogue-filter resource-location-filter">
                                 <span className="catalogue-control-label text">{t("app.pages.catalogues.obtainedFrom")}</span>
-                                <select aria-label={t("app.pages.catalogues.filterResourcesBySource")} value={obtainedFromFilter} onChange={event => setObtainedFromFilter(event.target.value)}>
+                                <select  value={obtainedFromFilter} onChange={event => setObtainedFromFilter(event.target.value)}>
                                     <option value="all">{t("app.shared.allSources")}</option>
                                     {Object.entries(RESOURCE_LOCATIONS).map(([key, label]) => <option key={key} value={label}>{label}</option>)}
                                 </select>
@@ -124,7 +124,7 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                             <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={clearSearch} />
                             <label className="catalogue-filter resource-location-filter gem-dungeon-filter">
                                 <span className="catalogue-control-label text">{t("app.pages.catalogues.dungeon")}</span>
-                                <select aria-label={t("app.pages.catalogues.filterGemsByDungeon")} value={dungeonFilter} onChange={event => setDungeonFilter(event.target.value)}>
+                                <select  value={dungeonFilter} onChange={event => setDungeonFilter(event.target.value)}>
                                     <option value="all">{t("app.pages.catalogues.allDungeons")}</option>
                                     {DUNGEON_LOCATIONS.map(location => <option key={location} value={location}>{location}</option>)}
                                 </select>
