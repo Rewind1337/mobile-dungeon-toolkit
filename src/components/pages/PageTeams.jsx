@@ -552,7 +552,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                     {modalHeroes.length > 0 ? (
                         <HeroList
                             savedHeroes
-                            headerText={t("app.pages.heroes.filter.savedHeader")}
+                            headerText={t("app.shared.savedHeroes")}
                             heroesRef={modalHeroes}
                             selectedHeroId={selectedSaveId}
                             setSelectedHeroId={setSelectedSaveId}
