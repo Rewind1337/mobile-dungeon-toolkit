@@ -25,12 +25,12 @@ const RESOURCE_DATA = init_resource_db()
 const RESOURCE_COUNT = RESOURCE_DATA.filter(resource => !resource.isGem).length
 const GEM_TYPE_COUNT = new Set(RESOURCE_DATA.filter(resource => resource.isGem).map(resource => resource.gemType)).size
 const TABS = [
-    ["hero-catalogue", "heroesAndBanners"],
-    ["item-catalogue", "itemsAndSets"],
-    ["perk-catalogue", "perkCatalogue", "perks"],
-    ["skills-talents-catalogue", "skillsAndTalents"],
-    ["status-catalogue", "statusCatalogue", "statuses"],
-    ["resources-catalogue", "resourcesAndGems"],
+    ["hero-catalogue", "wiki.heroesAndBanners"],
+    ["item-catalogue", "wiki.itemsAndSets"],
+    ["perk-catalogue", "catalogues.perkTitle", "shared.perks"],
+    ["skills-talents-catalogue", "shared.skillsAndTalents"],
+    ["status-catalogue", "wiki.statusCatalogue", "wiki.statuses"],
+    ["resources-catalogue", "wiki.resourcesAndGems"],
 ]
 
 const humanize = value => String(value ?? "").replaceAll("_", " ").replace(/\b\w/g, letter => letter.toUpperCase())
@@ -243,7 +243,7 @@ function PageWiki({ itemsRef, heroesRef, activeTab = "overview", onTabChange }) 
         <div className="sub-nav-bar flex-row" style={{ flex: "0 0 auto" }}>
             <div className="pagination flex-row card w-100">
                 {TABS.map(([id, labelKey, compactKey]) => <Button key={id} text={compactKey
-                    ? <><span className="catalogue-view-label-full">{t(`app.pages.wiki.${labelKey}`)}</span><span className="catalogue-view-label-compact">{t(`app.pages.wiki.${compactKey}`)}</span></>
+                    ? <><span className="catalogue-view-label-full">{t(`app.pages.${labelKey}`)}</span><span className="catalogue-view-label-compact">{t(`app.pages.${compactKey}`)}</span></>
                     : t(`app.pages.wiki.${labelKey}`)} color={5} active={id === "item-catalogue" ? activeTab === "item-catalogue" || activeTab === "set-catalogue" : id === "hero-catalogue" ? activeTab === "hero-catalogue" || activeTab === "hero-tier-list-catalogue" || activeTab === "hero-banners-catalogue" : id === "resources-catalogue" ? activeTab === "resources-catalogue" || activeTab === "gems-catalogue" : id === "skills-talents-catalogue" ? activeTab === "skills-talents-catalogue" || activeTab === "skills-catalogue" || activeTab === "talents-catalogue" : activeTab === id} onClick={() => setActiveTab(id)} />)}
             </div>
         </div>
