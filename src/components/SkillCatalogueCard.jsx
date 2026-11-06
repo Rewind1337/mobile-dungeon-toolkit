@@ -5,6 +5,7 @@ import "../css/infos.scss"
 import "../css/infos_heroes.scss"
 
 export default function SkillCatalogueCard({ hero, skill, skillIndex, showHeroName = true, className = "" }) {
+    const t = useTranslate()
     const skillType = ["Primary", "Secondary", "Ultimate"][skillIndex] ?? `Skill ${skillIndex + 1}`
     return <CatalogueEntryCard className={`skill-catalogue-entry ${className}`.trim()}>
         <header className="skill-catalogue-heading">
