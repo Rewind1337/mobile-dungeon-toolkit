@@ -108,6 +108,7 @@ const lang_enUS = {
             damagedItem: "Damaged item",
             damagedItemLocked: "Damaged item — perk changes are locked",
             lastLive: "Last live: {{date}}",
+            chance: "{{percent}}% chance",
             conditional: "Conditional",
             legendaryHeroes: "Legendary Heroes",
             epicHeroes: "Epic Heroes",
