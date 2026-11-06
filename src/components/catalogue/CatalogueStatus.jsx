@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react"
+import { useTranslate } from "../../hooks/useTranslate.jsx"
 import { matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
 import { STATUS_EFFECT_DEFINITIONS } from "../../database/enums.jsx"
 import CatalogueFilterActions from "../CatalogueFilterActions.jsx"
@@ -56,6 +57,7 @@ function matchesStatusSearch(status, rawQuery) {
 
 
 function CatalogueStatus() {
+    const t = useTranslate()
     const [search, setSearch, commitSearch] = useUrlSearch()
     const [categoryFilter, setCategoryFilter] = useState("all")
     const [filtersVisible, setFiltersVisible] = useState(true)
@@ -81,12 +83,12 @@ function CatalogueStatus() {
         <section className="status-catalogue">
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
-                    <div className="catalogue-title header-big">Status Effect Catalogue</div>
+                    <div className="catalogue-title header-big">{t("app.pages.catalogues.statusTitle")}</div>
                     <p className="catalogue-description text">
-                        A searchable reference for the status effects currently defined in the project, including their recorded mechanics.
+                        {t("app.pages.catalogues.statusDescription")}
                     </p>
                     <p className="catalogue-progress-note catalogue-progress-note text">
-                        Some status-effect values and mechanics are not yet interpreted or verified correctly. Treat these details as provisional; the underlying values have not been changed.
+                        {t("app.pages.catalogues.statusProgress")}
                     </p>
                 </div>
             </header>
@@ -94,16 +96,16 @@ function CatalogueStatus() {
             {filtersVisible ? (
                 <div className="status-catalogue-filters card">
                     <label className="catalogue-search">
-                        <span className="catalogue-control-label text">Search ({filteredStatuses.length} of {statuses.length})</span>
-                        <input className="selectable catalogue-input" aria-label="Search status effects" placeholder="Name, effect, stat, mechanic…" value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
+                        <span className="catalogue-control-label text">{t("app.pages.catalogues.searchCount", { resultCount: filteredStatuses.length, totalCount: statuses.length })}</span>
+                        <input className="selectable catalogue-input" aria-label={t("app.pages.catalogues.searchStatus")} placeholder={t("app.pages.catalogues.statusSearchPlaceholder")} value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
                     </label>
                     <label className="catalogue-filter">
-                        <span className="catalogue-control-label text">Category</span>
-                        <select aria-label="Filter by status category" value={categoryFilter} onChange={event => setCategoryFilter(event.target.value)}>
-                            <option value="all">All categories</option>
-                            <option value="buff">Buffs</option>
-                            <option value="debuff">Debuffs</option>
-                            <option value="special">Special Effects</option>
+                        <span className="catalogue-control-label text">{t("app.pages.catalogues.category")}</span>
+                        <select aria-label={t("app.pages.catalogues.filterByStatusCategory")} value={categoryFilter} onChange={event => setCategoryFilter(event.target.value)}>
+                            <option value="all">{t("app.pages.catalogues.allCategories")}</option>
+                            <option value="buff">{t("app.shared.buffs")}</option>
+                            <option value="debuff">{t("app.shared.debuffs")}</option>
+                            <option value="special">{t("app.pages.catalogues.specialEffects")}</option>
                         </select>
                     </label>
                     <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={clearFilters} />
@@ -111,7 +113,7 @@ function CatalogueStatus() {
             ) : <CatalogueFilterActions filtersVisible={false} onShow={() => setFiltersVisible(true)} />}
 
             {filteredStatuses.length === 0
-                ? <p className="catalogue-empty card">No status effects match these filters.</p>
+                ? <p className="catalogue-empty card">{t("app.pages.catalogues.noStatusesMatch")}</p>
                 : <div className="status-catalogue-grid">
                     {filteredStatuses.map(status => <StatusCatalogueCard key={status.id} status={status} />)}
                 </div>
