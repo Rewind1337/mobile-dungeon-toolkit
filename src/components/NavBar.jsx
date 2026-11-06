@@ -7,7 +7,6 @@ function NavBar({ switchTabTo }) {
     const heroes = useTranslation('app.navigation.heroes')
     const items = useTranslation('app.navigation.items')
     const teams = useTranslation('app.navigation.teams')
-    const homeTooltip = useTranslation("app.navigation.homeTooltip")
     const games = useTranslation('app.navigation.games')
     const simulators = useTranslation('app.navigation.simulators')
     const wiki = useTranslation('app.navigation.wiki')
@@ -20,7 +19,7 @@ function NavBar({ switchTabTo }) {
                 <Button onMouseDown={() => { switchTabTo("teams") }} text={teams} color={2} />
             </div>
             <div className='nav-home flex-row'>
-                <Button className="nav-home-button" onMouseDown={() => { switchTabTo("splash") }} text={Logo} imgAsText color={6} title={homeTooltip} />
+                <Button className="nav-home-button" onMouseDown={() => { switchTabTo("splash") }} text={Logo} imgAsText color={6} />
             </div>
             <div className='nav-right flex-row'>
                 <Button disabled text={games} color={3} />
