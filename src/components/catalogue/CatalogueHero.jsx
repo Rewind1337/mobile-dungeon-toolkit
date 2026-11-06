@@ -54,7 +54,7 @@ function HeroCatalogueCard({ hero, expandedSections = {}, onSectionToggle }) {
                             {humanize(role)}
                         </span>
                     </div>
-                    {hero.variant && <p className="hero-catalogue-variant text">Variant: {hero.variant}</p>}
+                    {hero.variant && <p className="hero-catalogue-variant text">{t("app.pages.catalogues.variant", { name: hero.variant })}</p>}
                 </div>
             </header>
 
@@ -174,7 +174,7 @@ function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null
         <section className="hero-catalogue">
             <CatalogueViewSwitch ariaLabel="Hero catalogue sections" view={initialView} onViewChange={onViewChange} options={[
                 { label: t("app.pages.catalogues.heroTitle"), compactLabel: t("app.navigation.heroes"), value: "heroes" },
-                { label: "Tier List", value: "tier-list" },
+                { label: t("app.pages.catalogues.tierList"), value: "tier-list" },
                 { label: t("app.pages.catalogues.bannerTitle"), compactLabel: t("app.pages.catalogues.banners"), value: "banners" },
             ]} />
             <header className="catalogue-header">
