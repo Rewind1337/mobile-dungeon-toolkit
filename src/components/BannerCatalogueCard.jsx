@@ -98,16 +98,16 @@ export default function BannerCatalogueCard({ result, heroesById }) {
             <header className="banner-catalogue-card-header">
                 <h2 className="banner-catalogue-name header-big">{banner.name}</h2>
                 <div className="banner-catalogue-meta">
-                    <span className="catalogue-chip text">{banner.heroIds.length} listed heroes</span>
-                    {banner.standardBanner && <span className="catalogue-chip text">Standard banner</span>}
-                    {featuredHero && <span className="catalogue-chip text">Featured: {featuredHero.name}</span>}
+                    <span className="catalogue-chip text">{t("app.pages.catalogues.listedHeroes", { count: banner.heroIds.length })}</span>
+                    {banner.standardBanner && <span className="catalogue-chip text">{t("app.pages.catalogues.standardBanner")}</span>}
+                    {featuredHero && <span className="catalogue-chip text">{t("app.pages.catalogues.featuredHero", { name: featuredHero.name })}</span>}
                     {!isEverydayBanner &&  <span
                         className="catalogue-chip banner-catalogue-live-date text"
-                        title={liveDateInfo.estimated ? "Estimated from the previous and next banner dates" : "Recorded last-live date"}
+                        title={liveDateInfo.estimated ? t("app.pages.catalogues.estimatedBannerDate") : t("app.pages.catalogues.recordedLastLiveDate")}
                     >
                         Last live: {liveDateText}
                     </span>}
-                    {isEverydayBanner && <span className="catalogue-chip banner-catalogue-chip-permanent text">Always available</span>}
+                    {isEverydayBanner && <span className="catalogue-chip banner-catalogue-chip-permanent text">{t("app.pages.catalogues.alwaysAvailable")}</span>}
                 </div>
             </header>
 
@@ -126,7 +126,7 @@ export default function BannerCatalogueCard({ result, heroesById }) {
 
             {conditionalHeroes.length > 0 && (
                 <section className="banner-catalogue-conditional">
-                    <h3 className="banner-catalogue-group-title text">{banner.conditionalHeroCondition ?? "Conditional Heroes"} ({conditionalHeroes.length})</h3>
+                    <h3 className="banner-catalogue-group-title text">{banner.conditionalHeroCondition ?? t("app.pages.catalogues.conditionalHeroes")} ({conditionalHeroes.length})</h3>
                     <div className="banner-catalogue-hero-grid">
                         {conditionalHeroes.map((hero, index) => (
                             <div className="banner-catalogue-hero" key={`${hero.id}-conditional-${index}`} title={hero.name}>
@@ -141,7 +141,7 @@ export default function BannerCatalogueCard({ result, heroesById }) {
             )}
 
             {missingHeroCount > 0 && (
-                <p className="banner-catalogue-missing text">
+                <p className="banner-catalogue-missing text">{t("app.pages.catalogues.bannerDataMissing")}
                     {missingHeroCount} referenced {missingHeroCount === 1 ? "hero is" : "heroes are"} not defined in the hero database.
                 </p>
             )}
