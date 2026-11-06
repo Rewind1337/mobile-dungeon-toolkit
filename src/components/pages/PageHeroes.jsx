@@ -11,6 +11,7 @@ import { decodeHeroShareInput, restoreSharedHero } from "../../utils/heroShare.j
 import { clearSearchFromUrl } from "../../js/search.jsx"
 import { ATTRIBUTE_DEFINITIONS } from "../../database/enums.jsx"
 import { createSavedItemRecord } from "../../js/ids.jsx"
+import { useTranslation } from "../../hooks/useTranslation.jsx"
 
 const isItemCompatibleWithHero = (item, hero) => {
     if (!item || !hero) return false
@@ -21,6 +22,8 @@ const isItemCompatibleWithHero = (item, hero) => {
 }
 
 function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
+    const allHeroesHeader = useTranslation("app.pages.heroes.filter.header")
+    const savedHeroesHeader = useTranslation("app.pages.heroes.filter.savedHeader")
     const [pageContent, setPageContent] = useState(0)
     const switchListPage = nextPage => {
         if (pageContent !== nextPage) clearSearchFromUrl()
@@ -316,7 +319,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                 {pageContent === 0 &&
                     <>
                         <div className='card w-50 hero-list-pane' style={{ width: (selectedHeroId === null) ? "300%" : "50%" }}>
-                            <HeroList headerText={"All Heroes"} heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} setSelectedHeroId={setSelectedHeroId} onSelectHero={clickedId => handleHeroSelection(clickedId)} />
+                            <HeroList headerText={allHeroesHeader} heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} setSelectedHeroId={setSelectedHeroId} onSelectHero={clickedId => handleHeroSelection(clickedId)} />
                         </div>
                         <div className='card w-50 hero-preview-pane' style={{ display: (selectedHeroId === null) ? "none" : "block" }}>
                             <HeroPreview isFullWidth={previewFullWidth} onToggleFullWidth={() => setPreviewFullWidth(value => !value)} onClosePreview={deselectHero} heroesRef={heroesRef.current} selectedHeroId={selectedHeroId} saveHero={saveHero} onItemClick={handleItemClick} equippedItems={equippedItems} setsRef={itemsRef.current.ITEM_SETS} />
@@ -326,7 +329,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                 {pageContent === 1 &&
                     <>
                         <div className='card w-50 hero-list-pane' style={{ width: (selectedSavedHeroId === null) ? "300%" : "50%" }}>
-                            <HeroList savedHeroes headerText={"Saved Heroes"} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} setSelectedHeroId={setSelectedSavedHeroId} onSelectHero={clickedId => handleHeroSelection(clickedId, true)} />
+                            <HeroList savedHeroes headerText={savedHeroesHeader} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} setSelectedHeroId={setSelectedSavedHeroId} onSelectHero={clickedId => handleHeroSelection(clickedId, true)} />
                         </div>
                         <div className='card w-50 hero-preview-pane' style={{ display: (selectedSavedHeroId === null) ? "none" : "block" }}>
                             <HeroPreview isFullWidth={previewFullWidth} onToggleFullWidth={() => setPreviewFullWidth(value => !value)} onClosePreview={deselectHero} heroesRef={savedHeroesRef.current} selectedHeroId={selectedSavedHeroId} saveHero={saveHero} deleteSavedHero={deleteSavedHero} onItemClick={handleItemClick} equippedItems={equippedItems} setsRef={itemsRef.current.ITEM_SETS} />
