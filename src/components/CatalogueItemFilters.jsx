@@ -178,7 +178,7 @@ function CatalogueItemFilters({
                         <select aria-label={setAttributeAriaLabel} value={setMainAttributeFilter ?? "all"} onChange={event => setAttributeFilterForSets?.(event.target.value)}>
                             <option value="all">{allAttributesLabel}</option>
                             {Object.values(PRIMARY_STAT_DEFINITIONS).map(attribute =>
-                                <option key={attribute.id} value={String(attribute.id)}>{humanize(attribute.name)}</option>
+                                <option key={attribute.id} value={String(attribute.id)}>{translateEnum(attribute.name)}</option>
                             )}
                         </select>
                     </label>
