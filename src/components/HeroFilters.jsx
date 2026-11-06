@@ -4,7 +4,8 @@ import { useTranslate } from '../hooks/useTranslate.jsx'
 import { ELEMENT_DEFINITIONS, ROLE_DEFINITIONS, ATTRIBUTE_DEFINITIONS, RARITY_DEFINITIONS} from '../database/enums.jsx'
 
 function MobileFilterSelect({ label, value, onChange, options, multiple = false }) {
-    const t = useTranslate()\n    return (
+    const t = useTranslate()
+    return (
         <label className="mobile-filter-control">
             <span className="catalogue-control-label text">{label}</span>
             <select aria-label={label} multiple={multiple}
@@ -18,7 +19,8 @@ function MobileFilterSelect({ label, value, onChange, options, multiple = false 
 }
 
 function HeroElementFilters({ toggleFilter, filters, filterSprites }) {
-    const t = useTranslate()\n    return (<div className='filter-group filters-group-elements flex-row'>
+    const t = useTranslate()
+    return (<div className='filter-group filters-group-elements flex-row'>
         <Button title={t("app.shared.fire")} className='filters-element-button' round onClick={() => toggleFilter('element', ELEMENT_DEFINITIONS.FIRE.id)} imgAsText text={filterSprites[1]} active={filters.element === ELEMENT_DEFINITIONS.FIRE.id} />
         <Button title={t("app.shared.water")} className='filters-element-button' round onClick={() => toggleFilter('element', ELEMENT_DEFINITIONS.WATER.id)} imgAsText text={filterSprites[2]} active={filters.element === ELEMENT_DEFINITIONS.WATER.id} />
         <Button title={t("app.shared.nature")} className='filters-element-button' round onClick={() => toggleFilter('element', ELEMENT_DEFINITIONS.NATURE.id)} imgAsText text={filterSprites[3]} active={filters.element === ELEMENT_DEFINITIONS.NATURE.id} />
@@ -29,7 +31,8 @@ function HeroElementFilters({ toggleFilter, filters, filterSprites }) {
 }
 
 function HeroRoleFilters({ toggleFilter, filters, filterSprites }) {
-    const t = useTranslate()\n    return (<div className='filter-group filters-group-roles flex-row'>
+    const t = useTranslate()
+    return (<div className='filter-group filters-group-roles flex-row'>
         <Button title={t("app.shared.offensive")} className='filters-role-button' round onClick={() => toggleFilter('role', ROLE_DEFINITIONS.OFFENSIVE.id)} imgAsText text={filterSprites[10]} active={filters.role === ROLE_DEFINITIONS.OFFENSIVE.id} />
         <Button title={t("app.shared.defensive")} className='filters-role-button' round onClick={() => toggleFilter('role', ROLE_DEFINITIONS.DEFENSIVE.id)} imgAsText text={filterSprites[11]} active={filters.role === ROLE_DEFINITIONS.DEFENSIVE.id} />
         <Button title={t("app.shared.control")} className='filters-role-button' round onClick={() => toggleFilter('role', ROLE_DEFINITIONS.CONTROL.id)} imgAsText text={filterSprites[12]} active={filters.role === ROLE_DEFINITIONS.CONTROL.id} />
@@ -39,7 +42,8 @@ function HeroRoleFilters({ toggleFilter, filters, filterSprites }) {
 }
 
 function HeroAttributeFilters({ toggleFilter, filters, filterSprites }) {
-    const t = useTranslate()\n    return (<div className='filter-group filters-group-attributes flex-row'>
+    const t = useTranslate()
+    return (<div className='filter-group filters-group-attributes flex-row'>
         <Button title={t("app.shared.strength")} className='filters-attribute-button' round onClick={() => toggleFilter('mainAttribute', ATTRIBUTE_DEFINITIONS.STRENGTH.id)} imgAsText text={filterSprites[20]} active={filters.mainAttribute === ATTRIBUTE_DEFINITIONS.STRENGTH.id} />
         <Button title={t("app.shared.dexterity")} className='filters-attribute-button' round onClick={() => toggleFilter('mainAttribute', ATTRIBUTE_DEFINITIONS.DEXTERITY.id)} imgAsText text={filterSprites[21]} active={filters.mainAttribute === ATTRIBUTE_DEFINITIONS.DEXTERITY.id} />
         <Button title={t("app.shared.intelligence")} className='filters-attribute-button' round onClick={() => toggleFilter('mainAttribute', ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id)} imgAsText text={filterSprites[22]} active={filters.mainAttribute === ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id} />
@@ -48,7 +52,8 @@ function HeroAttributeFilters({ toggleFilter, filters, filterSprites }) {
 }
 
 function HeroRarityFilters({ toggleFilter, filters, filterSprites }) {
-    const t = useTranslate()\n    return (<div className='filter-group filters-group-rarities flex-row'>
+    const t = useTranslate()
+    return (<div className='filter-group filters-group-rarities flex-row'>
         <Button title={t("app.shared.uncommon")} className='filters-rarity-button' round color={"uncommon"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.UNCOMMON.id)} text={filterSprites[31]} active={filters.rarity === RARITY_DEFINITIONS.UNCOMMON.id} />
         <Button title={t("app.shared.rare")} className='filters-rarity-button' round color={"rare"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.RARE.id)} text={filterSprites[32]} active={filters.rarity === RARITY_DEFINITIONS.RARE.id} />
         <Button title={t("app.shared.epic")} className='filters-rarity-button' round color={"epic"} onClick={() => toggleFilter('rarity', RARITY_DEFINITIONS.EPIC.id)} text={filterSprites[33]} active={filters.rarity === RARITY_DEFINITIONS.EPIC.id} />
@@ -60,7 +65,8 @@ function HeroRarityFilters({ toggleFilter, filters, filterSprites }) {
 }
 
 function HeroFilters({ setFiltersAdvanced, advanced, toggleFilter, setSearch, onSearchBlur, clearFilters, filters, filterSprites, sortOrder, onSortChange, searchPlaceholder, searchAriaLabel }) {
-    const t = useTranslate()\n    return (
+    const t = useTranslate()
+    return (
         <div className="filters card">
             <div className="filters-primary-row">
                 <Button title={t("app.shared.showOrHideAdvancedFilters")} className="filters-advanced-button" round onClick={() => setFiltersAdvanced(value => !value)} imgAsText text={(advanced ? filterSprites[54] : filterSprites[53])} active={advanced} />
