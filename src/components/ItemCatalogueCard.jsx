@@ -36,6 +36,7 @@ function renderUniqueEffectDescription(item) {
 }
 
 export default function ItemCatalogueCard({ item, set }) {
+    const t = useTranslate()
     const statuses = getEffectStatuses(item)
     const effectDescription = item.unique?.description
     const mainAttribute = Object.values(PRIMARY_STAT_DEFINITIONS).find(attribute => attribute.id === Number(item.mainAttribute))
@@ -74,7 +75,7 @@ export default function ItemCatalogueCard({ item, set }) {
                                     {attributeSprites[ATTRIBUTE_ICON_KEYS[getAttributeRequirementLabel(item.attributeRequirement).toLowerCase()]] && <img className="catalogue-chip-icon" src={attributeSprites[ATTRIBUTE_ICON_KEYS[getAttributeRequirementLabel(item.attributeRequirement).toLowerCase()]]} alt="" />}
                                     {getAttributeRequirementLabel(item.attributeRequirement)}
                                 </span>}
-                            {set && <p className="catalogue-item-set catalogue-chip text">Set: {set.name}</p>}
+                            {set && <p className="catalogue-item-set catalogue-chip text">{t("app.shared.setName", { name: set.name })}</p>}
                         </div>
                     </div>
                     <div className="catalogue-item-source-row text">
@@ -87,13 +88,13 @@ export default function ItemCatalogueCard({ item, set }) {
                 <section className="catalogue-effect card">
                     <div className="catalogue-section-label text flex-row">
                         {statuses.length > 0 && (
-                            <div className="catalogue-statuses" aria-label="Statuses applied by weapon effect">
+                            <div className="catalogue-statuses" aria-label={t("app.shared.statusesAppliedByWeaponEffect")}>
                                 {statuses.map(status => (
                                     <img className="catalogue-status-icon" key={status.key} src={status.sprite} alt={status.name} title={status.name} draggable={false} />
                                 ))}
                             </div>
                         )}
-                        <div className="text">Unique Effect</div>
+                        <div className="text">{t("app.shared.uniqueEffect")}</div>
                     </div>
                     <p className="catalogue-effect-description text">{renderUniqueEffectDescription(item)}</p>
                 </section>
