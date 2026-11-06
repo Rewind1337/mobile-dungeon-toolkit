@@ -207,7 +207,6 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
                             <div className="catalogue-overview-slot card"><span className="text">{t("app.pages.wiki.dungeonDrops")}</span><span className="header">{dungeonDropCount}</span></div>
                             <div className="catalogue-overview-slot card"><span className="text">{t("app.pages.wiki.guildHuntDrops")}</span><span className="header">{guildHuntCount}</span></div>
                         </div>
-                        <p className="catalogue-muted text">{t("app.pages.wiki.dungeonDropNote")}</p>
                     </section>
                 </div>
 
