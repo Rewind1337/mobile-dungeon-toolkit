@@ -1,3 +1,4 @@
+import { useTranslate } from "../hooks/useTranslate.jsx"
 import AeternaSprite from "../sprites/heroes/aeterna.webp"
 import AliceSprite from "../sprites/heroes/alice.webp"
 import AnubisSprite from "../sprites/heroes/anubis.webp"
@@ -48,13 +49,12 @@ function GuideLead({ eyebrow, title, children }) {
 }
 
 export function HeroManagementGuide() {
+    const t = useTranslate()
     return (
         <div className="page-guide">
-            <GuideLead eyebrow="Hero management guide" title="Find the right hero, then build them up">
-                The Heroes page is your working roster. Browse the full collection, keep personal builds in Saved Heroes, and use the preview to tune a hero before adding them to a team.
-            </GuideLead>
+            <GuideLead eyebrow={t("app.pages.guides.heroEyebrow")} title={t("app.pages.guides.heroTitle")}>{t("app.pages.guides.heroLeadCopy")}</GuideLead>
 
-            <span className="guide-example-kicker text">Example heroes</span>
+            <span className="guide-example-kicker text">{t("app.pages.guides.exampleHeroes")}</span>
             <div className="guide-equipment-strip">
                 <GuideAsset src={AeternaSprite} label="Aeterna" />
                 <GuideAsset src={AliceSprite} label="Alice" />
@@ -63,35 +63,26 @@ export function HeroManagementGuide() {
                 <GuideAsset src={ApolloSprite} label="Apollo" />
             </div>
 
-            <p className="guide-copy text">Selecting a hero opens their preview with their attributes, equipment slots, main stats, calculated stats, skills, talents, and other stat details.</p>
+            <p className="guide-copy text">{t("app.pages.guides.heroPreview")}</p>
 
             <div className="guide-steps">
-                <GuideStep number="1" title="Search and combine filters">
-                    Search by hero name or details, then combine Rarity, Main Attribute, Element, Role, and Starred. Use Sort Order to switch between Alphabetic, Rarity, and Level.
-                </GuideStep>
-                <GuideStep number="2" title="Inspect the preview">
-                    Select a hero to open the preview. Expand it for more room, review the stat breakdown, and click an equipment slot to choose an item for that hero.
-                </GuideStep>
-                <GuideStep number="3" title="Save your hero">
-                    Use Save Hero in the preview to keep the configured version for later. Saved heroes can be selected when building teams. Use Import Hero to bring in a shared hero via link or code.
-                </GuideStep>
-                <GuideStep number="4" title="Modify your builds">
-                    Continue modifying and tweaking your heroes in the 'Saved Heroes' Tab. Export your builds and share them with your mates, while comparing them against eachother.
-                </GuideStep>
+                <GuideStep number="1" title={t("app.pages.guides.searchCombineFilters")}>{t("app.pages.guides.heroStep1")}</GuideStep>
+                <GuideStep number="2" title={t("app.pages.guides.inspectPreview")}>{t("app.pages.guides.heroStep2")}</GuideStep>
+                <GuideStep number="3" title={t("app.pages.guides.saveHero")}>{t("app.pages.guides.heroStep3")}</GuideStep>
+                <GuideStep number="4" title={t("app.pages.guides.modifyBuilds")}>{t("app.pages.guides.heroStep4")}</GuideStep>
             </div>
-            <p className="guide-tip card text"><strong>Tip</strong> Each saved hero is a separate build, so you can keep multiple configured versions of the same hero, if you need to.</p>
+            <p className="guide-tip card text"><strong>{t("app.pages.guides.tip")}</strong> {t("app.pages.guides.savedBuildTip")}</p>
         </div>
     )
 }
 
 export function ItemManagementGuide() {
+    const t = useTranslate()
     return (
         <div className="page-guide">
-            <GuideLead eyebrow="Item management guide" title="Compare equipment and create your builds">
-                Use the item list to find equipment, then open its preview to inspect and adjust its rarity, perks, set information, and other available properties.
-            </GuideLead>
+            <GuideLead eyebrow={t("app.pages.guides.itemEyebrow")} title={t("app.pages.guides.itemTitle")}>{t("app.pages.guides.itemLeadCopy")}</GuideLead>
 
-            <span className="guide-example-kicker text">Example equipment</span>
+            <span className="guide-example-kicker text">{t("app.pages.guides.exampleEquipment")}</span>
 
             <div className="guide-equipment-showcase">
                 <GuideAsset src={LightSwordSprite} label="Light Sword" />
@@ -102,20 +93,12 @@ export function ItemManagementGuide() {
             </div>
 
             <div className="guide-steps">
-                <GuideStep number="1" title="Narrow down the list">
-                    Search item names and effect text. Combine Slot, Attribute Requirement, and Item type filters; use Sort Order to organize the results. Saved Items also includes the Rarity filter.
-                </GuideStep>
-                <GuideStep number="2" title="Inspect an item">
-                    Select an item to open its preview. Depending on the item, you can review weapon effects, fixed and rolled perks, set bonuses, masterwork levels, and mutations.
-                </GuideStep>
-                <GuideStep number="3" title="Save your item">
-                    Save a configured item to Saved Items for use in teams and hero previews. Saved items can be selected when equipping heroes. Use Import Item to bring in a shared item via link or code.
-                </GuideStep>
-                <GuideStep number="4" title="Modify your builds">
-                    Continue modifying and tweaking your items in the 'Saved Items' Tab. Export your builds and share them with your mates, while comparing them against eachother.
-                </GuideStep>
+                <GuideStep number="1" title={t("app.pages.guides.narrowList")}>{t("app.pages.guides.itemStep1")}</GuideStep>
+                <GuideStep number="2" title={t("app.pages.guides.inspectItem")}>{t("app.pages.guides.itemStep2")}</GuideStep>
+                <GuideStep number="3" title={t("app.pages.guides.saveItem")}>{t("app.pages.guides.itemStep3")}</GuideStep>
+                <GuideStep number="4" title={t("app.pages.guides.modifyBuilds")}>{t("app.pages.guides.itemStep4")}</GuideStep>
             </div>
-            <p className="guide-tip card text"><strong>Tip</strong> Each saved hero is a separate build, so you can keep multiple configured versions of the same hero, if you need to. You can even equip the same item on multiple heroes at once!</p>
+            <p className="guide-tip card text"><strong>{t("app.pages.guides.tip")}</strong> {t("app.pages.guides.savedBuildTip")}{t("app.pages.guides.itemTipExtra")}</p>
         </div>
     )
 }
@@ -131,17 +114,15 @@ export function TeamManagementGuide() {
 
     return (
         <div className="page-guide">
-            <GuideLead eyebrow="Team management" title="Bring five saved heroes together">
-                Teams let you assemble a lineup from your Saved Heroes and see how their attributes, equipment, and effects work together.
-            </GuideLead>
+            <GuideLead eyebrow={t("app.pages.guides.teamsEyebrow")} title={t("app.pages.guides.teamsTitle")}>{t("app.pages.guides.teamLeadCopy")}</GuideLead>
 
 
-            <span className="guide-example-kicker text">Example lineup</span>
+            <span className="guide-example-kicker text">{t("app.pages.guides.exampleLineup")}</span>
 
             <div className="guide-team-roster card card-dark card-static">
                 {members.map(([src, name], index) => (
                     <div className="guide-team-member card" key={name}>
-                        <span className="guide-team-slot text">Slot {index + 1}</span>
+                        <span className="guide-team-slot text">{t("app.shared.slot", { number: index + 1 })}</span>
                         <img src={src} alt={name} loading="lazy" decoding="async" draggable={false} />
                         <span className="text">{name}</span>
                     </div>
@@ -149,35 +130,24 @@ export function TeamManagementGuide() {
             </div>
 
             <div className="guide-steps">
-                <GuideStep number="1" title="Create and name teams">
-                    Start with the default team or use New Team to add another. Give each team a name that makes its purpose easy to recognize.
-                </GuideStep>
-                <GuideStep number="2" title="Fill the five hero slots">
-                    Select an empty slot and choose one of your saved heroes. Each slot can hold one saved hero; open the hero preview to adjust that build before assigning it.
-                </GuideStep>
-                <GuideStep number="3" title="Review the team summary">
-                    Expand a team to inspect its combined attributes, detected buffs and debuffs, hero stats, and equipped items. Collapse it when you want to focus on another team.
-                </GuideStep>
-                <GuideStep number="4" title="Keep your roster organized">
-                    Duplicate a team to use it as a starting point, or clear and delete teams you no longer need. Team edits are saved automatically.
-                </GuideStep>
-                <GuideStep number="5" title="Export full teams">
-                    Export the full team with or without the equipped items, fully supported! 
-                </GuideStep>
+                <GuideStep number="1" title={t("app.pages.guides.createNameTeams")}>{t("app.pages.guides.teamStep1")}</GuideStep>
+                <GuideStep number="2" title={t("app.pages.guides.fillHeroSlots")}>{t("app.pages.guides.teamStep2")}</GuideStep>
+                <GuideStep number="3" title={t("app.pages.guides.reviewTeamSummary")}>{t("app.pages.guides.teamStep3")}</GuideStep>
+                <GuideStep number="4" title={t("app.pages.guides.organizeRoster")}>{t("app.pages.guides.teamStep4")}</GuideStep>
+                <GuideStep number="5" title={t("app.pages.guides.exportFullTeams")}>{t("app.pages.guides.teamStep5")}</GuideStep>
             </div>
-            <p className="guide-tip"><strong>Tip</strong> Set up and save the individual item and hero builds first, to save you some trouble later! When importing a full team, each hero and each item will be saved seperately alongside the team.</p>
+            <p className="guide-tip"><strong>{t("app.pages.guides.tip")}</strong> {t("app.pages.guides.teamTip")}</p>
         </div>
     )
 }
 
 export function SimulatorsGuide() {
+    const t = useTranslate()
     return (
         <div className="page-guide">
-            <GuideLead eyebrow="Simulators" title="Test banner pulls without spending resources">
-                Magic Toilet is currently the only available simulator. It recreates the banner rarity rolls and lets you experiment with pity and banner boosters.
-            </GuideLead>
+            <GuideLead eyebrow={t("app.pages.guides.simulatorEyebrow")} title={t("app.pages.guides.simulatorTitle")}>{t("app.pages.guides.simulatorLeadCopy")}</GuideLead>
 
-            <span className="guide-example-kicker text">Track your simulated usage!</span>
+            <span className="guide-example-kicker text">{t("app.pages.guides.trackUsage")}</span>
 
             <div className="guide-equipment-showcase">
                 <GuideAsset src={SoulSprite} label="Souls" />
@@ -187,32 +157,23 @@ export function SimulatorsGuide() {
             </div>
 
             <div className="guide-steps">
-                <GuideStep number="1" title="Choose a banner and starting pity">
-                    Select the banner you want to simulate. Current Epic Pity and Current Legendary Pity can be adjusted directly and then decrement as pulls are simulated.
-                </GuideStep>
-                <GuideStep number="2" title="Configure optional boosters">
-                    Enable a Legendary or Epic Banner Booster and choose its target hero. With 'Don't reset Boosters' off, a booster is consumed by the next pull of its rarity. Turn it on to keep the selected target active across pulls.
-                </GuideStep>
-                <GuideStep number="3" title="Choose how to flush">
-                    Flush once, use the selected batch size, or continue until a Legendary appears. With persistent boosters enabled, 'Flush until Boosted' continues until one of your selected boosted heroes is pulled.
-                </GuideStep>
-                <GuideStep number="4" title="Review the results">
-                    The stats row tracks pulls, souls, booster usage, rarity counts, expected Legendaries, and luck. Separate result rows show the Legendary and Epic heroes pulled.
-                </GuideStep>
+                <GuideStep number="1" title={t("app.pages.guides.chooseBannerPity")}>{t("app.pages.guides.simulatorStep1")}</GuideStep>
+                <GuideStep number="2" title={t("app.pages.guides.configureBoosters")}>{t("app.pages.guides.simulatorStep2")}</GuideStep>
+                <GuideStep number="3" title={t("app.pages.guides.chooseFlush")}>{t("app.pages.guides.simulatorStep3")}</GuideStep>
+                <GuideStep number="4" title={t("app.pages.guides.reviewResults")}>{t("app.pages.guides.simulatorStep4")}</GuideStep>
             </div>
-            <p className="guide-tip"><strong>Tip</strong> Changing the selected banner resets the current results and pity counters so each simulation starts with a clean banner state.</p>
-            <p className="guide-tip"><strong>Warning</strong> At the moment, the calculations do not respect the 'Featured Hero' getting removed from a Banner after pulling it twice.</p>
+            <p className="guide-tip"><strong>{t("app.pages.guides.tip")}</strong> {t("app.pages.guides.simulatorTip")}</p>
+            <p className="guide-tip"><strong>{t("app.pages.guides.warning")}</strong> {t("app.pages.guides.simulatorWarning")}</p>
         </div>
     )
 }
 
 export function GamesGuide() {
+    const t = useTranslate()
     return (
         <div className="page-guide">
-            <GuideLead eyebrow="Fun & Games" title="A place for future extras">
-                This section is reserved for small game-related tools and experiments. It is not active yet, so there are no playable activities to launch here.
-            </GuideLead>
-            <p className="guide-tip"><strong>Coming later</strong> The navigation entry is in place, and the page can be expanded when the first activity is ready.</p>
+            <GuideLead eyebrow={t("app.pages.guides.gamesEyebrow")} title={t("app.pages.guides.gamesTitle")}>{t("app.pages.guides.gamesLeadCopy")}</GuideLead>
+            <p className="guide-tip"><strong>{t("app.pages.guides.comingLater")}</strong> {t("app.pages.guides.gamesComingLater")}</p>
         </div>
     )
 }
