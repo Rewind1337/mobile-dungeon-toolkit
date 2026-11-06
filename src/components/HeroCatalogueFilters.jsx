@@ -6,6 +6,7 @@ import {
     ROLE_DEFINITIONS
 } from "../database/enums.jsx"
 import { humanize } from "../js/utils.js"
+import { useTranslation } from "../hooks/useTranslation.jsx"
 
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
     rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
@@ -36,6 +37,26 @@ function HeroCatalogueFilters({
     onSortChange,
     topOffset
 }) {
+    const searchLabel = useTranslation("app.pages.heroes.filters.search", undefined, { resultCount, totalCount })
+    const searchAriaLabel = useTranslation("app.pages.heroes.filters.searchAriaLabel")
+    const searchPlaceholder = useTranslation("app.pages.heroes.filters.searchPlaceholder")
+    const sortOrderLabel = useTranslation("app.pages.heroes.filters.sortOrder")
+    const sortOrderAriaLabel = useTranslation("app.pages.heroes.filters.sortOrderAriaLabel")
+    const alphabeticLabel = useTranslation("app.pages.heroes.filters.alphabetic")
+    const rarityLabel = useTranslation("app.pages.heroes.filters.rarity")
+    const levelLabel = useTranslation("app.pages.heroes.filters.level")
+    const allRaritiesLabel = useTranslation("app.pages.heroes.filters.allRarities")
+    const mainAttributeLabel = useTranslation("app.pages.heroes.filters.mainAttribute")
+    const mainAttributeAriaLabel = useTranslation("app.pages.heroes.filters.mainAttributeAriaLabel")
+    const allAttributesLabel = useTranslation("app.pages.heroes.filters.allAttributes")
+    const elementLabel = useTranslation("app.pages.heroes.filters.element")
+    const elementAriaLabel = useTranslation("app.pages.heroes.filters.elementAriaLabel")
+    const allElementsLabel = useTranslation("app.pages.heroes.filters.allElements")
+    const roleLabel = useTranslation("app.pages.heroes.filters.role")
+    const roleAriaLabel = useTranslation("app.pages.heroes.filters.roleAriaLabel")
+    const allRolesLabel = useTranslation("app.pages.heroes.filters.allRoles")
+    const starredLabel = useTranslation("app.pages.heroes.filters.starred")
+
     if (!filtersVisible) {
         return (
             <>
@@ -49,11 +70,11 @@ function HeroCatalogueFilters({
         <div className={`hero-catalogue-filters card${onSortChange ? " has-sort-order" : ""}`} style={topOffset ? { top: topOffset } : undefined}>
             {headerText && <div className="header-big catalogue-filter-heading">{headerText}</div>}
             <label className="catalogue-search">
-                <span className="catalogue-control-label text">Search ({resultCount} of {totalCount})</span>
+                <span className="catalogue-control-label text">{searchLabel}</span>
                 <input
                     className="selectable catalogue-input"
-                    aria-label="Search hero catalogue"
-                    placeholder="Name, skill, talent, effect, ID…"
+                    aria-label={searchAriaLabel}
+                    placeholder={searchPlaceholder}
                     value={search}
                     onChange={event => setSearch(event.target.value)}
                     onBlur={onSearchBlur}
@@ -61,46 +82,46 @@ function HeroCatalogueFilters({
             </label>
             {onSortChange && (
                 <label className="catalogue-filter catalogue-filter-sort">
-                    <span className="catalogue-control-label text">Sort Order</span>
-                    <select aria-label="Sort order" value={sortOrder} onChange={event => onSortChange(event.target.value)}>
-                        <option value="alphabetic">Alphabetic</option>
-                        <option value="rarity">Rarity</option>
-                        <option value="level">Level</option>
+                    <span className="catalogue-control-label text">{sortOrderLabel}</span>
+                    <select aria-label={sortOrderAriaLabel} value={sortOrder} onChange={event => onSortChange(event.target.value)}>
+                        <option value="alphabetic">{alphabeticLabel}</option>
+                        <option value="rarity">{rarityLabel}</option>
+                        <option value="level">{levelLabel}</option>
                     </select>
                 </label>
             )}
             <label className="catalogue-filter">
-                <span className="catalogue-control-label text">Rarity</span>
+                <span className="catalogue-control-label text">{rarityLabel}</span>
                 <select aria-label="Filter by rarity" value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
-                    <option value="all">All rarities</option>
+                    <option value="all">{allRaritiesLabel}</option>
                     {HERO_CATALOGUE_RARITIES.map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
                 </select>
             </label>
             <label className="catalogue-filter">
-                <span className="catalogue-control-label text">Main attribute</span>
-                <select aria-label="Filter by main attribute" value={attributeFilter} onChange={event => setAttributeFilter(event.target.value)}>
-                    <option value="all">All attributes</option>
+                <span className="catalogue-control-label text">{mainAttributeLabel}</span>
+                <select aria-label={mainAttributeAriaLabel} value={attributeFilter} onChange={event => setAttributeFilter(event.target.value)}>
+                    <option value="all">{allAttributesLabel}</option>
                     {Object.values(ATTRIBUTE_DEFINITIONS).filter(value => value.id !== ATTRIBUTE_DEFINITIONS.NONE.id).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
                 </select>
             </label>
             <label className="catalogue-filter">
-                <span className="catalogue-control-label text">Element</span>
-                <select aria-label="Filter by element" value={elementFilter} onChange={event => setElementFilter(event.target.value)}>
-                    <option value="all">All elements</option>
+                <span className="catalogue-control-label text">{elementLabel}</span>
+                <select aria-label={elementAriaLabel} value={elementFilter} onChange={event => setElementFilter(event.target.value)}>
+                    <option value="all">{allElementsLabel}</option>
                     {Object.values(ELEMENT_DEFINITIONS).filter(value => value.id !== ELEMENT_DEFINITIONS.VOID.id).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
                 </select>
             </label>
             <label className="catalogue-filter">
-                <span className="catalogue-control-label text">Role</span>
-                <select aria-label="Filter by role" value={roleFilter} onChange={event => setRoleFilter(event.target.value)}>
-                    <option value="all">All roles</option>
+                <span className="catalogue-control-label text">{roleLabel}</span>
+                <select aria-label={roleAriaLabel} value={roleFilter} onChange={event => setRoleFilter(event.target.value)}>
+                    <option value="all">{allRolesLabel}</option>
                     {Object.values(ROLE_DEFINITIONS).map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
                 </select>
             </label>
             {setStarredOnly && (
                 <label className="catalogue-filter-checkbox">
                     <input type="checkbox" checked={starredOnly} onChange={event => setStarredOnly(event.target.checked)} />
-                    <span className="text">Starred</span>
+                    <span className="text">{starredLabel}</span>
                 </label>
             )}
             <CatalogueFilterActions filtersVisible onHide={onHideFilters} onClear={clearFilters} />
