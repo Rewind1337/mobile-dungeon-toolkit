@@ -15,8 +15,8 @@ import { useTranslate } from "../../hooks/useTranslate.jsx"
 
 function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
     const t = useTranslate()
-    const allItemsHeader = useTranslation("app.pages.items.filter.header")
-    const savedItemsHeader = useTranslation("app.pages.items.filter.savedHeader")
+    const allItemsHeader = useTranslation("app.shared.allItems")
+    const savedItemsHeader = useTranslation("app.shared.savedItems")
     const [pageContent, setPageContent] = useState(0)
     const switchListPage = nextPage => {
         if (pageContent !== nextPage) clearSearchFromUrl()
