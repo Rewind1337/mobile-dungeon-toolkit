@@ -67,7 +67,6 @@ const lang_deDE = {
                 "weapon:pumpkin_scythe": {
                     name: "Kürbissense",
                     effects: {
-                        // Named placeholders are preferred; legacy database $e markers map to {{value}}.
                         unique: "Mit einer Chance von {{chance}} erhältst du bei einem besiegten Gegner einen zusätzlichen Zug.",
                     },
                 },
