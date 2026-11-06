@@ -45,8 +45,8 @@ function CatalogueItemFilters({
     onSortChange
 }) {
     const searchLabel = useTranslation("app.pages.catalogues.searchCount", undefined, { resultCount, totalCount })
-    const searchAriaLabel = useTranslation("app.pages.catalogues.searchCountAriaLabel")
-    const searchPlaceholder = useTranslation("app.pages.catalogues.searchCountPlaceholder")
+    const searchAriaLabel = useTranslation("app.pages.items.filters.searchAriaLabel")
+    const searchPlaceholder = useTranslation("app.pages.items.filters.searchPlaceholder")
     const sortOrderLabel = useTranslation("app.shared.sortOrder")
     const sortOrderAriaLabel = useTranslation("app.shared.sortOrderAriaLabel")
     const alphabeticLabel = useTranslation("app.shared.alphabetic")
