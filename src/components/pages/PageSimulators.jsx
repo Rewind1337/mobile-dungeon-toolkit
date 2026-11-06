@@ -41,7 +41,7 @@ function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedH
                     ))}
                 </div>
                 <div className="options flex-row card">
-                    <HelpButton title={t("app.pages.simulators.title")}>
+                    <HelpButton title={t("app.navigation.simulators")}>
                         <SimulatorsGuide />
                     </HelpButton>
                 </div>
