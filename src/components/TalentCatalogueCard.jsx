@@ -1,5 +1,6 @@
 import CatalogueEntryCard from "./CatalogueEntryCard.jsx"
 import { getTalentPosition } from "../js/skillsTalentsUtils.jsx"
+import { useTranslate } from "../hooks/useTranslate.jsx"
 import TalentEffect from "./TalentEffect.jsx"
 import "../css/infos.scss"
 import "../css/infos_heroes.scss"
@@ -23,10 +24,10 @@ export default function TalentCatalogueCard({
         disabled={interactive && isLocked}
     >
         <header className="catalogue-entry-heading talent-catalogue-heading">
-            <h3 className="catalogue-entry-name text-big talent-catalogue-name">{talent.name || "Unnamed talent"}</h3>
+            <h3 className="catalogue-entry-name text-big talent-catalogue-name">{talent.name || t("app.shared.unnamedTalent")}</h3>
         </header>
         {sourceListVisible && (
-            <div className="talent-source-list" aria-label="Talent positions">
+            <div className="talent-source-list" aria-label={t("app.shared.talentPositions")}>
                 {sources.map(({ hero, id }) => <div className="talent-source-entry" key={(hero?.id ?? "hero") + "-" + id}>
                     {showSourceHero && <span className="catalogue-chip text talent-source-hero">{hero?.name}</span>}
                     {showSourcePosition && <span className="catalogue-chip text talent-source-position">{getTalentPosition(id)}</span>}
