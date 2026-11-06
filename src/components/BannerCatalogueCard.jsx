@@ -37,7 +37,7 @@ function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null, fe
                             {odds !== null && (
                                 <span className={`banner-catalogue-hero-odds catalogue-chip text${isFeaturedHero ? " banner-catalogue-hero-odds--featured" : ""}`}>
                                     {isFeaturedHero && <img className="banner-catalogue-booster" src={resourceSprites.neutral_banner_booster} alt="" loading="lazy" decoding="async" />}
-                                    {(odds * 100).toFixed(3)}% chance
+                                    {t("app.shared.chance", { percent: (odds * 100).toFixed(3) })}
                                 </span>
                             )}
                         </div>
@@ -107,7 +107,7 @@ export default function BannerCatalogueCard({ result, heroesById }) {
                         className="catalogue-chip banner-catalogue-live-date text"
                         title={liveDateInfo.estimated ? t("app.pages.catalogues.estimatedBannerDate") : t("app.pages.catalogues.recordedLastLiveDate")}
                     >
-                        Last live: {liveDateText}
+                        {t("app.shared.lastLive", { date: liveDateText })}
                     </span>}
                     {isEverydayBanner && <span className="catalogue-chip banner-catalogue-chip-permanent text">{t("app.pages.catalogues.alwaysAvailable")}</span>}
                 </div>
@@ -134,7 +134,7 @@ export default function BannerCatalogueCard({ result, heroesById }) {
                             <div className="banner-catalogue-hero" key={`${hero.id}-conditional-${index}`} title={hero.name}>
                                 <Hero heroObj={hero} selected={false} level={null} onClick={() => {}} />
                                 <span className="banner-catalogue-hero-odds banner-catalogue-hero-odds--conditional text">
-                                    Conditional
+                                    {t("app.shared.conditional")}
                                 </span>
                             </div>
                         ))}
