@@ -1,4 +1,5 @@
 import { RARITY_DEFINITIONS } from "../database/enums.jsx"
+import { useTranslate } from "../hooks/useTranslate.jsx"
 import { resourceSprites } from "../database/db_sprites.jsx"
 import { getBannerLastLiveLabel } from "../js/bannerUtils.jsx"
 import Hero from "./Hero.jsx"
@@ -48,6 +49,7 @@ function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null, fe
 }
 
 export default function BannerCatalogueCard({ result, heroesById }) {
+    const t = useTranslate()
     const { banner, heroes, allHeroes = heroes, conditionalHeroes, missingHeroCount, sourceIndex } = result
     const isEverydayBanner = banner.id === "everyday_heroes"
     const featuredHero = banner.featuredHeroId
@@ -60,7 +62,7 @@ export default function BannerCatalogueCard({ result, heroesById }) {
         : "N/A"
     const rarityGroups = [
         {
-            title: "Legendary Heroes",
+            title: t("app.shared.legendaryHeroes"),
             heroes: [
                 ...heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.LEGENDARY.id),
                 ...(featuredHero
@@ -73,7 +75,7 @@ export default function BannerCatalogueCard({ result, heroesById }) {
             rarityChance: BANNER_RARITY_PULL_CHANCES[RARITY_DEFINITIONS.LEGENDARY.id],
         },
         {
-            title: "Epic Heroes",
+            title: t("app.shared.epicHeroes"),
             heroes: [
                 ...heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.EPIC.id),
                 ...(featuredHero
@@ -86,7 +88,7 @@ export default function BannerCatalogueCard({ result, heroesById }) {
             rarityChance: BANNER_RARITY_PULL_CHANCES[RARITY_DEFINITIONS.EPIC.id],
         },
         {
-            title: "Other Heroes",
+            title: t("app.shared.otherHeroes"),
             heroes: heroes.filter(hero => Number(hero.rarity) !== RARITY_DEFINITIONS.LEGENDARY.id && Number(hero.rarity) !== RARITY_DEFINITIONS.EPIC.id),
             oddsPool: [],
             rarityChance: null,
@@ -142,7 +144,7 @@ export default function BannerCatalogueCard({ result, heroesById }) {
 
             {missingHeroCount > 0 && (
                 <p className="banner-catalogue-missing text">{t("app.pages.catalogues.bannerDataMissing")}
-                    {missingHeroCount} referenced {missingHeroCount === 1 ? "hero is" : "heroes are"} not defined in the hero database.
+                    {t("app.shared.missingReferencedHeroes", { count: missingHeroCount, noun: t(missingHeroCount === 1 ? "app.shared.missingHeroSingular" : "app.shared.missingHeroPlural") })}
                 </p>
             )}
         </article>
