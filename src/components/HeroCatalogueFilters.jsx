@@ -46,6 +46,7 @@ function HeroCatalogueFilters({
     const rarityLabel = useTranslation("app.pages.heroes.filters.rarity")
     const levelLabel = useTranslation("app.pages.heroes.filters.level")
     const allRaritiesLabel = useTranslation("app.pages.heroes.filters.allRarities")
+    const rarityAriaLabel = useTranslation("app.pages.heroes.filters.rarityAriaLabel")
     const mainAttributeLabel = useTranslation("app.pages.heroes.filters.mainAttribute")
     const mainAttributeAriaLabel = useTranslation("app.pages.heroes.filters.mainAttributeAriaLabel")
     const allAttributesLabel = useTranslation("app.pages.heroes.filters.allAttributes")
@@ -92,7 +93,7 @@ function HeroCatalogueFilters({
             )}
             <label className="catalogue-filter">
                 <span className="catalogue-control-label text">{rarityLabel}</span>
-                <select aria-label="Filter by rarity" value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
+                <select aria-label={rarityAriaLabel} value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
                     <option value="all">{allRaritiesLabel}</option>
                     {HERO_CATALOGUE_RARITIES.map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
                 </select>
