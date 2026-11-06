@@ -292,7 +292,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
             await navigator.clipboard.writeText(teamShareUrl)
             setTeamShareLinkCopied(true)
         } catch {
-            window.alert(t("app.pages.teams.copyBlocked"))
+            window.alert(t("app.shared.copyingBlocked"))
         }
     }
 
@@ -387,8 +387,8 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                             <header className={"team-header" + (collapsedTeamIds.has(team.id) ? " is-collapsed" : "")}>
                                 <Button
                                     className="team-collapse-button"
-                                    text={collapsedTeamIds.has(team.id) ? t("app.pages.teams.expand") : t("app.pages.teams.collapse")}
-                                    title={collapsedTeamIds.has(team.id) ? t("app.pages.teams.expandTeamDetails") : t("app.pages.teams.collapseTeamDetails")}
+                                    text={collapsedTeamIds.has(team.id) ? t("app.shared.expand") : t("app.pages.teams.collapse")}
+                                    title={collapsedTeamIds.has(team.id) ? t("app.shared.expandTeamDetails") : t("app.pages.teams.collapseTeamDetails")}
                                     color={5}
                                     onClick={() => toggleTeamCollapsed(team.id)}
                                 />
