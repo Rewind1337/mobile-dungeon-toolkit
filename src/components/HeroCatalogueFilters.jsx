@@ -7,6 +7,7 @@ import {
 } from "../database/enums.jsx"
 import { humanize } from "../js/utils.js"
 import { useTranslation } from "../hooks/useTranslation.jsx"
+import { useTranslate } from "../hooks/useTranslate.jsx"
 
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
     rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
@@ -37,6 +38,8 @@ function HeroCatalogueFilters({
     onSortChange,
     topOffset
 }) {
+    const t = useTranslate()
+    const translateEnum = value => { const key = String(value ?? "").toLowerCase(); const translated = t(`app.shared.${key}`); return translated === `app.shared.${key}` ? humanize(value) : translated }
     const searchLabel = useTranslation("app.pages.catalogues.searchCount", undefined, { resultCount, totalCount })
     const searchAriaLabel = useTranslation("app.pages.heroes.filters.searchAriaLabel")
     const searchPlaceholder = useTranslation("app.pages.heroes.filters.searchPlaceholder")
@@ -95,7 +98,7 @@ function HeroCatalogueFilters({
                 <span className="catalogue-control-label text">{rarityLabel}</span>
                 <select aria-label={rarityAriaLabel} value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
                     <option value="all">{allRaritiesLabel}</option>
-                    {HERO_CATALOGUE_RARITIES.map(value => <option key={value.id} value={String(value.id)}>{humanize(value.name)}</option>)}
+                    {HERO_CATALOGUE_RARITIES.map(value => <option key={value.id} value={String(value.id)}>{translateEnum(value.name)}</option>)}
                 </select>
             </label>
             <label className="catalogue-filter">
