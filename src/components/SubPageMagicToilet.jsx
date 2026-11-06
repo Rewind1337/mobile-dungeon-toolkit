@@ -440,7 +440,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                     {dontResetBoosters && (
                         <Button
                             text={t("app.pages.magicToilet.flushUntilBoosted")}
-                            title={t("app.pages.magicToilet.flushUntilBoosted_tooltip")}
+                            title={t("app.pages.magicToilet.flushUntilBoostedTooltip")}
                             color="magic-toilet"
                             disabled={!boostersReady}
                             onClick={() => runPulls(false, MAX_BOOSTED_PULLS_PER_ACTION, true)}

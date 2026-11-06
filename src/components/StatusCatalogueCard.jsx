@@ -48,13 +48,13 @@ export default function StatusCatalogueCard({ status }) {
                     {categoryIcon && <img className="status-polarity-icon" src={categoryIcon} alt="" />}
                     {categoryLabel}
                 </span>
-                <span className={`catalogue-chip text status-polarity ${status.mitigatable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.mitigatable === false ? t("app.shared.notMitigatable_tooltip") : t("app.shared.mitigatable_tooltip")}>
+                <span className={`catalogue-chip text status-polarity ${status.mitigatable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.mitigatable === false ? t("app.shared.notMitigatableTooltip") : t("app.shared.mitigatableTooltip")}>
                     <img className={`status-polarity-icon${status.mitigatable === false ? " is-negative" : ""}`} src={status.mitigatable === false ? CrossSprite : CheckmarkSprite} alt={status.mitigatable === false ? t("app.shared.no") : t("app.shared.yes")} />
-                    <span>{t("app.shared.mitigatable_tooltip")}</span>
+                    <span>{t("app.shared.mitigatableTooltip")}</span>
                 </span>
-                <span className={`catalogue-chip text status-polarity ${status.removable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.removable === false ? t("app.shared.notRemovable_tooltip") : t("app.shared.removable_tooltip")}>
+                <span className={`catalogue-chip text status-polarity ${status.removable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.removable === false ? t("app.shared.notRemovableTooltip") : t("app.shared.removableTooltip")}>
                     <img className={`status-polarity-icon${status.removable === false ? " is-negative" : ""}`} src={status.removable === false ? CrossSprite : CheckmarkSprite} alt={status.removable === false ? t("app.shared.no") : t("app.shared.yes")} />
-                    <span>{t("app.shared.removable_tooltip")}</span>
+                    <span>{t("app.shared.removableTooltip")}</span>
                 </span>
             </div>
             <p className="status-catalogue-description text">{description}</p>

@@ -73,7 +73,7 @@ function Chapter({ chapter, shadowChapter, onSelect }) {
                         dataId={shadowChapter.id}
                         dataThreshold={threshold}
                         fillPercent={0}
-                        title={t("app.pages.simulatorEntries.shadowWorldThreshold_tooltip", { number: threshold })}
+                        title={t("app.pages.simulatorEntries.shadowWorldThresholdTooltip", { number: threshold })}
                         text={t("app.pages.simulatorEntries.shadowWorldShort", { number: threshold })}
                         suffix={<img src={thresholdIcons[threshold]} alt="" loading="lazy" decoding="async" draggable={false} />}
                         onClick={() => onSelect(shadowChapter, threshold)}

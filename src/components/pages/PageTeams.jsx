@@ -97,7 +97,7 @@ export function TeamOverview({ team, savedHeroes }) {
                         <span
                             className={`catalogue-chip text team-overview-chip team-attribute-chip catalogue-chip-attribute-${key}`}
                             key={`attribute-${hero.saveId ?? hero.id}-${index}`}
-                            title={t("app.pages.teams.heroSlot_tooltip", { hero: tc("hero", hero.id, "name", hero.name), slot: t("app.shared.slot", { number: index + 1 }) })}
+                            title={t("app.pages.teams.heroSlotTooltip", { hero: tc("hero", hero.id, "name", hero.name), slot: t("app.shared.slot", { number: index + 1 }) })}
                         >
                             {typeof icon === "string"
                                 ? <img className="catalogue-chip-icon" src={icon} alt="" />
@@ -151,7 +151,7 @@ function TeamHeroStatusIcons({ hero }) {
 
     const label = statuses.map(name => tc("status", name, "name", humanize(name))).join(", ")
     return (
-        <div className="catalogue-chip team-hero-status-icons"  title={t("app.pages.teams.statusEffects_tooltip", { label })}>
+        <div className="catalogue-chip team-hero-status-icons"  title={t("app.pages.teams.statusEffectsTooltip", { label })}>
             {statuses.map(name => (
                 <img className="team-status-icon" key={name} src={statusSprites[name]} alt={tc("status", name, "name", humanize(name))} title={tc("status", name, "name", humanize(name))} />
             ))}
@@ -171,7 +171,7 @@ export function TeamHeroStats({ hero, slotIndex, calculatedStats }) {
                 const hasMax = Number.isFinite(Number(maxValue)) && Math.abs(Number(maxValue) - Number(value)) > 0.001
                 const format = stat => Number.isFinite(Number(stat)) ? formatNumber(Number(stat), 2) : "—"
                 return (
-                    <span className="team-base-stat" key={key} title={t("app.pages.teams.baseStat_tooltip", { hero: tc("hero", hero.id, "name", hero.name), stat: t("app.shared." + fullLabel) })}>
+                    <span className="team-base-stat" key={key} title={t("app.pages.teams.baseStatTooltip", { hero: tc("hero", hero.id, "name", hero.name), stat: t("app.shared." + fullLabel) })}>
                         <strong>{label}</strong>
                         <span className="team-base-stat-value">{format(value)}</span>
                         {hasMax && <small className="team-base-stat-max">{t("app.shared.max")} {format(maxValue)}</small>}
@@ -395,7 +395,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                 <Button
                                     className="team-collapse-button"
                                     text={collapsedTeamIds.has(team.id) ? t("app.shared.expand") : t("app.pages.teams.collapse")}
-                                    title={collapsedTeamIds.has(team.id) ? t("app.pages.teams.expandTeamDetails_tooltip") : t("app.pages.teams.collapseTeamDetails_tooltip")}
+                                    title={collapsedTeamIds.has(team.id) ? t("app.pages.teams.expandTeamDetailsTooltip") : t("app.pages.teams.collapseTeamDetailsTooltip")}
                                     color={5}
                                     onClick={() => toggleTeamCollapsed(team.id)}
                                 />
@@ -426,7 +426,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                             return (
                                                 <span className="catalogue-chip text team-collapsed-hero-chip"
                                                     key={team.id + "-collapsed-hero-" + slotIndex}
-                                                    title={t("app.pages.teams.heroSlot_tooltip", { hero: tc("hero", hero.id, "name", hero.name), slot: t("app.shared.slot", { number: slotIndex + 1 }) })}>
+                                                    title={t("app.pages.teams.heroSlotTooltip", { hero: tc("hero", hero.id, "name", hero.name), slot: t("app.shared.slot", { number: slotIndex + 1 }) })}>
                                                     <img className="catalogue-chip-icon"
                                                         src={hero.heroSrc ?? heroSprites[hero.id] ?? heroSprites["null"]}
                                                         alt="" loading="lazy" decoding="async" draggable={false} />
@@ -464,14 +464,14 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                                             <div
                                                                     className="catalogue-chip team-equipped-items"
                                                                     
-                                                                    title={t("app.pages.teams.equippedItems_tooltip", { name: tc("hero", hero.id, "name", hero.name) })}
+                                                                    title={t("app.pages.teams.equippedItemsTooltip", { name: tc("hero", hero.id, "name", hero.name) })}
                                                                 >
                                                                     <div className="team-equipped-item-grid">
                                                                         {equippedItems.map(({ slot, item }) => (
                                                                             <span
                                                                                 className={"team-equipped-item" + (slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? " is-locked" : item ? "" : " is-empty")}
                                                                                 key={slot.id}
-                                                                                title={slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? t("app.pages.teams.noOtherSlot_tooltip") : item?.name ?? humanize(slot.name)}
+                                                                                title={slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? t("app.pages.teams.noOtherSlotTooltip") : item?.name ?? humanize(slot.name)}
                                                                             >
                                                                                 <img
                                                                                     className="team-equipped-item-icon"

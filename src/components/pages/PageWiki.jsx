@@ -113,7 +113,7 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
                 role={isClickable ? "button" : undefined}
                 tabIndex={isClickable ? 0 : undefined}
                 
-                title={isClickable ? t("app.pages.wiki.showEntries_tooltip", { label }) : undefined}
+                title={isClickable ? t("app.pages.wiki.showEntriesTooltip", { label }) : undefined}
                 onClick={isClickable ? () => onSelect(id) : undefined}
                 onKeyDown={isClickable ? activateWithKeyboard : undefined}
             >

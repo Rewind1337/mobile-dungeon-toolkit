@@ -7,7 +7,7 @@ function NavBar({ switchTabTo }) {
     const heroes = useTranslation('app.navigation.heroes')
     const items = useTranslation('app.navigation.items')
     const teams = useTranslation('app.navigation.teams')
-    const homeTooltip = useTranslation("app.navigation.home_tooltip")
+    const homeTooltip = useTranslation("app.navigation.homeTooltip")
     const games = useTranslation('app.navigation.games')
     const simulators = useTranslation('app.navigation.simulators')
     const wiki = useTranslation('app.navigation.wiki')
