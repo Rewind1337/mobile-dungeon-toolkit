@@ -8,6 +8,7 @@ import CrossSrc from '../sprites/cross.png'
 import LockedSrc from '../sprites/locked.webp'
 
 import Button from './Button.jsx'
+import { useTranslate } from '../hooks/useTranslate.jsx'
 import Modal from './Modal.jsx'
 import { createHeroShareToken, createItemsShareToken } from '../utils/heroShare.js'
 import EmptyItem from './EmptyItem.jsx'
@@ -26,6 +27,7 @@ function cloneTalentSelections(talents) {
 }
 
 function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, heroesRef, selectedHeroId, saveHero, deleteSavedHero, onItemClick, equippedItems = [], setsRef = [] }) {
+    const t = useTranslate()
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
     const previousPreviewHeight = useRef(null)
@@ -351,7 +353,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                 },
                 items: [...equippedItems]
             }, { includeItems: false }), "heroes"))
-            window.alert(error.message || "Could not export equipped items.")
+            window.alert(error.message || t("app.pages.heroes.preview.exportEquippedItemsError"))
         }
     }
 
@@ -361,7 +363,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
             await navigator.clipboard.writeText(heroShareUrl)
             setShareLinkCopied(true)
         } catch {
-            window.alert("Copying was blocked by your browser. Select and copy the link manually.")
+            window.alert(t("app.shared.copyingBlocked"))
         }
     }
 
@@ -388,51 +390,51 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
     if (noSelection) {
         return (
             <div className='hero-preview no-selection'>
-                <div className='header-big'>Select a Hero</div>
+                <div className='header-big'>{t("app.pages.heroes.preview.selectHero")}</div>
             </div>
         )
     } else {
         return (
             <div ref={listRef} className='hero-preview flex-col' style={{ maxHeight: listHeight }}>
                 <div className='preview-top-row flex-row sticky-top'>
-                    <Button className='preview-back-button preview-action-chip' prefix={<img className="preview-direction-icon" src={ExpandSrc} alt="" style={{ transform: isFullWidth ? 'rotate(-90deg)' : 'rotate(90deg)' }} />} title={isFullWidth ? 'Show hero list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} />
-                    <Button className='preview-close-button preview-action-chip' prefix={<img className="preview-close-icon" src={CrossSrc} alt="" />} title='Deselect this hero and close the preview' text='Deselect Hero' onClick={onClosePreview} color='cancel' />
+                    <Button className='preview-back-button preview-action-chip' prefix={<img className="preview-direction-icon" src={ExpandSrc} alt="" style={{ transform: isFullWidth ? 'rotate(-90deg)' : 'rotate(90deg)' }} />} title={isFullWidth ? t("app.shared.showHeroList") : t("app.shared.expandPreview")} text={isFullWidth ? t("app.shared.showList") : t("app.shared.expand")} onClick={onToggleFullWidth} color={1} />
+                    <Button className='preview-close-button preview-action-chip' prefix={<img className="preview-close-icon" src={CrossSrc} alt="" />} title={t("app.shared.deselectHeroClosePreview")} text={t("app.shared.deselectHero")} onClick={onClosePreview} color='cancel' />
                 </div>
                 <Modal position="center" isVisible={exportModalVisible} onClose={() => setExportModalVisible(false)}>
                     <div className="flex-col card w-100">
-                        <div className="header-big margin-auto">Export Hero</div>
+                        <div className="header-big margin-auto">{t("app.pages.heroes.preview.exportTitle")}</div>
                         <label className="flex-row text margin-auto export-items-checkbox-label">
                             <input type="checkbox" checked={exportItemsOnHero} onChange={handleExportItemsToggle} />
-                            <div className='header'>Export items on hero</div>
+                            <div className='header'>{t("app.pages.heroes.preview.exportItemsOnHero")}</div>
                         </label>
-                        <div className="text margin-auto">Share this link to import the hero, level, stats, and talents.</div>
+                        <div className="text margin-auto">{t("app.pages.heroes.preview.shareDescription")}</div>
                         {exportItemsOnHero && <>
-                            <div className="text margin-auto">This hero link also includes the equipped items. The separate link below only imports the Items.</div>
+                            <div className="text margin-auto">{t("app.pages.heroes.preview.itemsShareDescription")}</div>
                         </>}
                         <textarea
                             rows={3}
                             value={heroShareUrl}
                             readOnly
                             onFocus={event => event.target.select()}
-                            aria-label="Hero share link"
+                            aria-label={t("app.shared.heroShareLink")}
                         />
                         <div className="flex-row">
-                            <Button className="w-25" text={shareLinkCopied ? "Hero Link Copied!" : "Copy Hero Link"} color={"confirm"} onClick={handleCopyShareLink} />
-                            <Button className="w-25" text={"Close"} color={"cancel"} onClick={() => setExportModalVisible(false)} />
+                            <Button className="w-25" text={shareLinkCopied ? t("app.shared.heroLinkCopied") : t("app.shared.copyHeroLink")} color={"confirm"} onClick={handleCopyShareLink} />
+                            <Button className="w-25" text={t("app.shared.close")} color={"cancel"} onClick={() => setExportModalVisible(false)} />
                         </div>
                         {exportItemsOnHero && <>
                             <hr className='w-100'/>
-                            <div className="header-big margin-auto">Export Items only</div>
+                            <div className="header-big margin-auto">{t("app.pages.heroes.preview.exportItemsOnly")}</div>
                             <textarea
                                 rows={3}
                                 value={equippedItemsShareUrl}
                                 readOnly
                                 onFocus={event => event.target.select()}
-                                aria-label="Equipped items share link"
+                                aria-label={t("app.shared.itemsShareLink")}
                             />
-                            <div className="text margin-auto">This item link only includes the equipped items, not the hero. The first link above can import the hero as well.</div>
+                            <div className="text margin-auto">{t("app.pages.heroes.preview.itemsOnlyDescription")}</div>
                             <div className="flex-row">
-                                <Button className='w-25' text={itemsShareLinkCopied ? "Items Link Copied!" : "Copy Items Link"} color={"confirm"} onClick={handleCopyItemsShareLink} />
+                                <Button className='w-25' text={itemsShareLinkCopied ? t("app.shared.itemsLinkCopied") : t("app.shared.copyItemsLink")} color={"confirm"} onClick={handleCopyItemsShareLink} />
                                 <Button className="w-25" text={"Close"} color={"cancel"} onClick={() => setExportModalVisible(false)} />
                             </div>
                         </>}
@@ -459,7 +461,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                         <Button
                             className="hero-preview-skills-toggle"
                             color={0}
-                            text={"Skills & Talents"}
+                            text={t("app.pages.heroes.preview.skillsTalents")}
                             onClick={() => setSkillsTalentsModalVisible(true)}
                         />
                     )}
@@ -471,13 +473,13 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                         <div className={"hero-preview-skills-talents-modal" + (hasSkills && hasTalents ? "" : " is-single-column")}>
                             {hasSkills && (
                                 <section className="hero-preview-skills-talents-column skills">
-                                    <div className="header">Skills</div>
+                                    <div className="header">{t("app.pages.heroes.preview.skills")}</div>
                                     {renderHeroSkills()}
                                 </section>
                             )}
                             {hasTalents && (
                                 <section className="hero-preview-skills-talents-column talents">
-                                    <div className="header">Talents</div>
+                                    <div className="header">{t("app.pages.heroes.preview.talents")}</div>
                                     <div className="hero-preview-talent-grid talents">
                                         {renderHeroTalents()}
                                     </div>
@@ -506,7 +508,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                         </div>
                     </div>
 
-                    <div className='header'>Equipped Items</div>
+                    <div className='header'>{t("app.pages.heroes.preview.equippedItems")}</div>
                     <div className="flex-row equipment">
                         {[
                             EQUIPMENT_SLOT_DEFINITIONS.WEAPON,
@@ -519,7 +521,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                             const item = equippedItems[slot.id]
                             if (slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id) {
                                 return (
-                                    <div key={slot.id} className="item card item-slot-locked" aria-disabled="true" title="The Other equipment slot is not implemented yet">
+                                    <div key={slot.id} className="item card item-slot-locked" aria-disabled="true" title={t("app.pages.heroes.preview.otherSlotUnavailable")}>
                                         <div className="item-icon item-icon-locked">
                                             <img src={LockedSrc} loading="eager" decoding="async" draggable={false} alt="" />
                                         </div>
@@ -527,7 +529,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                                             <div className="item-sprite">
                                                 <img className="item-sprite-img" src={itemSprites["null"]} loading="eager" decoding="async" draggable={false} alt="" />
                                             </div>
-                                            <div className="text">Other</div>
+                                            <div className="text">{t("app.pages.heroes.preview.otherSlot")}</div>
                                         </div>
                                     </div>
                                 )
@@ -537,26 +539,26 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                                 : <EmptyItem key={slot.id} label={slot.name.charAt(0) + slot.name.slice(1).toLowerCase()} onClick={() => onItemClick(slot.id)} />
                         })}
                     </div>
-                    <div className='header'>Main Stats</div>
+                    <div className='header'>{t("app.pages.heroes.preview.mainStats")}</div>
                     <div className='flex-row base-stats'>
                         {Object.entries(MAIN_STAT_PERKS).map(([name, mapping]) => (
                             <div className='flex-row text card' key={name}>
                                 <img width={32} src={perkSprites[mapping.flat]}/>
-                                <input aria-label={`Base ${name}`} type='number' value={mainStats[name]} onChange={event => setMainStats(previous => ({ ...previous, [name]: event.target.value }))}/>
+                                <input aria-label={t("app.pages.heroes.preview.baseStat", { name })} type='number' value={mainStats[name]} onChange={event => setMainStats(previous => ({ ...previous, [name]: event.target.value }))}/>
                             </div>
                         ))}
                     </div>
-                    <div className='header calculated-stats-heading' title='These calculations are experimental and may be incorrect or incomplete.'>Calculated Stats <small>(?)</small></div>
-                    <div className='flex-row base-stats calculated-stats' aria-label='Calculated main stats'>
+                    <div className='header calculated-stats-heading' title={t("app.pages.heroes.preview.calculatedStatsNote")}>Calculated Stats <small>(?)</small></div>
+                    <div className='flex-row base-stats calculated-stats' aria-label={t("app.pages.heroes.preview.calculatedMainStats")}>
                         {Object.entries(MAIN_STAT_PERKS).map(([name, mapping]) => {
                             const hasMax = Math.abs(calculatedStats.mainMax[name] - calculatedStats.main[name]) > 0.001
-                            return <div className='flex-row text card calculated-stat' key={name} title={`Final ${name} after equipped gear`}>
+                            return <div className='flex-row text card calculated-stat' key={name} title={t("app.pages.heroes.preview.finalStat", { name })}>
                                 <img width={32} src={perkSprites[mapping.flat]}/>
                                 <div>{formatNumber(calculatedStats.main[name], 2)}{hasMax ? ` (${formatNumber(calculatedStats.mainMax[name], 2)} MAX)` : ""}</div>
                             </div>
                         })}
                     </div>
-                    <div className='header'>Other Stats</div>
+                    <div className='header'>{t("app.pages.heroes.preview.otherStats")}</div>
                     <div className='flex-row details'>
                         <div className='flex-col'>
                             {["CRIT_CHANCE","CRIT_RESISTANCE","CRIT_DAMAGE","CRIT_DAMAGE_REDUCTION","ACCURACY","RESISTANCE","BOSS_DAMAGE","BOSS_DAMAGE_REDUCTION","AOE_DAMAGE_REDUCTION","AP_DAMAGE_REDUCTION","LIFE_STEAL","HEALING_EFFICIENCY","HEALING_RECEIVED"].map(name => (
@@ -570,9 +572,9 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                         </div>
                     </div>
                     {(saveHero || deleteSavedHero) && <div className='flex-row sticky-bottom'>
-                        {saveHero && <Button text={"Save Hero"} onClick={handleSaveHero} color={"confirm"}/>}
-                        {deleteSavedHero && <Button text={"Export Hero"} onClick={handleExportSavedHero} color={0}/>}
-                        {deleteSavedHero && <Button text={"Delete Saved Hero"} onClick={handleDeleteSavedHero} color={"cancel"}/>}
+                        {saveHero && <Button text={t("app.shared.saveHero")} onClick={handleSaveHero} color={"confirm"}/>}
+                        {deleteSavedHero && <Button text={t("app.shared.exportHero")} onClick={handleExportSavedHero} color={0}/>}
+                        {deleteSavedHero && <Button text={t("app.shared.deleteSavedHero")} onClick={handleDeleteSavedHero} color={"cancel"}/>}
                     </div>}
                 </div>
             </div >
