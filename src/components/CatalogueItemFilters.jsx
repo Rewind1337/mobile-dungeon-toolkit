@@ -44,14 +44,14 @@ function CatalogueItemFilters({
     sortOrder,
     onSortChange
 }) {
-    const searchLabel = useTranslation("app.pages.items.filters.search", undefined, { resultCount, totalCount })
-    const searchAriaLabel = useTranslation("app.pages.items.filters.searchAriaLabel")
-    const searchPlaceholder = useTranslation("app.pages.items.filters.searchPlaceholder")
-    const sortOrderLabel = useTranslation("app.pages.items.filters.sortOrder")
-    const sortOrderAriaLabel = useTranslation("app.pages.items.filters.sortOrderAriaLabel")
-    const alphabeticLabel = useTranslation("app.pages.items.filters.alphabetic")
-    const rarityLabel = useTranslation("app.pages.items.filters.rarity")
-    const levelLabel = useTranslation("app.pages.items.filters.level")
+    const searchLabel = useTranslation("app.pages.catalogues.searchCount", undefined, { resultCount, totalCount })
+    const searchAriaLabel = useTranslation("app.pages.catalogues.searchCountAriaLabel")
+    const searchPlaceholder = useTranslation("app.pages.catalogues.searchCountPlaceholder")
+    const sortOrderLabel = useTranslation("app.shared.sortOrder")
+    const sortOrderAriaLabel = useTranslation("app.shared.sortOrderAriaLabel")
+    const alphabeticLabel = useTranslation("app.shared.alphabetic")
+    const rarityLabel = useTranslation("app.shared.rarity")
+    const levelLabel = useTranslation("app.shared.level")
     const sourceLabel = useTranslation("app.pages.items.filters.source")
     const sourceAriaLabel = useTranslation("app.pages.items.filters.sourceAriaLabel")
     const allSourcesLabel = useTranslation("app.pages.items.filters.allSources")
@@ -61,10 +61,10 @@ function CatalogueItemFilters({
     const slotLabel = useTranslation("app.pages.items.filters.slot")
     const slotAriaLabel = useTranslation("app.pages.items.filters.slotAriaLabel")
     const allSlotsLabel = useTranslation("app.pages.items.filters.allSlots")
-    const mainAttributeLabel = useTranslation("app.pages.items.filters.mainAttribute")
+    const mainAttributeLabel = useTranslation("app.shared.mainAttribute")
     const attributeAriaLabel = useTranslation("app.pages.items.filters.attributeAriaLabel", undefined, { attribute: attributeLabel.toLowerCase() })
-    const allAttributesLabel = useTranslation("app.pages.items.filters.allAttributes")
-    const rarityAriaLabel = useTranslation("app.pages.items.filters.rarityAriaLabel")
+    const allAttributesLabel = useTranslation("app.shared.allAttributes")
+    const rarityAriaLabel = useTranslation("app.shared.filterByRarity")
     const setAttributeLabel = useTranslation("app.pages.items.filters.setAttribute")
     const setAttributeAriaLabel = useTranslation("app.pages.items.filters.setAttributeAriaLabel")
     const setPiecesLabel = useTranslation("app.pages.items.filters.setPieces")
@@ -78,7 +78,7 @@ function CatalogueItemFilters({
     const twoPieceSetLabel = useTranslation("app.pages.items.filters.twoPieceSet")
     const fourPieceSetLabel = useTranslation("app.pages.items.filters.fourPieceSet")
     const uniqueLabel = useTranslation("app.pages.items.filters.unique")
-    const allRaritiesLabel = useTranslation("app.pages.items.filters.allRarities")
+    const allRaritiesLabel = useTranslation("app.shared.allRarities")
 
     if (!filtersVisible) {
         return (
