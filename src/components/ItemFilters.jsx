@@ -76,7 +76,7 @@ function ItemFilters({ savedItems = false, setFiltersAdvanced, advanced, toggleF
         <div className="filters card" style={{ top: topOffset }}>
             <div className="filters-primary-row">
                 <Button title={t("app.shared.showOrHideAdvancedFilters")} className="filters-advanced-button" round onClick={() => setFiltersAdvanced(value => !value)} imgAsText text={(advanced ? filterSprites[54] : filterSprites[53])} active={advanced} />
-                <Button title={t("app.shared.clearAllFilters")} className="filters-clear-button" round onClick={clearFilters} text="ALL" active={filters.rarity === null && [filters.set, filters.unique, filters.slot, filters.attributeRequirement, filters.name].every(value => value === null || value === "")} />
+                <Button title={t("app.shared.clearAllFilters")} className="filters-clear-button" round onClick={clearFilters} text={t("app.shared.all").toUpperCase()} active={filters.rarity === null && [filters.set, filters.unique, filters.slot, filters.attributeRequirement, filters.name].every(value => value === null || value === "")} />
                 <ItemSlotFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <label className="name-search-filter catalogue-search">
                     <span className="catalogue-control-label text">{t("app.shared.search")}</span>
