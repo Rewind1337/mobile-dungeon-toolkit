@@ -66,7 +66,7 @@ function ItemPerk({
                     </div>
                     : <div className='text flex-col'>
                         <div className='text perk-flat-percent'>{displayedValue}{isFlatPerk ? " Flat" : " %"}</div>
-                        <div className='text perk-effective'>{multiplier > 1 && <small>Effective: {formatValue(effectiveValue)}{isFlatPerk ? " Flat" : " %"}</small>}</div>
+                        <div className='text perk-effective'>{multiplier > 1 && <small>{t("app.shared.effective")}: {formatValue(effectiveValue)}{isFlatPerk ? " " + t("app.shared.flat") : " " + t("app.shared.percent")}</small>}</div>
                     </div>
                 }
             </>}
