@@ -171,7 +171,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
 
     return (
         <section className="item-catalogue">
-            <CatalogueViewSwitch ariaLabel={t("app.pages.catalogues.itemViews")} view={view} onViewChange={changeView} options={[
+            <CatalogueViewSwitch view={view} onViewChange={changeView} options={[
                 { label: t("app.pages.catalogues.itemTitle"), value: "items" },
                 { label: t("app.pages.catalogues.setTitle"), value: "sets" },
             ]} />
