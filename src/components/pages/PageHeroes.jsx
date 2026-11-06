@@ -24,8 +24,8 @@ const isItemCompatibleWithHero = (item, hero) => {
 
 function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
     const t = useTranslate()
-    const allHeroesHeader = useTranslation("app.pages.heroes.filter.header")
-    const savedHeroesHeader = useTranslation("app.pages.heroes.filter.savedHeader")
+    const allHeroesHeader = useTranslation("app.shared.allHeroes")
+    const savedHeroesHeader = useTranslation("app.shared.savedHeroes")
     const [pageContent, setPageContent] = useState(0)
     const switchListPage = nextPage => {
         if (pageContent !== nextPage) clearSearchFromUrl()
