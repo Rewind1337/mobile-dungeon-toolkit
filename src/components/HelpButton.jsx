@@ -6,8 +6,8 @@ import { useTranslation } from "../hooks/useTranslation.jsx"
 
 function HelpButton({ title, children }) {
     const [isVisible, setIsVisible] = useState(false)
-    const help = useTranslation("app.common.help")
-    const helpFor = useTranslation("app.common.helpForTooltip", undefined, { title })
+    const help = useTranslation("app.shared.help")
+    const helpFor = useTranslation("app.shared.helpForTooltip", undefined, { title })
     const close = useTranslation("app.shared.close")
 
     return (
