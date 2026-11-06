@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import Button from "./Button.jsx"
+import { useTranslate } from "../hooks/useTranslate.jsx"
 import CollapseSrc from "../sprites/collapse.webp"
 
 function BackToTopButton({ scrollRef, className = "" }) {
+    const t = useTranslate()
     const [visible, setVisible] = useState(false)
     useEffect(() => {
         const element = scrollRef?.current
@@ -13,6 +15,6 @@ function BackToTopButton({ scrollRef, className = "" }) {
         return () => element.removeEventListener("scroll", updateVisibility)
     }, [scrollRef])
     if (!visible) return null
-    return <Button className={`back-to-top-button ${className}`.trim()} prefix={<img className="back-to-top-icon" src={CollapseSrc} alt="" aria-hidden="true" />} text="Back to top" title="Scroll this list back to the top" color={5} onClick={() => scrollRef?.current?.scrollTo({ top: 0, behavior: "smooth" })} />
+    return <Button className={`back-to-top-button ${className}`.trim()} prefix={<img className="back-to-top-icon" src={CollapseSrc} alt="" aria-hidden="true" />} text={t("app.shared.backToTop")} title={t("app.shared.scrollListToTop")} color={5} onClick={() => scrollRef?.current?.scrollTo({ top: 0, behavior: "smooth" })} />
 }
 export default BackToTopButton
