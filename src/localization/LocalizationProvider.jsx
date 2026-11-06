@@ -1,4 +1,4 @@
-import { createContext, useMemo, useState } from "react"
+import { createContext, useContext, useMemo, useState } from "react"
 import { DEFAULT_LANGUAGE, LANGUAGE_DICTIONARIES } from "./index.js"
 
 const LocalizationContext = createContext({
@@ -25,8 +25,5 @@ export function LocalizationProvider({ children, initialLanguage = DEFAULT_LANGU
 }
 
 export function useLocalization() {
-    return ReactUseContext(LocalizationContext)
+    return useContext(LocalizationContext)
 }
-
-// Keep the context hook implementation explicit and dependency-free for consumers.
-import { useContext as ReactUseContext } from "react"
