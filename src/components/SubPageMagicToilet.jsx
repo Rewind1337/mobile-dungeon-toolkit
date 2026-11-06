@@ -436,7 +436,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                 <div className="magic-toilet-actions">
                     <Button text={t("app.pages.magicToilet.flushOne")} color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(false, 1)} />
                     <Button text={t("app.pages.magicToilet.flushAmountButton", { count: Number(flushAmount).toLocaleString() })} color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(false, Number(flushAmount))} />
-                    <Button text={t("app.pages.magicToilet.flushUntilLegendary")} color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(true)} />
+                    <Button text={t("app.pages.magicToilet.flushUntilLegendary")} title={t("app.pages.magicToilet.flushUntilLegendaryTooltip")} color="magic-toilet" disabled={!boostersReady} onClick={() => runPulls(true)} />
                     {dontResetBoosters && (
                         <Button
                             text={t("app.pages.magicToilet.flushUntilBoosted")}
