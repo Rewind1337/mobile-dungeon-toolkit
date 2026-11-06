@@ -233,7 +233,6 @@ const lang_enUS = {
                     calculatedMainStats: "Calculated main stats",
                     otherStats: "Other Stats",
                     otherSlotUnavailable: "The Other equipment slot is not implemented yet",
-                    otherSlot: "Other",
                     baseStat: "Base {{name}}",
                     finalStat: "Final {{name}} after equipped gear",
                     exportEquippedItemsError: "Could not export equipped items.",
