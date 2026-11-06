@@ -32,27 +32,37 @@ const lang_deDE = {
             dropSource: "Beutequelle",
             unspecified: "Nicht angegeben",
             guildHuntShort: "GJ",
+            // Shared stats and elements
             attribute: "Attribut",
             attributes: "Attribute",
             element: "Element",
+            role: "Rolle",
+            rarity: "Seltenheit",
+            set: "Set",
+            twoPieceSets: "2-Teile-Sets",
+            fourPieceSets: "4-Teile-Sets",
         },
         pages: {
+            // Reused page titles
             adventureChapters: { title: "Abenteuerkapitel" },
             towers: { title: "Türme" },
             titans: { title: "Titanen" },
             guildHunt: { title: "Gildenjagd" },
-            footer: "Das Spiel {{game}} und alle hier verwendeten Bilder gehören {{publisher}}. Diese Seite ist in keiner Weise mit {{publisher}} verbunden. Schriftarten von {{fontProvider}}.",
-        },
-        simulators: {
-            description: "Wähle oben einen Simulator aus, um Begegnungen anzusehen oder einen eigenen Kampf zusammenzustellen.",
+            footer: "Das Spiel {{game}} und alle hier verwendeten Bilder gehören {{publisher}}. Diese Seite ist in keiner Weise mit {{publisher}} verbunden. Schriftarten von {{fontProvider}}",
+            // Simulator overview
+            simulators: {
+                description: "Wähle oben einen Simulator aus, um Begegnungen anzusehen oder einen eigenen Kampf zusammenzustellen.",
+            },
         },
     },
     data: {
         overrides: {
+            // Hero translations
             hero: {
                 thor: { name: "Thor" },
                 undead_dragon: { name: "Untoter Drache" },
             },
+            // Item translations
             item: {
                 "weapon:pumpkin_scythe": {
                     name: "Kürbissense",

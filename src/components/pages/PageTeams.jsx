@@ -174,7 +174,7 @@ export function TeamHeroStats({ hero, slotIndex, calculatedStats }) {
                     <span className="team-base-stat" key={key} title={t("app.pages.teams.baseStat_tooltip", { hero: tc("hero", hero.id, "name", hero.name), stat: t("app.shared." + fullLabel) })}>
                         <strong>{label}</strong>
                         <span className="team-base-stat-value">{format(value)}</span>
-                        {hasMax && <small className="team-base-stat-max">{t("app.pages.teams.max")} {format(maxValue)}</small>}
+                        {hasMax && <small className="team-base-stat-max">{t("app.shared.max")} {format(maxValue)}</small>}
                     </span>
                 )
             })}
@@ -395,7 +395,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                 <Button
                                     className="team-collapse-button"
                                     text={collapsedTeamIds.has(team.id) ? t("app.shared.expand") : t("app.pages.teams.collapse")}
-                                    title={collapsedTeamIds.has(team.id) ? t("app.shared.expandTeamDetails_tooltip") : t("app.pages.teams.collapseTeamDetails_tooltip")}
+                                    title={collapsedTeamIds.has(team.id) ? t("app.pages.teams.expandTeamDetails_tooltip") : t("app.pages.teams.collapseTeamDetails_tooltip")}
                                     color={5}
                                     onClick={() => toggleTeamCollapsed(team.id)}
                                 />

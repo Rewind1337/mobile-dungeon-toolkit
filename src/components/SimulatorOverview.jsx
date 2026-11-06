@@ -2,7 +2,7 @@ import { useTranslation } from "../hooks/useTranslation.jsx"
 
 function SimulatorOverview() {
     const title = useTranslation("app.navigation.simulators")
-    const description = useTranslation("app.simulators.description")
+    const description = useTranslation("app.pages.simulators.description")
     return (
         <main id="page-simulator-overview" className="page flex-col w-100 simulator-overview">
             <header className="card simulator-overview-heading">

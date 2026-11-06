@@ -33,7 +33,7 @@ function SubPageGuildBoss() {
             <section className="card boss-preview w-100 simulator-selection-detail">
                 {selectedGuildBoss ? (
                     <>
-                        <SimulatorEntryDetails entry={selectedGuildBoss} title={t("app.pages.simulatorEntries.guildBossTitle", { name: selectedGuildBoss.name })} elementIds={selectedGuildBoss.elementIds} emptyMessage={t("app.pages.simulators.noGuildBossStages")} />
+                        <SimulatorEntryDetails entry={selectedGuildBoss} title={t("app.pages.simulatorEntries.guildBossTitle", { name: selectedGuildBoss.name })} elementIds={selectedGuildBoss.elementIds} emptyMessage={t("app.pages.simulatorEntries.noGuildBossStages")} />
                     </>
                 ) : (
                     <div className="header-big">{t("app.pages.simulatorEntries.selectAGuildBoss")}</div>

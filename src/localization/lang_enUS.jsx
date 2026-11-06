@@ -25,99 +25,87 @@ const lang_enUS = {
             clearFilters: "Clear filters",
         },
         shared: {
+            // shared search
             search: "Search",
             searchHeroPlaceholder: "Name, skill, talent, effect...",
             searchItemPlaceholder: "Name, perk, effect...",
-            showOrHideAdvancedFilters_tooltip: "Show or hide advanced filters",
-            showStarredHeroes_tooltip: "Show starred heroes only",
+
+            // shared stats
             allAttributes: "All attributes",
             mainAttribute: "Main attribute",
-            filterByRarity: "Filter by rarity",
-            allSources: "All sources",
-            allSlots: "All slots",
-            element: "Element",
-            roles: "Role",
             attribute: "Attribute",
+            attributes: "{{attribute}}s",
             strength: "Strength",
-            strength_tooltip: "Strength",
             health: "Health",
             attack: "Attack",
             defence: "Defence",
             agility: "Agility",
             max: "MAX",
-            void: "Void",
-            other: "Other",
             primary: "Primary",
             secondary: "Secondary",
             ultimate: "Ultimate",
             skillNumber: "Skill {{number}}",
             dexterity: "Dexterity",
-            dexterity_tooltip: "Dexterity",
             intelligence: "Intelligence",
-            intelligence_tooltip: "Intelligence",
+
+            // shared elements
+            element: "Element",
+            void: "Void",
             fire: "Fire",
-            fire_tooltip: "Fire",
             water: "Water",
-            water_tooltip: "Water",
             nature: "Nature",
-            nature_tooltip: "Nature",
             light: "Light",
-            light_tooltip: "Light",
             shadow: "Shadow",
-            shadow_tooltip: "Shadow",
+
+            // shared roles
+            role: "Role",
             offensive: "Offensive",
-            offensive_tooltip: "Offensive",
             defensive: "Defensive",
-            defensive_tooltip: "Defensive",
             control: "Control",
-            control_tooltip: "Control",
             support: "Support",
-            support_tooltip: "Support",
+
+            // shared rarities
+            rarity: "Rarity",
+            filterByRarity: "Filter by rarity",
             common: "Common",
-            common_tooltip: "Common",
             uncommon: "Uncommon",
-            uncommon_tooltip: "Uncommon",
             rare: "Rare",
-            rare_tooltip: "Rare",
             epic: "Epic",
-            epic_tooltip: "Epic",
             legendary: "Legendary",
-            legendary_tooltip: "Legendary",
             mythic: "Mythic",
-            mythic_tooltip: "Mythic",
             heroic: "Heroic",
-            heroic_tooltip: "Heroic",
             divine: "Divine",
-            divine_tooltip: "Divine",
             ancient: "Ancient",
-            ancient_tooltip: "Ancient",
             unique: "Unique",
             notUnique: "Not Unique",
+            allRarities: "All rarities",
+
+            // shared equipment and sets
+            slotLabel: "Slot",
+            allSlots: "All slots",
+            other: "Other",
+            weapon: "Weapon",
+            helmet: "Helmet",
+            armor: "Armor",
+            ring: "Ring",
+            necklace: "Necklace",
+            set: "Set",
             noSet: "No Set",
             twoPieceSet: "2-piece set",
             fourPieceSet: "4-piece set",
-            sets: "Set",
-            slotLabel: "Slot",
-            weapon: "Weapon",
-            weapon_tooltip: "Weapon",
-            helmet: "Helmet",
-            helmet_tooltip: "Helmet",
-            armor: "Armor",
-            armor_tooltip: "Armor",
-            ring: "Ring",
-            ring_tooltip: "Ring",
-            necklace: "Necklace",
-            necklace_tooltip: "Necklace",
-            strengthRequirement_tooltip: "Strength requirement",
-            dexterityRequirement_tooltip: "Dexterity requirement",
-            intelligenceRequirement_tooltip: "Intelligence requirement",
-            uniqueItems_tooltip: "Unique items",
-            itemsWithTwoPieceSets_tooltip: "Items with 2-piece sets",
-            itemsWithFourPieceSets_tooltip: "Items with 4-piece sets",
+            twoPieceSets: "2-piece sets",
+            fourPieceSets: "4-piece sets",
             perks: "Perks",
             skillsAndTalents: "Skills & Talents",
-            heroManagement: "Hero Management",
-            teamManagement: "Team Management",
+
+            // shared status effects
+            statusEffects: "Status Effects",
+            buffs: "Buffs",
+            debuffs: "Debuffs",
+            otherUnclassified: "Other / unclassified",
+            buff: "Buff",
+            debuff: "Debuff",
+            special: "Special",
             notMitigatable_tooltip: "Not mitigatable",
             mitigatable: "Mitigatable",
             mitigatable_tooltip: "Mitigatable",
@@ -126,28 +114,16 @@ const lang_enUS = {
             removable_tooltip: "Removable",
             no: "No",
             yes: "Yes",
+            noStatusEffectsDetected: "No status effects detected.",
+
+            // shared effect values
             noDescriptionRecorded: "No description recorded.",
-            notImplemented: "Not implemented",
-            setName: "Set: {{name}}",
-            obtainedFrom: "Obtained from",
-            usedFor: "Used for",
-            attributeNotSpecified: "Attribute not specified",
-            notSpecified: "Not specified",
-            none: "None",
-            fixedPerks: "Fixed perks",
-            setBonuses: "Set bonuses",
-            special: "Special",
-            buff: "Buff",
-            debuff: "Debuff",
             value: "Value",
             perStack: "Per stack",
             maxStacks: "Max stacks",
             duration: "Duration",
             tick: "Tick",
             stat: "Stat",
-            dropSource: "Drop Source",
-            unspecified: "Unspecified",
-            guildHuntShort: "GH",
             uniqueEffect: "Unique Effect",
             notChangeable: "not changeable",
             effective: "Effective",
@@ -155,24 +131,45 @@ const lang_enUS = {
             percent: "%",
             effectData: "Effect data",
             cooldownTurns: "Cooldown: {{count}} Turns",
-            unnamedSkill: "Unnamed skill",
-            unnamedTalent: "Unnamed talent",
-            noneRecorded: "None recorded",
-            damagedItemLocked_tooltip: "Damaged item — perk changes are locked",
-            lastLive: "Last live: {{date}}",
-            chance: "{{percent}}% chance",
             conditional: "Conditional",
+            chance: "{{percent}}% chance",
+            fixedPerks: "Fixed perks",
+            setBonuses: "Set bonuses",
+
+            // shared sources and labels
+            allSources: "All sources",
+            notImplemented: "Not implemented",
+            setName: "Set: {{name}}",
+            obtainedFrom: "Obtained from",
+            usedFor: "Used for",
+            attributeNotSpecified: "Attribute not specified",
+            notSpecified: "Not specified",
+            none: "None",
+            dropSource: "Drop Source",
+            unspecified: "Unspecified",
+            guildHuntShort: "GH",
+            lastLive: "Last live: {{date}}",
+
+            // shared hero and item states
             legendaryHeroes: "Legendary Heroes",
             epicHeroes: "Epic Heroes",
             otherHeroes: "Other Heroes",
             missingReferencedHeroes: "{{count}} referenced {{noun}} not defined in the hero database.",
             missingHeroSingular: "hero is",
             missingHeroPlural: "heroes are",
+            noHeroesAssigned: "No heroes assigned yet.",
+            noHeroesMatchFilters: "No heroes match the selected filters",
+            noItemsMatchFilters: "No items match the selected filters",
+            emptySlot: "Empty Slot",
+            savedTeam: "Saved Team",
+            noneRecorded: "None recorded",
+            unnamedSkill: "Unnamed skill",
+            unnamedTalent: "Unnamed talent",
+
+            // shared management
+            heroManagement: "Hero Management",
             itemManagement: "Item Management",
-            importHero: "Import Hero",
-            importItem: "Import Item",
-            importingHero: "Importing Hero...",
-            importingItem: "Importing Item...",
+            teamManagement: "Team Management",
             allItems: "All Items",
             yourSavedItems: "Your Saved Items",
             savedHeroes: "Saved Heroes",
@@ -180,6 +177,21 @@ const lang_enUS = {
             allHeroes: "All Heroes",
             selectPerk: "Select Perk",
             allPerksSelected: "All available perks are already selected on this item.",
+            saveHero: "Save Hero",
+            exportHero: "Export Hero",
+            deleteSavedHero: "Delete Saved Hero",
+            saveItem: "Save Item",
+            exportItem: "Export Item",
+            deleteSavedItem: "Delete Saved Item",
+            equipItem: "Equip Item",
+            deselectHero: "Deselect Hero",
+            deselectItem: "Deselect Item",
+
+            // shared imports and exports
+            importHero: "Import Hero",
+            importItem: "Import Item",
+            importingHero: "Importing Hero...",
+            importingItem: "Importing Item...",
             pasteHeroShare: "Paste a hero share link below. You can also paste the encoded data by itself.",
             pasteHeroSharePrompt: "Paste a hero share link or its encoded data.",
             pasteItemShare: "Paste an item share link, an equipped-items link, or the encoded data itself.",
@@ -195,27 +207,12 @@ const lang_enUS = {
             heroLinkCopied: "Hero Link Copied!",
             itemsLinkCopied: "Items Link Copied!",
             copyingBlocked: "Copying was blocked by your browser. Select and copy the link manually.",
-            saveHero: "Save Hero",
-            exportHero: "Export Hero",
-            deleteSavedHero: "Delete Saved Hero",
-            saveItem: "Save Item",
-            exportItem: "Export Item",
-            deleteSavedItem: "Delete Saved Item",
-            equipItem: "Equip Item",
-            deselectHero: "Deselect Hero",
-            deselectItem: "Deselect Item",
-            showHeroList_tooltip: "Show hero list",
-            showItemList_tooltip: "Show item list",
-            expandPreview_tooltip: "Expand preview to full width",
-            deselectHeroClosePreview_tooltip: "Deselect this hero and close the preview",
-            deselectItemClosePreview_tooltip: "Deselect this item and close the preview",
 
+            // shared controls
             sortOrder: "Sort Order",
             alphabetic: "Alphabetic",
-            rarities: "Rarity",
             level: "Level",
             all: "All",
-            allRarities: "All rarities",
             close: "Close",
             cancel: "Cancel",
             confirm: "Confirm",
@@ -223,24 +220,56 @@ const lang_enUS = {
             comingSoon: "Coming soon",
             loading: "Loading...",
             slot: "Slot {{number}}",
-            attributes: "{{attribute}}s",
-            statusEffects: "Status Effects",
-            buffs: "Buffs",
-            debuffs: "Debuffs",
-            otherUnclassified: "Other / unclassified",
-            noHeroesAssigned: "No heroes assigned yet.",
-            noStatusEffectsDetected: "No status effects detected.",
-            noHeroesMatchFilters: "No heroes match the selected filters",
-            noItemsMatchFilters: "No items match the selected filters",
             backToTop: "Back to top",
-            scrollListToTop_tooltip: "Scroll this list back to the top",
-            clearAllFilters_tooltip: "Clear all filters",
-            emptySlot: "Empty Slot",
-            savedTeam: "Saved Team",
             expand: "Expand",
             showList: "Show List",
+
+            // shared tooltips
+            showOrHideAdvancedFilters_tooltip: "Show or hide advanced filters",
+            showStarredHeroes_tooltip: "Show starred heroes only",
+            strength_tooltip: "Strength",
+            dexterity_tooltip: "Dexterity",
+            intelligence_tooltip: "Intelligence",
+            fire_tooltip: "Fire",
+            water_tooltip: "Water",
+            nature_tooltip: "Nature",
+            light_tooltip: "Light",
+            shadow_tooltip: "Shadow",
+            offensive_tooltip: "Offensive",
+            defensive_tooltip: "Defensive",
+            control_tooltip: "Control",
+            support_tooltip: "Support",
+            common_tooltip: "Common",
+            uncommon_tooltip: "Uncommon",
+            rare_tooltip: "Rare",
+            epic_tooltip: "Epic",
+            legendary_tooltip: "Legendary",
+            mythic_tooltip: "Mythic",
+            heroic_tooltip: "Heroic",
+            divine_tooltip: "Divine",
+            ancient_tooltip: "Ancient",
+            weapon_tooltip: "Weapon",
+            helmet_tooltip: "Helmet",
+            armor_tooltip: "Armor",
+            ring_tooltip: "Ring",
+            necklace_tooltip: "Necklace",
+            strengthRequirement_tooltip: "Strength requirement",
+            dexterityRequirement_tooltip: "Dexterity requirement",
+            intelligenceRequirement_tooltip: "Intelligence requirement",
+            uniqueItems_tooltip: "Unique items",
+            itemsWithTwoPieceSets_tooltip: "Items with 2-piece sets",
+            itemsWithFourPieceSets_tooltip: "Items with 4-piece sets",
+            damagedItemLocked_tooltip: "Damaged item — perk changes are locked",
+            showHeroList_tooltip: "Show hero list",
+            showItemList_tooltip: "Show item list",
+            expandPreview_tooltip: "Expand preview to full width",
+            deselectHeroClosePreview_tooltip: "Deselect this hero and close the preview",
+            deselectItemClosePreview_tooltip: "Deselect this item and close the preview",
+            scrollListToTop_tooltip: "Scroll this list back to the top",
+            clearAllFilters_tooltip: "Clear all filters",
         },
         pages: {
+            // Reset timers
             resetTimers: {
                 daily: "Daily Reset",
                 weekly: "Weekly Reset",
@@ -252,8 +281,10 @@ const lang_enUS = {
                     second: { one: "second", other: "seconds" },
                 },
             },
+            // Hero management and preview
             heroes: {
                 preview: {
+                    // Hero preview
                     exportItemsOnly: "Export Items only",
                     exportItemsOnHero: "Export items on hero",
                     shareDescription: "Share this link to import the hero, level, stats, and talents.",
@@ -266,6 +297,7 @@ const lang_enUS = {
                     calculatedStats: "Calculated Stats",
                     calculatedStatsNote_tooltip: "These calculations are experimental and may be incorrect or incomplete.",
                     otherStats: "Other Stats",
+                    otherSlot: "Other Slot",
                     otherSlotUnavailable_tooltip: "The Other equipment slot is not implemented yet",
                     finalStat_tooltip: "Final {{name}} after equipped gear",
                     exportEquippedItemsError: "Could not export equipped items.",
@@ -273,14 +305,17 @@ const lang_enUS = {
                 filter: {
                 },
                 filters: {
+                    // Hero catalogue filters
                     searchPlaceholder: "Name, skill, talent, effect, ID…",
                     allElements: "All elements",
                     allRoles: "All roles",
                     starred: "Starred",
                 },
             },
+            // Item management and preview
             items: {
                 preview: {
+                    // Item preview
                     selectItem: "Select an Item",
                     rarityDecrease: "Rarity - 1",
                     rarityIncrease: "Rarity + 1",
@@ -304,6 +339,7 @@ const lang_enUS = {
                 filter: {
                 },
                 filters: {
+                    // Item catalogue filters
                     searchPlaceholder: "Name, effect text, perk, set, source, ID…",
                     source: "Source",
                     location: "Location",
@@ -317,7 +353,9 @@ const lang_enUS = {
                     allItems: "All items",
                 },
             },
+            // Team management
             teams: {
+                // Team navigation and editing
                 savedTeams: "Saved Teams",
                 recommendedTeams: "Recommended Teams",
                 importTeam: "Import Team",
@@ -329,6 +367,7 @@ const lang_enUS = {
                 duplicate: "Duplicate",
                 exportTeam: "Export Team",
                 deleteTeam: "Delete Team",
+                // Team sharing and import/export
                 createNewTeam: "Create New Team",
                 includeEquippedItems: "Include equipped items on heroes",
                 shareTeamDescription: "Share this link to import the team and its saved heroes.",
@@ -341,6 +380,7 @@ const lang_enUS = {
                 couldNotExport: "Could not export this team.",
                 couldNotExportHeroes: "Could not export this team's heroes.",
                 couldNotImport: "Could not import this team.",
+                // Team tooltips
                 noOtherSlot_tooltip: "Other slot (not implemented yet)",
                 heroSlot_tooltip: "{{hero}} · {{slot}}",
                 statusEffects_tooltip: "Status effects: {{label}}",
@@ -348,6 +388,7 @@ const lang_enUS = {
                 equippedItems_tooltip: "{{name}}'s equipped items",
                 statusIcons: "{{name}} buffs and debuffs: {{statuses}}",
             },
+            // Wiki and catalogue overview
             wiki: {
                 description: "Explore the heroes, banners, equipment, gems, resources, perks, skills, talents, and status effects tracked by the toolkit. Use the catalogue navigation above to browse each collection.",
                 dataOverview: "Data Overview",
@@ -374,7 +415,9 @@ const lang_enUS = {
                 resourcesAndGems: "Resources & Gems",
                 loadingCatalogue: "Loading catalogue...",
             },
+            // Simulator encounter selection and stage details
             simulatorEntries: {
+                // Selection labels
                 selectChapter: "Select Chapter",
                 selectAChapter: "Select a Chapter",
                 selectTower: "Select Tower",
@@ -383,6 +426,7 @@ const lang_enUS = {
                 selectATitan: "Select a Titan",
                 selectGuildBoss: "Select Guild Boss",
                 selectAGuildBoss: "Select a Guild Boss",
+                // Empty states and stage titles
                 noStageEntries: "No stage entries have been defined yet.",
                 noTowerStages: "No tower stage entries have been defined yet.",
                 noTitanStages: "No titan stage entries have been defined yet.",
@@ -397,6 +441,7 @@ const lang_enUS = {
                 stages: "Stages",
                 stage: "Stage",
             },
+            // Custom combat
             customCombat: {
                 title: "Custom Combat",
                 description: "Choose the two saved teams that should face each other. The same team can be selected for both sides.",
@@ -404,7 +449,9 @@ const lang_enUS = {
                 teamTwo: "Combat Team 2",
                 createTeamPrompt: "Create a saved team on the Teams page to use it in Custom Combat.",
             },
+            // Catalogue pages
             catalogues: {
+                // Hero and banner catalogues
                 heroTitle: "Hero Catalogue",
                 banners: "Banners",
                 tierList: "Tier List",
@@ -432,6 +479,7 @@ const lang_enUS = {
                 heroDescription: "Search heroes, skills, talents, effects, attributes, rarity, element, role, and other stored hero data.",
                 bannerDescription: "Browse the banner definitions and their included heroes. Filter by hero name, rarity, element, role, main attribute, and starred status.",
                 tierListDescription: "Tier List view. Tier placements are not currently defined in the project data.",
+                // Item and set catalogues
                 itemDescription: "Search item names, unique-effect descriptions, fixed perks, rarity, drop source, location, and other stored item data.",
                 setDescription: "Browse item sets, their required attributes, drop locations, set pieces, and set bonuses.",
                 variant: "Variant: {{name}}",
@@ -441,11 +489,13 @@ const lang_enUS = {
                 noSetsMatch: "No sets match these filters.",
                 piecesCount: "Pieces ({{count}})",
                 noSetPieces: "No item pieces are currently linked to this set in the item database.",
+                // Perk catalogue
                 perkTitle: "Perk Catalogue",
                 perkDescription: "Each perk is listed once, alongside the equipment slots it can roll on.",
                 searchCount: "Search ({{resultCount}} of {{totalCount}})",
                 perkSearchPlaceholder: "Search perks or equipment slots…",
                 noPerksMatch: "No perks match this search.",
+                // Status catalogue
                 statusTitle: "Status Effect Catalogue",
                 statusDescription: "A searchable reference for the status effects currently defined in the project, including their recorded mechanics.",
                 statusProgress: "Some status-effect values and mechanics are not yet interpreted or verified correctly. Treat these details as provisional; the underlying values have not been changed.",
@@ -454,6 +504,7 @@ const lang_enUS = {
                 allCategories: "All categories",
                 specialEffects: "Special Effects",
                 noStatusesMatch: "No status effects match these filters.",
+                // Resource and gem catalogues
                 resourceTitle: "Resource Catalogue",
                 gemTitle: "Gem Catalogue",
                 resourceDescription: "Browse defined resources. Search matches resource names and descriptions.",
@@ -469,6 +520,7 @@ const lang_enUS = {
                 noGemsMatch: "No gems match that search.",
                 noResourcesMatch: "No resources match that search.",
                 rarities: "{{count}} rarities",
+                // Skills and talents catalogues
                 skillsTitle: "Skills Catalogue",
                 talentsTitle: "Talents Catalogue",
                 skillsDescription: "Every skill currently present in the hero database, with its source hero.",
@@ -481,11 +533,13 @@ const lang_enUS = {
                 noSkillsMatch: "No skills match this search.",
                 noTalentsMatch: "No talents match this search.",
             },
+            // Magic Toilet simulator
             magicToilet: {
+                // Simulator heading and banner configuration
                 title: "Magic Toilet",
                 description: "Simulate banner flushes, track Epic and Legendary pity, and compare your Legendary results with the expected average.",
                 viewSelectedBanner: "View selected Banner",
-                banners: "Banner",
+                banner: "Banner",
                 currentEpicPity: "Current Epic Pity",
                 currentLegendaryPity: "Current Legendary Pity",
                 flushAmount: "Flush amount",
@@ -500,6 +554,7 @@ const lang_enUS = {
                 flushUntilBoosted_tooltip: "Flush until one of your selected boosted heroes is pulled",
                 dontResetBoosters: "Don't reset Boosters",
                 selectBoostedHero: "Select your boosted hero to enable flushing.",
+                // Pull statistics and results
                 epicBoostersUsed: "Epic Boosters used: {{count}}",
                 legendaryBoostersUsed: "Legendary Boosters used: {{count}}",
                 rarityCount: "{{rarity}} ({{chance}}): {{count}}",
@@ -513,7 +568,9 @@ const lang_enUS = {
                 noLegendaryPulled: "No Legendary heroes pulled yet.",
                 noEpicPulled: "No Epic heroes pulled yet.",
             },
+            // Guides
             guides: {
+                // Hero guide
                 heroEyebrow: "Hero management guide",
                 heroTitle: "Find the right hero, then build them up",
                 exampleHeroes: "Example heroes",
@@ -522,12 +579,14 @@ const lang_enUS = {
                 inspectPreview: "Inspect the preview",
                 saveHero: "Save your hero",
                 modifyBuilds: "Modify your builds",
+                // Item guide
                 itemEyebrow: "Item management guide",
                 itemTitle: "Compare equipment and create your builds",
                 exampleEquipment: "Example equipment",
                 narrowList: "Narrow down the list",
                 inspectItem: "Inspect an item",
                 saveItem: "Save your item",
+                // Team guide
                 teamsEyebrow: "Team management",
                 teamsTitle: "Bring five saved heroes together",
                 exampleLineup: "Example lineup",
@@ -536,6 +595,7 @@ const lang_enUS = {
                 reviewTeamSummary: "Review the team summary",
                 organizeRoster: "Keep your roster organized",
                 exportFullTeams: "Export full teams",
+                // Simulator guide
                 simulatorTitle: "Test banner pulls without spending resources",
                 trackUsage: "Track your simulated usage!",
                 chooseBannerPity: "Choose a banner and starting pity",
@@ -544,6 +604,7 @@ const lang_enUS = {
                 reviewResults: "Review the results",
                 simulatorTip: "Changing the selected banner resets the current results and pity counters so each simulation starts with a clean banner state.",
                 simulatorWarning: "At the moment, the calculations do not respect the 'Featured Hero' getting removed from a Banner after pulling it twice.",
+                // Games guide
                 gamesTitle: "A place for future extras",
                 gamesComingLater: "The navigation entry is in place, and the page can be expanded when the first activity is ready.",
                 heroLeadCopy: "The Heroes page is your working roster. Browse the full collection, keep personal builds in Saved Heroes, and use the preview to tune a hero before adding them to a team.",
@@ -571,19 +632,25 @@ const lang_enUS = {
                 simulatorStep3: "Flush once, use the selected batch size, or continue until a Legendary appears. With persistent boosters enabled, 'Flush until Boosted' continues until one of your selected boosted heroes is pulled.",
                 simulatorStep4: "The stats row tracks pulls, souls, booster usage, rarity counts, expected Legendaries, and luck. Separate result rows show the Legendary and Epic heroes pulled.",
                 gamesLeadCopy: "This section is reserved for small game-related tools and experiments. It is not active yet, so there are no playable activities to launch here.",
+                // Reusable guide labels
                 tip: "Tip",
                 warning: "Warning",
                 comingLater: "Coming later",
             },
+            // Simulator navigation and overview
             simulators: {
+                description: "Choose a simulator from the navigation above to browse encounters or set up a custom combat matchup.",
                 adventure: "Adventure",
                 customCompact: "Custom",
             },
+            // Reused page titles
             adventureChapters: { title: "Adventure Chapters" },
             towers: { title: "Towers" },
             titans: { title: "Titans" },
             guildHunt: { title: "Guild Hunt" },
-            footer: "The game {{game}} and all images used here are owned by {{publisher}}. This site is not affiliated with {{publisher}} in any way. Fonts from {{fontProvider}}.",
+            // Shared footer sentence
+            footer: "The game {{game}} and all images used here are owned by {{publisher}}. This site is not affiliated with {{publisher}} in any way. Fonts from {{fontProvider}}",
+            // Splash page
             splash: {
                 management: "Management",
                 simulations: "Simulations",
@@ -593,25 +660,27 @@ const lang_enUS = {
                 sourceCode: "Source Code",
                 seagullAlt: "A seagull",
             },
+            // Not-found page
             notFound: {
                 title: "Sorry",
                 heading: "Looks like you've flown off course.",
                 description: "We couldn't find the page you were looking for.",
             },
+            // Games page
             games: {
                 comingSoon: "More activities coming soon",
                 description: "This section is reserved for future fun and game-related tools.",
             },
         },
-        simulators: {
-            description: "Choose a simulator from the navigation above to browse encounters or set up a custom combat matchup.",
-        },
     },
     data: {
         // The database is the English source of truth; add only exceptional overrides here.
         overrides: {
+            // Game entities
             hero: {}, item: {}, set: {}, skill: {}, talent: {}, perk: {},
+            // Effects and collectible content
             status: {}, banner: {}, resource: {}, gem: {}, masterworkMutation: {},
+            // Enum-backed labels
             attribute: {}, element: {}, role: {}, rarity: {}, equipmentSlot: {},
             resourceLocation: {}, primaryStat: {}, dropSource: {},
         },

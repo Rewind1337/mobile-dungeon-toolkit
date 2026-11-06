@@ -35,7 +35,7 @@ function SubPageTowers() {
             <section className="card w-100 simulator-selection-detail">
                 {selectedTower ? (
                     <>
-                        <SimulatorEntryDetails entry={selectedTower} title={t("app.pages.simulatorEntries.towerTitle", { number: selectedTower.id + 1, name: selectedTower.name })} emptyMessage={t("app.pages.simulators.noTowerStages")} />
+                        <SimulatorEntryDetails entry={selectedTower} title={t("app.pages.simulatorEntries.towerTitle", { number: selectedTower.id + 1, name: selectedTower.name })} emptyMessage={t("app.pages.simulatorEntries.noTowerStages")} />
                     </>
                 ) : (
                     <div className="header-big">{t("app.pages.simulatorEntries.selectATower")}</div>
