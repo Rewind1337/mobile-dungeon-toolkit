@@ -484,7 +484,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                     })}
                 </>}
 
-                <div className='header'>{t("app.pages.items.preview.perks")}</div>
+                <div className='header'>{t("app.shared.perks")}</div>
                 {selectedPerks.length === 0
                     ? <div>{t("app.pages.items.preview.noPerks")}</div>
                     : selectedPerks.map((perk, index) => (
