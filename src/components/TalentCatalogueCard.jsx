@@ -17,6 +17,7 @@ export default function TalentCatalogueCard({
     isConflicted = false,
     onClick
 }) {
+    const t = useTranslate()
     const sourceListVisible = sources.length > 0 && (showSourceHero || showSourcePosition)
     return <CatalogueEntryCard
         className={`talent-catalogue-entry ${className} ${interactive ? "is-interactive" : ""} ${isActive ? "is-active" : ""} ${isLocked ? "is-locked" : ""} ${isConflicted ? "is-conflicted" : ""}`.trim()}
