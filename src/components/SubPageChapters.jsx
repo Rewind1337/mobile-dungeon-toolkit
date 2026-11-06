@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useTranslate } from "../hooks/useTranslate.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import { SimulatorEntryDetails } from "./SimulatorEntryList.jsx"
 import Button from "./Button.jsx"
@@ -45,6 +46,7 @@ const SHADOW_CHAPTERS = [
 const SHADOW_THRESHOLDS = [1, 2, 3]
 
 function Chapter({ chapter, shadowChapter, onSelect }) {
+    const t = useTranslate()
     const thresholdIcons = {
         1: Threshold1Icon,
         2: Threshold2Icon,
@@ -71,18 +73,19 @@ function Chapter({ chapter, shadowChapter, onSelect }) {
                         dataId={shadowChapter.id}
                         dataThreshold={threshold}
                         fillPercent={0}
-                        title={"Shadow World " + threshold + " · Threshold " + threshold}
-                        text={"SW " + threshold}
+                        title={t("app.pages.simulatorEntries.shadowWorldThreshold", { number: threshold })}
+                        text={t("app.pages.simulatorEntries.shadowWorldShort", { number: threshold })}
                         suffix={<img src={thresholdIcons[threshold]} alt="" loading="lazy" decoding="async" draggable={false} />}
                         onClick={() => onSelect(shadowChapter, threshold)}
                     />
                 ))
-                : <span className="chapter-shadow-placeholder text" aria-label="Shadow World chapters coming soon">Soon...</span>}
+                : <span className="chapter-shadow-placeholder text" aria-label={t("app.pages.simulatorEntries.shadowWorldComingSoon")}>{t("app.shared.comingSoon")}</span>}
         </div>
     )
 }
 
 function SubPageChapters() {
+    const t = useTranslate()
     const { listHeight, listRef, events } = useDynamicList(0, true)
     const [selectedChapter, setSelectedChapter] = useState(null)
 
@@ -91,7 +94,7 @@ function SubPageChapters() {
     return (
         <div className="simulator-selection-layout page flex-row w-100">
             <section className="card w-66 simulator-selection-list">
-                <div className="header-big">Select Chapter</div>
+                <div className="header-big">{t("app.pages.simulatorEntries.selectChapter")}</div>
                 <div ref={listRef} {...events} className="list chapter-list flex-col" style={{ maxHeight: listHeight }}>
                     {CHAPTERS.map(chapter => (
                         <Chapter key={`chapter-${chapter.id}`} chapter={chapter}
@@ -103,10 +106,10 @@ function SubPageChapters() {
             <section className={"card w-100 simulator-selection-detail" + (selectedChapter?.threshold > 0 ? " is-shadow-world" : "")}>
                 {selectedChapter ? (
                     <>
-                        <SimulatorEntryDetails entry={selectedChapter.chapter} title={"Chapter " + (selectedChapter.chapter.id + 1) + " - " + selectedChapter.chapter.name + (selectedChapter.threshold > 0 ? " - Threshold " + selectedChapter.threshold : "")} emptyMessage="No stage entries have been defined yet." />
+                        <SimulatorEntryDetails entry={selectedChapter.chapter} title={t("app.pages.simulatorEntries.chapterTitle", { number: selectedChapter.chapter.id + 1, name: selectedChapter.chapter.name, threshold: selectedChapter.threshold > 0 ? t("app.pages.simulatorEntries.thresholdSuffix", { number: selectedChapter.threshold }) : "" })} emptyMessage={t("app.pages.simulatorEntries.noStageEntries")} />
                     </>
                 ) : (
-                    <div className="header-big">Select a Chapter</div>
+                    <div className="header-big">{t("app.pages.simulatorEntries.selectAChapter")}</div>
                 )}
             </section>
         </div>
