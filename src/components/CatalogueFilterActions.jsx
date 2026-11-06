@@ -3,17 +3,15 @@ import Button from "./Button.jsx"
 import { useTranslation } from "../hooks/useTranslation.jsx"
 
 export default function CatalogueFilterActions({ filtersVisible, onHide, onShow, onClear }) {
-    const showFilters = useTranslation("app.common.showFilters")
-    const showCatalogueFilters = useTranslation("app.common.showCatalogueFiltersTooltip")
-    const hideFilters = useTranslation("app.common.hideFilters")
-    const clearFilters = useTranslation("app.common.clearFilters")
+    const showFilters = useTranslation("app.shared.showFilters")
+    const hideFilters = useTranslation("app.shared.hideFilters")
+    const clearFilters = useTranslation("app.shared.clearFilters")
     const floatingShowButton = !filtersVisible && typeof document !== "undefined"
         ? createPortal(
             <Button
                 className="catalogue-show-filters-fab"
                 text={showFilters}
                 color={5}
-                title={showCatalogueFilters}
                 onClick={onShow}
             />,
             document.body
