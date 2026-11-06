@@ -28,6 +28,12 @@ t("app.shared.close")
 t("app.pages.teams.teamName", { name: "Dungeon Team" })
 ```
 
+## UI key conventions
+
+Use `app.pages.<page>.title` for a page heading that is reused, including on splash tiles and subpage tabs. Keep compact route labels under `app.pages.simulators` and the general simulator overview copy at `app.simulators.description`. Keep one-off prose as a complete sentence or template rather than fragmenting it into unrelated keys; the splash footer is `app.pages.footer` and uses `{{game}}`, `{{publisher}}`, and `{{fontProvider}}` placeholders for its linked logos.
+
+Use a `_tooltip` suffix for dictionary entries that are only used by native HTML `title` attributes. Keep visible labels and database content names under their normal keys.
+
 ## Database content overrides
 
 The database remains the English source of truth. Each locale contains the same optional collection names, but only translated fields need to be present. Collections are singular and keyed by stable database IDs:

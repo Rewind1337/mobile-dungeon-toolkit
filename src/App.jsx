@@ -184,7 +184,7 @@ function FooterLogo({ type }) {
 }
 
 function renderFooterCopy(template) {
-    return template.split(/(\\{\\{game\\}\\}|\\{\\{publisher\\}\\}|\\{\\{fontProvider\\}\\})/g).map((part, index) => {
+    return template.split(/(\{\{game\}\}|\{\{publisher\}\}|\{\{fontProvider\}\})/g).map((part, index) => {
         if (part === "{{game}}") return <FooterLogo key={index} type="game" />
         if (part === "{{publisher}}") return <FooterLogo key={index} type="publisher" />
         if (part === "{{fontProvider}}") return <FooterLogo key={index} type="fontProvider" />

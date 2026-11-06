@@ -35,7 +35,6 @@ const lang_deDE = {
             attribute: "Attribut",
             attributes: "Attribute",
             element: "Element",
-            elements: "Elemente",
         },
         pages: {
             adventureChapters: { title: "Abenteuerkapitel" },
