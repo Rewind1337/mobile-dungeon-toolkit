@@ -74,7 +74,7 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
 
     return (
         <section className="resource-catalogue">
-            <CatalogueViewSwitch ariaLabel={t("app.pages.catalogues.resourceViews")} view={initialView} onViewChange={onViewChange} options={[
+            <CatalogueViewSwitch view={initialView} onViewChange={onViewChange} options={[
                 { label: t("app.pages.catalogues.resourceTitle"), value: "resources" },
                 { label: t("app.pages.catalogues.gemTitle"), value: "gems" },
             ]} />
