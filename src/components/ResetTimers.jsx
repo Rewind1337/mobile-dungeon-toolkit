@@ -31,6 +31,7 @@ function ResetTimers() {
     const ariaLabel = useTranslation("app.pages.resetTimers.ariaLabel")
     const dailyLabel = useTranslation("app.pages.resetTimers.daily")
     const weeklyLabel = useTranslation("app.pages.resetTimers.weekly")
+    const clockLabel = useTranslation("app.shared.clock")
     const zeroSeconds = useTranslation("app.pages.resetTimers.zeroSeconds")
     const unitLabels = {
         day: {
@@ -67,7 +68,7 @@ function ResetTimers() {
                     <span className="reset-timer-label header">{dailyLabel}</span>
                     <span className="reset-timer-countdown text-big">{formatRemaining(dailyReset.getTime() - now, unitLabels, zeroSeconds)}</span>
                 </div>
-                <div className="reset-timer-clock card" aria-label={useTranslation("app.shared.clock")}>
+                <div className="reset-timer-clock card" aria-label={clockLabel}>
                     <img src={Clock} alt="" draggable={false} />
                 </div>
                 <div className="reset-timer card">
