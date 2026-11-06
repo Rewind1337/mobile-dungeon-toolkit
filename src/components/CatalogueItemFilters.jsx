@@ -64,6 +64,7 @@ function CatalogueItemFilters({
     const mainAttributeLabel = useTranslation("app.pages.items.filters.mainAttribute")
     const attributeAriaLabel = useTranslation("app.pages.items.filters.attributeAriaLabel", undefined, { attribute: attributeLabel.toLowerCase() })
     const allAttributesLabel = useTranslation("app.pages.items.filters.allAttributes")
+    const rarityAriaLabel = useTranslation("app.pages.items.filters.rarityAriaLabel")
     const setAttributeLabel = useTranslation("app.pages.items.filters.setAttribute")
     const setAttributeAriaLabel = useTranslation("app.pages.items.filters.setAttributeAriaLabel")
     const setPiecesLabel = useTranslation("app.pages.items.filters.setPieces")
@@ -172,7 +173,7 @@ function CatalogueItemFilters({
                     <label className="catalogue-filter">
                         <span className="catalogue-control-label text">{setAttributeLabel}</span>
                         <select aria-label={setAttributeAriaLabel} value={setMainAttributeFilter ?? "all"} onChange={event => setAttributeFilterForSets?.(event.target.value)}>
-                            <option value="all">All attributes</option>
+                            <option value="all">{allAttributesLabel}</option>
                             {Object.values(PRIMARY_STAT_DEFINITIONS).map(attribute =>
                                 <option key={attribute.id} value={String(attribute.id)}>{humanize(attribute.name)}</option>
                             )}
@@ -204,7 +205,7 @@ function CatalogueItemFilters({
             {isListView && setRarityFilter && (
                 <label className="catalogue-filter">
                     <span className="catalogue-control-label text">{rarityLabel}</span>
-                    <select aria-label="Filter by rarity" value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
+                    <select aria-label={rarityAriaLabel} value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
                         <option value="all">{allRaritiesLabel}</option>
                         {Object.values(RARITY_DEFINITIONS).map(rarity =>
                             <option key={rarity.id} value={String(rarity.id)}>{humanize(rarity.name)}</option>
