@@ -1,210 +1,47 @@
 # Contributing
 
-Thanks for helping improve Mobile Dungeon Toolkit. Contributions are welcome, especially corrections to game data, UI improvements, and additional translations.
-
-## Development setup
-
-The project uses Vite and React.
-
-```bash
-npm install
-npm run dev
-```
-
-Before submitting changes, run:
-
-```bash
-npm run lint
-npm run build
-```
-
-Keep pull requests focused, describe the user-visible changes, and mention any checks you ran. For changes involving game data, include the source or reasoning where practical. Game data is manually researched and can be incomplete; do not silently turn assumptions into confirmed mechanics.
+Thanks for helping improve Mobile Dungeon Toolkit! Contributions are welcome, and you do not need to be a programmer to make a useful one. Knowing the game, being comfortable with basic computer tasks, and speaking another language are already enough to help improve the translations.
 
 ## Localization at a glance
 
-Locale files live in `src/localization/`:
+The language files live in **src/localization/**:
 
-- `lang_enUS.jsx` is the source dictionary and fallback for interface wording.
-- `lang_deDE.jsx` is an example partial German translation. It intentionally contains only translated entries.
-- `index.js` imports locales, sets `DEFAULT_LANGUAGE`, and registers them in `LANGUAGE_DICTIONARIES`.
+- **lang_enUS.jsx** is the English reference.
+- **lang_deDE.jsx** is the German translation example. It is still being filled in; once complete, it will be a useful full-language template for contributors.
+- Other languages follow the same file structure, for example **lang_frFR.jsx** for French.
 
-Each locale has two main areas:
+A language file has two main areas:
 
-```jsx
+~~~jsx
 const lang_example = {
     app: {
-        // Interface text: navigation, labels, messages, instructions, and page copy.
+        // Translated interface wording: labels, messages, instructions, and page text.
     },
     data: {
         overrides: {
-            // Optional translations for database-backed game content.
+            // Optional translations for game content such as items and status effects.
         },
     },
 }
-```
+~~~
 
-Keep interface wording under `app`. Keep translated hero, item, skill, perk, status, banner, resource, gem, and enum content under `data.overrides`. Do not duplicate the original database in a locale file: missing translations are expected and fall back automatically.
+You can contribute just to the visible interface text, just to game content, or to both. It is perfectly fine to submit a small or incomplete translation; anything not translated yet continues to use the English wording or original game data.
 
-## How locale selection works
+## Adding a new language
 
-The application is currently initialized with the default English locale in `src/main.jsx`:
+For example, to start a French translation:
 
-```jsx
-<LocalizationProvider>
-    <App />
-</LocalizationProvider>
-```
+1. Open **src/localization/lang_deDE.jsx** on GitHub. When the German translation is complete, copy its contents as a starting point and create a new file named **src/localization/lang_frFR.jsx**. Until then, use **lang_enUS.jsx** alongside it so you do not miss entries that are not yet present in the German example.
+2. Translate the readable text values into French. Keep the structure and all existing keys exactly as they are: do not rename section names, property names, IDs, or placeholders such as **{{chance}}**. The keys are how the application connects each translation to the right place.
+3. Make the change directly on GitHub. For an existing language file, open it and choose the pencil icon to edit it. To add a new file, use **Add file → Create new file** and enter the full path **src/localization/lang_frFR.jsx**. When you are ready, choose the option to create a new branch and propose the changes—do not commit directly to **main**. Give the proposal a clear title and a short note about the language or corrections, then create the pull request.
 
-There is not yet a language selector in the application UI. To test the partial German locale locally, temporarily pass its registered locale ID:
+You do not need to edit application code or register the language yourself. The project maintainers will take care of the technical setup needed to make a new language available.
 
-```jsx
-<LocalizationProvider initialLanguage="deDE">
-    <App />
-</LocalizationProvider>
-```
+## Example: translating game content
 
-Revert that change when you are finished testing English.
+Game-content translations can be added in the **data.overrides** area. Keep the collection names, IDs, and field names as shown; translate only the readable text:
 
-For an in-app language control in a component, use the localization context:
-
-```jsx
-import { useLocalization } from "../hooks/useLocalization.jsx"
-
-function LanguageControl() {
-    const { language, setLanguage } = useLocalization()
-
-    return (
-        <select value={language} onChange={event => setLanguage(event.target.value)}>
-            <option value="enUS">English</option>
-            <option value="deDE">Deutsch</option>
-        </select>
-    )
-}
-```
-
-Only locale IDs registered in `LANGUAGE_DICTIONARIES` are accepted by `setLanguage`.
-
-## Translating interface wording
-
-Use `useTranslate` when a component needs several strings. Call the hook once, then use the returned `t` function:
-
-```jsx
-import { useTranslate } from "../hooks/useTranslate.jsx"
-
-function ResultSummary({ count }) {
-    const t = useTranslate()
-
-    return (
-        <p>
-            {t("app.pages.catalogues.searchCount", {
-                resultCount: count,
-                totalCount: count,
-            })}
-        </p>
-    )
-}
-```
-
-For a single value, `useTranslation` is also available:
-
-```jsx
-import { useTranslation } from "../hooks/useTranslation.jsx"
-
-function PageHeading() {
-    const title = useTranslation("app.navigation.heroes")
-    return <h1>{title}</h1>
-}
-```
-
-Its arguments are `useTranslation(key, language, values)`. Leave the second argument undefined to use the active locale from `LocalizationProvider`; supply the third argument for interpolation. Prefer `useTranslate` when several strings are needed in one component so the locale-bound translator is created once.
-
-### Interface key conventions
-
-Use dot-separated paths, grouped by purpose:
-
-- `app.navigation` for primary navigation.
-- `app.common` for generally reusable actions and common UI wording.
-- `app.shared` for labels and text reused throughout multiple pages.
-- `app.pages.<page>` for wording that belongs to one page.
-- `app.pages.<page>.title` for a full page title reused in multiple places.
-- `app.pages.simulators` for simulator route labels and the simulator overview description.
-
-Keep full sentences together where their grammar depends on the surrounding words. The splash footer is a single `app.pages.footer` template, not several translated fragments.
-
-Use a `Tooltip` suffix for strings used exclusively by native HTML `title` attributes. For example, `app.shared.expandPreviewTooltip`. Do not use that suffix for visible labels or database-backed content names.
-
-The English dictionary is grouped with comments such as `// shared search`, `// shared elements`, and `// Hero preview`. Put new keys beside related entries and add a short comment when a section grows large enough to benefit from one. Keep each key unique within its containing object.
-
-### Interpolation
-
-Use named placeholders with double braces:
-
-```jsx
-searchCount: "Search ({{resultCount}} of {{totalCount}})",
-helpForTooltip: "Help for {{title}}",
-```
-
-Pass values by name:
-
-```jsx
-t("app.pages.catalogues.searchCount", {
-    resultCount: filtered.length,
-    totalCount: entries.length,
-})
-```
-
-A translated sentence can reorder placeholders to suit its language. Unknown placeholders remain visible, which makes missing values easier to spot. Interpolated values are rendered as text; templates are never interpreted as HTML.
-
-## Translating database-backed game content
-
-Use `useContentTranslation` for content stored in the game database. It resolves a field using this order:
-
-1. The active locale's override.
-2. The English locale's override, if one exists.
-3. The original value from the database.
-
-Example:
-
-```jsx
-import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
-
-function ItemName({ item }) {
-    const tc = useContentTranslation()
-    return <span>{tc("item", item.id, "name", item.name)}</span>
-}
-```
-
-The call signature is:
-
-```jsx
-tc(collection, stableId, fieldPath, originalValue, interpolationValues)
-```
-
-The final interpolation-values argument is optional. Field paths can point into nested values, for example `"effects.unique"`.
-
-### Supported content collections and IDs
-
-Use the actual stable identifiers from the game data:
-
-| Collection | Stable ID |
-|---|---|
-| `hero` | `hero.id`, e.g. `thor` |
-| `item` | `item.id`, including slot prefix, e.g. `weapon:pumpkin_scythe` |
-| `set` | `set.id`, e.g. `breaker` |
-| `skill` | `heroId:skillIndex`, e.g. `thor:0` |
-| `talent` | `heroId:talentPosition`, e.g. `thor:21` |
-| `perk` | Perk enum key, e.g. `HEALTH_PERCENT` |
-| `status` | Status key, e.g. `burn` |
-| `banner` | `banner.id`, e.g. `everyday_heroes` |
-| `resource`, `gem` | `resource.id`, e.g. `ruby_common` |
-| `masterworkMutation` | `PERK_KEY:mutationId`, e.g. `AGILITY_PERCENT:1` |
-| `attribute`, `element`, `role`, `rarity`, `equipmentSlot`, `resourceLocation`, `primaryStat`, `dropSource` | Corresponding enum key |
-
-Only add the fields that are actually translated. Common fields include `name`, `description`, nested `effects.unique`, and banner-specific text such as `conditionalHeroCondition`.
-
-Example:
-
-```jsx
+~~~jsx
 data: {
     overrides: {
         item: {
@@ -223,31 +60,42 @@ data: {
         },
     },
 }
-```
+~~~
 
-Do not copy English database values into locale files. The database remains the English source of truth. Add an English override only when an existing database string genuinely needs a UI-facing correction without changing the game data itself.
+The database remains the original source for game data, so there is no need to copy entire item, hero, or status definitions into a language file. Add only the text that should appear differently in your language.
 
-### Content placeholders and legacy database text
+## Placeholders in translated text
 
-Use meaningful placeholders such as `{{chance}}`, `{{value}}`, `{{status}}`, and `{{duration}}`. For unique weapon effects, use `{{chance}}` for a probability percentage and `{{value}}` for another percentage or scalar effect value.
+Some sentences contain values that the application fills in automatically. They look like **{{chance}}**, **{{value}}**, **{{status}}**, or **{{duration}}**.
 
-Some original database descriptions still contain the legacy `$e` marker. The content interpolator normalizes those existing source-data markers to `{{value}}` for compatibility. Do not use `$e` in new unique weapon definitions or new locale overrides; use named placeholders instead.
-
-## Adding a new language
-
-1. Create a file such as `src/localization/lang_frFR.jsx`, using the same `app` and `data.overrides` roots as the other locale files.
-2. Add only the translated interface keys and game-content fields. Omitted keys deliberately fall back to English or to the original database value.
-3. Export the dictionary as the default export.
-4. Import it in `src/localization/index.js` and add it to `LANGUAGE_DICTIONARIES` with a locale ID such as `frFR`.
-5. Test it by setting `initialLanguage="frFR"` on `LocalizationProvider`, then run the lint and production build checks.
-
-Use `lang_deDE.jsx` as an example of a partial locale. A translation does not need to be complete before it can be registered, but untranslated wording will continue to appear in English.
+Keep each placeholder exactly as written, including its spelling and double braces. You can move it to a different position in the sentence when your language needs a different word order, but do not translate it, remove it, or replace it with a fixed number. Only use placeholders that are already present in the English wording or game-content entry.
 
 ## Translation review checklist
 
-- Confirm every new key is used and every new `t()` / `tc()` reference resolves.
-- Keep placeholder names intact, while allowing their order to change between languages.
-- Preserve the namespace and `Tooltip` naming conventions.
-- Use stable database IDs, not display names, for content overrides.
-- Check that the translated sentence reads naturally as a whole; avoid translating fragments in isolation.
-- Test the locale in the application and run `npm run lint` and `npm run build`.
+Before proposing a translation, it helps to check that:
+
+- The wording sounds natural and is easy to understand in your language.
+- Game terms, hero names, item names, skills, and effects are consistent wherever they appear.
+- The translation describes the same in-game effect as the English text. Do not guess at unclear mechanics; leave a note in the pull request so someone can check them.
+- Keys, section names, IDs, field names, and placeholders have not been changed—only the readable text values should be translated.
+- You have checked the surrounding English wording when a sentence is unclear. Partial translations are welcome, so it is better to leave an uncertain entry for review than to invent a meaning.
+
+You do not need to run the project, install development tools, or know React to contribute a translation. A pull request made through GitHub's website is enough. Maintainers can help with anything that requires code changes or testing.
+
+## Code contributions
+
+For changes to the application itself, the project uses Vite and React. Set up a local copy with:
+
+~~~bash
+npm install
+npm run dev
+~~~
+
+Before submitting code changes, run:
+
+~~~bash
+npm run lint
+npm run build
+~~~
+
+Keep code pull requests focused, describe the user-visible changes, and mention the checks you ran. For changes involving game data, include the source or reasoning where practical. Game data is manually researched and can be incomplete; do not silently turn assumptions into confirmed mechanics.
