@@ -274,6 +274,8 @@ const lang_enUS = {
                 pulledHeroes: "Pulled Heroes ({{count}})",
                 onlyDefinedHeroes: "Only defined Epic and Legendary heroes are shown.",
                 resetResults: "Reset Results",
+                legendaryHeroes: "Legendary Heroes ({{count}})",
+                epicHeroes: "Epic Heroes ({{count}})",
                 pulledLegendaryHeroes: "Pulled Legendary heroes",
                 pulledEpicHeroes: "Pulled Epic heroes",
                 noLegendaryPulled: "No Legendary heroes pulled yet.",
