@@ -1,4 +1,5 @@
 import { ELEMENT_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
+import { useTranslate } from "../hooks/useTranslate.jsx"
 import { elementSprites } from "../database/db_sprites.jsx"
 
 const humanize = value => String(value ?? "")
@@ -18,7 +19,7 @@ function formatMetadataValue(value) {
 export function SimulatorElementChips({ elementIds = [], size = "default" }) {
     if (!Array.isArray(elementIds) || elementIds.length === 0) return null
     return (
-        <div className={"simulator-element-chips" + (size === "large" ? " is-large" : "")} aria-label="Elements">
+        <div className={"simulator-element-chips" + (size === "large" ? " is-large" : "")} aria-label={t("app.shared.elements")}>
             {elementIds.map(id => {
                 const name = getEnumNameById(ELEMENT_DEFINITIONS, Number(id)) ?? "Unknown"
                 const key = String(name).toLowerCase()
@@ -73,7 +74,7 @@ export function SimulatorEntryDetails({
                     ))}
                 </dl>
             )}
-            <div className="header">Stages</div>
+            <div className="header">{t("app.pages.simulatorEntries.stages")}</div>
             <SimulatorEntryList entries={entry.stages} entryLabel="Stage" emptyMessage={emptyMessage} />
         </div>
     )
