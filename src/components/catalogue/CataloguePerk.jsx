@@ -45,7 +45,7 @@ function CataloguePerk() {
                 <label className="catalogue-filter">
                     <span className="catalogue-control-label text">{t("app.shared.slotLabel")}</span>
                     <select aria-label={t("app.pages.catalogues.filterPerksBySlot")} value={slotFilter} onChange={event => setSlotFilter(event.target.value)}>
-                        <option value="all">{t("app.pages.catalogues.allSlots")}</option>
+                        <option value="all">{t("app.shared.allSlots")}</option>
                         {Object.keys(POSSIBLE_PERKS).map(slot => <option key={slot} value={slot}>{{ WEAPONS: "Weapon", HELMETS: "Helmet", ARMORS: "Armor", RINGS: "Ring", NECKLACES: "Necklace" }[slot] ?? slot}</option>)}
                     </select>
                 </label>
