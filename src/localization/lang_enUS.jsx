@@ -20,12 +20,23 @@ const lang_enUS = {
             helpFor: "Help for {{title}}",
             close: "Close",
             loading: "Loading...",
+            showFilters: "Show filters",
+            showCatalogueFilters: "Show catalogue filters",
+            hideFilters: "Hide filters",
+            clearFilters: "Clear filters",
         },
         pages: {
             resetTimers: {
                 ariaLabel: "Reset timers",
                 daily: "Daily Reset",
                 weekly: "Weekly Reset",
+                zeroSeconds: "0 seconds",
+                units: {
+                    day: { one: "day", other: "days" },
+                    hour: { one: "hour", other: "hours" },
+                    minute: { one: "minute", other: "minutes" },
+                    second: { one: "second", other: "seconds" },
+                },
             },
             heroes: {
                 filters: {
