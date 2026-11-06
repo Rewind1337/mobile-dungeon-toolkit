@@ -20,7 +20,7 @@ export function SimulatorElementChips({ elementIds = [], size = "default" }) {
     const t = useTranslate()
     if (!Array.isArray(elementIds) || elementIds.length === 0) return null
     return (
-        <div className={"simulator-element-chips" + (size === "large" ? " is-large" : "")} aria-label={t("app.shared.elements")}>
+        <div className={"simulator-element-chips" + (size === "large" ? " is-large" : "")} aria-label={t("app.shared.elements", { element: t("app.shared.element") })}>
             {elementIds.map(id => {
                 const name = getEnumNameById(ELEMENT_DEFINITIONS, Number(id)) ?? "Unknown"
                 const key = String(name).toLowerCase()
@@ -36,7 +36,6 @@ export function SimulatorElementChips({ elementIds = [], size = "default" }) {
 }
 
 function SimulatorEntryList({ entries = [], entryLabel = "Entry", emptyMessage }) {
-    const t = useTranslate()
     if (!Array.isArray(entries) || entries.length === 0) {
         return <p className="text simulator-empty-data">{emptyMessage ?? ("No " + entryLabel.toLowerCase() + " entries have been defined yet.")}</p>
     }

@@ -91,7 +91,7 @@ export function TeamOverview({ team, savedHeroes }) {
     return (
         <div className="team-info-column">
             <section className="team-info-section">
-                <h3 className="team-info-heading header">{t("app.shared.attributes")}</h3>
+                <h3 className="team-info-heading header">{t("app.shared.attributes", { attribute: t("app.shared.attribute") })}</h3>
                 <div className="team-info-chips">
                     {attributes.map(({ hero, index, name, key, icon }) => (
                         <span

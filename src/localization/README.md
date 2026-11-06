@@ -79,7 +79,7 @@ The English locale deliberately has empty override collections. Do not copy the 
 
 ## Interpolation in content
 
-Content templates support named placeholders such as `{{chance}}`, `{{value}}`, `{{status}}`, and `{{duration}}`. Existing database `$e` markers remain supported and map to `{{value}}`. For unique item effects, the preview supplies the selected rarity's percentage, the detected and localized status name(s), and the duration parsed from the database effect text.
+Content templates support named placeholders such as `{{chance}}`, `{{value}}`, `{{status}}`, and `{{duration}}`. Use `{{chance}}` for a chance percentage and `{{value}}` for other percentages or scalar effect values. Existing database descriptions that still contain `$e` are normalized to `{{value}}` before interpolation; this is retained for source-data compatibility only. New `UNIQUE_WEAPON_DEFINITIONS` entries and locale overrides should use named placeholders rather than `$e`. For unique item effects, the preview supplies the selected rarity's percentage, the detected and localized status name(s), and the duration parsed from the database effect text.
 
 Interpolated values are inserted as ordinary text, never parsed as HTML. Unknown placeholders are left visible so missing values are easy to spot. A translation can reorder placeholders naturally for its language.
 

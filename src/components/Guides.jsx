@@ -104,6 +104,7 @@ export function ItemManagementGuide() {
 }
 
 export function TeamManagementGuide() {
+    const t = useTranslate()
     const members = [
         [AeternaSprite, "Aeterna"],
         [VoidAssassinSprite, "Void Assassin"],

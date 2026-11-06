@@ -9,6 +9,7 @@ import "../css/infos.scss"
 import "../css/infos_resources.scss"
 
 function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null, featuredHero = null }) {
+    const t = useTranslate()
     if (heroes.length === 0) return null
     const regularPool = oddsPool.filter(hero => hero.id !== featuredHero?.id)
     const totalPoolWeight = regularPool.reduce(

@@ -32,6 +32,10 @@ const lang_deDE = {
             dropSource: "Beutequelle",
             unspecified: "Nicht angegeben",
             guildHuntShort: "GJ",
+            attribute: "Attribut",
+            attributes: "Attribute",
+            element: "Element",
+            elements: "Elemente",
         },
     },
     data: {

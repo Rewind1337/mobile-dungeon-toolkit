@@ -6,12 +6,12 @@
 export function interpolateContent(template, values = {}) {
     if (typeof template !== "string") return template
     const safeValues = values && typeof values === "object" ? values : {}
-    return template.replace(/\$e|\{\{\s*([a-zA-Z][\w]*)\s*\}\}/g, (placeholder, key) => {
-        const name = placeholder === "$e" ? "value" : key
-        return Object.prototype.hasOwnProperty.call(safeValues, name)
-            ? String(safeValues[name] ?? "")
+    const normalizedTemplate = template.replaceAll("$e", "{{value}}")
+    return normalizedTemplate.replace(/\{\{\s*([a-zA-Z][\w]*)\s*\}\}/g, (placeholder, key) => (
+        Object.prototype.hasOwnProperty.call(safeValues, key)
+            ? String(safeValues[key] ?? "")
             : placeholder
-    })
+    ))
 }
 
 function getContentOverride(dictionary, type, id, field) {
