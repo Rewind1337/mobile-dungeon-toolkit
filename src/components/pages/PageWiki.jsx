@@ -198,7 +198,7 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
                         <div className="catalogue-overview-slot-list">{rows(itemCountBy("slot", EQUIPMENT_SLOT_DEFINITIONS), "slot", id => onNavigate?.("item-catalogue", { slot: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
-                        <h3 className="header">By main attribute</h3>
+                        <h3 className="header">{t("app.pages.wiki.byMainAttribute")}</h3>
                         <div className="catalogue-overview-slot-list">{rows(itemCountBy("mainAttribute", PRIMARY_STAT_DEFINITIONS), "primary-stat", id => onNavigate?.("item-catalogue", { attribute: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
