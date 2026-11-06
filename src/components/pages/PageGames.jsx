@@ -4,7 +4,7 @@ import { useTranslation } from "../../hooks/useTranslation.jsx"
 
 export default function PageGames() {
     const comingSoon = useTranslation("app.pages.games.comingSoon")
-    const title = useTranslation("app.pages.games.title")
+    const title = useTranslation("app.navigation.games")
     const description = useTranslation("app.pages.games.description")
 
     return (
