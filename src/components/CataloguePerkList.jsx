@@ -4,7 +4,7 @@ import { getPerkKey, getPerkLabel } from "../js/catalogueItemUtils.jsx"
 import "../css/infos.scss"
 import "../css/infos_items.scss"
 
-export default function CataloguePerkList({ perks, label = "Perks" }) {
+export default function CataloguePerkList({ perks, label }) {
     const t = useTranslate()
     const visiblePerks = (perks ?? []).filter(perk => {
         const key = getPerkKey(perk)
@@ -13,7 +13,7 @@ export default function CataloguePerkList({ perks, label = "Perks" }) {
 
     return (
         <section className="catalogue-perks card">
-            <div className="catalogue-section-label text">{label}</div>
+            <div className="catalogue-section-label text">{label ?? t("app.shared.perks")}</div>
             {visiblePerks.length === 0
                 ? <p className="catalogue-muted">{t("app.shared.noneRecorded")}</p>
                 : <ul className="catalogue-perk-list flex-row">
