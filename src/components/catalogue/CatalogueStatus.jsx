@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import { useTranslate } from "../../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../../hooks/useContentTranslation.jsx"
 import { matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
 import { STATUS_EFFECT_DEFINITIONS } from "../../database/enums.jsx"
 import CatalogueFilterActions from "../CatalogueFilterActions.jsx"
@@ -7,14 +8,14 @@ import StatusCatalogueCard from "../StatusCatalogueCard.jsx"
 import { STATUS_DESCRIPTIONS, getCategory } from "../../js/statusCatalogueUtils.jsx"
 import { humanize } from "../../js/utils.js"
 
-function matchesStatusSearch(status, rawQuery) {
+function matchesStatusSearch(status, rawQuery, tc) {
     // Polarity flags are handled as query predicates instead of searching their property names.
     const searchableStatus = { ...status }
     delete searchableStatus.mitigatable
     delete searchableStatus.removable
     const category = getCategory(status)
-    const description = STATUS_DESCRIPTIONS[status.name] ?? humanize(status.effectType ?? "effect")
-    const searchable = [status.name, humanize(status.name), category, description, status.effectType ?? "", JSON.stringify(searchableStatus)].join(" ")
+    const description = tc("status", status.name, "description", STATUS_DESCRIPTIONS[status.name] ?? humanize(status.effectType ?? "effect"))
+    const searchable = [status.name, humanize(status.name), tc("status", status.name, "name", humanize(status.name)), category, description, status.effectType ?? "", JSON.stringify(searchableStatus)].join(" ")
 
     const matchesPolarityTerm = term => {
         // Missing flags are shown as positive in the catalogue UI.
@@ -58,6 +59,7 @@ function matchesStatusSearch(status, rawQuery) {
 
 function CatalogueStatus() {
     const t = useTranslate()
+    const tc = useContentTranslation()
     const [search, setSearch, commitSearch] = useUrlSearch()
     const [categoryFilter, setCategoryFilter] = useState("all")
     const [filtersVisible, setFiltersVisible] = useState(true)
@@ -69,13 +71,13 @@ function CatalogueStatus() {
     const filteredStatuses = useMemo(() => {
         return statuses.filter(status => {
             const category = getCategory(status)
-            return matchesStatusSearch(status, search)
+            return matchesStatusSearch(status, search, tc)
                 && (categoryFilter === "all"
                     || (categoryFilter === "special"
                         ? category.startsWith("Special")
                         : category === (categoryFilter === "buff" ? "Buff" : "Debuff")))
         })
-    }, [statuses, search, categoryFilter])
+    }, [statuses, search, categoryFilter, tc])
 
     const clearFilters = () => { setSearch(""); commitSearch(""); setCategoryFilter("all") }
 

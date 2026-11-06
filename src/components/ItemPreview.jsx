@@ -12,6 +12,8 @@ import MasterworkSrc from '../sprites/masterwork.webp'
 import Button from './Button.jsx'
 import { useTranslate } from '../hooks/useTranslate.jsx'
 import ItemPerk from './ItemPerk.jsx'
+import { useContentTranslation } from '../hooks/useContentTranslation.jsx'
+import { getEffectStatuses } from '../js/catalogueItemUtils.jsx'
 
 import '../css/item.scss'
 
@@ -82,6 +84,7 @@ function normalizeMutationSelections(mutations, masterworkLevel, maxMasterworkLe
 
 function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, onEquipItem, onExportItem, setsRef, equippedItems = [] }) {
     const t = useTranslate()
+    const tc = useContentTranslation()
     const [itemObj, setItemObj] = useState(null)
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
@@ -294,19 +297,19 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
             <div className='item-preview-metadata'>
                 <span className='catalogue-chip text item-preview-slot'>
                     {iconSprites[String(SLOT_INDEX_TO_NAME_MAP[itemObj.slot] ?? '').toLowerCase()] && <img className='catalogue-chip-icon' src={iconSprites[String(SLOT_INDEX_TO_NAME_MAP[itemObj.slot] ?? '').toLowerCase()]} alt='' />}
-                    {getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? SLOT_INDEX_TO_NAME_MAP[itemObj.slot] ?? 'Unknown slot'}
+                    {tc("equipmentSlot", String(getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? SLOT_INDEX_TO_NAME_MAP[itemObj.slot] ?? "UNKNOWN").toUpperCase().replace(/S$/, ""), "name", getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? SLOT_INDEX_TO_NAME_MAP[itemObj.slot] ?? "Unknown slot")}
                 </span>
-                <div className='catalogue-chip text header item-preview-name' data-rarity={selectedRarity}>{itemObj.name}</div>
+                <div className='catalogue-chip text header item-preview-name' data-rarity={selectedRarity}>{tc("item", itemObj.id, "name", itemObj.name)}</div>
                 {Number(itemObj.attributeRequirement) === ATTRIBUTE_DEFINITIONS.NONE.id
                     ? <span className="catalogue-chip text item-preview-attribute item-preview-attribute-all">
                         {[ATTRIBUTE_DEFINITIONS.STRENGTH.id, ATTRIBUTE_DEFINITIONS.DEXTERITY.id, ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id].map(attributeId => (
                             <img className="catalogue-chip-icon" key={attributeId} src={attributeSprites[attributeId]} alt="" />
                         ))}
-                        All
+                        {t("app.shared.all")}
                     </span>
                     : <span className={'catalogue-chip text item-preview-attribute ' + (Number(itemObj.attributeRequirement) === 1 ? 'catalogue-chip-attribute-strength' : Number(itemObj.attributeRequirement) === 2 ? 'catalogue-chip-attribute-dexterity' : Number(itemObj.attributeRequirement) === 3 ? 'catalogue-chip-attribute-intelligence' : '')}>
                         {attributeSprites[Number(itemObj.attributeRequirement)] && <img className='catalogue-chip-icon' src={attributeSprites[Number(itemObj.attributeRequirement)]} alt='' />}
-                        {getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? 'Attribute not specified'}
+                        {tc("attribute", String(getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? "UNKNOWN").toUpperCase(), "name", getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? t("app.shared.attributeNotSpecified"))}
                     </span>}
             </div>
             <div className='flex-col'>
@@ -341,7 +344,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                         color={1}
                     />
                     <div className='rarity-heading'>
-                        <div className='header'>{getEnumNameById(RARITY_DEFINITIONS, selectedRarity)}</div>
+                        <div className='header'>{tc("rarity", String(getEnumNameById(RARITY_DEFINITIONS, selectedRarity) ?? "UNKNOWN").toUpperCase(), "name", getEnumNameById(RARITY_DEFINITIONS, selectedRarity))}</div>
                     </div>
                     <Button
                         text={t("app.pages.items.preview.rarityIncrease")}
@@ -411,7 +414,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                                         })
                                         .map(mutation => (
                                             <option key={`${perkKey}:${mutation.id}`} value={`${perkKey}:${mutation.id}`}>
-                                                {`${perkKey.replace(/_/g, " ")} — ${mutation.name}`}
+                                                {`${tc("perk", perkKey, "name", PERK_DEFINITIONS[perkKey]?.name ?? perkKey)} — ${tc("masterworkMutation", `${perkKey}:${mutation.id}`, "name", mutation.name)}`}
                                             </option>
                                         ))
                                     )}
@@ -433,12 +436,17 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                         {(() => {
                             const effect = getUniqueEffectDisplay(itemObj.unique, selectedRarity)
                             const displayedValue = (((effect.value ?? 1) - 1) * 100).toFixed(2) + "%"
-                            const [descriptionBefore, descriptionAfter = ""] = itemObj.unique.description.split("$e")
+                            const statuses = getEffectStatuses(itemObj).map(status => tc("status", status.key, "name", status.name)).join(", ")
+                            const duration = itemObj.unique.description.match(/\bfor\s+(\d+)\s+turns?\b/i)?.[1] ?? ""
+                            const description = tc("item", itemObj.id, "effects.unique", itemObj.unique.description, {
+                                value: displayedValue,
+                                chance: displayedValue,
+                                status: statuses,
+                                duration,
+                            })
                             return <span className='text'>
-                                {descriptionBefore}
-                                {displayedValue}
+                                {description}
                                 {effect.usesHighestAvailableValue && <span title={t("app.pages.items.preview.missingRarityValue")}> (?)</span>}
-                                {descriptionAfter}
                             </span>
                         })()}
                     </div>

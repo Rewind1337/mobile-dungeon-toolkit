@@ -2,6 +2,7 @@ import { elementSprites } from "../database/db_sprites.jsx"
 import { ELEMENT_DEFINITIONS, RARITY_DEFINITIONS, RESOURCE_LOCATIONS } from "../database/enums.jsx"
 import { humanize } from "../js/utils.js"
 import { useTranslate } from "../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 import "../css/infos.scss"
 import "../css/infos_resources.scss"
 
@@ -12,10 +13,10 @@ function findDefinition(definitions, value) {
     ) ?? null
 }
 
-function AdditionalInfoChip({ information }) {
+function AdditionalInfoChip({ information, tc, t }) {
     if (information == null) return null
     if (typeof information === "string") {
-        return <span className="catalogue-chip text">{information}</span>
+        return <span className="catalogue-chip text">{information === "Not Implemented" ? t("app.shared.notImplemented") : information}</span>
     }
     if (information.element != null) {
         const element = findDefinition(ELEMENT_DEFINITIONS, information.element)
@@ -24,20 +25,20 @@ function AdditionalInfoChip({ information }) {
         return (
             <span className={"catalogue-chip text catalogue-chip-element-outline catalogue-chip-element-" + name}>
                 {elementSprites[element.id] && <img className="catalogue-chip-icon" src={elementSprites[element.id]} alt="" />}
-                {humanize(element.name)}
+                {tc("element", element.name, "name", humanize(element.name))}
             </span>
         )
     }
     if (information.rarity != null) {
         const rarity = findDefinition(RARITY_DEFINITIONS, information.rarity)
         if (!rarity) return <span className="catalogue-chip text">{humanize(information.rarity)}</span>
-        return <span className="catalogue-chip catalogue-chip-rarity text" data-rarity={rarity.id}>{humanize(rarity.name)}</span>
+        return <span className="catalogue-chip catalogue-chip-rarity text" data-rarity={rarity.id}>{tc("rarity", rarity.name, "name", humanize(rarity.name))}</span>
     }
-    if (information.text != null) return <span className="catalogue-chip text">{String(information.text)}</span>
+    if (information.text != null) return <span className="catalogue-chip text">{information.text === "Not Implemented" ? t("app.shared.notImplemented") : String(information.text)}</span>
     return null
 }
 
-function ResourceLocationRow({ label, locations = [] }) {
+function ResourceLocationRow({ label, locations = [], tc }) {
     if (!Array.isArray(locations) || locations.length === 0) return null
     return (
         <div className="resource-catalogue-location-row">
@@ -45,7 +46,7 @@ function ResourceLocationRow({ label, locations = [] }) {
             <div className="resource-catalogue-location-chips">
                 {locations.map(location => (
                     <span className="catalogue-chip text" key={location}>
-                        {RESOURCE_LOCATIONS[location] ?? location}
+                        {tc("resourceLocation", location, "name", RESOURCE_LOCATIONS[location] ?? location)}
                     </span>
                 ))}
             </div>
@@ -55,6 +56,10 @@ function ResourceLocationRow({ label, locations = [] }) {
 
 export default function ResourceCatalogueCard({ resource }) {
     const t = useTranslate()
+    const tc = useContentTranslation()
+    const contentType = resource.isGem ? "gem" : "resource"
+    const resourceName = tc(contentType, resource.id, "name", resource.name)
+    const resourceDescription = tc(contentType, resource.id, "description", resource.description)
     const additionalInformation = Array.isArray(resource.additionalInformation)
         ? resource.additionalInformation
         : []
@@ -63,23 +68,23 @@ export default function ResourceCatalogueCard({ resource }) {
             <img className="resource-catalogue-icon" src={resource.spriteSrc} alt="" loading="lazy" decoding="async" draggable={false} />
             <div className="resource-catalogue-details">
                 <div className="resource-catalogue-title-row">
-                    <h2 className="resource-catalogue-name text-big">{resource.name}</h2>
+                    <h2 className="resource-catalogue-name text-big">{resourceName}</h2>
                     {resource.isGem && (
                         <span className="catalogue-chip catalogue-chip-rarity resource-catalogue-rarity text" data-rarity={resource.rarity.id}>
-                            {humanize(resource.rarity.name)}
+                            {tc("rarity", resource.rarity.name, "name", humanize(resource.rarity.name))}
                         </span>
                     )}
                 </div>
                 {additionalInformation.length > 0 && (
                     <div className="resource-catalogue-additional-info" aria-label={t("app.shared.additionalInformation")}>
                         {additionalInformation.map((information, index) => (
-                            <AdditionalInfoChip information={information} key={index} />
+                            <AdditionalInfoChip information={information} tc={tc} t={t} key={index} />
                         ))}
                     </div>
                 )}
-                <p className="resource-catalogue-description text">{resource.description || t("app.shared.noDescriptionRecorded")}</p>
-                <ResourceLocationRow label="Obtained from" locations={resource.sourceLocations} />
-                <ResourceLocationRow label="Used for" locations={resource.useLocations} />
+                <p className="resource-catalogue-description text">{resourceDescription || t("app.shared.noDescriptionRecorded")}</p>
+                <ResourceLocationRow label={t("app.shared.obtainedFrom")} locations={resource.sourceLocations} tc={tc} />
+                <ResourceLocationRow label={t("app.shared.usedFor")} locations={resource.useLocations} tc={tc} />
             </div>
         </article>
     )

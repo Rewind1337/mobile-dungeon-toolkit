@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useTranslate } from "../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 import { EQUIPMENT_SLOT_DEFINITIONS } from "../database/enums.jsx"
 import { itemSprites } from "../database/db_sprites.jsx"
 import Hero from "./Hero.jsx"
@@ -18,6 +19,7 @@ const EQUIPMENT_SLOTS = [
 
 function CombatTeamCard({ team, teams, selectedId, onTeamChange, savedHeroes, title }) {
     const t = useTranslate()
+    const tc = useContentTranslation()
     const teamHeroes = team.heroes.map(saveId => savedHeroes.find(hero => hero.saveId === saveId) ?? null)
 
     return (
@@ -40,13 +42,13 @@ function CombatTeamCard({ team, teams, selectedId, onTeamChange, savedHeroes, ti
                                 {hero ? (
                                     <>
                                         <Hero heroObj={hero} selected={false} level={hero.level ?? null} onClick={() => {}} />
-                                        <div className="catalogue-chip team-equipped-items" aria-label={`${hero.name}'s equipped items`}>
+                                        <div className="catalogue-chip team-equipped-items" aria-label={`${tc("hero", hero.id, "name", hero.name)}'s equipped items`}>
                                             <div className="team-equipped-item-grid">
                                                 {EQUIPMENT_SLOTS.map(slot => {
                                                     const item = Array.isArray(hero.items) ? hero.items[slot.id] ?? null : null
                                                     return (
                                                         <span className={"team-equipped-item" + (item ? "" : " is-empty")}
-                                                            key={slot.id} title={item?.name ?? slot.name}>
+                                                            key={slot.id} title={item ? tc("item", item.id, "name", item.name) : tc("equipmentSlot", slot.name, "name", slot.name)}>
                                                             <img className="team-equipped-item-icon"
                                                                 src={item?.itemSrc || item?.iconSrc || itemSprites["null"]}
                                                                 alt="" loading="lazy" decoding="async" draggable={false} />

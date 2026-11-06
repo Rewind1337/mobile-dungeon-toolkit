@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import { useTranslate } from "../../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../../hooks/useContentTranslation.jsx"
 import { matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
 import CatalogueViewSwitch from "../CatalogueViewSwitch.jsx"
 import CatalogueFilterActions from "../CatalogueFilterActions.jsx"
@@ -9,6 +10,7 @@ import { stringify, getTalentPosition } from "../../js/skillsTalentsUtils.jsx"
 
 function CatalogueSkillsTalents({ heroes = [], initialView = "skills", onViewChange }) {
     const t = useTranslate()
+    const tc = useContentTranslation()
     const [view, setView] = useState(initialView)
     const [search, setSearch, commitSearch] = useUrlSearch()
     const [filtersVisible, setFiltersVisible] = useState(true)
@@ -35,8 +37,14 @@ function CatalogueSkillsTalents({ heroes = [], initialView = "skills", onViewCha
     }, [heroes, view])
     const filtered = entries.filter(entry => {
         const value = view === "skills" ? entry.skill : entry.talent
-        const sourceText = view === "skills" ? entry.hero.name : entry.sources.map(({ hero, id }) => hero.name + " " + getTalentPosition(id)).join(" ")
-        return matchesSearchQuery([sourceText, stringify(value), entry.id ?? ""], search)
+        const sourceText = view === "skills" ? tc("hero", entry.hero.id, "name", entry.hero.name) : entry.sources.map(({ hero, id }) => tc("hero", hero.id, "name", hero.name) + " " + getTalentPosition(id)).join(" ")
+        const translatedContent = view === "skills"
+            ? [tc("skill", `${entry.hero.id}:${entry.skillIndex}`, "name", entry.skill.name), tc("skill", `${entry.hero.id}:${entry.skillIndex}`, "description", entry.skill.description)]
+            : entry.sources.flatMap(({ hero, id }) => [
+                tc("talent", `${hero.id}:${id}`, "name", entry.talent.name),
+                tc("talent", `${hero.id}:${id}`, "description", entry.talent.description),
+            ])
+        return matchesSearchQuery([sourceText, stringify(value), translatedContent, entry.id ?? ""], search)
     })
     return <section className="hero-catalogue">
         <CatalogueViewSwitch ariaLabel={t("app.pages.catalogues.skillsTabAriaLabel")} view={view} onViewChange={changeView} options={[

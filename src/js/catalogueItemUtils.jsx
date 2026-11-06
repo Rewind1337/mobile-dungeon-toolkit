@@ -37,13 +37,13 @@ export function getSourceName(source) {
     return name.toLowerCase() === "everywhere" ? "Any Dungeon" : humanize(name)
 }
 
-export function getDropSourceLabel(source, locations) {
+export function getDropSourceLabel(source, locations, labels = {}) {
     const locationNames = (locations ?? []).filter(location => location && location !== "Unspecified location")
-    const locationLabel = locationNames.length > 0 ? locationNames.join(", ") : "Unspecified"
+    const locationLabel = locationNames.length > 0 ? locationNames.join(", ") : (labels.unspecified ?? "Unspecified")
+    const prefix = labels.label ?? "Drop Source"
     const sourceName = getSourceName(source)
-    if (sourceName.toLowerCase().includes("guild hunt")) return `Drop Source: ${locationLabel} (GH)`
-    if (locationNames.length > 0) return `Drop Source: ${locationLabel}`
-    return "Drop Source: Unspecified"
+    if (sourceName.toLowerCase().includes("guild hunt")) return `${prefix}: ${locationLabel} (${labels.guildHuntShort ?? "GH"})`
+    return `${prefix}: ${locationLabel}`
 }
 
 export function getAttributeRequirementLabel(value) {

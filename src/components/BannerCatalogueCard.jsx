@@ -1,5 +1,6 @@
 import { RARITY_DEFINITIONS } from "../database/enums.jsx"
 import { useTranslate } from "../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 import { resourceSprites } from "../database/db_sprites.jsx"
 import { getBannerLastLiveLabel } from "../js/bannerUtils.jsx"
 import Hero from "./Hero.jsx"
@@ -50,7 +51,10 @@ function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null, fe
 
 export default function BannerCatalogueCard({ result, heroesById }) {
     const t = useTranslate()
+    const tc = useContentTranslation()
     const { banner, heroes, allHeroes = heroes, conditionalHeroes, missingHeroCount, sourceIndex } = result
+    const bannerName = tc("banner", banner.id, "name", banner.name)
+    const bannerCondition = tc("banner", banner.id, "conditionalHeroCondition", banner.conditionalHeroCondition)
     const isEverydayBanner = banner.id === "everyday_heroes"
     const featuredHero = banner.featuredHeroId
         ? (heroesById.get(banner.featuredHeroId) ?? null)
@@ -98,11 +102,11 @@ export default function BannerCatalogueCard({ result, heroesById }) {
     return (
         <article className={`banner-catalogue-card card${isEverydayBanner ? " card-dark" : ""}`}>
             <header className="banner-catalogue-card-header">
-                <h2 className="banner-catalogue-name header-big">{banner.name}</h2>
+                <h2 className="banner-catalogue-name header-big">{bannerName}</h2>
                 <div className="banner-catalogue-meta">
                     <span className="catalogue-chip text">{t("app.pages.catalogues.listedHeroes", { count: banner.heroIds.length })}</span>
                     {banner.standardBanner && <span className="catalogue-chip text">{t("app.pages.catalogues.standardBanner")}</span>}
-                    {featuredHero && <span className="catalogue-chip text">{t("app.pages.catalogues.featuredHero", { name: featuredHero.name })}</span>}
+                    {featuredHero && <span className="catalogue-chip text">{t("app.pages.catalogues.featuredHero", { name: tc("hero", featuredHero.id, "name", featuredHero.name) })}</span>}
                     {!isEverydayBanner &&  <span
                         className="catalogue-chip banner-catalogue-live-date text"
                         title={liveDateInfo.estimated ? t("app.pages.catalogues.estimatedBannerDate") : t("app.pages.catalogues.recordedLastLiveDate")}
@@ -128,7 +132,7 @@ export default function BannerCatalogueCard({ result, heroesById }) {
 
             {conditionalHeroes.length > 0 && (
                 <section className="banner-catalogue-conditional">
-                    <h3 className="banner-catalogue-group-title text">{banner.conditionalHeroCondition ?? t("app.pages.catalogues.conditionalHeroes")} ({conditionalHeroes.length})</h3>
+                    <h3 className="banner-catalogue-group-title text">{bannerCondition || t("app.pages.catalogues.conditionalHeroes")} ({conditionalHeroes.length})</h3>
                     <div className="banner-catalogue-hero-grid">
                         {conditionalHeroes.map((hero, index) => (
                             <div className="banner-catalogue-hero" key={`${hero.id}-conditional-${index}`} title={hero.name}>

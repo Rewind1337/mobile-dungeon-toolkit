@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react"
 import { getSearchableValues, matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
 import { humanize } from "../../js/utils.js"
 import { useTranslate } from "../../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../../hooks/useContentTranslation.jsx"
 import { SLOT_NAMES, RARITY_NAMES, getLocations, getSetLocations, getSourceName, getAttributeRequirementLabel, getPerkKey, getPerkLabel, getEffectStatuses, isUniqueItem } from "../../js/catalogueItemUtils.jsx"
 import ItemCatalogueCard from "../ItemCatalogueCard.jsx"
 import SetCatalogueCard from "../SetCatalogueCard.jsx"
@@ -16,6 +17,7 @@ import "../../css/infos_items.scss"
 
 function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter = null, onViewChange, scrollElementRef }) {
     const t = useTranslate()
+    const tc = useContentTranslation()
     const [view, setView] = useState(initialView)
     const [search, setSearch, commitSearch] = useUrlSearch()
     const changeView = nextView => {
@@ -81,6 +83,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
             ...getSearchableValues(item),
             unique ? "unique" : "not unique",
             item.name,
+            tc("item", item.id, "name", item.name),
             item.id,
             item.slotLabel,
             getAttributeRequirementLabel(item.attributeRequirement),
@@ -88,8 +91,8 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
             sourceName,
             ...getLocations(item),
             humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity"),
-            ...getEffectStatuses(item).map(status => status.name),
-            ...(item.fixedPerks ?? []).flatMap(perk => [getPerkLabel(perk), getPerkKey(perk)]),
+            ...getEffectStatuses(item).flatMap(status => [status.name, tc("status", status.key, "name", status.name)]),
+            ...(item.fixedPerks ?? []).flatMap(perk => [getPerkLabel(perk), tc("perk", getPerkKey(perk), "name", getPerkLabel(perk)), getPerkKey(perk)]),
             ...(item.setBonusLabels ?? [])
         ].join(" ").toLowerCase()
         const matchesSearch = matchesSearchQuery(searchable, search, term => {
@@ -102,7 +105,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
         const matchesAttribute = attributeFilter === "all" || String(item.mainAttribute) === attributeFilter
         const matchesLocation = locationFilter === "all" || getLocations(item).includes(locationFilter)
         return matchesSearch && matchesSource && matchesSlot && matchesAttribute && matchesLocation
-    }), [allItems, search, sourceFilter, slotFilter, attributeFilter, locationFilter])
+    }), [allItems, search, sourceFilter, slotFilter, attributeFilter, locationFilter, tc])
 
     const itemsBySet = useMemo(() => {
         const grouped = new Map()
@@ -124,20 +127,22 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
         const searchable = [
             ...getSearchableValues(set),
             set.name,
+            tc("set", set.id, "name", set.name),
             set.id,
             getAttributeRequirementLabel(set.attributeRequirement),
             ...sourceNames,
             ...locations,
-            ...(set.setBonus ?? []).flatMap(perk => [getPerkLabel(perk), getPerkKey(perk)]),
+            ...(set.setBonus ?? []).flatMap(perk => [getPerkLabel(perk), tc("perk", getPerkKey(perk), "name", getPerkLabel(perk)), getPerkKey(perk)]),
             ...pieces.flatMap(item => [
                 ...getSearchableValues(item),
                 item.name,
+                tc("item", item.id, "name", item.name),
                 getAttributeRequirementLabel(item.attributeRequirement),
                 humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity"),
                 getSourceName(item.dropSource),
                 ...getLocations(item),
-                ...(item.fixedPerks ?? []).flatMap(perk => [getPerkLabel(perk), getPerkKey(perk)]),
-                ...getEffectStatuses(item).map(status => status.name)
+                ...(item.fixedPerks ?? []).flatMap(perk => [getPerkLabel(perk), tc("perk", getPerkKey(perk), "name", getPerkLabel(perk)), getPerkKey(perk)]),
+                ...getEffectStatuses(item).flatMap(status => [status.name, tc("status", status.key, "name", status.name)])
             ])
         ].join(" ").toLowerCase()
         const matchesSearch = matchesSearchQuery(searchable, search)
@@ -146,11 +151,11 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
         const matchesSetAttribute = setMainAttributeFilter === "all" || String(set.mainAttribute) === setMainAttributeFilter
         const matchesSetPieces = setPieceCountFilter === "all" || String(set.pieces) === setPieceCountFilter
         return matchesSearch && matchesSource && matchesLocation && matchesSetAttribute && matchesSetPieces
-    }), [setsRef, search, sourceFilter, locationFilter, itemsBySet, setMainAttributeFilter, setPieceCountFilter])
+    }), [setsRef, search, sourceFilter, locationFilter, itemsBySet, setMainAttributeFilter, setPieceCountFilter, tc])
 
     const sortedItems = useMemo(
-        () => filteredItems.slice().sort((a, b) => a.name.localeCompare(b.name)),
-        [filteredItems]
+        () => filteredItems.slice().sort((a, b) => tc("item", a.id, "name", a.name).localeCompare(tc("item", b.id, "name", b.name))),
+        [filteredItems, tc]
     )
 
     const clearFilters = () => {

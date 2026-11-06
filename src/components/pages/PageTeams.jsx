@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useTranslate } from "../../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../../hooks/useContentTranslation.jsx"
 import HeroList from "../HeroList.jsx"
 import Hero from "../Hero.jsx"
 import EmptyHero from "../EmptyHero.jsx"
@@ -58,6 +59,7 @@ function getHeroStatusEffects(hero) {
 
 export function TeamOverview({ team, savedHeroes }) {
     const t = useTranslate()
+    const tc = useContentTranslation()
     const teamHeroes = team.heroes.map(saveId => savedHeroes.find(hero => hero.saveId === saveId) ?? null)
     const attributes = teamHeroes.flatMap((hero, index) => {
         if (!hero) return []
@@ -65,7 +67,8 @@ export function TeamOverview({ team, savedHeroes }) {
         return [{
             hero,
             index,
-            name: humanize(name),
+            key: String(name).toLowerCase(),
+            name: tc("attribute", String(name).toUpperCase(), "name", humanize(name)),
             icon: attributeSprites[Number(hero.mainAttribute)],
         }]
     })
@@ -81,7 +84,7 @@ export function TeamOverview({ team, savedHeroes }) {
     const renderStatusChips = effects => effects.map(({ name, polarity }) => (
         <span className={`catalogue-chip text team-overview-chip team-status-chip team-status-chip--${polarity}`} key={name}>
             {statusSprites[name] && <img className="catalogue-chip-icon team-status-icon" src={statusSprites[name]} alt="" />}
-            {humanize(name)}
+            {tc("status", name, "name", humanize(name))}
         </span>
     ))
 
@@ -90,16 +93,16 @@ export function TeamOverview({ team, savedHeroes }) {
             <section className="team-info-section">
                 <h3 className="team-info-heading header">{t("app.shared.attributes")}</h3>
                 <div className="team-info-chips">
-                    {attributes.map(({ hero, index, name, icon }) => (
+                    {attributes.map(({ hero, index, name, key, icon }) => (
                         <span
-                            className={`catalogue-chip text team-overview-chip team-attribute-chip catalogue-chip-attribute-${name.toLowerCase()}`}
+                            className={`catalogue-chip text team-overview-chip team-attribute-chip catalogue-chip-attribute-${key}`}
                             key={`attribute-${hero.saveId ?? hero.id}-${index}`}
-                            title={`${hero.name} · Slot ${index + 1}`}
+                            title={`${tc("hero", hero.id, "name", hero.name)} · ${t("app.shared.slot", { number: index + 1 })}`}
                         >
                             {typeof icon === "string"
                                 ? <img className="catalogue-chip-icon" src={icon} alt="" />
                                 : icon && <span className="catalogue-chip-icon team-attribute-icon" aria-hidden="true">{icon}</span>}
-                            Slot {index + 1} · {name}
+                            {t("app.shared.slot", { number: index + 1 })} · {name}
                         </span>
                     ))}
                     {attributes.length === 0 && <span className="text team-overview-empty">{t("app.shared.noHeroesAssigned")}</span>}
@@ -137,6 +140,8 @@ const TEAM_BASE_STATS = [
 ]
 
 function TeamHeroStatusIcons({ hero }) {
+    const t = useTranslate()
+    const tc = useContentTranslation()
     if (!hero) return null
     const statuses = getHeroStatusEffects(hero).filter(name => {
         const polarity = getStatusPolarity(STATUS_EFFECT_DEFINITIONS[name])
@@ -144,11 +149,11 @@ function TeamHeroStatusIcons({ hero }) {
     })
     if (statuses.length === 0) return null
 
-    const label = statuses.map(humanize).join(", ")
+    const label = statuses.map(name => tc("status", name, "name", humanize(name))).join(", ")
     return (
-        <div className="catalogue-chip team-hero-status-icons" aria-label={hero.name + " buffs and debuffs: " + label} title={label}>
+        <div className="catalogue-chip team-hero-status-icons" aria-label={tc("hero", hero.id, "name", hero.name) + " " + t("app.shared.buffs") + " / " + t("app.shared.debuffs") + ": " + label} title={label}>
             {statuses.map(name => (
-                <img className="team-status-icon" key={name} src={statusSprites[name]} alt={humanize(name)} title={humanize(name)} />
+                <img className="team-status-icon" key={name} src={statusSprites[name]} alt={tc("status", name, "name", humanize(name))} title={tc("status", name, "name", humanize(name))} />
             ))}
         </div>
     )
@@ -156,16 +161,17 @@ function TeamHeroStatusIcons({ hero }) {
 
 export function TeamHeroStats({ hero, slotIndex, calculatedStats }) {
     const t = useTranslate()
+    const tc = useContentTranslation()
     if (!hero) return null
     return (
-        <div className="team-base-stat-summary" aria-label={t("app.pages.teams.calculatedStats", { name: hero.name, slot: slotIndex + 1 })}>
+        <div className="team-base-stat-summary" aria-label={t("app.pages.teams.calculatedStats", { name: tc("hero", hero.id, "name", hero.name), slot: slotIndex + 1 })}>
             {TEAM_BASE_STATS.map(([key, label, fullLabel]) => {
                 const value = calculatedStats?.main?.[key] ?? hero.stats?.[key]
                 const maxValue = calculatedStats?.mainMax?.[key]
                 const hasMax = Number.isFinite(Number(maxValue)) && Math.abs(Number(maxValue) - Number(value)) > 0.001
                 const format = stat => Number.isFinite(Number(stat)) ? formatNumber(Number(stat), 2) : "—"
                 return (
-                    <span className="team-base-stat" key={key} title={hero.name + " · " + t("app.shared." + fullLabel)}>
+                    <span className="team-base-stat" key={key} title={tc("hero", hero.id, "name", hero.name) + " · " + t("app.shared." + fullLabel)}>
                         <strong>{label}</strong>
                         <span className="team-base-stat-value">{format(value)}</span>
                         {hasMax && <small className="team-base-stat-max">{t("app.pages.teams.max")} {format(maxValue)}</small>}
@@ -178,6 +184,7 @@ export function TeamHeroStats({ hero, slotIndex, calculatedStats }) {
 
 function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedItemsRef, manualSaveFunction }) {
     const t = useTranslate()
+    const tc = useContentTranslation()
     const { listHeight, listRef, events } = useDynamicList(165, true)
     const savedHeroes = Array.isArray(savedHeroesRef.current) ? savedHeroesRef.current : []
     const [teams, setTeams] = useState(() => normalizeTeams(savedTeamsRef.current))
@@ -419,11 +426,11 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                             return (
                                                 <span className="catalogue-chip text team-collapsed-hero-chip"
                                                     key={team.id + "-collapsed-hero-" + slotIndex}
-                                                    title={hero.name + " · Slot " + (slotIndex + 1)}>
+                                                    title={tc("hero", hero.id, "name", hero.name) + " · " + t("app.shared.slot", { number: slotIndex + 1 })}>
                                                     <img className="catalogue-chip-icon"
                                                         src={hero.heroSrc ?? heroSprites[hero.id] ?? heroSprites["null"]}
                                                         alt="" loading="lazy" decoding="async" draggable={false} />
-                                                    <span>{hero.name}</span>
+                                                    <span>{tc("hero", hero.id, "name", hero.name)}</span>
                                                 </span>
                                             )
                                         })}
@@ -456,8 +463,8 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                                             <Hero heroObj={hero} selected={false} level={hero.level ?? null} onClick={() => openSlotPicker(team, slotIndex)} />
                                                             <div
                                                                     className="catalogue-chip team-equipped-items"
-                                                                    aria-label={t("app.pages.teams.equippedItems", { name: hero.name })}
-                                                                    title={t("app.pages.teams.equippedItems", { name: hero.name })}
+                                                                    aria-label={t("app.pages.teams.equippedItems", { name: tc("hero", hero.id, "name", hero.name) })}
+                                                                    title={t("app.pages.teams.equippedItems", { name: tc("hero", hero.id, "name", hero.name) })}
                                                                 >
                                                                     <div className="team-equipped-item-grid">
                                                                         {equippedItems.map(({ slot, item }) => (

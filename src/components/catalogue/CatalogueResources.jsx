@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import { useTranslate } from "../../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../../hooks/useContentTranslation.jsx"
 import { matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
 import CatalogueFilterActions from "../CatalogueFilterActions.jsx"
 import CatalogueViewSwitch from "../CatalogueViewSwitch.jsx"
@@ -17,6 +18,7 @@ const GEM_BASES = [...new Map(GEM_VARIANTS.map(gem => [
 
 function CatalogueResources({ initialView = "resources", onViewChange }) {
     const t = useTranslate()
+    const tc = useContentTranslation()
     const [search, setSearch, commitSearch] = useUrlSearch()
     const [obtainedFromFilter, setObtainedFromFilter] = useState("all")
     const [usedForFilter, setUsedForFilter] = useState("all")
@@ -33,7 +35,9 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
         return sourceResources
             .filter(resource => matchesSearchQuery([
                 resource.name,
+                tc(resource.isGem ? "gem" : "resource", resource.id, "name", resource.name),
                 resource.description,
+                tc(resource.isGem ? "gem" : "resource", resource.id, "description", resource.description),
                 resource.gemType,
                 resource.rarity?.name,
                 ...(resource.sourceLocations ?? []),
@@ -52,8 +56,8 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                 return matchesLocation(resource.useLocations, usedForFilter)
                     && matchesLocation(resource.sourceLocations, obtainedFromFilter)
             })
-            .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }))
-    }, [sourceResources, search, isGemsView, obtainedFromFilter, usedForFilter, dungeonFilter])
+            .sort((a, b) => tc(a.isGem ? "gem" : "resource", a.id, "name", a.name).localeCompare(tc(b.isGem ? "gem" : "resource", b.id, "name", b.name), undefined, { sensitivity: "base" }))
+    }, [sourceResources, search, isGemsView, obtainedFromFilter, usedForFilter, dungeonFilter, tc])
 
     const gemGroups = useMemo(() => GEM_BASES.map(gem => ({
         ...gem,

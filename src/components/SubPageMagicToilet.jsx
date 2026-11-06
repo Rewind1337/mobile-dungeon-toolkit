@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react"
+import { useTranslate } from "../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 import Hero from "./Hero.jsx"
 import Button from "./Button.jsx"
 import BannerCatalogueCard from "./BannerCatalogueCard.jsx"
@@ -146,6 +148,7 @@ const EMPTY_PULL_COUNTS = {
 
 export default function SubPageMagicToilet({ heroesRef = [] }) {
     const t = useTranslate()
+    const tc = useContentTranslation()
     const [bannerId, setBannerId] = useState("everyday_heroes")
     const [epicPity, setEpicPity] = useState(EPIC_PITY_RESET)
     const [legendaryPity, setLegendaryPity] = useState(LEGENDARY_PITY_RESET)
@@ -325,7 +328,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                 )}
             </span>
             <Hero heroObj={result.hero} selected={false} level={null} onClick={() => {}} className="hero-static" />
-            <span className="catalogue-chip text magic-toilet-hero-name">{result.hero.name}</span>
+            <span className="catalogue-chip text magic-toilet-hero-name">{tc("hero", result.hero.id, "name", result.hero.name)}</span>
         </article>
     )
 
@@ -346,7 +349,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                     <label className="magic-toilet-field magic-toilet-field-banner">
                         <span className="text">{t("app.pages.magicToilet.banner")}</span>
                         <select value={bannerId} onChange={handleBannerChange}>
-                            {BANNERS.map(entry => <option key={entry.id} value={entry.id}>{entry.name}</option>)}
+                            {BANNERS.map(entry => <option key={entry.id} value={entry.id}>{tc("banner", entry.id, "name", entry.name)}</option>)}
                         </select>
                     </label>
                     <label className="magic-toilet-field magic-toilet-field-epic-pity">
@@ -393,7 +396,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                                 <option value="">{t("app.shared.selectHero")}</option>
                                 {legendaryBoosterHeroes.map(hero => (
                                     <option key={hero.id} value={hero.id}>
-                                        {hero.name} ({formatPullChance(getBoosterPullChance(hero, LEGENDARY, banner))})
+                                        {tc("hero", hero.id, "name", hero.name)} ({formatPullChance(getBoosterPullChance(hero, LEGENDARY, banner))})
                                     </option>
                                 ))}
                             </select>
@@ -423,7 +426,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                                 <option value="">{t("app.shared.selectHero")}</option>
                                 {epicBoosterHeroes.map(hero => (
                                     <option key={hero.id} value={hero.id}>
-                                        {hero.name} ({formatPullChance(getBoosterPullChance(hero, EPIC, banner))})
+                                        {tc("hero", hero.id, "name", hero.name)} ({formatPullChance(getBoosterPullChance(hero, EPIC, banner))})
                                     </option>
                                 ))}
                             </select>

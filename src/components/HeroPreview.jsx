@@ -9,6 +9,7 @@ import LockedSrc from '../sprites/locked.webp'
 
 import Button from './Button.jsx'
 import { useTranslate } from '../hooks/useTranslate.jsx'
+import { useContentTranslation } from '../hooks/useContentTranslation.jsx'
 import Modal from './Modal.jsx'
 import { createHeroShareToken, createItemsShareToken } from '../utils/heroShare.js'
 import EmptyItem from './EmptyItem.jsx'
@@ -28,6 +29,7 @@ function cloneTalentSelections(talents) {
 
 function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, heroesRef, selectedHeroId, saveHero, deleteSavedHero, onItemClick, equippedItems = [], setsRef = [] }) {
     const t = useTranslate()
+    const tc = useContentTranslation()
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
     const previousPreviewHeight = useRef(null)
@@ -443,12 +445,12 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                 <div className='flex-row top-row hero-metadata'>
                     <div className={'catalogue-chip text hero-metadata-attribute catalogue-chip-attribute-' + String(getEnumNameById(ATTRIBUTE_DEFINITIONS, heroObj.mainAttribute) ?? '').toLowerCase()}>
                         {typeof attributeSprites[heroObj.mainAttribute] === 'string' && <img className='catalogue-chip-icon' src={attributeSprites[heroObj.mainAttribute]} alt='' />}
-                        {getEnumNameById(ATTRIBUTE_DEFINITIONS, heroObj.mainAttribute)}
+                        {tc("attribute", String(getEnumNameById(ATTRIBUTE_DEFINITIONS, heroObj.mainAttribute)).toUpperCase(), "name", getEnumNameById(ATTRIBUTE_DEFINITIONS, heroObj.mainAttribute))}
                     </div>
-                    <div className='catalogue-chip text header hero-metadata-name' data-rarity={heroObj.rarity}>{heroObj.variant ? heroObj.variant + " - " : ""}{heroObj.name}</div>
+                    <div className='catalogue-chip text header hero-metadata-name' data-rarity={heroObj.rarity}>{heroObj.variant ? heroObj.variant + " - " : ""}{tc("hero", heroObj.id, "name", heroObj.name)}</div>
                     <div className={'catalogue-chip text hero-metadata-role catalogue-chip-role-' + String(getEnumNameById(ROLE_DEFINITIONS, heroObj.role) ?? '').toLowerCase()}>
                         <img className='catalogue-chip-icon' src={roleSprites[heroObj.role]} alt='' />
-                        {getEnumNameById(ROLE_DEFINITIONS, heroObj.role)}
+                        {tc("role", String(getEnumNameById(ROLE_DEFINITIONS, heroObj.role)).toUpperCase(), "name", getEnumNameById(ROLE_DEFINITIONS, heroObj.role))}
                     </div>
                 </div>
 

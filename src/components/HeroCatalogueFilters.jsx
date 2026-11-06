@@ -7,7 +7,7 @@ import {
 } from "../database/enums.jsx"
 import { humanize } from "../js/utils.js"
 import { useTranslation } from "../hooks/useTranslation.jsx"
-import { useTranslate } from "../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
     rarity => rarity.id >= RARITY_DEFINITIONS.UNCOMMON.id && rarity.id <= RARITY_DEFINITIONS.LEGENDARY.id
@@ -38,8 +38,8 @@ function HeroCatalogueFilters({
     onSortChange,
     topOffset
 }) {
-    const t = useTranslate()
-    const translateEnum = value => { const key = String(value ?? "").toLowerCase(); const translated = t(`app.shared.${key}`); return translated === `app.shared.${key}` ? humanize(value) : translated }
+    const tc = useContentTranslation()
+    const translateEnum = (type, value) => tc(type, String(value ?? "").toUpperCase(), "name", humanize(value))
     const searchLabel = useTranslation("app.pages.catalogues.searchCount", undefined, { resultCount, totalCount })
     const searchAriaLabel = useTranslation("app.pages.heroes.filters.searchAriaLabel")
     const searchPlaceholder = useTranslation("app.pages.heroes.filters.searchPlaceholder")
@@ -98,28 +98,28 @@ function HeroCatalogueFilters({
                 <span className="catalogue-control-label text">{rarityLabel}</span>
                 <select aria-label={rarityAriaLabel} value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
                     <option value="all">{allRaritiesLabel}</option>
-                    {HERO_CATALOGUE_RARITIES.map(value => <option key={value.id} value={String(value.id)}>{translateEnum(value.name)}</option>)}
+                    {HERO_CATALOGUE_RARITIES.map(value => <option key={value.id} value={String(value.id)}>{translateEnum("rarity", value.name)}</option>)}
                 </select>
             </label>
             <label className="catalogue-filter">
                 <span className="catalogue-control-label text">{mainAttributeLabel}</span>
                 <select aria-label={mainAttributeAriaLabel} value={attributeFilter} onChange={event => setAttributeFilter(event.target.value)}>
                     <option value="all">{allAttributesLabel}</option>
-                    {Object.values(ATTRIBUTE_DEFINITIONS).filter(value => value.id !== ATTRIBUTE_DEFINITIONS.NONE.id).map(value => <option key={value.id} value={String(value.id)}>{translateEnum(value.name)}</option>)}
+                    {Object.values(ATTRIBUTE_DEFINITIONS).filter(value => value.id !== ATTRIBUTE_DEFINITIONS.NONE.id).map(value => <option key={value.id} value={String(value.id)}>{translateEnum("attribute", value.name)}</option>)}
                 </select>
             </label>
             <label className="catalogue-filter">
                 <span className="catalogue-control-label text">{elementLabel}</span>
                 <select aria-label={elementAriaLabel} value={elementFilter} onChange={event => setElementFilter(event.target.value)}>
                     <option value="all">{allElementsLabel}</option>
-                    {Object.values(ELEMENT_DEFINITIONS).filter(value => value.id !== ELEMENT_DEFINITIONS.VOID.id).map(value => <option key={value.id} value={String(value.id)}>{translateEnum(value.name)}</option>)}
+                    {Object.values(ELEMENT_DEFINITIONS).filter(value => value.id !== ELEMENT_DEFINITIONS.VOID.id).map(value => <option key={value.id} value={String(value.id)}>{translateEnum("element", value.name)}</option>)}
                 </select>
             </label>
             <label className="catalogue-filter">
                 <span className="catalogue-control-label text">{roleLabel}</span>
                 <select aria-label={roleAriaLabel} value={roleFilter} onChange={event => setRoleFilter(event.target.value)}>
                     <option value="all">{allRolesLabel}</option>
-                    {Object.values(ROLE_DEFINITIONS).map(value => <option key={value.id} value={String(value.id)}>{translateEnum(value.name)}</option>)}
+                    {Object.values(ROLE_DEFINITIONS).map(value => <option key={value.id} value={String(value.id)}>{translateEnum("role", value.name)}</option>)}
                 </select>
             </label>
             {setStarredOnly && (

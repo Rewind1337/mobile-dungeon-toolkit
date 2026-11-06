@@ -1,33 +1,15 @@
 # Localization
 
-Language dictionaries live in this folder. Each file exports one nested object.
-Keep the same key structure in every language and translate only the string
-values.
+Each locale file contains two distinct roots:
 
-## Dictionary organization
+- `app`: interface copy (navigation, buttons, labels, instructions, accessibility text, and page-specific messages).
+- `data.overrides`: optional translations for database-backed game content.
 
-- `app.navigation`: primary navigation labels shared across pages.
-- `app.common`: small, general controls used by shared components.
-- `app.shared`: reusable labels, actions, filter values, accessibility text,
-  and messages used in multiple places.
-- `app.pages`: page-specific headings, descriptions, instructions, and
-  messages. Keep values here only when they are genuinely specific to that
-  page or feature.
+Keep UI wording under `app`; do not put hero/item names or game descriptions there. Keep game content under `data.overrides`; do not duplicate the database's English values.
 
-**Reuse identical wording.** Before adding a new entry, check whether the same
-text already exists in `app.navigation`, `app.common`, or `app.shared`.
-If two parts of the interface display the same wording, both should reference
-the same dictionary key. Do not duplicate the English string under separate
-page-specific keys just to mirror the component tree. Different wording or
-different meaning should remain separate.
+## UI translations
 
-Game/database content such as hero names, item names, perk descriptions, and
-user-created team names is not interface copy and should not be moved into the
-UI dictionary.
-
-## Use a translation
-
-For one value, use `useTranslation`:
+Use `useTranslation` for one value:
 
 ```jsx
 const heading = useTranslation("app.navigation.heroes")
@@ -38,67 +20,74 @@ const resultCount = useTranslation(
 )
 ```
 
-For several values in a component, use `useTranslate` once and call the
-returned translator:
+For several values, use `useTranslate` once and call the returned function:
 
 ```jsx
 const t = useTranslate()
-
-return (
-    <>
-        <h1>{t("app.pages.teams.savedTeams")}</h1>
-        <button aria-label={t("app.shared.close")}>×</button>
-    </>
-)
-```
-
-Keys use dot-separated paths. Missing keys fall back to the English dictionary;
-if a key is missing in English too, the key itself is returned to make omissions
-visible during development.
-
-## Interpolation
-
-Use named `{{placeholders}}` when a translation needs dynamic information.
-Pass the matching values as the second argument to `t`, or as the third
-argument to `useTranslation`:
-
-```jsx
-// Dictionary:
-itemCount: "{{count}} items",
-teamName: "Team name for {{name}}",
-
-// Component:
-const t = useTranslate()
-t("app.pages.example.itemCount", { count: 12 })
+t("app.shared.close")
 t("app.pages.teams.teamName", { name: "Dungeon Team" })
 ```
 
-This keeps the complete sentence in the dictionary instead of concatenating
-translated fragments in components. A different language can move placeholders
-to a different position or change the surrounding grammar. Keep placeholder
-names identical in every language file. Values can be numbers, names, dates,
-or other text that belongs inside the translated sentence.
+## Database content overrides
 
-## Add a language
+The database remains the English source of truth. Each locale contains the same optional collection names, but only translated fields need to be present. Collections are singular and keyed by stable database IDs:
 
-1. Copy `lang_enUS.jsx` to a new file, for example `lang_deDE.jsx`.
-2. Translate the values without changing object keys or interpolation names.
-3. Import the new file in `index.js` and add it to `LANGUAGE_DICTIONARIES`:
+- `hero`: `hero.id` (for example `thor`)
+- `item`: `item.id`, including its slot prefix (for example `weapon:pumpkin_scythe`)
+- `set`: `set.id` (for example `breaker`)
+- `skill`: `heroId:skillIndex` (for example `thor:0`)
+- `talent`: `heroId:talentPosition` (for example `thor:21`)
+- `perk`: enum key (for example `HEALTH_PERCENT`)
+- `status`: status key (for example `burn`)
+- `banner`: `banner.id` (for example `everyday_heroes`)
+- `resource`: `resource.id` (for example `crystal`)
+- `gem`: `resource.id` (for example `ruby_common`)
+- `masterworkMutation`: `PERK_KEY:mutationId` (for example `AGILITY_PERCENT:1`)
+- `attribute`, `element`, `role`, `rarity`, `equipmentSlot`, `resourceLocation`, `primaryStat`, and `dropSource`: their corresponding enum keys.
 
-```js
-import lang_deDE from "./lang_deDE.jsx"
+Each entry may override only the fields it needs: `name`, `description`, `effects.unique`, `conditionalHeroCondition`, and other nested display fields. Missing fields are not errors: lookup falls back to an English override if one exists, then to the original database value.
 
-export const LANGUAGE_DICTIONARIES = {
-    enUS: lang_enUS,
-    deDE: lang_deDE,
+Example:
+
+```jsx
+data: {
+    overrides: {
+        item: {
+            "weapon:pumpkin_scythe": {
+                name: "Kürbissense",
+                effects: {
+                    unique: "Mit einer Chance von {{chance}} erhältst du einen zusätzlichen Zug.",
+                },
+            },
+        },
+        status: {
+            burn: { name: "Verbrennung", description: "..." },
+        },
+    },
 }
 ```
 
-4. Set the initial locale with `<LocalizationProvider initialLanguage="deDE">`,
-   or change it at runtime from a component using
-   `const { setLanguage } = useLocalization()` followed by
-   `setLanguage("deDE")`.
+Use `useContentTranslation` in components:
 
-The active language is provided through `LocalizationProvider`; changing it
-causes subscribed components to render with the new translations. Unsupported
-locale codes are ignored, and missing translated values fall back to English.
+```jsx
+const tc = useContentTranslation()
+const itemName = tc("item", item.id, "name", item.name)
+const description = tc("item", item.id, "description", item.description)
+```
+
+The English locale deliberately has empty override collections. Do not copy the database into locale files; add an English override only when the original database wording genuinely needs a UI-facing correction without changing game data.
+
+## Interpolation in content
+
+Content templates support named placeholders such as `{{chance}}`, `{{value}}`, `{{status}}`, and `{{duration}}`. Existing database `$e` markers remain supported and map to `{{value}}`. For unique item effects, the preview supplies the selected rarity's percentage, the detected and localized status name(s), and the duration parsed from the database effect text.
+
+Interpolated values are inserted as ordinary text, never parsed as HTML. Unknown placeholders are left visible so missing values are easy to spot. A translation can reorder placeholders naturally for its language.
+
+## Add a language
+
+1. Copy `lang_enUS.jsx` to a new locale file, such as `lang_frFR.jsx`.
+2. Keep the `app` and `data.overrides` roots, and add only translated values.
+3. Import the locale in `index.js` and register it in `LANGUAGE_DICTIONARIES`.
+4. Select it through `LocalizationProvider initialLanguage` or `useLocalization().setLanguage()`.
+
+See `lang_deDE.jsx` for partial UI and game-content examples.

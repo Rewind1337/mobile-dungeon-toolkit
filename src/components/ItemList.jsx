@@ -1,6 +1,7 @@
 import { memo, useMemo, useState } from 'react'
 import { useDynamicList } from '../hooks/useDynamicList.jsx'
 import { useTranslate } from '../hooks/useTranslate.jsx'
+import { useContentTranslation } from '../hooks/useContentTranslation.jsx'
 
 import '../css/item.scss'
 
@@ -20,6 +21,7 @@ function getSearchableValues(value, seen = new Set()) {
 }
 function ItemList({extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, setsRef = [], itemType = null, heroAttributeRequirement = null, localSearch = false, setSelectedItemId, onDoubleClick }) {
     const t = useTranslate()
+    const tc = useContentTranslation()
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
     const [urlSearch, setUrlSearch, commitUrlSearch] = useUrlSearch();
     const [modalSearch, setModalSearch] = useState("");
@@ -70,13 +72,13 @@ function ItemList({extraHeight = 0, filtersOffset = 0, savedItems, headerText, i
             const matchesAttribute = filters.attributeRequirement === null || itemObj.attributeRequirement === filters.attributeRequirement;
             const matchesRarity = filters.rarity === null || Number(filters.rarity) === Number(itemObj.rarity);
             const set = (setsRef ?? []).find(setEntry => setEntry.id === itemObj.set)
-            const searchable = [...getSearchableValues(itemObj), itemObj.name,
-                getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? '',
-                getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? '',
-                getEnumNameById(RARITY_DEFINITIONS, Number(itemObj.rarity)) ?? '',
-                getEnumNameById(DROP_SOURCE_DEFINITIONS, Number(itemObj.dropSource)) ?? '',
-                itemObj.dropLocation ?? '', set?.name ?? '',
-                ...Object.entries(PERK_DEFINITIONS).flatMap(([key, perk]) => ([...(itemObj.fixedPerks ?? []), ...(itemObj.perks ?? [])].some(value => value && typeof value === 'object' ? value.id === perk.id : String(value).toUpperCase().replace(/\s/g, '_') === key || String(value) === String(perk.id)) ? [key, perk.name] : []))
+            const searchable = [...getSearchableValues(itemObj), itemObj.name, tc("item", itemObj.id, "name", itemObj.name),
+                getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? '', tc("equipmentSlot", String(getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? "").toUpperCase(), "name", getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? ''),
+                getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? '', tc("attribute", String(getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? "").toUpperCase(), "name", getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? ''),
+                getEnumNameById(RARITY_DEFINITIONS, Number(itemObj.rarity)) ?? '', tc("rarity", String(getEnumNameById(RARITY_DEFINITIONS, Number(itemObj.rarity)) ?? "").toUpperCase(), "name", getEnumNameById(RARITY_DEFINITIONS, Number(itemObj.rarity)) ?? ''),
+                getEnumNameById(DROP_SOURCE_DEFINITIONS, Number(itemObj.dropSource)) ?? '', tc("dropSource", String(getEnumNameById(DROP_SOURCE_DEFINITIONS, Number(itemObj.dropSource)) ?? "").toUpperCase(), "name", getEnumNameById(DROP_SOURCE_DEFINITIONS, Number(itemObj.dropSource)) ?? ''),
+                itemObj.dropLocation ?? '', set?.name ?? '', set ? tc("set", set.id, "name", set.name) : '',
+                ...Object.entries(PERK_DEFINITIONS).flatMap(([key, perk]) => ([...(itemObj.fixedPerks ?? []), ...(itemObj.perks ?? [])].some(value => value && typeof value === 'object' ? value.id === perk.id : String(value).toUpperCase().replace(/\s/g, '_') === key || String(value) === String(perk.id)) ? [key, perk.name, tc("perk", key, "name", perk.name)] : []))
             ].join(' ').toLowerCase()
             const isUnique = hasUnique
             const matchesName = matchesSearchQuery(searchable, search, term => {
@@ -89,12 +91,12 @@ function ItemList({extraHeight = 0, filtersOffset = 0, savedItems, headerText, i
         });
 
         return result.sort((a, b) => {
-            const byName = String(a.name).localeCompare(String(b.name), undefined, { sensitivity: "base" })
+            const byName = tc("item", a.id, "name", a.name).localeCompare(tc("item", b.id, "name", b.name), undefined, { sensitivity: "base" })
             if (sortOrder === "rarity") return Number(b.rarity ?? 0) - Number(a.rarity ?? 0) || byName
             if (sortOrder === "level") return Number(b.level ?? 0) - Number(a.level ?? 0) || byName
             return byName
         });
-    }, [allItems, filters, search, itemType, heroAttributeRequirement, sortOrder, setsRef]);
+    }, [allItems, filters, search, itemType, heroAttributeRequirement, sortOrder, setsRef, tc]);
 
     return (<>
         <CatalogueItemFilters

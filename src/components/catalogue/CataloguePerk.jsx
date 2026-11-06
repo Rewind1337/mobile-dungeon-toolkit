@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import { useTranslate } from "../../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../../hooks/useContentTranslation.jsx"
 import { matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
 import { PERK_DEFINITIONS, POSSIBLE_PERKS } from "../../database/enums.jsx"
 import { iconSprites, perkSprites } from "../../database/db_sprites.jsx"
@@ -11,6 +12,7 @@ const perkLabel = key => PERK_DEFINITIONS[key]?.name ?? key.replaceAll("_", " ")
 
 function CataloguePerk() {
     const t = useTranslate()
+    const tc = useContentTranslation()
     const [search, setSearch, commitSearch] = useUrlSearch()
     const [slotFilter, setSlotFilter] = useState("all")
     const [filtersVisible, setFiltersVisible] = useState(true)
@@ -23,9 +25,9 @@ function CataloguePerk() {
             }
         }
         return [...slotsByPerk.entries()]
-            .map(([key, slots]) => ({ key, name: perkLabel(key), slots: [...slots] }))
+            .map(([key, slots]) => ({ key, name: tc("perk", key, "name", perkLabel(key)), description: tc("perk", key, "description", ""), slots: [...slots] }))
             .sort((a, b) => a.name.localeCompare(b.name))
-    }, [])
+    }, [tc])
     const filtered = entries.filter(entry => matchesSearchQuery([entry.name, entry.key, entry.slots.join(" ")], search)
         && (slotFilter === "all" || entry.slots.includes(slotFilter)))
     const clearFilters = () => { setSearch(""); commitSearch(""); setSlotFilter("all") }
@@ -62,9 +64,10 @@ function CataloguePerk() {
                 <div className="perk-catalogue-content">
                     <div className="perk-catalogue-heading">
                         <span className="text-big catalogue-entry-name perk-catalogue-name">{entry.name}</span>
+                    {entry.description && <p className="text perk-catalogue-description">{entry.description}</p>}
                     </div>
                     <div className="perk-catalogue-slots">{entry.slots.map(slot => {
-                        const slotLabel = slot.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())
+                        const slotLabel = tc("equipmentSlot", slot.replace(/S$/, ""), "name", slot.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase()))
                         const iconKey = slot.toLowerCase()
                         return <span className="catalogue-chip text perk-catalogue-slot-chip" key={slot}>
                             {iconSprites[iconKey] && <img className="catalogue-chip-icon" src={iconSprites[iconKey]} alt="" />}

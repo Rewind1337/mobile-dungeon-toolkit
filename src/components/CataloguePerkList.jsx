@@ -1,11 +1,13 @@
 import { perkSprites } from "../database/db_sprites.jsx"
 import { useTranslate } from "../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 import { getPerkKey, getPerkLabel } from "../js/catalogueItemUtils.jsx"
 import "../css/infos.scss"
 import "../css/infos_items.scss"
 
 export default function CataloguePerkList({ perks, label }) {
     const t = useTranslate()
+    const tc = useContentTranslation()
     const visiblePerks = (perks ?? []).filter(perk => {
         const key = getPerkKey(perk)
         return key && key !== "NOTHING"
@@ -20,9 +22,9 @@ export default function CataloguePerkList({ perks, label }) {
                     {visiblePerks.map((perk, index) => {
                         const key = getPerkKey(perk)
                         return (
-                            <li className="catalogue-perk text" key={key + "-" + index} title={getPerkLabel(perk)}>
+                            <li className="catalogue-perk text" key={key + "-" + index} title={tc("perk", key, "name", getPerkLabel(perk))}>
                                 {perkSprites[key] && <img className="catalogue-perk-icon" src={perkSprites[key]} alt="" draggable={false} />}
-                                <span className="catalogue-perk-name">{getPerkLabel(perk)}</span>
+                                <span className="catalogue-perk-name">{tc("perk", key, "name", getPerkLabel(perk))}</span>
                             </li>
                         )
                     })}
