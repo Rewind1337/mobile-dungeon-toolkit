@@ -147,6 +147,8 @@ const lang_enUS = {
             otherUnclassified: "Other / unclassified",
             noHeroesAssigned: "No heroes assigned yet.",
             noStatusEffectsDetected: "No status effects detected.",
+            noHeroesMatchFilters: "No heroes match the selected filters",
+            noItemsMatchFilters: "No items match the selected filters",
             backToTop: "Back to top",
             scrollListToTop: "Scroll this list back to the top",
             clearAllFilters: "Clear all filters",
