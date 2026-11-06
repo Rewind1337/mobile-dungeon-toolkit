@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react"
+import { useTranslate } from "../../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../../hooks/useContentTranslation.jsx"
 import { matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
 import CatalogueFilterActions from "../CatalogueFilterActions.jsx"
 import CatalogueViewSwitch from "../CatalogueViewSwitch.jsx"
@@ -15,6 +17,8 @@ const GEM_BASES = [...new Map(GEM_VARIANTS.map(gem => [
 ])).values()]
 
 function CatalogueResources({ initialView = "resources", onViewChange }) {
+    const t = useTranslate()
+    const tc = useContentTranslation()
     const [search, setSearch, commitSearch] = useUrlSearch()
     const [obtainedFromFilter, setObtainedFromFilter] = useState("all")
     const [usedForFilter, setUsedForFilter] = useState("all")
@@ -31,7 +35,9 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
         return sourceResources
             .filter(resource => matchesSearchQuery([
                 resource.name,
+                tc(resource.isGem ? "gem" : "resource", resource.id, "name", resource.name),
                 resource.description,
+                tc(resource.isGem ? "gem" : "resource", resource.id, "description", resource.description),
                 resource.gemType,
                 resource.rarity?.name,
                 ...(resource.sourceLocations ?? []),
@@ -50,8 +56,8 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                 return matchesLocation(resource.useLocations, usedForFilter)
                     && matchesLocation(resource.sourceLocations, obtainedFromFilter)
             })
-            .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }))
-    }, [sourceResources, search, isGemsView, obtainedFromFilter, usedForFilter, dungeonFilter])
+            .sort((a, b) => tc(a.isGem ? "gem" : "resource", a.id, "name", a.name).localeCompare(tc(b.isGem ? "gem" : "resource", b.id, "name", b.name), undefined, { sensitivity: "base" }))
+    }, [sourceResources, search, isGemsView, obtainedFromFilter, usedForFilter, dungeonFilter, tc])
 
     const gemGroups = useMemo(() => GEM_BASES.map(gem => ({
         ...gem,
@@ -68,20 +74,20 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
 
     return (
         <section className="resource-catalogue">
-            <CatalogueViewSwitch ariaLabel="Resources catalogue sections" view={initialView} onViewChange={onViewChange} options={[
-                { label: "Resource Catalogue", value: "resources" },
-                { label: "Gem Catalogue", value: "gems" },
+            <CatalogueViewSwitch view={initialView} onViewChange={onViewChange} options={[
+                { label: t("app.pages.catalogues.resourceTitle"), value: "resources" },
+                { label: t("app.pages.catalogues.gemTitle"), value: "gems" },
             ]} />
 
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
-                    <h1 className="catalogue-title header-big">{isGemsView ? "Gem Catalogue" : "Resource Catalogue"}</h1>
+                    <h1 className="catalogue-title header-big">{isGemsView ? t("app.pages.catalogues.gemTitle") : t("app.pages.catalogues.resourceTitle")}</h1>
                     <p className="catalogue-description text">
                         {isGemsView
-                            ? "Browse every defined rarity of each gem, grouped by gem type."
-                            : "Browse defined resources. Search matches resource names and descriptions."}
+                            ? t("app.pages.catalogues.gemDescription")
+                            : t("app.pages.catalogues.resourceDescription")}
                     </p>
-                    <p className="catalogue-progress-note text">This section is still in progress; entries and descriptions may be incomplete.</p>
+                    <p className="catalogue-progress-note text">{t("app.pages.catalogues.catalogueProgress")}</p>
                 </div>
             </header>
 
@@ -90,24 +96,24 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                     <div className="resource-catalogue-search-group">
                         <label className="catalogue-search">
                             <span className="catalogue-control-label text">
-                                Search ({filteredResources.length} of {sourceResources.length})
+                                {t("app.pages.catalogues.searchCount", { resultCount: filteredResources.length, totalCount: sourceResources.length })}
                             </span>
-                            <input className="selectable catalogue-input" type="search" aria-label={isGemsView ? "Search gems by name or rarity" : "Search resources by name or description"} placeholder={isGemsView ? "Search gems..." : "Search resources..."} value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
+                            <input className="selectable catalogue-input" type="search"  placeholder={isGemsView ? t("app.pages.catalogues.gemsPlaceholder") : t("app.pages.catalogues.resourcesPlaceholder")} value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
                         </label>
                     </div>
                     {!isGemsView ? (
                         <>
                             <label className="catalogue-filter resource-location-filter">
-                                <span className="catalogue-control-label text">Used for</span>
-                                <select aria-label="Filter resources by use" value={usedForFilter} onChange={event => setUsedForFilter(event.target.value)}>
-                                    <option value="all">All uses</option>
+                                <span className="catalogue-control-label text">{t("app.pages.catalogues.usedFor")}</span>
+                                <select  value={usedForFilter} onChange={event => setUsedForFilter(event.target.value)}>
+                                    <option value="all">{t("app.pages.catalogues.allUses")}</option>
                                     {Object.entries(RESOURCE_LOCATIONS).map(([key, label]) => <option key={key} value={label}>{label}</option>)}
                                 </select>
                             </label>
                             <label className="catalogue-filter resource-location-filter">
-                                <span className="catalogue-control-label text">Obtained from</span>
-                                <select aria-label="Filter resources by source" value={obtainedFromFilter} onChange={event => setObtainedFromFilter(event.target.value)}>
-                                    <option value="all">All sources</option>
+                                <span className="catalogue-control-label text">{t("app.pages.catalogues.obtainedFrom")}</span>
+                                <select  value={obtainedFromFilter} onChange={event => setObtainedFromFilter(event.target.value)}>
+                                    <option value="all">{t("app.shared.allSources")}</option>
                                     {Object.entries(RESOURCE_LOCATIONS).map(([key, label]) => <option key={key} value={label}>{label}</option>)}
                                 </select>
                             </label>
@@ -117,9 +123,9 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                         <>
                             <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={clearSearch} />
                             <label className="catalogue-filter resource-location-filter gem-dungeon-filter">
-                                <span className="catalogue-control-label text">Dungeon</span>
-                                <select aria-label="Filter gems by dungeon" value={dungeonFilter} onChange={event => setDungeonFilter(event.target.value)}>
-                                    <option value="all">All dungeons</option>
+                                <span className="catalogue-control-label text">{t("app.pages.catalogues.dungeon")}</span>
+                                <select  value={dungeonFilter} onChange={event => setDungeonFilter(event.target.value)}>
+                                    <option value="all">{t("app.pages.catalogues.allDungeons")}</option>
                                     {DUNGEON_LOCATIONS.map(location => <option key={location} value={location}>{location}</option>)}
                                 </select>
                             </label>
@@ -129,7 +135,7 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
             ) : <CatalogueFilterActions filtersVisible={false} onShow={() => setFiltersVisible(true)} />}
 
             {filteredResources.length === 0
-                ? <p className="catalogue-empty card">No {isGemsView ? "gems" : "resources"} match that search.</p>
+                ? <p className="catalogue-empty card">{isGemsView ? t("app.pages.catalogues.noGemsMatch") : t("app.pages.catalogues.noResourcesMatch")}</p>
                 : isGemsView
                     ? <div className="gem-catalogue-groups">
                         {gemGroups.map(group => (
@@ -137,7 +143,7 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                                 <header className="gem-catalogue-group-header">
                                     <img className="gem-catalogue-group-icon" src={group.spriteSrc} alt="" loading="lazy" decoding="async" draggable={false} />
                                     <h2 className="header">{group.name}</h2>
-                                    <span className="catalogue-chip text">{group.variants.length} rarities</span>
+                                    <span className="catalogue-chip text">{t("app.pages.catalogues.rarities", { count: group.variants.length })}</span>
                                 </header>
                                 <div className="resource-catalogue-grid gem-catalogue-grid">
                                     {group.variants.map(resource => <ResourceCatalogueCard key={resource.id} resource={resource} />)}

@@ -10,7 +10,10 @@ import DamagedItemIndicator from './DamagedItemIndicator.jsx'
 import MasterworkSrc from '../sprites/masterwork.webp'
 
 import Button from './Button.jsx'
+import { useTranslate } from '../hooks/useTranslate.jsx'
 import ItemPerk from './ItemPerk.jsx'
+import { useContentTranslation } from '../hooks/useContentTranslation.jsx'
+import { getEffectStatuses } from '../js/catalogueItemUtils.jsx'
 
 import '../css/item.scss'
 
@@ -80,6 +83,8 @@ function normalizeMutationSelections(mutations, masterworkLevel, maxMasterworkLe
 }
 
 function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, itemsRef, selectedItemId, onPerkClick, saveItem, deleteSavedItem, onEquipItem, onExportItem, setsRef, equippedItems = [] }) {
+    const t = useTranslate()
+    const tc = useContentTranslation()
     const [itemObj, setItemObj] = useState(null)
     const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
@@ -259,7 +264,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
     if (noSelection || itemObj === null) {
         return (
             <div className='item-preview'>
-                <div className='header-big'>Select an Item</div>
+                <div className='header-big'>{t("app.pages.items.preview.selectItem")}</div>
             </div>
         )
     }
@@ -286,25 +291,25 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
     return (
         <div ref={listRef} className='item-preview flex-col' style={{ maxHeight: listHeight }}>
             <div className='preview-top-row flex-row sticky-top'>
-                <Button className='preview-back-button preview-action-chip' prefix={<img className="preview-direction-icon" src={ExpandSrc} alt="" style={{ transform: isFullWidth ? 'rotate(-90deg)' : 'rotate(90deg)' }} />} title={isFullWidth ? 'Show item list' : 'Expand preview to full width'} text={isFullWidth ? 'Show List' : 'Expand'} onClick={onToggleFullWidth} color={1} />
-                <Button className='preview-close-button preview-action-chip' prefix={<img className="preview-close-icon" src={CrossSrc} alt="" />} title='Deselect this item and close the preview' text='Deselect Item' onClick={onClosePreview} color='cancel' />
+                <Button className='preview-back-button preview-action-chip' prefix={<img className="preview-direction-icon" src={ExpandSrc} alt="" style={{ transform: isFullWidth ? 'rotate(-90deg)' : 'rotate(90deg)' }} />} title={isFullWidth ? t("app.shared.showItemListTooltip") : t("app.shared.expandPreviewTooltip")} text={isFullWidth ? t("app.shared.showList") : t("app.shared.expand")} onClick={onToggleFullWidth} color={1} />
+                <Button className='preview-close-button preview-action-chip' prefix={<img className="preview-close-icon" src={CrossSrc} alt="" />} title={t("app.shared.deselectItemClosePreviewTooltip")} text={t("app.shared.deselectItem")} onClick={onClosePreview} color='cancel' />
             </div>
             <div className='item-preview-metadata'>
                 <span className='catalogue-chip text item-preview-slot'>
                     {iconSprites[String(SLOT_INDEX_TO_NAME_MAP[itemObj.slot] ?? '').toLowerCase()] && <img className='catalogue-chip-icon' src={iconSprites[String(SLOT_INDEX_TO_NAME_MAP[itemObj.slot] ?? '').toLowerCase()]} alt='' />}
-                    {getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? SLOT_INDEX_TO_NAME_MAP[itemObj.slot] ?? 'Unknown slot'}
+                    {tc("equipmentSlot", String(getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? SLOT_INDEX_TO_NAME_MAP[itemObj.slot] ?? "UNKNOWN").toUpperCase().replace(/S$/, ""), "name", getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? SLOT_INDEX_TO_NAME_MAP[itemObj.slot] ?? "Unknown slot")}
                 </span>
-                <div className='catalogue-chip text header item-preview-name' data-rarity={selectedRarity}>{itemObj.name}</div>
+                <div className='catalogue-chip text header item-preview-name' data-rarity={selectedRarity}>{tc("item", itemObj.id, "name", itemObj.name)}</div>
                 {Number(itemObj.attributeRequirement) === ATTRIBUTE_DEFINITIONS.NONE.id
                     ? <span className="catalogue-chip text item-preview-attribute item-preview-attribute-all">
                         {[ATTRIBUTE_DEFINITIONS.STRENGTH.id, ATTRIBUTE_DEFINITIONS.DEXTERITY.id, ATTRIBUTE_DEFINITIONS.INTELLIGENCE.id].map(attributeId => (
                             <img className="catalogue-chip-icon" key={attributeId} src={attributeSprites[attributeId]} alt="" />
                         ))}
-                        All
+                        {t("app.shared.all")}
                     </span>
                     : <span className={'catalogue-chip text item-preview-attribute ' + (Number(itemObj.attributeRequirement) === 1 ? 'catalogue-chip-attribute-strength' : Number(itemObj.attributeRequirement) === 2 ? 'catalogue-chip-attribute-dexterity' : Number(itemObj.attributeRequirement) === 3 ? 'catalogue-chip-attribute-intelligence' : '')}>
                         {attributeSprites[Number(itemObj.attributeRequirement)] && <img className='catalogue-chip-icon' src={attributeSprites[Number(itemObj.attributeRequirement)]} alt='' />}
-                        {getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? 'Attribute not specified'}
+                        {tc("attribute", String(getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? "UNKNOWN").toUpperCase(), "name", getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? t("app.shared.attributeNotSpecified"))}
                     </span>}
             </div>
             <div className='flex-col'>
@@ -333,16 +338,16 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
 
                 <div className='card flex-row justify-evenly rarity-control'>
                     <Button
-                        text={"Rarity - 1"}
+                        text={t("app.pages.items.preview.rarityDecrease")}
                         disabled={selectedRarity <= RARITY_DEFINITIONS.RARE.id}
                         onClick={() => changeRarity(selectedRarity - 1)}
                         color={1}
                     />
                     <div className='rarity-heading'>
-                        <div className='header'>{getEnumNameById(RARITY_DEFINITIONS, selectedRarity)}</div>
+                        <div className='header'>{tc("rarity", String(getEnumNameById(RARITY_DEFINITIONS, selectedRarity) ?? "UNKNOWN").toUpperCase(), "name", getEnumNameById(RARITY_DEFINITIONS, selectedRarity))}</div>
                     </div>
                     <Button
-                        text={"Rarity + 1"}
+                        text={t("app.pages.items.preview.rarityIncrease")}
                         disabled={selectedRarity >= RARITY_DEFINITIONS.ANCIENT.id}
                         onClick={() => changeRarity(selectedRarity + 1)}
                         color={1}
@@ -351,15 +356,15 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
 
                 <div className='card flex-col masterwork-control'>
                     <div className='masterwork-heading'>
-                        <div className='header'>Masterwork - Level {selectedMasterworkLevel} / {maxMasterworkLevel}</div>
+                        <div className='header'>{t("app.pages.items.preview.masterworkLevel", { level: selectedMasterworkLevel, maxLevel: maxMasterworkLevel })}</div>
                     </div>
                     <div className='flex-row masterwork-input-row'>
-                    <Button text={"Masterwork - 1"} disabled={selectedMasterworkLevel <= 0} onClick={() => updateMasterworkLevel(selectedMasterworkLevel - 1)} color={1} />
+                    <Button text={t("app.pages.items.preview.masterworkDecrease")} disabled={selectedMasterworkLevel <= 0} onClick={() => updateMasterworkLevel(selectedMasterworkLevel - 1)} color={1} />
                         <div className="masterwork-art-control">
                             <img className="masterwork-artwork" src={MasterworkSrc} alt="" draggable={false} />
                             <input
                                 className="masterwork-level-input"
-                                aria-label='Masterwork level'
+                                
                                 type='number'
                                 min='0'
                                 max={maxMasterworkLevel}
@@ -371,7 +376,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                                 }}
                             />
                         </div>
-                    <Button text={"Masterwork + 1"} disabled={selectedMasterworkLevel >= maxMasterworkLevel} onClick={() => updateMasterworkLevel(selectedMasterworkLevel + 1)} color={1} />
+                    <Button text={t("app.pages.items.preview.masterworkIncrease")} disabled={selectedMasterworkLevel >= maxMasterworkLevel} onClick={() => updateMasterworkLevel(selectedMasterworkLevel + 1)} color={1} />
                     </div>
                     <div className='text masterwork-summary'>
                         Fixed item stats only: +{selectedMasterworkLevel * 10}% ({(1 + selectedMasterworkLevel / 10).toFixed(1)}×)
@@ -382,13 +387,13 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                             checked={selectedItemDamaged}
                             onChange={event => setSelectedItemDamaged(event.target.checked)}
                         />
-                        <div className='text'>Damaged item (locks perk changes)</div>
+                        <div className='text'>{t("app.pages.items.preview.damagedItem")}</div>
                     </label>
                     <div className='card flex-col masterwork-mutation-controls'>
-                    <div className='header'>Masterwork Mutations</div>
+                    <div className='header'>{t("app.pages.items.preview.masterworkMutations")}</div>
                     {[5, 10].map(milestone => (
                         <div className='flex-col masterwork-mutation-select' key={milestone}>
-                            <span className='text'>{milestone === 5 ? "First Mutation" : "Second Mutation"}</span>
+                            <span className='text'>{milestone === 5 ? t("app.pages.items.preview.firstMutation") : t("app.pages.items.preview.secondMutation")}</span>
                             <select className='text'
                                 value={selectedMutations[milestone] ? `${selectedMutations[milestone].perkKey}:${selectedMutations[milestone].id}` : ""}
                                 disabled={selectedMasterworkLevel < milestone || maxMasterworkLevel < milestone}
@@ -399,7 +404,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                                     setSelectedMutations(previous => ({ ...previous, [milestone]: event.target.value ? { perkKey, id: Number(id) } : null }))
                                 }}
                             >
-                                <option value="">Unlocked at Masterwork {milestone}</option>
+                                <option value="">{t("app.pages.items.preview.unlockedAtMasterwork", { level: milestone })}</option>
                                 {Object.entries(MASTERWORK_MUTATION_DEFINITIONS)
                                     .filter(([perkKey]) => availableMutationPerks.has(perkKey) || (perkKey === "HEAL_RECOVERY" && availableMutationPerks.has("HEALING_RECEIVED")))
                                     .flatMap(([perkKey, mutations]) => mutations
@@ -409,14 +414,14 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                                         })
                                         .map(mutation => (
                                             <option key={`${perkKey}:${mutation.id}`} value={`${perkKey}:${mutation.id}`}>
-                                                {`${perkKey.replace(/_/g, " ")} — ${mutation.name}`}
+                                                {`${tc("perk", perkKey, "name", PERK_DEFINITIONS[perkKey]?.name ?? perkKey)} — ${tc("masterworkMutation", `${perkKey}:${mutation.id}`, "name", mutation.name)}`}
                                             </option>
                                         ))
                                     )}
                             </select>
                         </div>
                     ))}
-                    <small className='text'>Conditional mutations contribute to MAX; permanent mutations affect the calculated value.</small>
+                    <small className='text'>{t("app.pages.items.preview.conditionalMutationNote")}</small>
                 </div>
 
                 </div>
@@ -425,25 +430,30 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                     <div className='text flex-col'>
                         <div className='flex-row'>
                             <img src={iconSprites["unique"]} />
-                            <div className='header'>Weapon Effect</div>
+                            <div className='header'>{t("app.pages.items.preview.weaponEffect")}</div>
                             <img src={iconSprites["unique"]} />
                         </div>
                         {(() => {
                             const effect = getUniqueEffectDisplay(itemObj.unique, selectedRarity)
                             const displayedValue = (((effect.value ?? 1) - 1) * 100).toFixed(2) + "%"
-                            const [descriptionBefore, descriptionAfter = ""] = itemObj.unique.description.split("$e")
+                            const statuses = getEffectStatuses(itemObj).map(status => tc("status", status.key, "name", status.name)).join(", ")
+                            const duration = itemObj.unique.description.match(/\bfor\s+(\d+)\s+turns?\b/i)?.[1] ?? ""
+                            const description = tc("item", itemObj.id, "effects.unique", itemObj.unique.description, {
+                                value: displayedValue,
+                                chance: displayedValue,
+                                status: statuses,
+                                duration,
+                            })
                             return <span className='text'>
-                                {descriptionBefore}
-                                {displayedValue}
-                                {effect.usesHighestAvailableValue && <span title="No value is defined for this rarity yet; showing the highest available value."> (?)</span>}
-                                {descriptionAfter}
+                                {description}
+                                {effect.usesHighestAvailableValue && <span title={t("app.pages.items.preview.missingRarityValueTooltip")}> (?)</span>}
                             </span>
                         })()}
                     </div>
                 </div>}
 
                 {itemObj.fixedPerks?.length > 0 && <>
-                    <div className='header'>Fixed Item Perks</div>
+                    <div className='header'>{t("app.pages.items.preview.fixedItemPerks")}</div>
                     {itemObj.fixedPerks.map((perk, index) => (
                         <ItemPerk
                             key={"fixedperk_" + perk.id}
@@ -460,7 +470,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                 </>}
 
                 {selectedSet?.setBonus && <>
-                    <div className='header'>Set Bonus</div>
+                    <div className='header'>{t("app.pages.items.preview.setBonus")}</div>
                     {selectedSet.setBonus.map((bonus, index) => {
                         const isActive = isEquipping && index < activeSetBonusCount
                         return (
@@ -476,15 +486,15 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                                         return nextValues
                                     })}
                                 />
-                                {isEquipping && <span className="text item-set-bonus-status">{isActive ? "Active" : "Inactive"}</span>}
+                                {isEquipping && <span className="text item-set-bonus-status">{isActive ? t("app.pages.items.preview.active") : t("app.pages.items.preview.inactive")}</span>}
                             </div>
                         )
                     })}
                 </>}
 
-                <div className='header'>Perks</div>
+                <div className='header'>{t("app.shared.perks")}</div>
                 {selectedPerks.length === 0
-                    ? <div>No perks available</div>
+                    ? <div>{t("app.pages.items.preview.noPerks")}</div>
                     : selectedPerks.map((perk, index) => (
                         <ItemPerk
                             key={"perk_" + index}
@@ -504,10 +514,10 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                 }
 
                 {(saveItem || onEquipItem || deleteSavedItem || (onExportItem && deleteSavedItem)) && <div className='flex-row sticky-bottom'>
-                    {saveItem && <Button text={"Save Item"} onClick={handleSaveItem} color={"confirm"} />}
-                    {onEquipItem && <Button text={"Equip Item"} onClick={handleEquipItem} color={1} />}
-                    {onExportItem && deleteSavedItem && <Button text={"Export Item"} onClick={() => onExportItem(getConfiguredItem())} color={1} />}
-                    {deleteSavedItem && <Button text={"Delete Saved Item"} onClick={handleDeleteSavedItem} color={"cancel"} />}
+                    {saveItem && <Button text={t("app.shared.saveItem")} onClick={handleSaveItem} color={"confirm"} />}
+                    {onEquipItem && <Button text={t("app.shared.equipItem")} onClick={handleEquipItem} color={1} />}
+                    {onExportItem && deleteSavedItem && <Button text={t("app.shared.exportItem")} onClick={() => onExportItem(getConfiguredItem())} color={1} />}
+                    {deleteSavedItem && <Button text={t("app.shared.deleteSavedItem")} onClick={handleDeleteSavedItem} color={"cancel"} />}
                 </div>}
             </div>
         </div>

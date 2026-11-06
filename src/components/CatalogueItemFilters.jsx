@@ -5,6 +5,8 @@ import {
     RARITY_DEFINITIONS
 } from "../database/enums.jsx"
 import { humanize } from "../js/utils.js"
+import { useTranslate } from "../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 import CatalogueFilterActions from "./CatalogueFilterActions.jsx"
 
 function CatalogueItemFilters({
@@ -43,6 +45,35 @@ function CatalogueItemFilters({
     sortOrder,
     onSortChange
 }) {
+    const tc = useContentTranslation()
+    const translateEnum = (type, value) => tc(type, String(value ?? "").toUpperCase(), "name", humanize(value))
+    const t = useTranslate()
+    const searchLabel = t("app.pages.catalogues.searchCount", { resultCount, totalCount })
+    const searchPlaceholder = t("app.pages.items.filters.searchPlaceholder")
+    const sortOrderLabel = t("app.shared.sortOrder")
+    const alphabeticLabel = t("app.shared.alphabetic")
+    const rarityLabel = t("app.shared.rarity")
+    const levelLabel = t("app.shared.level")
+    const sourceLabel = t("app.pages.items.filters.source")
+    const allSourcesLabel = t("app.shared.allSources")
+    const locationLabel = t("app.pages.items.filters.location")
+    const allLocationsLabel = t("app.pages.items.filters.allLocations")
+    const slotLabel = t("app.shared.slotLabel")
+    const allSlotsLabel = t("app.shared.allSlots")
+    const mainAttributeLabel = t("app.shared.mainAttribute")
+    const allAttributesLabel = t("app.shared.allAttributes")
+    const setAttributeLabel = t("app.pages.items.filters.setAttribute")
+    const setPiecesLabel = t("app.pages.items.filters.setPieces")
+    const allSetsLabel = t("app.pages.items.filters.allSets")
+    const twoPieceSetsLabel = t("app.shared.twoPieceSets")
+    const fourPieceSetsLabel = t("app.shared.fourPieceSets")
+    const itemTypeLabel = t("app.pages.items.filters.itemType")
+    const allItemsLabel = t("app.pages.items.filters.allItems")
+    const twoPieceSetLabel = t("app.shared.twoPieceSet")
+    const fourPieceSetLabel = t("app.shared.fourPieceSet")
+    const uniqueLabel = t("app.shared.unique")
+    const allRaritiesLabel = t("app.shared.allRarities")
+
     if (!filtersVisible) {
         return (
             <>
@@ -65,12 +96,12 @@ function CatalogueItemFilters({
             {headerText && <div className="header-big catalogue-filter-heading">{headerText}</div>}
             <label className="catalogue-search">
                 <span className="catalogue-control-label text">
-                    Search ({resultCount} of {totalCount})
+                    {searchLabel}
                 </span>
                 <input
                     className="selectable catalogue-input"
-                    aria-label="Search item catalogue"
-                    placeholder="Name, effect text, perk, set, source, ID…"
+                    
+                    placeholder={searchPlaceholder}
                     value={search}
                     onChange={event => setSearch(event.target.value)}
                     onBlur={onSearchBlur}
@@ -79,11 +110,11 @@ function CatalogueItemFilters({
 
             {isListView && onSortChange && (
                 <label className="catalogue-filter catalogue-filter-sort">
-                    <span className="catalogue-control-label text">Sort Order</span>
-                    <select aria-label="Sort order" value={sortOrder} onChange={event => onSortChange(event.target.value)}>
-                        <option value="alphabetic">Alphabetic</option>
-                        <option value="rarity">Rarity</option>
-                        <option value="level">Level</option>
+                    <span className="catalogue-control-label text">{sortOrderLabel}</span>
+                    <select  value={sortOrder} onChange={event => onSortChange(event.target.value)}>
+                        <option value="alphabetic">{alphabeticLabel}</option>
+                        <option value="rarity">{rarityLabel}</option>
+                        <option value="level">{levelLabel}</option>
                     </select>
                 </label>
             )}
@@ -91,16 +122,16 @@ function CatalogueItemFilters({
             {!isListView && (
                 <>
                     <label className="catalogue-filter">
-                        <span className="catalogue-control-label text">Source</span>
-                        <select aria-label="Filter by source" value={sourceFilter} onChange={event => setSourceFilter?.(event.target.value)}>
-                            <option value="all">All sources</option>
-                            {allSources.map(source => <option key={source} value={source}>{humanize(source)}</option>)}
+                        <span className="catalogue-control-label text">{sourceLabel}</span>
+                        <select  value={sourceFilter} onChange={event => setSourceFilter?.(event.target.value)}>
+                            <option value="all">{allSourcesLabel}</option>
+                            {allSources.map(source => <option key={source} value={source}>{tc("dropSource", String(source).toUpperCase().replace(/\s+/g, "_"), "name", humanize(source))}</option>)}
                         </select>
                     </label>
                     <label className="catalogue-filter">
-                        <span className="catalogue-control-label text">Location</span>
-                        <select aria-label="Filter by location" value={locationFilter} onChange={event => setLocationFilter?.(event.target.value)}>
-                            <option value="all">All locations</option>
+                        <span className="catalogue-control-label text">{locationLabel}</span>
+                        <select  value={locationFilter} onChange={event => setLocationFilter?.(event.target.value)}>
+                            <option value="all">{allLocationsLabel}</option>
                             {allLocations.map(location => <option key={location} value={location}>{location}</option>)}
                         </select>
                     </label>
@@ -109,24 +140,24 @@ function CatalogueItemFilters({
 
             {view === "items" && showSlotFilter && (
                 <label className="catalogue-filter">
-                    <span className="catalogue-control-label text">Slot</span>
-                    <select aria-label="Filter by slot" value={slotFilter} onChange={event => setSlotFilter?.(event.target.value)}>
-                        <option value="all">All slots</option>
+                    <span className="catalogue-control-label text">{slotLabel}</span>
+                    <select  value={slotFilter} onChange={event => setSlotFilter?.(event.target.value)}>
+                        <option value="all">{allSlotsLabel}</option>
                         {Object.values(EQUIPMENT_SLOT_DEFINITIONS)
                             .filter(slot => slot.id !== EQUIPMENT_SLOT_DEFINITIONS.OTHER.id)
-                            .map(slot => <option key={slot.id} value={String(slot.id)}>{humanize(slot.name)}</option>)}
+                            .map(slot => <option key={slot.id} value={String(slot.id)}>{translateEnum("equipmentSlot", slot.name)}</option>)}
                     </select>
                 </label>
             )}
 
             {view === "items" && (
                 <label className="catalogue-filter">
-                    <span className="catalogue-control-label text">{attributeLabel}</span>
-                    <select aria-label={`Filter by ${attributeLabel.toLowerCase()}`} value={attributeFilter} onChange={event => setAttributeFilter?.(event.target.value)}>
-                        <option value="all">All attributes</option>
+                    <span className="catalogue-control-label text">{attributeLabel === "Main attribute" ? mainAttributeLabel : attributeLabel}</span>
+                    <select  value={attributeFilter} onChange={event => setAttributeFilter?.(event.target.value)}>
+                        <option value="all">{allAttributesLabel}</option>
                         {Object.values(isListView ? ATTRIBUTE_DEFINITIONS : PRIMARY_STAT_DEFINITIONS)
                             .filter(attribute => attribute.name !== "NONE")
-                            .map(attribute => <option key={attribute.id} value={String(attribute.id)}>{humanize(attribute.name)}</option>)}
+                            .map(attribute => <option key={attribute.id} value={String(attribute.id)}>{translateEnum(isListView ? "attribute" : "primaryStat", attribute.name)}</option>)}
                     </select>
                 </label>
             )}
@@ -134,20 +165,20 @@ function CatalogueItemFilters({
             {view === "sets" && (
                 <>
                     <label className="catalogue-filter">
-                        <span className="catalogue-control-label text">Set attribute</span>
-                        <select aria-label="Filter sets by main attribute" value={setMainAttributeFilter ?? "all"} onChange={event => setAttributeFilterForSets?.(event.target.value)}>
-                            <option value="all">All attributes</option>
+                        <span className="catalogue-control-label text">{setAttributeLabel}</span>
+                        <select  value={setMainAttributeFilter ?? "all"} onChange={event => setAttributeFilterForSets?.(event.target.value)}>
+                            <option value="all">{allAttributesLabel}</option>
                             {Object.values(PRIMARY_STAT_DEFINITIONS).map(attribute =>
-                                <option key={attribute.id} value={String(attribute.id)}>{humanize(attribute.name)}</option>
+                                <option key={attribute.id} value={String(attribute.id)}>{translateEnum("primaryStat", attribute.name)}</option>
                             )}
                         </select>
                     </label>
                     <label className="catalogue-filter">
-                        <span className="catalogue-control-label text">Set pieces</span>
-                        <select aria-label="Filter by set size" value={setPieceCountFilter} onChange={event => setPieceCountFilter?.(event.target.value)}>
-                            <option value="all">All sets</option>
-                            <option value="2">2 Piece Sets</option>
-                            <option value="4">4 Piece Sets</option>
+                        <span className="catalogue-control-label text">{setPiecesLabel}</span>
+                        <select  value={setPieceCountFilter} onChange={event => setPieceCountFilter?.(event.target.value)}>
+                            <option value="all">{allSetsLabel}</option>
+                            <option value="2">{twoPieceSetsLabel}</option>
+                            <option value="4">{fourPieceSetsLabel}</option>
                         </select>
                     </label>
                 </>
@@ -155,23 +186,23 @@ function CatalogueItemFilters({
 
             {isListView && setItemCategoryFilter && (
                 <label className="catalogue-filter">
-                    <span className="catalogue-control-label text">Item type</span>
-                    <select aria-label="Filter by item type" value={itemCategoryFilter} onChange={event => setItemCategoryFilter(event.target.value)}>
-                        <option value="all">All items</option>
-                        <option value="twoset">2-piece set</option>
-                        <option value="fourset">4-piece set</option>
-                        <option value="unique">Unique</option>
+                    <span className="catalogue-control-label text">{itemTypeLabel}</span>
+                    <select  value={itemCategoryFilter} onChange={event => setItemCategoryFilter(event.target.value)}>
+                        <option value="all">{allItemsLabel}</option>
+                        <option value="twoset">{twoPieceSetLabel}</option>
+                        <option value="fourset">{fourPieceSetLabel}</option>
+                        <option value="unique">{uniqueLabel}</option>
                     </select>
                 </label>
             )}
 
             {isListView && setRarityFilter && (
                 <label className="catalogue-filter">
-                    <span className="catalogue-control-label text">Rarity</span>
-                    <select aria-label="Filter by rarity" value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
-                        <option value="all">All rarities</option>
+                    <span className="catalogue-control-label text">{rarityLabel}</span>
+                    <select  value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
+                        <option value="all">{allRaritiesLabel}</option>
                         {Object.values(RARITY_DEFINITIONS).map(rarity =>
-                            <option key={rarity.id} value={String(rarity.id)}>{humanize(rarity.name)}</option>
+                            <option key={rarity.id} value={String(rarity.id)}>{translateEnum("rarity", rarity.name)}</option>
                         )}
                     </select>
                 </label>

@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react"
 
 import { getSearchableValues, matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
 import { humanize } from "../../js/utils.js"
+import { useTranslate } from "../../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../../hooks/useContentTranslation.jsx"
 import { SLOT_NAMES, RARITY_NAMES, getLocations, getSetLocations, getSourceName, getAttributeRequirementLabel, getPerkKey, getPerkLabel, getEffectStatuses, isUniqueItem } from "../../js/catalogueItemUtils.jsx"
 import ItemCatalogueCard from "../ItemCatalogueCard.jsx"
 import SetCatalogueCard from "../SetCatalogueCard.jsx"
@@ -14,6 +16,8 @@ import "../../css/infos.scss"
 import "../../css/infos_items.scss"
 
 function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter = null, onViewChange, scrollElementRef }) {
+    const t = useTranslate()
+    const tc = useContentTranslation()
     const [view, setView] = useState(initialView)
     const [search, setSearch, commitSearch] = useUrlSearch()
     const changeView = nextView => {
@@ -79,6 +83,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
             ...getSearchableValues(item),
             unique ? "unique" : "not unique",
             item.name,
+            tc("item", item.id, "name", item.name),
             item.id,
             item.slotLabel,
             getAttributeRequirementLabel(item.attributeRequirement),
@@ -86,8 +91,8 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
             sourceName,
             ...getLocations(item),
             humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity"),
-            ...getEffectStatuses(item).map(status => status.name),
-            ...(item.fixedPerks ?? []).flatMap(perk => [getPerkLabel(perk), getPerkKey(perk)]),
+            ...getEffectStatuses(item).flatMap(status => [status.name, tc("status", status.key, "name", status.name)]),
+            ...(item.fixedPerks ?? []).flatMap(perk => [getPerkLabel(perk), tc("perk", getPerkKey(perk), "name", getPerkLabel(perk)), getPerkKey(perk)]),
             ...(item.setBonusLabels ?? [])
         ].join(" ").toLowerCase()
         const matchesSearch = matchesSearchQuery(searchable, search, term => {
@@ -100,7 +105,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
         const matchesAttribute = attributeFilter === "all" || String(item.mainAttribute) === attributeFilter
         const matchesLocation = locationFilter === "all" || getLocations(item).includes(locationFilter)
         return matchesSearch && matchesSource && matchesSlot && matchesAttribute && matchesLocation
-    }), [allItems, search, sourceFilter, slotFilter, attributeFilter, locationFilter])
+    }), [allItems, search, sourceFilter, slotFilter, attributeFilter, locationFilter, tc])
 
     const itemsBySet = useMemo(() => {
         const grouped = new Map()
@@ -122,20 +127,22 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
         const searchable = [
             ...getSearchableValues(set),
             set.name,
+            tc("set", set.id, "name", set.name),
             set.id,
             getAttributeRequirementLabel(set.attributeRequirement),
             ...sourceNames,
             ...locations,
-            ...(set.setBonus ?? []).flatMap(perk => [getPerkLabel(perk), getPerkKey(perk)]),
+            ...(set.setBonus ?? []).flatMap(perk => [getPerkLabel(perk), tc("perk", getPerkKey(perk), "name", getPerkLabel(perk)), getPerkKey(perk)]),
             ...pieces.flatMap(item => [
                 ...getSearchableValues(item),
                 item.name,
+                tc("item", item.id, "name", item.name),
                 getAttributeRequirementLabel(item.attributeRequirement),
                 humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity"),
                 getSourceName(item.dropSource),
                 ...getLocations(item),
-                ...(item.fixedPerks ?? []).flatMap(perk => [getPerkLabel(perk), getPerkKey(perk)]),
-                ...getEffectStatuses(item).map(status => status.name)
+                ...(item.fixedPerks ?? []).flatMap(perk => [getPerkLabel(perk), tc("perk", getPerkKey(perk), "name", getPerkLabel(perk)), getPerkKey(perk)]),
+                ...getEffectStatuses(item).flatMap(status => [status.name, tc("status", status.key, "name", status.name)])
             ])
         ].join(" ").toLowerCase()
         const matchesSearch = matchesSearchQuery(searchable, search)
@@ -144,11 +151,11 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
         const matchesSetAttribute = setMainAttributeFilter === "all" || String(set.mainAttribute) === setMainAttributeFilter
         const matchesSetPieces = setPieceCountFilter === "all" || String(set.pieces) === setPieceCountFilter
         return matchesSearch && matchesSource && matchesLocation && matchesSetAttribute && matchesSetPieces
-    }), [setsRef, search, sourceFilter, locationFilter, itemsBySet, setMainAttributeFilter, setPieceCountFilter])
+    }), [setsRef, search, sourceFilter, locationFilter, itemsBySet, setMainAttributeFilter, setPieceCountFilter, tc])
 
     const sortedItems = useMemo(
-        () => filteredItems.slice().sort((a, b) => a.name.localeCompare(b.name)),
-        [filteredItems]
+        () => filteredItems.slice().sort((a, b) => tc("item", a.id, "name", a.name).localeCompare(tc("item", b.id, "name", b.name))),
+        [filteredItems, tc]
     )
 
     const clearFilters = () => {
@@ -164,18 +171,18 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
 
     return (
         <section className="item-catalogue">
-            <CatalogueViewSwitch ariaLabel="Catalogue view" view={view} onViewChange={changeView} options={[
-                { label: "Item Catalogue", value: "items" },
-                { label: "Set Catalogue", value: "sets" },
+            <CatalogueViewSwitch view={view} onViewChange={changeView} options={[
+                { label: t("app.pages.catalogues.itemTitle"), value: "items" },
+                { label: t("app.pages.catalogues.setTitle"), value: "sets" },
             ]} />
 
             <header className="catalogue-header">
                 <div className="catalogue-heading-copy">
-                    <div className="catalogue-title header-big">{view === "sets" ? "Set Catalogue" : "Item Catalogue"}</div>
+                    <div className="catalogue-title header-big">{view === "sets" ? t("app.pages.catalogues.setTitle") : t("app.pages.catalogues.itemTitle")}</div>
                     <p className="catalogue-description text">
                         {view === "sets"
-                            ? "Browse item sets, their required attributes, drop locations, set pieces, and set bonuses."
-                            : "Search item names, unique-effect descriptions, fixed perks, rarity, drop source, location, and other stored item data."}
+                            ? t("app.pages.catalogues.setDescription")
+                            : t("app.pages.catalogues.itemDescription")}
                     </p>
                 </div>
             </header>
@@ -209,7 +216,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
             {view === "items" && (
                 <div className="catalogue-results">
                     {filteredItems.length === 0
-                        ? <p className="catalogue-empty card">No items match these filters.</p>
+                        ? <p className="catalogue-empty card">{t("app.pages.catalogues.noItemsMatch")}</p>
                         : <VirtualizedGrid
                             items={sortedItems}
                             scrollElementRef={scrollElementRef}
@@ -233,7 +240,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
             {view === "sets" && (
                 <div className="catalogue-results">
                     {filteredSets.length === 0
-                        ? <p className="catalogue-empty card">No sets match these filters.</p>
+                        ? <p className="catalogue-empty card">{t("app.pages.catalogues.noSetsMatch")}</p>
                         : <VirtualizedGrid
                             items={filteredSets}
                             scrollElementRef={scrollElementRef}

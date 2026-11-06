@@ -1,4 +1,6 @@
 import { RARITY_DEFINITIONS } from "../database/enums.jsx"
+import { useTranslate } from "../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 import { resourceSprites } from "../database/db_sprites.jsx"
 import { getBannerLastLiveLabel } from "../js/bannerUtils.jsx"
 import Hero from "./Hero.jsx"
@@ -7,6 +9,7 @@ import "../css/infos.scss"
 import "../css/infos_resources.scss"
 
 function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null, featuredHero = null }) {
+    const t = useTranslate()
     if (heroes.length === 0) return null
     const regularPool = oddsPool.filter(hero => hero.id !== featuredHero?.id)
     const totalPoolWeight = regularPool.reduce(
@@ -36,7 +39,7 @@ function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null, fe
                             {odds !== null && (
                                 <span className={`banner-catalogue-hero-odds catalogue-chip text${isFeaturedHero ? " banner-catalogue-hero-odds--featured" : ""}`}>
                                     {isFeaturedHero && <img className="banner-catalogue-booster" src={resourceSprites.neutral_banner_booster} alt="" loading="lazy" decoding="async" />}
-                                    {(odds * 100).toFixed(3)}% chance
+                                    {t("app.shared.chance", { percent: (odds * 100).toFixed(3) })}
                                 </span>
                             )}
                         </div>
@@ -48,7 +51,11 @@ function BannerHeroGroup({ title, heroes, oddsPool = [], rarityChance = null, fe
 }
 
 export default function BannerCatalogueCard({ result, heroesById }) {
+    const t = useTranslate()
+    const tc = useContentTranslation()
     const { banner, heroes, allHeroes = heroes, conditionalHeroes, missingHeroCount, sourceIndex } = result
+    const bannerName = tc("banner", banner.id, "name", banner.name)
+    const bannerCondition = tc("banner", banner.id, "conditionalHeroCondition", banner.conditionalHeroCondition)
     const isEverydayBanner = banner.id === "everyday_heroes"
     const featuredHero = banner.featuredHeroId
         ? (heroesById.get(banner.featuredHeroId) ?? null)
@@ -60,7 +67,7 @@ export default function BannerCatalogueCard({ result, heroesById }) {
         : "N/A"
     const rarityGroups = [
         {
-            title: "Legendary Heroes",
+            title: t("app.shared.legendaryHeroes"),
             heroes: [
                 ...heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.LEGENDARY.id),
                 ...(featuredHero
@@ -73,7 +80,7 @@ export default function BannerCatalogueCard({ result, heroesById }) {
             rarityChance: BANNER_RARITY_PULL_CHANCES[RARITY_DEFINITIONS.LEGENDARY.id],
         },
         {
-            title: "Epic Heroes",
+            title: t("app.shared.epicHeroes"),
             heroes: [
                 ...heroes.filter(hero => Number(hero.rarity) === RARITY_DEFINITIONS.EPIC.id),
                 ...(featuredHero
@@ -86,7 +93,7 @@ export default function BannerCatalogueCard({ result, heroesById }) {
             rarityChance: BANNER_RARITY_PULL_CHANCES[RARITY_DEFINITIONS.EPIC.id],
         },
         {
-            title: "Other Heroes",
+            title: t("app.shared.otherHeroes"),
             heroes: heroes.filter(hero => Number(hero.rarity) !== RARITY_DEFINITIONS.LEGENDARY.id && Number(hero.rarity) !== RARITY_DEFINITIONS.EPIC.id),
             oddsPool: [],
             rarityChance: null,
@@ -96,18 +103,18 @@ export default function BannerCatalogueCard({ result, heroesById }) {
     return (
         <article className={`banner-catalogue-card card${isEverydayBanner ? " card-dark" : ""}`}>
             <header className="banner-catalogue-card-header">
-                <h2 className="banner-catalogue-name header-big">{banner.name}</h2>
+                <h2 className="banner-catalogue-name header-big">{bannerName}</h2>
                 <div className="banner-catalogue-meta">
-                    <span className="catalogue-chip text">{banner.heroIds.length} listed heroes</span>
-                    {banner.standardBanner && <span className="catalogue-chip text">Standard banner</span>}
-                    {featuredHero && <span className="catalogue-chip text">Featured: {featuredHero.name}</span>}
+                    <span className="catalogue-chip text">{t("app.pages.catalogues.listedHeroes", { count: banner.heroIds.length })}</span>
+                    {banner.standardBanner && <span className="catalogue-chip text">{t("app.pages.catalogues.standardBanner")}</span>}
+                    {featuredHero && <span className="catalogue-chip text">{t("app.pages.catalogues.featuredHero", { name: tc("hero", featuredHero.id, "name", featuredHero.name) })}</span>}
                     {!isEverydayBanner &&  <span
                         className="catalogue-chip banner-catalogue-live-date text"
-                        title={liveDateInfo.estimated ? "Estimated from the previous and next banner dates" : "Recorded last-live date"}
+                        title={liveDateInfo.estimated ? t("app.pages.catalogues.estimatedBannerDateTooltip") : t("app.pages.catalogues.recordedLastLiveDateTooltip")}
                     >
-                        Last live: {liveDateText}
+                        {t("app.shared.lastLive", { date: liveDateText })}
                     </span>}
-                    {isEverydayBanner && <span className="catalogue-chip banner-catalogue-chip-permanent text">Always available</span>}
+                    {isEverydayBanner && <span className="catalogue-chip banner-catalogue-chip-permanent text">{t("app.pages.catalogues.alwaysAvailable")}</span>}
                 </div>
             </header>
 
@@ -126,13 +133,13 @@ export default function BannerCatalogueCard({ result, heroesById }) {
 
             {conditionalHeroes.length > 0 && (
                 <section className="banner-catalogue-conditional">
-                    <h3 className="banner-catalogue-group-title text">{banner.conditionalHeroCondition ?? "Conditional Heroes"} ({conditionalHeroes.length})</h3>
+                    <h3 className="banner-catalogue-group-title text">{bannerCondition || t("app.pages.catalogues.conditionalHeroes")} ({conditionalHeroes.length})</h3>
                     <div className="banner-catalogue-hero-grid">
                         {conditionalHeroes.map((hero, index) => (
                             <div className="banner-catalogue-hero" key={`${hero.id}-conditional-${index}`} title={hero.name}>
                                 <Hero heroObj={hero} selected={false} level={null} onClick={() => {}} />
                                 <span className="banner-catalogue-hero-odds banner-catalogue-hero-odds--conditional text">
-                                    Conditional
+                                    {t("app.shared.conditional")}
                                 </span>
                             </div>
                         ))}
@@ -141,8 +148,8 @@ export default function BannerCatalogueCard({ result, heroesById }) {
             )}
 
             {missingHeroCount > 0 && (
-                <p className="banner-catalogue-missing text">
-                    {missingHeroCount} referenced {missingHeroCount === 1 ? "hero is" : "heroes are"} not defined in the hero database.
+                <p className="banner-catalogue-missing text">{t("app.pages.catalogues.bannerDataMissing")}
+                    {t("app.shared.missingReferencedHeroes", { count: missingHeroCount, noun: t(missingHeroCount === 1 ? "app.shared.missingHeroSingular" : "app.shared.missingHeroPlural") })}
                 </p>
             )}
         </article>

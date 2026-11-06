@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react"
+import { useTranslate } from "../hooks/useTranslate.jsx"
 import { getSearchableValues, matchesSearchQuery } from "../js/search.jsx"
 import { BANNERS, getBannerLiveDateInfo, hasValidBannerDate, matchesBannerHeroQuery, parseBannerDate } from "../js/bannerCatalogueUtils.jsx"
 import BannerCatalogueCard from "./BannerCatalogueCard.jsx"
@@ -7,6 +8,7 @@ import "../css/infos.scss"
 import "../css/infos_resources.scss"
 
 export default function BannerCatalogueList({ heroesRef, search, setSearch, commitSearch }) {
+    const t = useTranslate()
     const [filtersVisible, setFiltersVisible] = useState(true)
     const heroesById = useMemo(() => {
         const heroes = Array.isArray(heroesRef) ? heroesRef : []
@@ -97,14 +99,14 @@ export default function BannerCatalogueList({ heroesRef, search, setSearch, comm
             {filtersVisible ? (
                 <div className="banner-catalogue-search card">
                     <label className="catalogue-search">
-                        <span className="catalogue-control-label text">Search ({filteredBanners.length} of {BANNERS.length})</span>
-                        <input className="selectable catalogue-input" type="search" aria-label="Search all banner and hero details" placeholder="Search banners, heroes, and details..." value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
+                        <span className="catalogue-control-label text">{t("app.pages.catalogues.searchCount", { resultCount: filteredBanners.length, totalCount: BANNERS.length })}</span>
+                        <input className="selectable catalogue-input" type="search"  placeholder={t("app.pages.catalogues.bannerSearchPlaceholder")} value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
                     </label>
                     <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={() => { setSearch(""); commitSearch(""); }} />
                 </div>
             ) : <CatalogueFilterActions filtersVisible={false} onShow={() => setFiltersVisible(true)} />}
             {filteredBanners.length === 0
-                ? <p className="catalogue-empty card">No banners match that search.</p>
+                ? <p className="catalogue-empty card">{t("app.pages.catalogues.noBannersMatch")}</p>
                 : <div className="banner-catalogue-grid">
                     {filteredBanners.map(result => (
                         <BannerCatalogueCard key={result.banner.id} result={result} heroesById={heroesById} />

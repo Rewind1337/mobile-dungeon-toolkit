@@ -2,17 +2,21 @@ import { useState } from "react"
 import Button from "./Button.jsx"
 import Modal from "./Modal.jsx"
 import QuestionmarkSrc from "../sprites/questionmark.webp"
+import { useTranslation } from "../hooks/useTranslation.jsx"
 
 function HelpButton({ title, children }) {
     const [isVisible, setIsVisible] = useState(false)
+    const help = useTranslation("app.shared.help")
+    const helpFor = useTranslation("app.shared.helpForTooltip", undefined, { title })
+    const close = useTranslation("app.shared.close")
 
     return (
         <>
             <Button
                 className="page-help-button"
                 prefix={<img src={QuestionmarkSrc} alt="" />}
-                text="Help"
-                title={`Help for ${title}`}
+                text={help}
+                title={helpFor}
                 color={6}
                 onClick={() => setIsVisible(true)}
             />
@@ -21,7 +25,7 @@ function HelpButton({ title, children }) {
                     <div className="page-help-content flex-col">
                         {children}
                     </div>
-                    <Button text="Close" color={6} onClick={() => setIsVisible(false)} />
+                    <Button text={close} color={6} onClick={() => setIsVisible(false)} />
                 </section>
             </Modal>
         </>

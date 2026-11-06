@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useTranslate } from "../hooks/useTranslate.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import { SimulatorEntryDetails } from "./SimulatorEntryList.jsx"
 
@@ -14,13 +15,14 @@ const TOWERS = [
 ]
 
 function SubPageTowers() {
+    const t = useTranslate()
     const { listHeight, listRef, events } = useDynamicList(0, true)
     const [selectedTower, setSelectedTower] = useState(null)
 
     return (
         <div className="simulator-selection-layout page flex-row w-100">
             <section className="card w-66 simulator-selection-list">
-                <div className="header-big">Select Tower</div>
+                <div className="header-big">{t("app.pages.simulatorEntries.selectTower")}</div>
                 <div ref={listRef} {...events} className="list tower-list flex-col" style={{ maxHeight: listHeight }}>
                     {TOWERS.map(tower => (
                         <button type="button" className="tower card flex-col" data-id={tower.id}
@@ -33,10 +35,10 @@ function SubPageTowers() {
             <section className="card w-100 simulator-selection-detail">
                 {selectedTower ? (
                     <>
-                        <SimulatorEntryDetails entry={selectedTower} title={"Tower " + (selectedTower.id + 1) + " - " + selectedTower.name} emptyMessage="No tower stage entries have been defined yet." />
+                        <SimulatorEntryDetails entry={selectedTower} title={t("app.pages.simulatorEntries.towerTitle", { number: selectedTower.id + 1, name: selectedTower.name })} emptyMessage={t("app.pages.simulatorEntries.noTowerStages")} />
                     </>
                 ) : (
-                    <div className="header-big">Select a Tower</div>
+                    <div className="header-big">{t("app.pages.simulatorEntries.selectATower")}</div>
                 )}
             </section>
         </div>
