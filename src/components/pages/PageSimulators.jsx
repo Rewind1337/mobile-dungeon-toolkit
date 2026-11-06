@@ -32,7 +32,7 @@ function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedH
                             key={id}
                             text={compactLabel
                                 ? <><span className="catalogue-view-label-full">{t(label)}</span><span className="catalogue-view-label-compact">{t(compactLabel)}</span></>
-                                : t(`app.pages.simulators.${label}`)}
+                                : t(label)}
                             color={color}
                             active={activeTab === id}
                             disabled={id !== 'magic-toilet'}
