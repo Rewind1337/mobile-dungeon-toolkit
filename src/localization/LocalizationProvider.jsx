@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from "react"
+import { createContext, useCallback, useContext, useMemo, useState } from "react"
 import { DEFAULT_LANGUAGE, LANGUAGE_DICTIONARIES } from "./index.js"
 
 const LocalizationContext = createContext({
@@ -11,11 +11,11 @@ export function LocalizationProvider({ children, initialLanguage = DEFAULT_LANGU
         LANGUAGE_DICTIONARIES[initialLanguage] ? initialLanguage : DEFAULT_LANGUAGE
     )
 
-    const setLanguage = nextLanguage => {
+    const setLanguage = useCallback(nextLanguage => {
         if (LANGUAGE_DICTIONARIES[nextLanguage]) setLanguageState(nextLanguage)
-    }
+    }, [])
 
-    const value = useMemo(() => ({ language, setLanguage }), [language])
+    const value = useMemo(() => ({ language, setLanguage }), [language, setLanguage])
 
     return (
         <LocalizationContext.Provider value={value}>
