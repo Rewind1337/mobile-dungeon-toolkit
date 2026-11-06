@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useTranslate } from "../hooks/useTranslate.jsx"
 import { useDynamicList } from "../hooks/useDynamicList.jsx"
 import { SimulatorEntryDetails, SimulatorElementChips } from "./SimulatorEntryList.jsx"
 
@@ -9,13 +10,14 @@ const GUILD_BOSSES = [
 ]
 
 function SubPageGuildBoss() {
+    const t = useTranslate()
     const { listHeight, listRef, events } = useDynamicList(0, true)
     const [selectedGuildBoss, setSelectedGuildBoss] = useState(null)
 
     return (
         <div className="simulator-selection-layout page flex-row w-100">
             <section className="card w-25 simulator-selection-list">
-                <div className="header-big">Select Guild Boss</div>
+                <div className="header-big">{t("app.pages.simulatorEntries.selectGuildBoss")}</div>
                 <div ref={listRef} {...events} className="list guildboss-list flex-col" style={{ maxHeight: listHeight }}>
                     {GUILD_BOSSES.map(boss => (
                         <button type="button" className="guildboss card flex-col" data-id={boss.id}
@@ -31,10 +33,10 @@ function SubPageGuildBoss() {
             <section className="card boss-preview w-100 simulator-selection-detail">
                 {selectedGuildBoss ? (
                     <>
-                        <SimulatorEntryDetails entry={selectedGuildBoss} title={"Guild Boss - " + selectedGuildBoss.name} elementIds={selectedGuildBoss.elementIds} emptyMessage="No guild boss stage entries have been defined yet." />
+                        <SimulatorEntryDetails entry={selectedGuildBoss} title={t("app.pages.simulatorEntries.guildBossTitle", { name: selectedGuildBoss.name })} elementIds={selectedGuildBoss.elementIds} emptyMessage={t("app.pages.simulators.noGuildBossStages")} />
                     </>
                 ) : (
-                    <div className="header-big">Select a Guild Boss</div>
+                    <div className="header-big">{t("app.pages.simulatorEntries.selectAGuildBoss")}</div>
                 )}
             </section>
         </div>
