@@ -145,7 +145,7 @@ export function SimulatorsGuide() {
     const t = useTranslate()
     return (
         <div className="page-guide">
-            <GuideLead eyebrow={t("app.pages.guides.simulatorEyebrow")} title={t("app.pages.guides.simulatorTitle")}>{t("app.pages.guides.simulatorLeadCopy")}</GuideLead>
+            <GuideLead eyebrow={t("app.navigation.simulators")} title={t("app.pages.guides.simulatorTitle")}>{t("app.pages.guides.simulatorLeadCopy")}</GuideLead>
 
             <span className="guide-example-kicker text">{t("app.pages.guides.trackUsage")}</span>
 
@@ -172,7 +172,7 @@ export function GamesGuide() {
     const t = useTranslate()
     return (
         <div className="page-guide">
-            <GuideLead eyebrow={t("app.pages.guides.gamesEyebrow")} title={t("app.pages.guides.gamesTitle")}>{t("app.pages.guides.gamesLeadCopy")}</GuideLead>
+            <GuideLead eyebrow={t("app.navigation.games")} title={t("app.pages.guides.gamesTitle")}>{t("app.pages.guides.gamesLeadCopy")}</GuideLead>
             <p className="guide-tip"><strong>{t("app.pages.guides.comingLater")}</strong> {t("app.pages.guides.gamesComingLater")}</p>
         </div>
     )
