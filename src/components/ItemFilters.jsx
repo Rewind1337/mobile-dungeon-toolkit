@@ -8,7 +8,7 @@ function MobileFilterSelect({ label, value, onChange, options, multiple = false 
     return (
         <label className="mobile-filter-control">
             <span className="catalogue-control-label text">{label}</span>
-            <select aria-label={label} multiple={multiple}
+            <select  multiple={multiple}
                 value={multiple ? (Array.isArray(value) ? value.map(String) : []) : value ?? ""}
                 onChange={onChange}>
                 {!multiple && <option value="">{t("app.shared.all")}</option>}
@@ -80,11 +80,11 @@ function ItemFilters({ savedItems = false, setFiltersAdvanced, advanced, toggleF
                 <ItemSlotFilters toggleFilter={toggleFilter} filters={filters} filterSprites={filterSprites} />
                 <label className="name-search-filter catalogue-search">
                     <span className="catalogue-control-label text">{t("app.shared.search")}</span>
-                    <input className="selectable catalogue-input w-100" type="text" aria-label={t("app.shared.searchItemsByName")} placeholder={t("app.shared.searchItemPlaceholder")} value={filters.name} onChange={event => setSearch(event.target.value)} onBlur={onSearchBlur} />
+                    <input className="selectable catalogue-input w-100" type="text"  placeholder={t("app.shared.searchItemPlaceholder")} value={filters.name} onChange={event => setSearch(event.target.value)} onBlur={onSearchBlur} />
                 </label>
                 <label className="filters-sort-order">
                     <span className="catalogue-control-label text">{t("app.shared.sortOrder")}</span>
-                    <select aria-label={t("app.shared.sortOrderAriaLabel")} value={sortOrder} onChange={event => onSortChange(event.target.value)}>
+                    <select  value={sortOrder} onChange={event => onSortChange(event.target.value)}>
                         <option value="alphabetic">{t("app.shared.alphabetic")}</option>
                         <option value="rarity">{t("app.shared.rarity")}</option>
                         <option value="level">{t("app.shared.level")}</option>

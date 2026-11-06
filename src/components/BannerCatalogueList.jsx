@@ -100,7 +100,7 @@ export default function BannerCatalogueList({ heroesRef, search, setSearch, comm
                 <div className="banner-catalogue-search card">
                     <label className="catalogue-search">
                         <span className="catalogue-control-label text">{t("app.pages.catalogues.searchCount", { resultCount: filteredBanners.length, totalCount: BANNERS.length })}</span>
-                        <input className="selectable catalogue-input" type="search" aria-label={t("app.pages.catalogues.bannerSearchAriaLabel")} placeholder={t("app.pages.catalogues.bannerSearchPlaceholder")} value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
+                        <input className="selectable catalogue-input" type="search"  placeholder={t("app.pages.catalogues.bannerSearchPlaceholder")} value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} />
                     </label>
                     <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={() => { setSearch(""); commitSearch(""); }} />
                 </div>

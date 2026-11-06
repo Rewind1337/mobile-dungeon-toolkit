@@ -28,10 +28,8 @@ function formatRemaining(milliseconds, unitLabels, zeroSeconds) {
 
 function ResetTimers() {
     const [now, setNow] = useState(() => Date.now())
-    const ariaLabel = useTranslation("app.pages.resetTimers.ariaLabel")
     const dailyLabel = useTranslation("app.pages.resetTimers.daily")
     const weeklyLabel = useTranslation("app.pages.resetTimers.weekly")
-    const clockLabel = useTranslation("app.shared.clock")
     const zeroSeconds = useTranslation("app.pages.resetTimers.zeroSeconds")
     const unitLabels = {
         day: {
@@ -63,12 +61,12 @@ function ResetTimers() {
 
     return (
         <div className="splash-status-panel" style={{height: "50px"}}>
-            <section className="reset-timers-row" aria-label={ariaLabel}>
+            <section className="reset-timers-row" >
                 <div className="reset-timer card">
                     <span className="reset-timer-label header">{dailyLabel}</span>
                     <span className="reset-timer-countdown text-big">{formatRemaining(dailyReset.getTime() - now, unitLabels, zeroSeconds)}</span>
                 </div>
-                <div className="reset-timer-clock card" aria-label={clockLabel}>
+                <div className="reset-timer-clock card" >
                     <img src={Clock} alt="" draggable={false} />
                 </div>
                 <div className="reset-timer card">

@@ -6,7 +6,7 @@ import {
     ROLE_DEFINITIONS
 } from "../database/enums.jsx"
 import { humanize } from "../js/utils.js"
-import { useTranslation } from "../hooks/useTranslation.jsx"
+import { useTranslate } from "../hooks/useTranslate.jsx"
 import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 
 const HERO_CATALOGUE_RARITIES = Object.values(RARITY_DEFINITIONS).filter(
@@ -40,26 +40,21 @@ function HeroCatalogueFilters({
 }) {
     const tc = useContentTranslation()
     const translateEnum = (type, value) => tc(type, String(value ?? "").toUpperCase(), "name", humanize(value))
-    const searchLabel = useTranslation("app.pages.catalogues.searchCount", undefined, { resultCount, totalCount })
-    const searchAriaLabel = useTranslation("app.pages.heroes.filters.searchAriaLabel")
-    const searchPlaceholder = useTranslation("app.pages.heroes.filters.searchPlaceholder")
-    const sortOrderLabel = useTranslation("app.shared.sortOrder")
-    const sortOrderAriaLabel = useTranslation("app.shared.sortOrderAriaLabel")
-    const alphabeticLabel = useTranslation("app.shared.alphabetic")
-    const rarityLabel = useTranslation("app.shared.rarity")
-    const levelLabel = useTranslation("app.shared.level")
-    const allRaritiesLabel = useTranslation("app.shared.allRarities")
-    const rarityAriaLabel = useTranslation("app.shared.filterByRarity")
-    const mainAttributeLabel = useTranslation("app.shared.mainAttribute")
-    const mainAttributeAriaLabel = useTranslation("app.pages.heroes.filters.mainAttributeAriaLabel")
-    const allAttributesLabel = useTranslation("app.shared.allAttributes")
-    const elementLabel = useTranslation("app.shared.element")
-    const elementAriaLabel = useTranslation("app.pages.heroes.filters.elementAriaLabel")
-    const allElementsLabel = useTranslation("app.pages.heroes.filters.allElements")
-    const roleLabel = useTranslation("app.shared.role")
-    const roleAriaLabel = useTranslation("app.pages.heroes.filters.roleAriaLabel")
-    const allRolesLabel = useTranslation("app.pages.heroes.filters.allRoles")
-    const starredLabel = useTranslation("app.pages.heroes.filters.starred")
+    const t = useTranslate()
+    const searchLabel = t("app.pages.catalogues.searchCount", { resultCount, totalCount })
+    const searchPlaceholder = t("app.pages.heroes.filters.searchPlaceholder")
+    const sortOrderLabel = t("app.shared.sortOrder")
+    const alphabeticLabel = t("app.shared.alphabetic")
+    const rarityLabel = t("app.shared.rarity")
+    const levelLabel = t("app.shared.level")
+    const allRaritiesLabel = t("app.shared.allRarities")
+    const mainAttributeLabel = t("app.shared.mainAttribute")
+    const allAttributesLabel = t("app.shared.allAttributes")
+    const elementLabel = t("app.shared.element")
+    const allElementsLabel = t("app.pages.heroes.filters.allElements")
+    const roleLabel = t("app.shared.role")
+    const allRolesLabel = t("app.pages.heroes.filters.allRoles")
+    const starredLabel = t("app.pages.heroes.filters.starred")
 
     if (!filtersVisible) {
         return (
@@ -77,7 +72,7 @@ function HeroCatalogueFilters({
                 <span className="catalogue-control-label text">{searchLabel}</span>
                 <input
                     className="selectable catalogue-input"
-                    aria-label={searchAriaLabel}
+                    
                     placeholder={searchPlaceholder}
                     value={search}
                     onChange={event => setSearch(event.target.value)}
@@ -87,7 +82,7 @@ function HeroCatalogueFilters({
             {onSortChange && (
                 <label className="catalogue-filter catalogue-filter-sort">
                     <span className="catalogue-control-label text">{sortOrderLabel}</span>
-                    <select aria-label={sortOrderAriaLabel} value={sortOrder} onChange={event => onSortChange(event.target.value)}>
+                    <select  value={sortOrder} onChange={event => onSortChange(event.target.value)}>
                         <option value="alphabetic">{alphabeticLabel}</option>
                         <option value="rarity">{rarityLabel}</option>
                         <option value="level">{levelLabel}</option>
@@ -96,28 +91,28 @@ function HeroCatalogueFilters({
             )}
             <label className="catalogue-filter">
                 <span className="catalogue-control-label text">{rarityLabel}</span>
-                <select aria-label={rarityAriaLabel} value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
+                <select  value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
                     <option value="all">{allRaritiesLabel}</option>
                     {HERO_CATALOGUE_RARITIES.map(value => <option key={value.id} value={String(value.id)}>{translateEnum("rarity", value.name)}</option>)}
                 </select>
             </label>
             <label className="catalogue-filter">
                 <span className="catalogue-control-label text">{mainAttributeLabel}</span>
-                <select aria-label={mainAttributeAriaLabel} value={attributeFilter} onChange={event => setAttributeFilter(event.target.value)}>
+                <select  value={attributeFilter} onChange={event => setAttributeFilter(event.target.value)}>
                     <option value="all">{allAttributesLabel}</option>
                     {Object.values(ATTRIBUTE_DEFINITIONS).filter(value => value.id !== ATTRIBUTE_DEFINITIONS.NONE.id).map(value => <option key={value.id} value={String(value.id)}>{translateEnum("attribute", value.name)}</option>)}
                 </select>
             </label>
             <label className="catalogue-filter">
                 <span className="catalogue-control-label text">{elementLabel}</span>
-                <select aria-label={elementAriaLabel} value={elementFilter} onChange={event => setElementFilter(event.target.value)}>
+                <select  value={elementFilter} onChange={event => setElementFilter(event.target.value)}>
                     <option value="all">{allElementsLabel}</option>
                     {Object.values(ELEMENT_DEFINITIONS).filter(value => value.id !== ELEMENT_DEFINITIONS.VOID.id).map(value => <option key={value.id} value={String(value.id)}>{translateEnum("element", value.name)}</option>)}
                 </select>
             </label>
             <label className="catalogue-filter">
                 <span className="catalogue-control-label text">{roleLabel}</span>
-                <select aria-label={roleAriaLabel} value={roleFilter} onChange={event => setRoleFilter(event.target.value)}>
+                <select  value={roleFilter} onChange={event => setRoleFilter(event.target.value)}>
                     <option value="all">{allRolesLabel}</option>
                     {Object.values(ROLE_DEFINITIONS).map(value => <option key={value.id} value={String(value.id)}>{translateEnum("role", value.name)}</option>)}
                 </select>

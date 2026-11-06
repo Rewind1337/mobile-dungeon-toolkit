@@ -5,7 +5,7 @@ import {
     RARITY_DEFINITIONS
 } from "../database/enums.jsx"
 import { humanize } from "../js/utils.js"
-import { useTranslation } from "../hooks/useTranslation.jsx"
+import { useTranslate } from "../hooks/useTranslate.jsx"
 import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 import CatalogueFilterActions from "./CatalogueFilterActions.jsx"
 
@@ -47,41 +47,32 @@ function CatalogueItemFilters({
 }) {
     const tc = useContentTranslation()
     const translateEnum = (type, value) => tc(type, String(value ?? "").toUpperCase(), "name", humanize(value))
-    const searchLabel = useTranslation("app.pages.catalogues.searchCount", undefined, { resultCount, totalCount })
-    const searchAriaLabel = useTranslation("app.pages.items.filters.searchAriaLabel")
-    const searchPlaceholder = useTranslation("app.pages.items.filters.searchPlaceholder")
-    const sortOrderLabel = useTranslation("app.shared.sortOrder")
-    const sortOrderAriaLabel = useTranslation("app.shared.sortOrderAriaLabel")
-    const alphabeticLabel = useTranslation("app.shared.alphabetic")
-    const rarityLabel = useTranslation("app.shared.rarity")
-    const levelLabel = useTranslation("app.shared.level")
-    const sourceLabel = useTranslation("app.pages.items.filters.source")
-    const sourceAriaLabel = useTranslation("app.pages.items.filters.sourceAriaLabel")
-    const allSourcesLabel = useTranslation("app.shared.allSources")
-    const locationLabel = useTranslation("app.pages.items.filters.location")
-    const locationAriaLabel = useTranslation("app.pages.items.filters.locationAriaLabel")
-    const allLocationsLabel = useTranslation("app.pages.items.filters.allLocations")
-    const slotLabel = useTranslation("app.shared.slotLabel")
-    const slotAriaLabel = useTranslation("app.pages.items.filters.slotAriaLabel")
-    const allSlotsLabel = useTranslation("app.shared.allSlots")
-    const mainAttributeLabel = useTranslation("app.shared.mainAttribute")
-    const attributeAriaLabel = useTranslation("app.pages.items.filters.attributeAriaLabel", undefined, { attribute: attributeLabel.toLowerCase() })
-    const allAttributesLabel = useTranslation("app.shared.allAttributes")
-    const rarityAriaLabel = useTranslation("app.shared.filterByRarity")
-    const setAttributeLabel = useTranslation("app.pages.items.filters.setAttribute")
-    const setAttributeAriaLabel = useTranslation("app.pages.items.filters.setAttributeAriaLabel")
-    const setPiecesLabel = useTranslation("app.pages.items.filters.setPieces")
-    const setPiecesAriaLabel = useTranslation("app.pages.items.filters.setPiecesAriaLabel")
-    const allSetsLabel = useTranslation("app.pages.items.filters.allSets")
-    const twoPieceSetsLabel = useTranslation("app.shared.twoPieceSets")
-    const fourPieceSetsLabel = useTranslation("app.shared.fourPieceSets")
-    const itemTypeLabel = useTranslation("app.pages.items.filters.itemType")
-    const itemTypeAriaLabel = useTranslation("app.pages.items.filters.itemTypeAriaLabel")
-    const allItemsLabel = useTranslation("app.pages.items.filters.allItems")
-    const twoPieceSetLabel = useTranslation("app.shared.twoPieceSet")
-    const fourPieceSetLabel = useTranslation("app.shared.fourPieceSet")
-    const uniqueLabel = useTranslation("app.shared.unique")
-    const allRaritiesLabel = useTranslation("app.shared.allRarities")
+    const t = useTranslate()
+    const searchLabel = t("app.pages.catalogues.searchCount", { resultCount, totalCount })
+    const searchPlaceholder = t("app.pages.items.filters.searchPlaceholder")
+    const sortOrderLabel = t("app.shared.sortOrder")
+    const alphabeticLabel = t("app.shared.alphabetic")
+    const rarityLabel = t("app.shared.rarity")
+    const levelLabel = t("app.shared.level")
+    const sourceLabel = t("app.pages.items.filters.source")
+    const allSourcesLabel = t("app.shared.allSources")
+    const locationLabel = t("app.pages.items.filters.location")
+    const allLocationsLabel = t("app.pages.items.filters.allLocations")
+    const slotLabel = t("app.shared.slotLabel")
+    const allSlotsLabel = t("app.shared.allSlots")
+    const mainAttributeLabel = t("app.shared.mainAttribute")
+    const allAttributesLabel = t("app.shared.allAttributes")
+    const setAttributeLabel = t("app.pages.items.filters.setAttribute")
+    const setPiecesLabel = t("app.pages.items.filters.setPieces")
+    const allSetsLabel = t("app.pages.items.filters.allSets")
+    const twoPieceSetsLabel = t("app.shared.twoPieceSets")
+    const fourPieceSetsLabel = t("app.shared.fourPieceSets")
+    const itemTypeLabel = t("app.pages.items.filters.itemType")
+    const allItemsLabel = t("app.pages.items.filters.allItems")
+    const twoPieceSetLabel = t("app.shared.twoPieceSet")
+    const fourPieceSetLabel = t("app.shared.fourPieceSet")
+    const uniqueLabel = t("app.shared.unique")
+    const allRaritiesLabel = t("app.shared.allRarities")
 
     if (!filtersVisible) {
         return (
@@ -109,7 +100,7 @@ function CatalogueItemFilters({
                 </span>
                 <input
                     className="selectable catalogue-input"
-                    aria-label={searchAriaLabel}
+                    
                     placeholder={searchPlaceholder}
                     value={search}
                     onChange={event => setSearch(event.target.value)}
@@ -120,7 +111,7 @@ function CatalogueItemFilters({
             {isListView && onSortChange && (
                 <label className="catalogue-filter catalogue-filter-sort">
                     <span className="catalogue-control-label text">{sortOrderLabel}</span>
-                    <select aria-label={sortOrderAriaLabel} value={sortOrder} onChange={event => onSortChange(event.target.value)}>
+                    <select  value={sortOrder} onChange={event => onSortChange(event.target.value)}>
                         <option value="alphabetic">{alphabeticLabel}</option>
                         <option value="rarity">{rarityLabel}</option>
                         <option value="level">{levelLabel}</option>
@@ -132,14 +123,14 @@ function CatalogueItemFilters({
                 <>
                     <label className="catalogue-filter">
                         <span className="catalogue-control-label text">{sourceLabel}</span>
-                        <select aria-label={sourceAriaLabel} value={sourceFilter} onChange={event => setSourceFilter?.(event.target.value)}>
+                        <select  value={sourceFilter} onChange={event => setSourceFilter?.(event.target.value)}>
                             <option value="all">{allSourcesLabel}</option>
                             {allSources.map(source => <option key={source} value={source}>{tc("dropSource", String(source).toUpperCase().replace(/\s+/g, "_"), "name", humanize(source))}</option>)}
                         </select>
                     </label>
                     <label className="catalogue-filter">
                         <span className="catalogue-control-label text">{locationLabel}</span>
-                        <select aria-label={locationAriaLabel} value={locationFilter} onChange={event => setLocationFilter?.(event.target.value)}>
+                        <select  value={locationFilter} onChange={event => setLocationFilter?.(event.target.value)}>
                             <option value="all">{allLocationsLabel}</option>
                             {allLocations.map(location => <option key={location} value={location}>{location}</option>)}
                         </select>
@@ -150,7 +141,7 @@ function CatalogueItemFilters({
             {view === "items" && showSlotFilter && (
                 <label className="catalogue-filter">
                     <span className="catalogue-control-label text">{slotLabel}</span>
-                    <select aria-label={slotAriaLabel} value={slotFilter} onChange={event => setSlotFilter?.(event.target.value)}>
+                    <select  value={slotFilter} onChange={event => setSlotFilter?.(event.target.value)}>
                         <option value="all">{allSlotsLabel}</option>
                         {Object.values(EQUIPMENT_SLOT_DEFINITIONS)
                             .filter(slot => slot.id !== EQUIPMENT_SLOT_DEFINITIONS.OTHER.id)
@@ -162,7 +153,7 @@ function CatalogueItemFilters({
             {view === "items" && (
                 <label className="catalogue-filter">
                     <span className="catalogue-control-label text">{attributeLabel === "Main attribute" ? mainAttributeLabel : attributeLabel}</span>
-                    <select aria-label={attributeAriaLabel} value={attributeFilter} onChange={event => setAttributeFilter?.(event.target.value)}>
+                    <select  value={attributeFilter} onChange={event => setAttributeFilter?.(event.target.value)}>
                         <option value="all">{allAttributesLabel}</option>
                         {Object.values(isListView ? ATTRIBUTE_DEFINITIONS : PRIMARY_STAT_DEFINITIONS)
                             .filter(attribute => attribute.name !== "NONE")
@@ -175,7 +166,7 @@ function CatalogueItemFilters({
                 <>
                     <label className="catalogue-filter">
                         <span className="catalogue-control-label text">{setAttributeLabel}</span>
-                        <select aria-label={setAttributeAriaLabel} value={setMainAttributeFilter ?? "all"} onChange={event => setAttributeFilterForSets?.(event.target.value)}>
+                        <select  value={setMainAttributeFilter ?? "all"} onChange={event => setAttributeFilterForSets?.(event.target.value)}>
                             <option value="all">{allAttributesLabel}</option>
                             {Object.values(PRIMARY_STAT_DEFINITIONS).map(attribute =>
                                 <option key={attribute.id} value={String(attribute.id)}>{translateEnum("primaryStat", attribute.name)}</option>
@@ -184,7 +175,7 @@ function CatalogueItemFilters({
                     </label>
                     <label className="catalogue-filter">
                         <span className="catalogue-control-label text">{setPiecesLabel}</span>
-                        <select aria-label={setPiecesAriaLabel} value={setPieceCountFilter} onChange={event => setPieceCountFilter?.(event.target.value)}>
+                        <select  value={setPieceCountFilter} onChange={event => setPieceCountFilter?.(event.target.value)}>
                             <option value="all">{allSetsLabel}</option>
                             <option value="2">{twoPieceSetsLabel}</option>
                             <option value="4">{fourPieceSetsLabel}</option>
@@ -196,7 +187,7 @@ function CatalogueItemFilters({
             {isListView && setItemCategoryFilter && (
                 <label className="catalogue-filter">
                     <span className="catalogue-control-label text">{itemTypeLabel}</span>
-                    <select aria-label={itemTypeAriaLabel} value={itemCategoryFilter} onChange={event => setItemCategoryFilter(event.target.value)}>
+                    <select  value={itemCategoryFilter} onChange={event => setItemCategoryFilter(event.target.value)}>
                         <option value="all">{allItemsLabel}</option>
                         <option value="twoset">{twoPieceSetLabel}</option>
                         <option value="fourset">{fourPieceSetLabel}</option>
@@ -208,7 +199,7 @@ function CatalogueItemFilters({
             {isListView && setRarityFilter && (
                 <label className="catalogue-filter">
                     <span className="catalogue-control-label text">{rarityLabel}</span>
-                    <select aria-label={rarityAriaLabel} value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
+                    <select  value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
                         <option value="all">{allRaritiesLabel}</option>
                         {Object.values(RARITY_DEFINITIONS).map(rarity =>
                             <option key={rarity.id} value={String(rarity.id)}>{translateEnum("rarity", rarity.name)}</option>
