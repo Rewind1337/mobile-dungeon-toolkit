@@ -149,7 +149,7 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
                 <section className="info-overview-breakdown-card info-overview-data-card card card-static">
                     <div className="catalogue-overview-stats">
                         <Stat label="Items" value={itemCount} />
-                        <Stat label="Item sets" value={sets.length} />
+                        <Stat label={t("app.pages.wiki.sets")} value={sets.length} />
                         <Stat label="Heroes" value={heroes.length} />
                         <Stat label="Banners" value={BANNER_DATA.length} />
                         <Stat label="Skills" value={skillCount} />
