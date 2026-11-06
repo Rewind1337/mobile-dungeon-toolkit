@@ -399,8 +399,8 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
         return (
             <div ref={listRef} className='hero-preview flex-col' style={{ maxHeight: listHeight }}>
                 <div className='preview-top-row flex-row sticky-top'>
-                    <Button className='preview-back-button preview-action-chip' prefix={<img className="preview-direction-icon" src={ExpandSrc} alt="" style={{ transform: isFullWidth ? 'rotate(-90deg)' : 'rotate(90deg)' }} />} title={isFullWidth ? t("app.shared.showHeroList_tooltip") : t("app.shared.expandPreview_tooltip")} text={isFullWidth ? t("app.shared.showList") : t("app.shared.expand")} onClick={onToggleFullWidth} color={1} />
-                    <Button className='preview-close-button preview-action-chip' prefix={<img className="preview-close-icon" src={CrossSrc} alt="" />} title={t("app.shared.deselectHeroClosePreview_tooltip")} text={t("app.shared.deselectHero")} onClick={onClosePreview} color='cancel' />
+                    <Button className='preview-back-button preview-action-chip' prefix={<img className="preview-direction-icon" src={ExpandSrc} alt="" style={{ transform: isFullWidth ? 'rotate(-90deg)' : 'rotate(90deg)' }} />} title={isFullWidth ? t("app.shared.showHeroListTooltip") : t("app.shared.expandPreviewTooltip")} text={isFullWidth ? t("app.shared.showList") : t("app.shared.expand")} onClick={onToggleFullWidth} color={1} />
+                    <Button className='preview-close-button preview-action-chip' prefix={<img className="preview-close-icon" src={CrossSrc} alt="" />} title={t("app.shared.deselectHeroClosePreviewTooltip")} text={t("app.shared.deselectHero")} onClick={onClosePreview} color='cancel' />
                 </div>
                 <Modal position="center" isVisible={exportModalVisible} onClose={() => setExportModalVisible(false)}>
                     <div className="flex-col card w-100">
@@ -523,7 +523,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                             const item = equippedItems[slot.id]
                             if (slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id) {
                                 return (
-                                    <div key={slot.id} className="item card item-slot-locked" aria-disabled="true" title={t("app.pages.heroes.preview.otherSlotUnavailable_tooltip")}>
+                                    <div key={slot.id} className="item card item-slot-locked" aria-disabled="true" title={t("app.pages.heroes.preview.otherSlotUnavailableTooltip")}>
                                         <div className="item-icon item-icon-locked">
                                             <img src={LockedSrc} loading="eager" decoding="async" draggable={false} alt="" />
                                         </div>
@@ -550,11 +550,11 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                             </div>
                         ))}
                     </div>
-                    <div className='header calculated-stats-heading' title={t("app.pages.heroes.preview.calculatedStatsNote_tooltip")}>{t("app.pages.heroes.preview.calculatedStats")} <small>(?)</small></div>
+                    <div className='header calculated-stats-heading' title={t("app.pages.heroes.preview.calculatedStatsNoteTooltip")}>{t("app.pages.heroes.preview.calculatedStats")} <small>(?)</small></div>
                     <div className='flex-row base-stats calculated-stats' >
                         {Object.entries(MAIN_STAT_PERKS).map(([name, mapping]) => {
                             const hasMax = Math.abs(calculatedStats.mainMax[name] - calculatedStats.main[name]) > 0.001
-                            return <div className='flex-row text card calculated-stat' key={name} title={t("app.pages.heroes.preview.finalStat_tooltip", { name })}>
+                            return <div className='flex-row text card calculated-stat' key={name} title={t("app.pages.heroes.preview.finalStatTooltip", { name })}>
                                 <img width={32} src={perkSprites[mapping.flat]}/>
                                 <div>{formatNumber(calculatedStats.main[name], 2)}{hasMax ? ` (${formatNumber(calculatedStats.mainMax[name], 2)} MAX)` : ""}</div>
                             </div>
