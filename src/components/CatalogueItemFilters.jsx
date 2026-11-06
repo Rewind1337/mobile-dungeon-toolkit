@@ -6,6 +6,7 @@ import {
 } from "../database/enums.jsx"
 import { humanize } from "../js/utils.js"
 import { useTranslation } from "../hooks/useTranslation.jsx"
+import { useTranslate } from "../hooks/useTranslate.jsx"
 import CatalogueFilterActions from "./CatalogueFilterActions.jsx"
 
 function CatalogueItemFilters({
@@ -44,6 +45,8 @@ function CatalogueItemFilters({
     sortOrder,
     onSortChange
 }) {
+    const t = useTranslate()
+    const translateEnum = value => { const key = String(value ?? "").toLowerCase(); const translated = t(`app.shared.${key}`); return translated === `app.shared.${key}` ? humanize(value) : translated }
     const searchLabel = useTranslation("app.pages.catalogues.searchCount", undefined, { resultCount, totalCount })
     const searchAriaLabel = useTranslation("app.pages.items.filters.searchAriaLabel")
     const searchPlaceholder = useTranslation("app.pages.items.filters.searchPlaceholder")
@@ -151,7 +154,7 @@ function CatalogueItemFilters({
                         <option value="all">{allSlotsLabel}</option>
                         {Object.values(EQUIPMENT_SLOT_DEFINITIONS)
                             .filter(slot => slot.id !== EQUIPMENT_SLOT_DEFINITIONS.OTHER.id)
-                            .map(slot => <option key={slot.id} value={String(slot.id)}>{humanize(slot.name)}</option>)}
+                            .map(slot => <option key={slot.id} value={String(slot.id)}>{translateEnum(slot.name)}</option>)}
                     </select>
                 </label>
             )}
@@ -163,7 +166,7 @@ function CatalogueItemFilters({
                         <option value="all">{allAttributesLabel}</option>
                         {Object.values(isListView ? ATTRIBUTE_DEFINITIONS : PRIMARY_STAT_DEFINITIONS)
                             .filter(attribute => attribute.name !== "NONE")
-                            .map(attribute => <option key={attribute.id} value={String(attribute.id)}>{humanize(attribute.name)}</option>)}
+                            .map(attribute => <option key={attribute.id} value={String(attribute.id)}>{translateEnum(attribute.name)}</option>)}
                     </select>
                 </label>
             )}
@@ -208,7 +211,7 @@ function CatalogueItemFilters({
                     <select aria-label={rarityAriaLabel} value={rarityFilter} onChange={event => setRarityFilter(event.target.value)}>
                         <option value="all">{allRaritiesLabel}</option>
                         {Object.values(RARITY_DEFINITIONS).map(rarity =>
-                            <option key={rarity.id} value={String(rarity.id)}>{humanize(rarity.name)}</option>
+                            <option key={rarity.id} value={String(rarity.id)}>{translateEnum(rarity.name)}</option>
                         )}
                     </select>
                 </label>
