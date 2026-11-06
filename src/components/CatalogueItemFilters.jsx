@@ -75,8 +75,8 @@ function CatalogueItemFilters({
     const itemTypeLabel = useTranslation("app.pages.items.filters.itemType")
     const itemTypeAriaLabel = useTranslation("app.pages.items.filters.itemTypeAriaLabel")
     const allItemsLabel = useTranslation("app.pages.items.filters.allItems")
-    const twoPieceSetLabel = useTranslation("app.pages.items.filters.twoPieceSet")
-    const fourPieceSetLabel = useTranslation("app.pages.items.filters.fourPieceSet")
+    const twoPieceSetLabel = useTranslation("app.shared.twoPieceSet")
+    const fourPieceSetLabel = useTranslation("app.shared.fourPieceSet")
     const uniqueLabel = useTranslation("app.shared.unique")
     const allRaritiesLabel = useTranslation("app.shared.allRarities")
 
