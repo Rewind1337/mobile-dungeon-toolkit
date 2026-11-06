@@ -8,7 +8,7 @@ const openModals = []
 let modalEscapeHandler = null
 
 function Modal({ isVisible, onClose, position = 'left', hasCloseButton, className = "", children }) {
-    const closeLabel = useTranslation("app.common.close")
+    const closeLabel = useTranslation("app.shared.close")
     const onCloseRef = useRef(onClose)
     onCloseRef.current = onClose
     const modalEntryRef = useRef(null)
