@@ -108,7 +108,7 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                             <label className="catalogue-filter resource-location-filter">
                                 <span className="catalogue-control-label text">{t("app.pages.catalogues.obtainedFrom")}</span>
                                 <select aria-label={t("app.pages.catalogues.filterResourcesBySource")} value={obtainedFromFilter} onChange={event => setObtainedFromFilter(event.target.value)}>
-                                    <option value="all">{t("app.pages.catalogues.allSources")}</option>
+                                    <option value="all">{t("app.shared.allSources")}</option>
                                     {Object.entries(RESOURCE_LOCATIONS).map(([key, label]) => <option key={key} value={label}>{label}</option>)}
                                 </select>
                             </label>
