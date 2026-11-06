@@ -1,6 +1,7 @@
 import { elementSprites } from "../database/db_sprites.jsx"
 import { ELEMENT_DEFINITIONS, RARITY_DEFINITIONS, RESOURCE_LOCATIONS } from "../database/enums.jsx"
 import { humanize } from "../js/utils.js"
+import { useTranslate } from "../hooks/useTranslate.jsx"
 import "../css/infos.scss"
 import "../css/infos_resources.scss"
 
@@ -53,6 +54,7 @@ function ResourceLocationRow({ label, locations = [] }) {
 }
 
 export default function ResourceCatalogueCard({ resource }) {
+    const t = useTranslate()
     const additionalInformation = Array.isArray(resource.additionalInformation)
         ? resource.additionalInformation
         : []
@@ -69,13 +71,13 @@ export default function ResourceCatalogueCard({ resource }) {
                     )}
                 </div>
                 {additionalInformation.length > 0 && (
-                    <div className="resource-catalogue-additional-info" aria-label="Additional information">
+                    <div className="resource-catalogue-additional-info" aria-label={t("app.shared.additionalInformation")}>
                         {additionalInformation.map((information, index) => (
                             <AdditionalInfoChip information={information} key={index} />
                         ))}
                     </div>
                 )}
-                <p className="resource-catalogue-description text">{resource.description || "No description recorded."}</p>
+                <p className="resource-catalogue-description text">{resource.description || t("app.shared.noDescriptionRecorded")}</p>
                 <ResourceLocationRow label="Obtained from" locations={resource.sourceLocations} />
                 <ResourceLocationRow label="Used for" locations={resource.useLocations} />
             </div>
