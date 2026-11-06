@@ -10,8 +10,11 @@ import HelpButton from "../HelpButton.jsx"
 import { ItemManagementGuide } from "../Guides.jsx"
 import { createItemShareToken, decodeItemShareInput, decodeItemsShareInput, restoreSharedItem, restoreSharedItems } from "../../utils/heroShare.js"
 import { clearSearchFromUrl } from "../../js/search.jsx"
+import { useTranslation } from "../../hooks/useTranslation.jsx"
 
 function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatusChange }) {
+    const allItemsHeader = useTranslation("app.pages.items.filter.header")
+    const savedItemsHeader = useTranslation("app.pages.items.filter.savedHeader")
     const [pageContent, setPageContent] = useState(0)
     const switchListPage = nextPage => {
         if (pageContent !== nextPage) clearSearchFromUrl()
@@ -312,7 +315,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                     <>
                         <div className='card w-50 item-list-pane' style={{ width: (selectedItemId.slot === null) ? "300%" : "50%" }}>
                             <ItemList
-                                headerText={"All Items"}
+                                headerText={allItemsHeader}
                                 filtersOffset={"5px"}
                                 itemsRef={itemsRef.current.BASE_ITEMS}
                                 setSelectedItemId={itemId => selectItemForPreview(setSelectedItemId, itemId)}
@@ -336,7 +339,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                         <div className='card w-50 item-list-pane' style={{ width: (selectedSavedItemId.slot === null) ? "300%" : "50%" }}>
                             <ItemList
                                 savedItems
-                                headerText={"Saved Items"}
+                                headerText={savedItemsHeader}
                                 filtersOffset={"5px"}
                                 itemsRef={savedItemsRef.current}
                                 setSelectedItemId={itemId => selectItemForPreview(setSelectedSavedItemId, itemId)}
