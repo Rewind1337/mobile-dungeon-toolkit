@@ -97,7 +97,7 @@ export function TeamOverview({ team, savedHeroes }) {
                         <span
                             className={`catalogue-chip text team-overview-chip team-attribute-chip catalogue-chip-attribute-${key}`}
                             key={`attribute-${hero.saveId ?? hero.id}-${index}`}
-                            title={`${tc("hero", hero.id, "name", hero.name)} · ${t("app.shared.slot", { number: index + 1 })}`}
+                            title={t("app.pages.teams.heroSlot_tooltip", { hero: tc("hero", hero.id, "name", hero.name), slot: t("app.shared.slot", { number: index + 1 }) })}
                         >
                             {typeof icon === "string"
                                 ? <img className="catalogue-chip-icon" src={icon} alt="" />
@@ -151,7 +151,7 @@ function TeamHeroStatusIcons({ hero }) {
 
     const label = statuses.map(name => tc("status", name, "name", humanize(name))).join(", ")
     return (
-        <div className="catalogue-chip team-hero-status-icons" aria-label={tc("hero", hero.id, "name", hero.name) + " " + t("app.shared.buffs") + " / " + t("app.shared.debuffs") + ": " + label} title={label}>
+        <div className="catalogue-chip team-hero-status-icons"  title={t("app.pages.teams.statusEffects_tooltip", { label })}>
             {statuses.map(name => (
                 <img className="team-status-icon" key={name} src={statusSprites[name]} alt={tc("status", name, "name", humanize(name))} title={tc("status", name, "name", humanize(name))} />
             ))}
@@ -164,14 +164,14 @@ export function TeamHeroStats({ hero, slotIndex, calculatedStats }) {
     const tc = useContentTranslation()
     if (!hero) return null
     return (
-        <div className="team-base-stat-summary" aria-label={t("app.pages.teams.calculatedStats", { name: tc("hero", hero.id, "name", hero.name), slot: slotIndex + 1 })}>
+        <div className="team-base-stat-summary" >
             {TEAM_BASE_STATS.map(([key, label, fullLabel]) => {
                 const value = calculatedStats?.main?.[key] ?? hero.stats?.[key]
                 const maxValue = calculatedStats?.mainMax?.[key]
                 const hasMax = Number.isFinite(Number(maxValue)) && Math.abs(Number(maxValue) - Number(value)) > 0.001
                 const format = stat => Number.isFinite(Number(stat)) ? formatNumber(Number(stat), 2) : "—"
                 return (
-                    <span className="team-base-stat" key={key} title={tc("hero", hero.id, "name", hero.name) + " · " + t("app.shared." + fullLabel)}>
+                    <span className="team-base-stat" key={key} title={t("app.pages.teams.baseStat_tooltip", { hero: tc("hero", hero.id, "name", hero.name), stat: t("app.shared." + fullLabel) })}>
                         <strong>{label}</strong>
                         <span className="team-base-stat-value">{format(value)}</span>
                         {hasMax && <small className="team-base-stat-max">{t("app.pages.teams.max")} {format(maxValue)}</small>}
@@ -395,7 +395,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                 <Button
                                     className="team-collapse-button"
                                     text={collapsedTeamIds.has(team.id) ? t("app.shared.expand") : t("app.pages.teams.collapse")}
-                                    title={collapsedTeamIds.has(team.id) ? t("app.shared.expandTeamDetails") : t("app.pages.teams.collapseTeamDetails")}
+                                    title={collapsedTeamIds.has(team.id) ? t("app.shared.expandTeamDetails_tooltip") : t("app.pages.teams.collapseTeamDetails_tooltip")}
                                     color={5}
                                     onClick={() => toggleTeamCollapsed(team.id)}
                                 />
@@ -406,7 +406,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                         <input
                                             className="team-name-input"
                                             type="text"
-                                            aria-label={t("app.pages.teams.teamName", { name: team.name })}
+                                            
                                             value={team.name}
                                             onChange={event => renameTeam(team.id, event.target.value)}
                                             onBlur={() => {
@@ -419,14 +419,14 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                     )}
                                 </h2>
                                 {collapsedTeamIds.has(team.id) && (
-                                    <div className="team-collapsed-heroes" aria-label={t("app.pages.teams.teamHeroes", { name: team.name })}>
+                                    <div className="team-collapsed-heroes" >
                                         {team.heroes.map((saveId, slotIndex) => {
                                             const hero = savedHeroes.find(savedHero => savedHero.saveId === saveId)
                                             if (!hero) return null
                                             return (
                                                 <span className="catalogue-chip text team-collapsed-hero-chip"
                                                     key={team.id + "-collapsed-hero-" + slotIndex}
-                                                    title={tc("hero", hero.id, "name", hero.name) + " · " + t("app.shared.slot", { number: slotIndex + 1 })}>
+                                                    title={t("app.pages.teams.heroSlot_tooltip", { hero: tc("hero", hero.id, "name", hero.name), slot: t("app.shared.slot", { number: slotIndex + 1 }) })}>
                                                     <img className="catalogue-chip-icon"
                                                         src={hero.heroSrc ?? heroSprites[hero.id] ?? heroSprites["null"]}
                                                         alt="" loading="lazy" decoding="async" draggable={false} />
@@ -448,7 +448,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                             {!collapsedTeamIds.has(team.id) && (
                             <div className="team-content">
                                 <div className="team-heroes-column">
-                                    <div className="team-hero-slots" aria-label={t("app.pages.teams.heroSlots", { name: team.name })}>
+                                    <div className="team-hero-slots" >
                                         {team.heroes.map((saveId, slotIndex) => {
                                             const hero = savedHeroes.find(savedHero => savedHero.saveId === saveId)
                                             const equippedItems = TEAM_EQUIPMENT_SLOTS.map(slot => ({
@@ -463,15 +463,15 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                                             <Hero heroObj={hero} selected={false} level={hero.level ?? null} onClick={() => openSlotPicker(team, slotIndex)} />
                                                             <div
                                                                     className="catalogue-chip team-equipped-items"
-                                                                    aria-label={t("app.pages.teams.equippedItems", { name: tc("hero", hero.id, "name", hero.name) })}
-                                                                    title={t("app.pages.teams.equippedItems", { name: tc("hero", hero.id, "name", hero.name) })}
+                                                                    
+                                                                    title={t("app.pages.teams.equippedItems_tooltip", { name: tc("hero", hero.id, "name", hero.name) })}
                                                                 >
                                                                     <div className="team-equipped-item-grid">
                                                                         {equippedItems.map(({ slot, item }) => (
                                                                             <span
                                                                                 className={"team-equipped-item" + (slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? " is-locked" : item ? "" : " is-empty")}
                                                                                 key={slot.id}
-                                                                                title={slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? t("app.pages.teams.noOtherSlot") : item?.name ?? humanize(slot.name)}
+                                                                                title={slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? t("app.pages.teams.noOtherSlot_tooltip") : item?.name ?? humanize(slot.name)}
                                                                             >
                                                                                 <img
                                                                                     className="team-equipped-item-icon"
@@ -519,7 +519,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                         <span className="header">{t("app.pages.teams.includeEquippedItems")}</span>
                     </label>
                     <p className="text margin-auto">{t("app.pages.teams.shareTeamDescription")}</p>
-                    <textarea rows={3} value={teamShareUrl} readOnly onFocus={event => event.target.select()} aria-label={t("app.pages.teams.teamShareLink")} />
+                    <textarea rows={3} value={teamShareUrl} readOnly onFocus={event => event.target.select()}  />
                     <div className="flex-row">
                         <Button className="w-25" text={teamShareLinkCopied ? t("app.pages.teams.teamLinkCopied") : t("app.pages.teams.copyTeamLink")} color="confirm" onClick={handleCopyTeamLink} />
                         <Button className="w-25" text={t("app.shared.close")} color="cancel" onClick={() => { setExportTeam(null); setTeamShareUrl(""); setTeamShareLinkCopied(false) }} />
@@ -535,7 +535,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                     <div className="header-big margin-auto">{t("app.pages.teams.importTeam")}</div>
                     <p className="text margin-auto">{t("app.pages.teams.pasteShareLink")}</p>
                     <textarea rows={3} value={teamImportInput} onChange={event => setTeamImportInput(event.target.value)}
-                        placeholder="https://…/teams/?team=…" aria-label={t("app.pages.teams.teamShareLink")} />
+                        placeholder="https://…/teams/?team=…"  />
                     <div className="flex-row">
                         <Button className="w-25" text={t("app.pages.teams.importTeam")} color="confirm" onClick={() => handleImportTeam()} />
                         <Button className="w-25" text={t("app.shared.cancel")} color="cancel" onClick={() => { setImportTeamModalVisible(false); setTeamImportInput("") }} />

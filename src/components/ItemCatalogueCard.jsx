@@ -106,7 +106,7 @@ export default function ItemCatalogueCard({ item, set }) {
                 <section className="catalogue-effect card">
                     <div className="catalogue-section-label text flex-row">
                         {statuses.length > 0 && (
-                            <div className="catalogue-statuses" aria-label={t("app.shared.statusesAppliedByWeaponEffect")}>
+                            <div className="catalogue-statuses" >
                                 {statuses.map(status => (
                                     <img className="catalogue-status-icon" key={status.key} src={status.sprite} alt={tc("status", status.key, "name", status.name)} title={tc("status", status.key, "name", status.name)} draggable={false} />
                                 ))}
