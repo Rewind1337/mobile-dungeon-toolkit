@@ -1,4 +1,4 @@
-import { useLocalization } from "../localization/LocalizationProvider.jsx"
+import { useLocalization } from "./useLocalization.jsx"
 import { translate } from "../localization/index.js"
 
 /**
