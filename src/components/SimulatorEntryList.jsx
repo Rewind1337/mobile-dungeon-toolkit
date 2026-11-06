@@ -17,6 +17,7 @@ function formatMetadataValue(value) {
 }
 
 export function SimulatorElementChips({ elementIds = [], size = "default" }) {
+    const t = useTranslate()
     if (!Array.isArray(elementIds) || elementIds.length === 0) return null
     return (
         <div className={"simulator-element-chips" + (size === "large" ? " is-large" : "")} aria-label={t("app.shared.elements")}>
@@ -35,6 +36,7 @@ export function SimulatorElementChips({ elementIds = [], size = "default" }) {
 }
 
 function SimulatorEntryList({ entries = [], entryLabel = "Entry", emptyMessage }) {
+    const t = useTranslate()
     if (!Array.isArray(entries) || entries.length === 0) {
         return <p className="text simulator-empty-data">{emptyMessage ?? ("No " + entryLabel.toLowerCase() + " entries have been defined yet.")}</p>
     }
@@ -58,6 +60,7 @@ export function SimulatorEntryDetails({
     elementIds = [],
     emptyMessage
 }) {
+    const t = useTranslate()
     if (!entry) return null
     const metadata = Object.entries(entry).filter(([key]) => !["id", "stages", "element", "elementSrcArray", "elementIds", "name"].includes(key))
     return (
