@@ -419,6 +419,14 @@ const lang_enUS = {
             },
             simulators: {
                 title: "Simulators",
+                adventureChapters: "Adventure Chapters",
+                adventure: "Adventure",
+                towers: "Towers",
+                titans: "Titans",
+                guildHunt: "Guild Hunt",
+                custom: "Custom Combat",
+                customCompact: "Custom",
+                magicToilet: "Magic Toilet",
                 description: "Choose a simulator from the navigation above to browse encounters or set up a custom combat matchup.",
             },
             games: {
