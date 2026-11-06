@@ -13,10 +13,10 @@ const SubPageCustomCombat = lazy(() => import('../SubPageCustomCombat.jsx'))
 const SubPageMagicToilet = lazy(() => import('../SubPageMagicToilet.jsx'))
 
 const SIMULATOR_TABS = [
-    ['adventure', 'app.pages.simulators.adventureChapters', 'button-gradient-5-1', 'app.pages.simulators.adventure'],
-    ['towers', 'app.pages.simulators.towers', 'button-gradient-5-2'],
-    ['titans', 'app.pages.simulators.titans', 'button-gradient-5-3'],
-    ['guild-hunt', 'app.pages.simulators.guildHunt', 'button-gradient-5-4'],
+    ['adventure', 'app.pages.adventureChapters.title', 'button-gradient-5-1', 'app.pages.simulators.adventure'],
+    ['towers', 'app.pages.towers.title', 'button-gradient-5-2'],
+    ['titans', 'app.pages.titans.title', 'button-gradient-5-3'],
+    ['guild-hunt', 'app.pages.guildHunt.title', 'button-gradient-5-4'],
     ['custom', 'app.pages.customCombat.title', 'button-gradient-5-5', 'app.pages.simulators.customCompact'],
     ['magic-toilet', 'app.pages.magicToilet.title', 'magic-toilet'],
 ]

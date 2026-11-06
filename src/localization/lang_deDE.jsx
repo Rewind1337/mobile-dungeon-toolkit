@@ -37,6 +37,16 @@ const lang_deDE = {
             element: "Element",
             elements: "Elemente",
         },
+        pages: {
+            adventureChapters: { title: "Abenteuerkapitel" },
+            towers: { title: "Türme" },
+            titans: { title: "Titanen" },
+            guildHunt: { title: "Gildenjagd" },
+            footer: "Das Spiel {{game}} und alle hier verwendeten Bilder gehören {{publisher}}. Diese Seite ist in keiner Weise mit {{publisher}} verbunden. Schriftarten von {{fontProvider}}.",
+        },
+        simulators: {
+            description: "Wähle oben einen Simulator aus, um Begegnungen anzusehen oder einen eigenen Kampf zusammenzustellen.",
+        },
     },
     data: {
         overrides: {

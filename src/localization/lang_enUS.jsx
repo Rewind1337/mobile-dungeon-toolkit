@@ -597,14 +597,14 @@ const lang_enUS = {
                 comingLater: "Coming later",
             },
             simulators: {
-                adventureChapters: "Adventure Chapters",
                 adventure: "Adventure",
-                towers: "Towers",
-                titans: "Titans",
-                guildHunt: "Guild Hunt",
-                    customCompact: "Custom",
-                    description: "Choose a simulator from the navigation above to browse encounters or set up a custom combat matchup.",
+                customCompact: "Custom",
             },
+            adventureChapters: { title: "Adventure Chapters" },
+            towers: { title: "Towers" },
+            titans: { title: "Titans" },
+            guildHunt: { title: "Guild Hunt" },
+            footer: "The game {{game}} and all images used here are owned by {{publisher}}. This site is not affiliated with {{publisher}} in any way. Fonts from {{fontProvider}}.",
             splash: {
                 management: "Management",
                 simulations: "Simulations",
@@ -637,6 +637,9 @@ const lang_enUS = {
                 comingSoon: "More activities coming soon",
                 description: "This section is reserved for future fun and game-related tools.",
             },
+        },
+        simulators: {
+            description: "Choose a simulator from the navigation above to browse encounters or set up a custom combat matchup.",
         },
     },
     data: {
