@@ -13,7 +13,7 @@ export default function CataloguePerkList({ perks, label = "Perks" }) {
         <section className="catalogue-perks card">
             <div className="catalogue-section-label text">{label}</div>
             {visiblePerks.length === 0
-                ? <p className="catalogue-muted">None recorded</p>
+                ? <p className="catalogue-muted">{t("app.shared.noneRecorded")}</p>
                 : <ul className="catalogue-perk-list flex-row">
                     {visiblePerks.map((perk, index) => {
                         const key = getPerkKey(perk)
