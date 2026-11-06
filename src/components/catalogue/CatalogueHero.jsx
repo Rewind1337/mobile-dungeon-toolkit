@@ -180,7 +180,7 @@ function CatalogueHero({ heroesRef, initialView = "heroes", initialFilter = null
 
     return (
         <section className="hero-catalogue">
-            <CatalogueViewSwitch ariaLabel={t("app.pages.catalogues.heroViews")} view={initialView} onViewChange={onViewChange} options={[
+            <CatalogueViewSwitch view={initialView} onViewChange={onViewChange} options={[
                 { label: t("app.pages.catalogues.heroTitle"), compactLabel: t("app.navigation.heroes"), value: "heroes" },
                 { label: t("app.pages.catalogues.tierList"), value: "tier-list" },
                 { label: t("app.pages.catalogues.bannerTitle"), compactLabel: t("app.pages.catalogues.banners"), value: "banners" },
