@@ -28,21 +28,21 @@ function CombatTeamCard({ team, teams, selectedId, onTeamChange, savedHeroes, ti
                 <h2 className="header-big">{title}</h2>
                 <label className="custom-combat-team-picker">
                     <span className="text">{t("app.shared.savedTeam")}</span>
-                    <select aria-label={title + " selection"} value={selectedId} onChange={event => onTeamChange(event.target.value)}>
+                    <select  value={selectedId} onChange={event => onTeamChange(event.target.value)}>
                         {teams.map(entry => <option key={entry.id} value={String(entry.id)}>{entry.name}</option>)}
                     </select>
                 </label>
             </header>
             <div className="team-content">
                 <div className="team-heroes-column">
-                    <div className="team-hero-slots" aria-label={`${team.name} hero slots`}>
+                    <div className="team-hero-slots" >
                         {teamHeroes.map((hero, slotIndex) => (
                             <div className="team-hero-slot card card-static" key={`${team.id}-combat-slot-${slotIndex}`}>
                                 <span className="team-slot-label text">Slot {slotIndex + 1}</span>
                                 {hero ? (
                                     <>
                                         <Hero heroObj={hero} selected={false} level={hero.level ?? null} onClick={() => {}} />
-                                        <div className="catalogue-chip team-equipped-items" aria-label={`${tc("hero", hero.id, "name", hero.name)}'s equipped items`}>
+                                        <div className="catalogue-chip team-equipped-items" >
                                             <div className="team-equipped-item-grid">
                                                 {EQUIPMENT_SLOTS.map(slot => {
                                                     const item = Array.isArray(hero.items) ? hero.items[slot.id] ?? null : null

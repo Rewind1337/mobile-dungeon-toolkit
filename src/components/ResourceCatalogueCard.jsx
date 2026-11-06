@@ -76,7 +76,7 @@ export default function ResourceCatalogueCard({ resource }) {
                     )}
                 </div>
                 {additionalInformation.length > 0 && (
-                    <div className="resource-catalogue-additional-info" aria-label={t("app.shared.additionalInformation")}>
+                    <div className="resource-catalogue-additional-info" >
                         {additionalInformation.map((information, index) => (
                             <AdditionalInfoChip information={information} tc={tc} t={t} key={index} />
                         ))}

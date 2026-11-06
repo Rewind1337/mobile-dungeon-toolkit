@@ -376,7 +376,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                         <label className="magic-toilet-booster-toggle">
                             <input
                                 type="checkbox"
-                                aria-label={t("app.pages.magicToilet.enableLegendaryBooster")}
+                                
                                 checked={legendaryBoosterEnabled}
                                 onChange={event => {
                                     const enabled = event.target.checked
@@ -389,7 +389,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                         </label>
                         {legendaryBoosterEnabled && (
                             <select
-                                aria-label={t("app.pages.magicToilet.legendaryBoosterHero")}
+                                
                                 value={legendaryBoosterHeroId}
                                 onChange={event => setLegendaryBoosterHeroId(event.target.value)}
                             >
@@ -406,7 +406,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                         <label className="magic-toilet-booster-toggle">
                             <input
                                 type="checkbox"
-                                aria-label={t("app.pages.magicToilet.enableEpicBooster")}
+                                
                                 checked={epicBoosterEnabled}
                                 onChange={event => {
                                     const enabled = event.target.checked
@@ -419,7 +419,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                         </label>
                         {epicBoosterEnabled && (
                             <select
-                                aria-label={t("app.pages.magicToilet.epicBoosterHero")}
+                                
                                 value={epicBoosterHeroId}
                                 onChange={event => setEpicBoosterHeroId(event.target.value)}
                             >
@@ -440,7 +440,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                     {dontResetBoosters && (
                         <Button
                             text={t("app.pages.magicToilet.flushUntilBoosted")}
-                            title={t("app.pages.magicToilet.flushUntilBoostedTitle")}
+                            title={t("app.pages.magicToilet.flushUntilBoosted_tooltip")}
                             color="magic-toilet"
                             disabled={!boostersReady}
                             onClick={() => runPulls(false, MAX_BOOSTED_PULLS_PER_ACTION, true)}
@@ -465,7 +465,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
 
 
             <section className="card magic-toilet-results">
-                <div className="magic-toilet-stats" aria-label={t("app.pages.magicToilet.pullStatistics")}>
+                <div className="magic-toilet-stats" >
                     <span className="catalogue-chip text magic-toilet-stat-chip magic-toilet-souls-chip">
                         <img className="catalogue-chip-icon" src={soulSprite} alt="" />
                         {soulLabel}: {totalPulls.toLocaleString()}
@@ -506,7 +506,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                         ref={legendaryList.listRef}
                         {...legendaryList.events}
                         className="magic-toilet-horizontal-list"
-                        aria-label={t("app.pages.magicToilet.pulledLegendaryHeroes")}
+                        
                     >
                         {legendaryResults.length === 0 ? (
                             <p className="text magic-toilet-empty">{t("app.pages.magicToilet.noLegendaryPulled")}</p>
@@ -530,7 +530,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                         ref={epicList.listRef}
                         {...epicList.events}
                         className="magic-toilet-horizontal-list"
-                        aria-label={t("app.pages.magicToilet.pulledEpicHeroes")}
+                        
                     >
                         {epicResults.length === 0 ? (
                             <p className="text magic-toilet-empty">{t("app.pages.magicToilet.noEpicPulled")}</p>

@@ -43,18 +43,18 @@ export default function StatusCatalogueCard({ status }) {
             <header className="catalogue-entry-heading status-catalogue-heading">
                 <h3 className="catalogue-entry-name text-big status-catalogue-name">{statusName}</h3>
             </header>
-            <div className="status-polarity-row" aria-label={t("app.shared.statusProperties")}>
+            <div className="status-polarity-row" >
                 <span className={`catalogue-chip text status-catalogue-category ${categoryClass}`}>
                     {categoryIcon && <img className="status-polarity-icon" src={categoryIcon} alt="" />}
                     {categoryLabel}
                 </span>
-                <span className={`catalogue-chip text status-polarity ${status.mitigatable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.mitigatable === false ? t("app.shared.notMitigatable") : t("app.shared.mitigatable")}>
+                <span className={`catalogue-chip text status-polarity ${status.mitigatable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.mitigatable === false ? t("app.shared.notMitigatable_tooltip") : t("app.shared.mitigatable_tooltip")}>
                     <img className={`status-polarity-icon${status.mitigatable === false ? " is-negative" : ""}`} src={status.mitigatable === false ? CrossSprite : CheckmarkSprite} alt={status.mitigatable === false ? t("app.shared.no") : t("app.shared.yes")} />
-                    <span>{t("app.shared.mitigatable")}</span>
+                    <span>{t("app.shared.mitigatable_tooltip")}</span>
                 </span>
-                <span className={`catalogue-chip text status-polarity ${status.removable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.removable === false ? t("app.shared.notRemovable") : t("app.shared.removable")}>
+                <span className={`catalogue-chip text status-polarity ${status.removable === false ? "status-polarity-negative" : "status-polarity-positive"}`} title={status.removable === false ? t("app.shared.notRemovable_tooltip") : t("app.shared.removable_tooltip")}>
                     <img className={`status-polarity-icon${status.removable === false ? " is-negative" : ""}`} src={status.removable === false ? CrossSprite : CheckmarkSprite} alt={status.removable === false ? t("app.shared.no") : t("app.shared.yes")} />
-                    <span>{t("app.shared.removable")}</span>
+                    <span>{t("app.shared.removable_tooltip")}</span>
                 </span>
             </div>
             <p className="status-catalogue-description text">{description}</p>

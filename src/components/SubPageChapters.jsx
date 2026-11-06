@@ -73,13 +73,13 @@ function Chapter({ chapter, shadowChapter, onSelect }) {
                         dataId={shadowChapter.id}
                         dataThreshold={threshold}
                         fillPercent={0}
-                        title={t("app.pages.simulatorEntries.shadowWorldThreshold", { number: threshold })}
+                        title={t("app.pages.simulatorEntries.shadowWorldThreshold_tooltip", { number: threshold })}
                         text={t("app.pages.simulatorEntries.shadowWorldShort", { number: threshold })}
                         suffix={<img src={thresholdIcons[threshold]} alt="" loading="lazy" decoding="async" draggable={false} />}
                         onClick={() => onSelect(shadowChapter, threshold)}
                     />
                 ))
-                : <span className="chapter-shadow-placeholder text" aria-label={t("app.pages.simulatorEntries.shadowWorldComingSoon")}>{t("app.shared.comingSoon")}</span>}
+                : <span className="chapter-shadow-placeholder text" >{t("app.shared.comingSoon")}</span>}
         </div>
     )
 }
