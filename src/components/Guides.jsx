@@ -1,4 +1,5 @@
 import { useTranslate } from "../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 import AeternaSprite from "../sprites/heroes/aeterna.webp"
 import AliceSprite from "../sprites/heroes/alice.webp"
 import AnubisSprite from "../sprites/heroes/anubis.webp"
@@ -29,11 +30,13 @@ function GuideStep({ number, title, children }) {
     )
 }
 
-function GuideAsset({ src, label, alt = "" }) {
+function GuideAsset({ src, label, alt = "", collection, contentId }) {
+    const tc = useContentTranslation()
+    const translatedLabel = collection && contentId ? tc(collection, contentId, "name", label) : label
     return (
         <div className="guide-asset card">
-            <img src={src} alt={alt || label} loading="lazy" decoding="async" draggable={false} />
-            <span className="text">{label}</span>
+            <img src={src} alt={alt || translatedLabel} loading="lazy" decoding="async" draggable={false} />
+            <span className="text">{translatedLabel}</span>
         </div>
     )
 }
@@ -56,11 +59,11 @@ export function HeroManagementGuide() {
 
             <span className="guide-example-kicker text">{t("app.pages.guides.exampleHeroes")}</span>
             <div className="guide-equipment-strip">
-                <GuideAsset src={AeternaSprite} label="Aeterna" />
-                <GuideAsset src={AliceSprite} label="Alice" />
-                <GuideAsset src={AnubisSprite} label="Anubis" />
-                <GuideAsset src={AthenaSprite} label="Athena" />
-                <GuideAsset src={ApolloSprite} label="Apollo" />
+                <GuideAsset src={AeternaSprite} label="Aeterna" collection="hero" contentId="aeterna" />
+                <GuideAsset src={AliceSprite} label="Alice" collection="hero" contentId="alice" />
+                <GuideAsset src={AnubisSprite} label="Anubis" collection="hero" contentId="anubis" />
+                <GuideAsset src={AthenaSprite} label="Athena" collection="hero" contentId="athena" />
+                <GuideAsset src={ApolloSprite} label="Apollo" collection="hero" contentId="apollo" />
             </div>
 
             <p className="guide-copy text">{t("app.pages.guides.heroPreview")}</p>
@@ -85,11 +88,11 @@ export function ItemManagementGuide() {
             <span className="guide-example-kicker text">{t("app.pages.guides.exampleEquipment")}</span>
 
             <div className="guide-equipment-showcase">
-                <GuideAsset src={LightSwordSprite} label="Light Sword" />
-                <GuideAsset src={BreakerHelmetSprite} label="Breaker Helmet" />
-                <GuideAsset src={BreakerArmorSprite} label="Breaker Armor" />
-                <GuideAsset src={BreakerRingSprite} label="Breaker Ring" />
-                <GuideAsset src={BreakerNecklaceSprite} label="Breaker Necklace" />
+                <GuideAsset src={LightSwordSprite} label="Light Sword" collection="item" contentId="weapon:light_sword" />
+                <GuideAsset src={BreakerHelmetSprite} label="Breaker Helmet" collection="item" contentId="helmet:breaker_helmet" />
+                <GuideAsset src={BreakerArmorSprite} label="Breaker Armor" collection="item" contentId="armor:breaker_armor" />
+                <GuideAsset src={BreakerRingSprite} label="Breaker Ring" collection="item" contentId="ring:breaker_ring" />
+                <GuideAsset src={BreakerNecklaceSprite} label="Breaker Necklace" collection="item" contentId="necklace:breaker_necklace" />
             </div>
 
             <div className="guide-steps">
@@ -105,12 +108,13 @@ export function ItemManagementGuide() {
 
 export function TeamManagementGuide() {
     const t = useTranslate()
+    const tc = useContentTranslation()
     const members = [
-        [AeternaSprite, "Aeterna"],
-        [VoidAssassinSprite, "Void Assassin"],
-        [MercySprite, "Mercy"],
-        [AthenaSprite, "Athena"],
-        [CandyElementalSprite, "Candy Elemental"],
+        [AeternaSprite, "aeterna", "Aeterna"],
+        [VoidAssassinSprite, "void_assassin", "Void Assassin"],
+        [MercySprite, "mercy", "Mercy"],
+        [AthenaSprite, "athena", "Athena"],
+        [CandyElementalSprite, "candy_elemental", "Candy Elemental"],
     ]
 
     return (
@@ -121,13 +125,16 @@ export function TeamManagementGuide() {
             <span className="guide-example-kicker text">{t("app.pages.guides.exampleLineup")}</span>
 
             <div className="guide-team-roster card card-dark card-static">
-                {members.map(([src, name], index) => (
-                    <div className="guide-team-member card" key={name}>
+                {members.map(([src, heroId, originalName], index) => {
+                    const name = tc("hero", heroId, "name", originalName)
+                    return (
+                    <div className="guide-team-member card" key={heroId}>
                         <span className="guide-team-slot text">{t("app.shared.slot", { number: index + 1 })}</span>
                         <img src={src} alt={name} loading="lazy" decoding="async" draggable={false} />
                         <span className="text">{name}</span>
                     </div>
-                ))}
+                    )
+                })}
             </div>
 
             <div className="guide-steps">
@@ -151,10 +158,10 @@ export function SimulatorsGuide() {
             <span className="guide-example-kicker text">{t("app.pages.guides.trackUsage")}</span>
 
             <div className="guide-equipment-showcase">
-                <GuideAsset src={SoulSprite} label="Souls" />
-                <GuideAsset src={ShimmeringSoulSprite} label="Shimmering Souls" />
-                <GuideAsset src={EpicBoosterSprite} label="Epic Boosters" />
-                <GuideAsset src={LegendaryBoosterSprite} label="Legendary Boosters" />
+                <GuideAsset src={SoulSprite} label="Souls" collection="resource" contentId="soul" />
+                <GuideAsset src={ShimmeringSoulSprite} label="Shimmering Souls" collection="resource" contentId="shimmering_soul" />
+                <GuideAsset src={EpicBoosterSprite} label="Epic Boosters" collection="resource" contentId="epic_banner_booster" />
+                <GuideAsset src={LegendaryBoosterSprite} label="Legendary Boosters" collection="resource" contentId="legendary_banner_booster" />
             </div>
 
             <div className="guide-steps">
