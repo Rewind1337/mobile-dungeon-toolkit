@@ -18,7 +18,7 @@ export default function SetCatalogueCard({ set, pieces }) {
     const attributeKey = ATTRIBUTE_ICON_KEYS[rawAttributeLabel.toLowerCase()]
     const mainAttribute = Object.values(PRIMARY_STAT_DEFINITIONS).find(attribute => attribute.id === Number(set.mainAttribute))
     const mainAttributeSprite = mainAttribute ? perkSprites[`${mainAttribute.name}_FLAT`] : null
-    const mainAttributeLabel = mainAttribute ? tc("primaryStat", mainAttribute.name, "name", { ATTACK: "Attack", DEFENCE: "Defense", AGILITY: "Agility" }[mainAttribute.name] ?? mainAttribute.name) : ""
+    const mainAttributeLabel = mainAttribute ? tc("primaryStat", mainAttribute.name, "name", t(`app.shared.${mainAttribute.name.toLowerCase()}`)) : ""
     const attributeClass = rawAttributeLabel.toLowerCase().includes("strength")
         ? "catalogue-chip-attribute-strength"
         : rawAttributeLabel.toLowerCase().includes("dexterity")
