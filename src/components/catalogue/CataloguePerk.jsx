@@ -4,11 +4,12 @@ import { useContentTranslation } from "../../hooks/useContentTranslation.jsx"
 import { matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
 import { PERK_DEFINITIONS, POSSIBLE_PERKS } from "../../database/enums.jsx"
 import { iconSprites, perkSprites } from "../../database/db_sprites.jsx"
+import { humanizeName } from "../../js/utils.js"
 import CatalogueFilterActions from "../CatalogueFilterActions.jsx"
 import "../../css/infos.scss"
 import "../../css/infos_perks.scss"
 
-const perkLabel = key => PERK_DEFINITIONS[key]?.name ?? key.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())
+const perkLabel = key => PERK_DEFINITIONS[key]?.name ?? humanizeName(key)
 
 function CataloguePerk() {
     const t = useTranslate()
