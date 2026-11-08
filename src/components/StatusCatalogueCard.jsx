@@ -18,7 +18,7 @@ export default function StatusCatalogueCard({ status }) {
     const sprite = statusSprites[status.name] ?? statusSprites[status.name.replace("critical_resistance", "critical_resist")]
     const statusName = tc("status", status.name, "name", humanizeName(status.name))
     const description = tc("status", status.name, "description", STATUS_DESCRIPTIONS[status.name]
-        ?? `Special status effect (${humanizeName(status.effectType ?? "effect")}). Check its stored effect data for the exact behaviour.`)
+        ?? t("app.shared.statusDescriptionFallback", { effect: humanizeName(status.effectType ?? "effect") }))
     const details = [
         status.value !== undefined && `${t("app.shared.value")}: ${status.value}`,
         status.per_stack !== undefined && `${t("app.shared.perStack")}: ${status.per_stack}`,
