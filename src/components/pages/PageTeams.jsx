@@ -15,7 +15,7 @@ import { getStatusPolarity } from "../../js/statusPolarity.jsx"
 import { createTeamShareToken, decodeTeamShareInput, restoreSharedTeam, getShareErrorMessage } from "../../js/heroShare.js"
 import { calculateTeamStats } from "../../js/calculatedStats.js"
 import { createSavedItemRecord } from "../../js/ids.jsx"
-import { formatNumber } from "../../js/utils.js"
+import { formatNumber, humanizeName } from "../../js/utils.js"
 import LockedSrc from "../../sprites/locked.webp"
 
 const createDefaultTeams = () => [
@@ -33,11 +33,6 @@ const normalizeTeams = teams => Array.isArray(teams)
         }),
     }))
     : createDefaultTeams()
-
-const humanize = value => String(value ?? "")
-    .replaceAll("_", " ")
-    .toLowerCase()
-    .replace(/\b\w/g, letter => letter.toUpperCase())
 
 const TEAM_EQUIPMENT_SLOTS = [
     EQUIPMENT_SLOT_DEFINITIONS.WEAPON,
@@ -68,7 +63,7 @@ export function TeamOverview({ team, savedHeroes }) {
             hero,
             index,
             key: String(name).toLowerCase(),
-            name: tc("attribute", String(name).toUpperCase(), "name", humanize(name)),
+            name: tc("attribute", String(name).toUpperCase(), "name", humanizeName(name)),
             icon: attributeSprites[Number(hero.mainAttribute)],
         }]
     })
@@ -84,7 +79,7 @@ export function TeamOverview({ team, savedHeroes }) {
     const renderStatusChips = effects => effects.map(({ name, polarity }) => (
         <span className={`catalogue-chip text team-overview-chip team-status-chip team-status-chip--${polarity}`} key={name}>
             {statusSprites[name] && <img className="catalogue-chip-icon team-status-icon" src={statusSprites[name]} alt="" />}
-            {tc("status", name, "name", humanize(name))}
+            {tc("status", name, "name", humanizeName(name))}
         </span>
     ))
 
@@ -149,11 +144,11 @@ function TeamHeroStatusIcons({ hero }) {
     })
     if (statuses.length === 0) return null
 
-    const label = statuses.map(name => tc("status", name, "name", humanize(name))).join(", ")
+    const label = statuses.map(name => tc("status", name, "name", humanizeName(name))).join(", ")
     return (
         <div className="catalogue-chip team-hero-status-icons"  title={t("app.pages.teams.statusEffectsTooltip", { label })}>
             {statuses.map(name => (
-                <img className="team-status-icon" key={name} src={statusSprites[name]} alt={tc("status", name, "name", humanize(name))} title={tc("status", name, "name", humanize(name))} />
+                <img className="team-status-icon" key={name} src={statusSprites[name]} alt={tc("status", name, "name", humanizeName(name))} title={tc("status", name, "name", humanizeName(name))} />
             ))}
         </div>
     )
@@ -471,7 +466,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                                                             <span
                                                                                 className={"team-equipped-item" + (slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? " is-locked" : item ? "" : " is-empty")}
                                                                                 key={slot.id}
-                                                                                title={slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? t("app.pages.teams.noOtherSlotTooltip") : item ? tc("item", item.id, "name", item.name) : tc("equipmentSlot", String(slot.name).toUpperCase(), "name", humanize(slot.name))}
+                                                                                title={slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? t("app.pages.teams.noOtherSlotTooltip") : item ? tc("item", item.id, "name", item.name) : tc("equipmentSlot", String(slot.name).toUpperCase(), "name", humanizeName(slot.name))}
                                                                             >
                                                                                 <img
                                                                                     className="team-equipped-item-icon"
