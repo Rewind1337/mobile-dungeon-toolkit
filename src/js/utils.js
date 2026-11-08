@@ -23,7 +23,7 @@ export function formatNumber(n, decimals) {
 }
 
 /** Convert enum-style identifiers into readable labels. */
-export const humanize = value => String(value ?? "")
+export const humanizeName = value => String(value ?? "")
     .replaceAll("_", " ")
     .toLowerCase()
     .replace(/\b\w/g, letter => letter.toUpperCase())
