@@ -11,7 +11,7 @@ import Button from './Button.jsx'
 import { useTranslate } from '../hooks/useTranslate.jsx'
 import { useContentTranslation } from '../hooks/useContentTranslation.jsx'
 import Modal from './Modal.jsx'
-import { createHeroShareToken, createItemsShareToken } from '../js/heroShare.js'
+import { createHeroShareToken, createItemsShareToken, getShareErrorMessage } from '../js/heroShare.js'
 import EmptyItem from './EmptyItem.jsx'
 import Item from './Item.jsx'
 import SkillCatalogueCard from './SkillCatalogueCard.jsx'
@@ -355,7 +355,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                 },
                 items: [...equippedItems]
             }, { includeItems: false }), "heroes"))
-            window.alert(error.message || t("app.pages.heroes.preview.exportEquippedItemsError"))
+            window.alert(getShareErrorMessage(error, t) || t("app.pages.heroes.preview.exportEquippedItemsError"))
         }
     }
 
