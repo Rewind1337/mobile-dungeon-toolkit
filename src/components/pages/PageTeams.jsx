@@ -471,7 +471,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                                                             <span
                                                                                 className={"team-equipped-item" + (slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? " is-locked" : item ? "" : " is-empty")}
                                                                                 key={slot.id}
-                                                                                title={slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? t("app.pages.teams.noOtherSlotTooltip") : item?.name ?? humanize(slot.name)}
+                                                                                title={slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? t("app.pages.teams.noOtherSlotTooltip") : item ? tc("item", item.id, "name", item.name) : tc("equipmentSlot", String(slot.name).toUpperCase(), "name", humanize(slot.name))}
                                                                             >
                                                                                 <img
                                                                                     className="team-equipped-item-icon"
