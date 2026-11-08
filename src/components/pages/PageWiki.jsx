@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useMemo, useState } from "react"
 import { useDynamicList } from "../../hooks/useDynamicList.jsx"
 import Button from "../Button.jsx"
 import { useTranslate } from "../../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../../hooks/useContentTranslation.jsx"
 
 import BackToTopButton from "../BackToTopButton.jsx"
 import "../../css/infos.scss"
@@ -46,21 +47,29 @@ function Stat({ label, value }) {
 
 function InfoOverview({ items, sets, heroes, onNavigate }) {
     const t = useTranslate()
+    const tc = useContentTranslation()
     const itemCount = Array.isArray(items) ? items.length : Object.values(items).reduce((total, list) => total + (Array.isArray(list) ? list.length : 0), 0)
-    const heroCountBy = (key, definitions, preferredOrder = []) => {
+    const translateDefinitionName = (collection, definition) => {
+        const name = String(definition?.name ?? "unknown")
+        return definition
+            ? tc(collection, name.toUpperCase(), "name", humanize(name))
+            : humanize(name)
+    }
+    const heroCountBy = (key, definitions, collection, preferredOrder = []) => {
         const counts = new Map()
         for (const hero of heroes) {
             const id = Number(hero[key])
             const definition = Object.values(definitions).find(entry => entry.id === id)
-            const label = humanize(definition?.name ?? "unknown")
-            const count = counts.get(label) ?? { label, id, count: 0 }
+            const enumName = String(definition?.name ?? "unknown")
+            const label = translateDefinitionName(collection, definition)
+            const count = counts.get(enumName) ?? { label, id, count: 0, orderKey: enumName.toLowerCase() }
             count.count += 1
-            counts.set(label, count)
+            counts.set(enumName, count)
         }
-        const order = new Map(preferredOrder.map((label, index) => [label.toLowerCase(), index]))
+        const order = new Map(preferredOrder.map((name, index) => [name.toLowerCase(), index]))
         return [...counts.values()].sort((a, b) => {
-            const aOrder = order.get(a.label.toLowerCase())
-            const bOrder = order.get(b.label.toLowerCase())
+            const aOrder = order.get(a.orderKey)
+            const bOrder = order.get(b.orderKey)
             if (aOrder !== undefined || bOrder !== undefined) {
                 if (aOrder === undefined) return 1
                 if (bOrder === undefined) return -1
@@ -69,15 +78,16 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
             return a.label.localeCompare(b.label)
         })
     }
-    const itemCountBy = (key, definitions) => {
+    const itemCountBy = (key, definitions, collection) => {
         const counts = new Map()
         for (const item of items) {
             const id = Number(item[key])
             const definition = Object.values(definitions).find(entry => entry.id === id)
-            const label = humanize(definition?.name ?? "unknown")
-            const current = counts.get(label) ?? { label, id, count: 0 }
+            const enumName = String(definition?.name ?? "unknown")
+            const label = translateDefinitionName(collection, definition)
+            const current = counts.get(enumName) ?? { label, id, count: 0 }
             current.count += 1
-            counts.set(label, current)
+            counts.set(enumName, current)
         }
         return [...counts.values()].sort((a, b) => a.label.localeCompare(b.label))
     }
@@ -170,19 +180,19 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
                 <div className="info-overview-breakdown info-overview-hero-breakdown">
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">{t("app.pages.wiki.byElement")}</h3>
-                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("element", ELEMENT_DEFINITIONS, ["Fire", "Water", "Nature", "Light", "Shadow"]), "element", id => onNavigate?.("hero-catalogue", { element: id }))}</div>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("element", ELEMENT_DEFINITIONS, "element", ["FIRE", "WATER", "NATURE", "LIGHT", "SHADOW"]), "element", id => onNavigate?.("hero-catalogue", { element: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">{t("app.pages.wiki.byRarity")}</h3>
-                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("rarity", RARITY_DEFINITIONS, ["Uncommon", "Rare", "Epic", "Legendary"]), "rarity", id => onNavigate?.("hero-catalogue", { rarity: id }))}</div>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("rarity", RARITY_DEFINITIONS, "rarity", ["UNCOMMON", "RARE", "EPIC", "LEGENDARY"]), "rarity", id => onNavigate?.("hero-catalogue", { rarity: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">{t("app.pages.wiki.byRole")}</h3>
-                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("role", ROLE_DEFINITIONS), "role", id => onNavigate?.("hero-catalogue", { role: id }))}</div>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("role", ROLE_DEFINITIONS, "role"), "role", id => onNavigate?.("hero-catalogue", { role: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">{t("app.pages.wiki.byMainAttribute")}</h3>
-                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("mainAttribute", ATTRIBUTE_DEFINITIONS), "attribute", id => onNavigate?.("hero-catalogue", { attribute: id }))}</div>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("mainAttribute", ATTRIBUTE_DEFINITIONS, "attribute"), "attribute", id => onNavigate?.("hero-catalogue", { attribute: id }))}</div>
                     </section>
                 </div>
             </section>
@@ -195,11 +205,11 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
                 <div className="info-overview-breakdown info-overview-item-breakdown">
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">{t("app.pages.wiki.bySlot")}</h3>
-                        <div className="catalogue-overview-slot-list">{rows(itemCountBy("slot", EQUIPMENT_SLOT_DEFINITIONS), "slot", id => onNavigate?.("item-catalogue", { slot: id }))}</div>
+                        <div className="catalogue-overview-slot-list">{rows(itemCountBy("slot", EQUIPMENT_SLOT_DEFINITIONS, "equipmentSlot"), "slot", id => onNavigate?.("item-catalogue", { slot: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">{t("app.pages.wiki.byMainAttribute")}</h3>
-                        <div className="catalogue-overview-slot-list">{rows(itemCountBy("mainAttribute", PRIMARY_STAT_DEFINITIONS), "primary-stat", id => onNavigate?.("item-catalogue", { attribute: id }))}</div>
+                        <div className="catalogue-overview-slot-list">{rows(itemCountBy("mainAttribute", PRIMARY_STAT_DEFINITIONS, "primaryStat"), "primary-stat", id => onNavigate?.("item-catalogue", { attribute: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
                         <h3 className="header">{t("app.pages.wiki.byDropSource")}</h3>
