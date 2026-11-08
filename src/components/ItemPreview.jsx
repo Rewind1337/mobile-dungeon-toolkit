@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
+import { CONSTANTS } from '../database/constants.jsx'
 import { DEFAULT_MASTERWORK_MUTATIONS, MASTERWORK_MUTATION_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, getEnumNameById, getItemPerkCount, getMaxMasterworkLevel } from '../database/enums.jsx'
 import { attributeSprites, iconSprites } from '../database/db_sprites.jsx'
 import { getActiveSetBonusCount } from '../js/calculatedStats.js'
@@ -13,6 +14,7 @@ import { useTranslate } from '../hooks/useTranslate.jsx'
 import ItemPerk from './ItemPerk.jsx'
 import { useContentTranslation } from '../hooks/useContentTranslation.jsx'
 import { getEffectStatuses, getMainStatPerkKey } from '../js/catalogueItemUtils.jsx'
+import { getPreviewListHeight } from '../js/previewUtils.js'
 
 import '../css/item.scss'
 
@@ -97,18 +99,8 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
     const [selectedMutations, setSelectedMutations] = useState({ ...DEFAULT_MASTERWORK_MUTATIONS })
 
     function onResize() {
-        let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5
-        if (window.matchMedia("(max-width: 900px)").matches === true) {
-            newHeight = window.innerHeight - CONSTANTS.listHeightDefault + 77
-        }
-        if (listRef.current !== null) {
-            if (window.matchMedia("(max-width: 900px)").matches === true) {
-                newHeight = window.innerHeight - (CONSTANTS.listHeightMobile + listRef.current.offsetTop)
-            } else {
-                newHeight = window.innerHeight - (CONSTANTS.listHeightDefault + listRef.current.offsetTop)
-            }
-        }
-        setListHeight(newHeight)
+        const isMobile = window.matchMedia("(max-width: 900px)").matches
+        setListHeight(getPreviewListHeight(listRef.current, window.innerHeight, isMobile, CONSTANTS))
     }
 
     useLayoutEffect(() => {
