@@ -12,7 +12,7 @@ import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, STATUS_EFFECT_DEFINI
 import { attributeSprites, heroSprites, itemSprites, statusSprites } from "../../database/db_sprites.jsx"
 import { useDynamicList } from "../../hooks/useDynamicList.jsx"
 import { getStatusPolarity } from "../../js/statusPolarity.jsx"
-import { createTeamShareToken, decodeTeamShareInput, restoreSharedTeam } from "../../js/heroShare.js"
+import { createTeamShareToken, decodeTeamShareInput, restoreSharedTeam, getShareErrorMessage } from "../../js/heroShare.js"
 import { calculateTeamStats } from "../../js/calculatedStats.js"
 import { createSavedItemRecord } from "../../js/ids.jsx"
 import { formatNumber } from "../../js/utils.js"
@@ -276,7 +276,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
             setTeamShareLinkCopied(false)
             setTeamShareUrl(buildTeamShareUrl(team, false))
         } catch (error) {
-            window.alert(error.message || t("app.pages.teams.couldNotExport"))
+            window.alert(getShareErrorMessage(error, t) || t("app.pages.teams.couldNotExport"))
         }
     }
 
@@ -289,7 +289,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
             setTeamShareUrl(buildTeamShareUrl(exportTeam, includeItems))
         } catch (error) {
             setExportItemsOnHeroes(false)
-            window.alert(error.message || t("app.pages.teams.couldNotExportHeroes"))
+            window.alert(getShareErrorMessage(error, t) || t("app.pages.teams.couldNotExportHeroes"))
         }
     }
 
@@ -349,7 +349,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
             setImportTeamModalVisible(false)
             setTeamImportInput("")
         } catch (error) {
-            window.alert(error.message || t("app.pages.teams.couldNotImport"))
+            window.alert(getShareErrorMessage(error, t) || t("app.pages.teams.couldNotImport"))
         }
     }
 
