@@ -7,7 +7,7 @@ import Button from "../Button.jsx"
 import Modal from "../Modal.jsx"
 import HelpButton from "../HelpButton.jsx"
 import { HeroManagementGuide } from "../Guides.jsx"
-import { decodeHeroShareInput, restoreSharedHero } from "../../js/heroShare.js"
+import { decodeHeroShareInput, restoreSharedHero, getShareErrorMessage } from "../../js/heroShare.js"
 import { clearSearchFromUrl } from "../../js/search.jsx"
 import { ATTRIBUTE_DEFINITIONS } from "../../database/enums.jsx"
 import { createSavedItemRecord } from "../../js/ids.jsx"
@@ -124,7 +124,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
             const hero = restoreSharedHero(payload, heroesRef.current, itemsRef.current.BASE_ITEMS)
             importHero(hero)
         } catch (error) {
-            window.alert(error.message || t("app.shared.couldNotImportHero"))
+            window.alert(getShareErrorMessage(error, t) || t("app.shared.couldNotImportHero"))
         } finally {
             if (onImportStatusChange) onImportStatusChange("")
         }
@@ -143,7 +143,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                 const hero = restoreSharedHero(payload, heroesRef.current, itemsRef.current.BASE_ITEMS)
                 importHero(hero)
             } catch (error) {
-                window.alert(error.message || t("app.shared.couldNotImportHero"))
+                window.alert(getShareErrorMessage(error, t) || t("app.shared.couldNotImportHero"))
             } finally {
                 if (onImportStatusChange) onImportStatusChange("")
                 params.delete("hero")
