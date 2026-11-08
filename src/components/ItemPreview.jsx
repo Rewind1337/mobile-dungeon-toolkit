@@ -13,7 +13,7 @@ import Button from './Button.jsx'
 import { useTranslate } from '../hooks/useTranslate.jsx'
 import ItemPerk from './ItemPerk.jsx'
 import { useContentTranslation } from '../hooks/useContentTranslation.jsx'
-import { getEffectStatuses, getMainStatPerkKey } from '../js/catalogueItemUtils.jsx'
+import { getEffectStatuses, getMainStatPerkKey, getPerkKey } from '../js/catalogueItemUtils.jsx'
 import { getPreviewListHeight } from '../js/previewUtils.js'
 
 import '../css/item.scss'
@@ -112,8 +112,6 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
     useLayoutEffect(() => {
         if (listRef.current) listRef.current.scrollTop = 0
     }, [selectedItemId.slot, selectedItemId.id, itemsRef])
-
-    const getPerkKey = (perk) => Object.keys(PERK_DEFINITIONS).find(key => PERK_DEFINITIONS[key].id === perk.id) ?? "NOTHING"
 
     useEffect(() => {
         if (selectedItemId.slot === null || selectedItemId.id === null) {
@@ -441,8 +439,8 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                     {itemObj.fixedPerks.map((perk, index) => (
                         <ItemPerk
                             key={"fixedperk_" + perk.id}
-                            name={getPerkKey(perk)}
-                            spriteName={getMainStatPerkKey(getPerkKey(perk), itemObj.mainAttribute)}
+                            name={getPerkKey(perk, "NOTHING")}
+                            spriteName={getMainStatPerkKey(getPerkKey(perk, "NOTHING"), itemObj.mainAttribute)}
                             value={fixedPerkValues[index] ?? 0}
                             multiplier={1 + selectedMasterworkLevel / 10}
                             editable={true}
@@ -460,8 +458,8 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                         return (
                             <div className={"item-set-bonus-state" + (isEquipping ? (isActive ? " is-active" : " is-inactive") : "")} key={"setperk_" + bonus.id + "_" + index}>
                                 <ItemPerk
-                                    name={getPerkKey(bonus)}
-                                    spriteName={getMainStatPerkKey(getPerkKey(bonus), itemObj.mainAttribute)}
+                                    name={getPerkKey(bonus, "NOTHING")}
+                                    spriteName={getMainStatPerkKey(getPerkKey(bonus, "NOTHING"), itemObj.mainAttribute)}
                                     value={selectedSetBonusValues[index] ?? 0}
                                     editable={true}
                                     onValueChange={value => setSelectedSetBonusValues(previous => {
