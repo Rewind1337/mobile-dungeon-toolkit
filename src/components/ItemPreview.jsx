@@ -1,9 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-import { CONSTANTS } from '../database/constants.jsx'
 import { DEFAULT_MASTERWORK_MUTATIONS, MASTERWORK_MUTATION_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, getEnumNameById, getItemPerkCount, getMaxMasterworkLevel } from '../database/enums.jsx'
 import { attributeSprites, iconSprites } from '../database/db_sprites.jsx'
-import { getActiveSetBonusCount } from '../utils/calculatedStats.js'
+import { getActiveSetBonusCount } from '../js/calculatedStats.js'
 import ExpandSrc from '../sprites/expand.webp'
 import CrossSrc from '../sprites/cross.png'
 import DamagedItemIndicator from './DamagedItemIndicator.jsx'
@@ -13,7 +12,7 @@ import Button from './Button.jsx'
 import { useTranslate } from '../hooks/useTranslate.jsx'
 import ItemPerk from './ItemPerk.jsx'
 import { useContentTranslation } from '../hooks/useContentTranslation.jsx'
-import { getEffectStatuses } from '../js/catalogueItemUtils.jsx'
+import { getEffectStatuses, getMainStatPerkKey } from '../js/catalogueItemUtils.jsx'
 
 import '../css/item.scss'
 
@@ -43,21 +42,20 @@ function makePerkSlots(item, rarity) {
     }
 }
 
-const MAIN_STAT_PERK_KEYS = {
-    attack: { flat: "ATTACK_FLAT", percent: "ATTACK_PERCENT" },
-    defence: { flat: "DEFENCE_FLAT", percent: "DEFENCE_PERCENT" },
-    agility: { flat: "AGILITY_FLAT", percent: "AGILITY_PERCENT" }
-}
-
 function getAvailableMutationPerks(perks, mainAttribute) {
     const available = new Set(
         (perks ?? [])
             .map(perk => String(perk ?? "NOTHING").toUpperCase().replace(/\s/g, "_"))
             .filter(key => key !== "NOTHING" && PERK_DEFINITIONS[key])
     )
-    const mainStat = ({ 0: "attack", 1: "defence", 2: "agility" })[Number(mainAttribute)]
-    if (mainStat && available.has("MAIN_STAT_FLAT")) available.add(MAIN_STAT_PERK_KEYS[mainStat].flat)
-    if (mainStat && available.has("MAIN_STAT_PERCENT")) available.add(MAIN_STAT_PERK_KEYS[mainStat].percent)
+    if (available.has("MAIN_STAT_FLAT")) {
+        const perkKey = getMainStatPerkKey("MAIN_STAT_FLAT", mainAttribute)
+        if (perkKey !== "MAIN_STAT_FLAT") available.add(perkKey)
+    }
+    if (available.has("MAIN_STAT_PERCENT")) {
+        const perkKey = getMainStatPerkKey("MAIN_STAT_PERCENT", mainAttribute)
+        if (perkKey !== "MAIN_STAT_PERCENT") available.add(perkKey)
+    }
     return available
 }
 
@@ -280,12 +278,6 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
     const activeSetBonusCount = getActiveSetBonusCount(selectedSet, equippedSetPieceCount)
     const isEquipping = typeof onEquipItem === "function"
     const maxMasterworkLevel = getMaxMasterworkLevel(selectedRarity)
-    const itemMainStat = ({ 0: "attack", 1: "defence", 2: "agility" })[Number(itemObj.mainAttribute)]
-    const getPerkSpriteName = name => {
-        if (name === "MAIN_STAT_FLAT") return MAIN_STAT_PERK_KEYS[itemMainStat]?.flat ?? name
-        if (name === "MAIN_STAT_PERCENT") return MAIN_STAT_PERK_KEYS[itemMainStat]?.percent ?? name
-        return name
-    }
     const availableMutationPerks = getAvailableMutationPerks(selectedPerks, itemObj.mainAttribute)
 
     return (
@@ -458,7 +450,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                         <ItemPerk
                             key={"fixedperk_" + perk.id}
                             name={getPerkKey(perk)}
-                            spriteName={getPerkSpriteName(getPerkKey(perk))}
+                            spriteName={getMainStatPerkKey(getPerkKey(perk), itemObj.mainAttribute)}
                             value={fixedPerkValues[index] ?? 0}
                             multiplier={1 + selectedMasterworkLevel / 10}
                             editable={true}
@@ -477,7 +469,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                             <div className={"item-set-bonus-state" + (isEquipping ? (isActive ? " is-active" : " is-inactive") : "")} key={"setperk_" + bonus.id + "_" + index}>
                                 <ItemPerk
                                     name={getPerkKey(bonus)}
-                                    spriteName={getPerkSpriteName(getPerkKey(bonus))}
+                                    spriteName={getMainStatPerkKey(getPerkKey(bonus), itemObj.mainAttribute)}
                                     value={selectedSetBonusValues[index] ?? 0}
                                     editable={true}
                                     onValueChange={value => setSelectedSetBonusValues(previous => {
@@ -499,7 +491,7 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
                         <ItemPerk
                             key={"perk_" + index}
                             name={(perk || "NOTHING").toUpperCase().replace(/\s/g, '_')}
-                            spriteName={getPerkSpriteName((perk || "NOTHING").toUpperCase().replace(/\s/g, '_'))}
+                            spriteName={getMainStatPerkKey((perk || "NOTHING").toUpperCase().replace(/\s/g, '_'), itemObj.mainAttribute)}
                             value={selectedPerkValues[index] ?? 0}
                             perkSlot={index + 1}
                             editable={true}
