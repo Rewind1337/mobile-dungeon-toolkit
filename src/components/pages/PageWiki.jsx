@@ -148,16 +148,16 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
                 </div>
                 <section className="info-overview-breakdown-card info-overview-data-card card card-static">
                     <div className="catalogue-overview-stats">
-                        <Stat label="Items" value={itemCount} />
-                        <Stat label={t("app.pages.wiki.sets")} value={sets.length} />
-                        <Stat label="Heroes" value={heroes.length} />
-                        <Stat label="Banners" value={BANNER_DATA.length} />
-                        <Stat label="Skills" value={skillCount} />
-                        <Stat label="Talent entries" value={talentCount} />
-                        <Stat label="Perks" value={Object.keys(PERK_DEFINITIONS).length} />
-                        <Stat label="Status Effects" value={Object.keys(STATUS_EFFECT_DEFINITIONS).length} />
-                        <Stat label="Resources" value={RESOURCE_COUNT} />
-                        <Stat label="Gem types" value={GEM_TYPE_COUNT} />
+                        <Stat label={t("app.shared.items")} value={itemCount} />
+                        <Stat label={t("app.shared.sets")} value={sets.length} />
+                        <Stat label={t("app.shared.heroes")} value={heroes.length} />
+                        <Stat label={t("app.shared.banners")} value={BANNER_DATA.length} />
+                        <Stat label={t("app.shared.skills")} value={skillCount} />
+                        <Stat label={t("app.shared.talentEntries")} value={talentCount} />
+                        <Stat label={t("app.shared.perks")} value={Object.keys(PERK_DEFINITIONS).length} />
+                        <Stat label={t("app.shared.statusEffects")} value={Object.keys(STATUS_EFFECT_DEFINITIONS).length} />
+                        <Stat label={t("app.shared.resources")} value={RESOURCE_COUNT} />
+                        <Stat label={t("app.shared.gemTypes")} value={GEM_TYPE_COUNT} />
                     </div>
                 </section>
             </section>
