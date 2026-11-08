@@ -32,6 +32,17 @@ const lang_deDE = {
             dropSource: "Beutequelle",
             unspecified: "Nicht angegeben",
             guildHuntShort: "GJ",
+            // Shared catalogue labels
+            items: "Gegenstände",
+            sets: "Sets",
+            heroes: "Helden",
+            banners: "Banner",
+            skills: "Fähigkeiten",
+            talentEntries: "Talenteinträge",
+            perks: "Vorteile",
+            statusEffects: "Statuseffekte",
+            resources: "Ressourcen",
+            gemTypes: "Edelsteintypen",
             // Shared stats and elements
             attribute: "Attribut",
             attributes: "Attribute",
