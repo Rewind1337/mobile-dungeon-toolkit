@@ -1,5 +1,6 @@
 import { ELEMENT_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
 import { useTranslate } from "../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 import { elementSprites } from "../database/db_sprites.jsx"
 
 const humanize = value => String(value ?? "")
@@ -17,16 +18,18 @@ function formatMetadataValue(value) {
 }
 
 export function SimulatorElementChips({ elementIds = [], size = "default" }) {
+    const tc = useContentTranslation()
     if (!Array.isArray(elementIds) || elementIds.length === 0) return null
     return (
         <div className={"simulator-element-chips" + (size === "large" ? " is-large" : "")} >
             {elementIds.map(id => {
-                const name = getEnumNameById(ELEMENT_DEFINITIONS, Number(id)) ?? "Unknown"
+                const name = getEnumNameById(ELEMENT_DEFINITIONS, Number(id)) ?? "UNKNOWN"
+                const label = tc("element", String(name).toUpperCase(), "name", humanize(name))
                 const key = String(name).toLowerCase()
                 return (
                     <span className={"catalogue-chip text catalogue-chip-element-" + key} key={id}>
                         {elementSprites[id] && <img className="catalogue-chip-icon" src={elementSprites[id]} alt="" />}
-                        {humanize(name)}
+                        {label}
                     </span>
                 )
             })}
