@@ -27,6 +27,7 @@ const lang_deDE = {
             perStack: "Pro Stapel",
             maxStacks: "Maximale Stapel",
             duration: "Dauer",
+            statusDescriptionFallback: "Spezieller Statuseffekt ({{effect}}). Die genauen Auswirkungen findest du in den gespeicherten Effektdaten.",
             turn: "Runde",
             turns: "Runden",
             tick: "Tick",
