@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, ROLE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
+import { CONSTANTS } from '../database/constants.jsx'
 import { heroSprites, itemSprites, iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites, elementSprites } from '../database/db_sprites.jsx'
 import ExpandSrc from '../sprites/expand.webp'
 import CrossSrc from '../sprites/cross.png'
@@ -51,10 +52,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
 
     function onResize() {
         const isMobile = window.matchMedia("(max-width: 900px)").matches
-        setListHeight(getPreviewListHeight(listRef.current, window.innerHeight, isMobile, {
-            listHeightDefault: 165,
-            listHeightMobile: 165,
-        }))
+        setListHeight(getPreviewListHeight(listRef.current, window.innerHeight, isMobile, CONSTANTS))
     }
 
     useLayoutEffect(() => {
