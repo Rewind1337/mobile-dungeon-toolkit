@@ -128,11 +128,11 @@ export function TeamManagementGuide() {
                 {members.map(([src, heroId, originalName], index) => {
                     const name = tc("hero", heroId, "name", originalName)
                     return (
-                    <div className="guide-team-member card" key={heroId}>
-                        <span className="guide-team-slot text">{t("app.shared.slot", { number: index + 1 })}</span>
-                        <img src={src} alt={name} loading="lazy" decoding="async" draggable={false} />
-                        <span className="text">{name}</span>
-                    </div>
+                        <div className="guide-team-member card" key={heroId}>
+                            <span className="guide-team-slot text">{t("app.shared.slot", { number: index + 1 })}</span>
+                            <img src={src} alt={name} loading="lazy" decoding="async" draggable={false} />
+                            <span className="text">{name}</span>
+                        </div>
                     )
                 })}
             </div>
