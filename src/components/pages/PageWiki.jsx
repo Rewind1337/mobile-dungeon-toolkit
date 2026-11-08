@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useMemo, useState } from "react"
 import { useDynamicList } from "../../hooks/useDynamicList.jsx"
 import Button from "../Button.jsx"
 import { useTranslate } from "../../hooks/useTranslate.jsx"
+import { humanizeName } from "../../js/utils.js"
 import { useContentTranslation } from "../../hooks/useContentTranslation.jsx"
 
 import BackToTopButton from "../BackToTopButton.jsx"
@@ -34,8 +35,6 @@ const TABS = [
     ["resources-catalogue", "app.pages.wiki.resourcesAndGems"],
 ]
 
-const humanize = value => String(value ?? "").replaceAll("_", " ").replace(/\b\w/g, letter => letter.toUpperCase())
-
 function Stat({ label, value }) {
     return (
         <div className="catalogue-overview-stat card">
@@ -52,8 +51,8 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
     const translateDefinitionName = (collection, definition) => {
         const name = String(definition?.name ?? "unknown")
         return definition
-            ? tc(collection, name.toUpperCase(), "name", humanize(name))
-            : humanize(name)
+            ? tc(collection, name.toUpperCase(), "name", humanizeName(name))
+            : humanizeName(name)
     }
     const heroCountBy = (key, definitions, collection, preferredOrder = []) => {
         const counts = new Map()
