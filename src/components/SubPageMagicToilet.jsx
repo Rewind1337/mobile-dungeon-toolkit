@@ -129,14 +129,14 @@ function expectedLegendaries(pulls, startingPity, pityLimit) {
     return expected
 }
 
-function luckLabel(actual, expected) {
-    if (expected <= 0) return "Not enough pulls yet"
+function luckLabel(actual, expected, t) {
+    if (expected <= 0) return t("app.pages.magicToilet.notEnoughPullsYet")
     const ratio = actual / expected
-    if (ratio >= 1.5) return "Extremely lucky"
-    if (ratio >= 1.15) return "Lucky"
-    if (ratio >= 0.85) return "Around average"
-    if (ratio >= 0.6) return "Unlucky"
-    return "Very unlucky"
+    if (ratio >= 1.5) return t("app.pages.magicToilet.extremelyLucky")
+    if (ratio >= 1.15) return t("app.pages.magicToilet.lucky")
+    if (ratio >= 0.85) return t("app.pages.magicToilet.aroundAverage")
+    if (ratio >= 0.6) return t("app.pages.magicToilet.unlucky")
+    return t("app.pages.magicToilet.veryUnlucky")
 }
 
 const EMPTY_PULL_COUNTS = {
@@ -193,7 +193,7 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
     const epicResults = useMemo(() => heroResults.filter(result => result.rarity === EPIC), [heroResults])
     const legendaryResults = useMemo(() => heroResults.filter(result => result.rarity === LEGENDARY), [heroResults])
     const soulSprite = bannerId === "everyday_heroes" ? resourceSprites.soul : resourceSprites.shimmering_soul
-    const soulLabel = bannerId === "everyday_heroes" ? "Souls used" : "Shimmering Souls used"
+    const soulLabel = bannerId === "everyday_heroes" ? t("app.pages.magicToilet.soulsUsed") : t("app.pages.magicToilet.shimmeringSoulsUsed")
     const legendaryBoosterHeroes = heroes.filter(hero =>
         Number(hero.rarity) === LEGENDARY && hero.id !== banner?.featuredHeroId
     )
@@ -478,14 +478,14 @@ export default function SubPageMagicToilet({ heroesRef = [] }) {
                         <img className="catalogue-chip-icon" src={resourceSprites.legendary_banner_booster} alt="" />
                         {t("app.pages.magicToilet.legendaryBoostersUsed", { count: legendaryBoostersUsed.toLocaleString() })}
                     </span>
-                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={UNCOMMON}>{t("app.pages.magicToilet.rarityCount", { rarity: "Uncommon", chance: "55%", count: pullCounts[UNCOMMON].toLocaleString() })}</span>
-                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={RARE}>{t("app.pages.magicToilet.rarityCount", { rarity: "Rare", chance: "35%", count: pullCounts[RARE].toLocaleString() })}</span>
-                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={EPIC}>{t("app.pages.magicToilet.rarityCount", { rarity: "Epic", chance: "9%", count: epicCount.toLocaleString() })}</span>
-                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={LEGENDARY}>{t("app.pages.magicToilet.rarityCount", { rarity: "Legendary", chance: "1%", count: legendaryCount.toLocaleString() })}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={UNCOMMON}>{t("app.pages.magicToilet.rarityCount", { rarity: t("app.shared.uncommon"), chance: "55%", count: pullCounts[UNCOMMON].toLocaleString() })}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={RARE}>{t("app.pages.magicToilet.rarityCount", { rarity: t("app.shared.rare"), chance: "35%", count: pullCounts[RARE].toLocaleString() })}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={EPIC}>{t("app.pages.magicToilet.rarityCount", { rarity: t("app.shared.epic"), chance: "9%", count: epicCount.toLocaleString() })}</span>
+                    <span className="catalogue-chip text magic-toilet-stat-chip" data-rarity={LEGENDARY}>{t("app.pages.magicToilet.rarityCount", { rarity: t("app.shared.legendary"), chance: "1%", count: legendaryCount.toLocaleString() })}</span>
                     {totalPulls > 0 && (
                         <>
                             <span className="catalogue-chip text magic-toilet-stat-chip">{t("app.pages.magicToilet.expectedLegendaries", { count: expected.toFixed(2) })}</span>
-                            <span className="catalogue-chip text magic-toilet-stat-chip">{t("app.pages.magicToilet.luck", { value: luckLabel(legendaryCount, expected) })}</span>
+                            <span className="catalogue-chip text magic-toilet-stat-chip">{t("app.pages.magicToilet.luck", { value: luckLabel(legendaryCount, expected, t) })}</span>
                         </>
                     )}
                 </div>
