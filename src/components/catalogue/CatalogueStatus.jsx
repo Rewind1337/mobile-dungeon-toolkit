@@ -6,7 +6,7 @@ import { STATUS_EFFECT_DEFINITIONS } from "../../database/enums.jsx"
 import CatalogueFilterActions from "../CatalogueFilterActions.jsx"
 import StatusCatalogueCard from "../StatusCatalogueCard.jsx"
 import { STATUS_DESCRIPTIONS, getCategory } from "../../js/statusCatalogueUtils.jsx"
-import { humanize } from "../../js/utils.js"
+import { humanizeName } from "../../js/utils.js"
 
 function matchesStatusSearch(status, rawQuery, tc) {
     // Polarity flags are handled as query predicates instead of searching their property names.
@@ -14,8 +14,8 @@ function matchesStatusSearch(status, rawQuery, tc) {
     delete searchableStatus.mitigatable
     delete searchableStatus.removable
     const category = getCategory(status)
-    const description = tc("status", status.name, "description", STATUS_DESCRIPTIONS[status.name] ?? humanize(status.effectType ?? "effect"))
-    const searchable = [status.name, humanize(status.name), tc("status", status.name, "name", humanize(status.name)), category, description, status.effectType ?? "", JSON.stringify(searchableStatus)].join(" ")
+    const description = tc("status", status.name, "description", STATUS_DESCRIPTIONS[status.name] ?? humanizeName(status.effectType ?? "effect"))
+    const searchable = [status.name, humanizeName(status.name), tc("status", status.name, "name", humanizeName(status.name)), category, description, status.effectType ?? "", JSON.stringify(searchableStatus)].join(" ")
 
     const matchesPolarityTerm = term => {
         // Missing flags are shown as positive in the catalogue UI.
