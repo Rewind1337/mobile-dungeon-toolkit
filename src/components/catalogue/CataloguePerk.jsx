@@ -16,6 +16,13 @@ function CataloguePerk() {
     const [search, setSearch, commitSearch] = useUrlSearch()
     const [slotFilter, setSlotFilter] = useState("all")
     const [filtersVisible, setFiltersVisible] = useState(true)
+    const perkSlotLabelKeys = {
+        WEAPONS: "weapon",
+        HELMETS: "helmet",
+        ARMORS: "armor",
+        RINGS: "ring",
+        NECKLACES: "necklace",
+    }
     const entries = useMemo(() => {
         const slotsByPerk = new Map()
         for (const [slot, perkKeys] of Object.entries(POSSIBLE_PERKS)) {
@@ -48,7 +55,7 @@ function CataloguePerk() {
                     <span className="catalogue-control-label text">{t("app.shared.slotLabel")}</span>
                     <select  value={slotFilter} onChange={event => setSlotFilter(event.target.value)}>
                         <option value="all">{t("app.shared.allSlots")}</option>
-                        {Object.keys(POSSIBLE_PERKS).map(slot => <option key={slot} value={slot}>{{ WEAPONS: "Weapon", HELMETS: "Helmet", ARMORS: "Armor", RINGS: "Ring", NECKLACES: "Necklace" }[slot] ?? slot}</option>)}
+                        {Object.keys(POSSIBLE_PERKS).map(slot => <option key={slot} value={slot}>{t(`app.shared.${perkSlotLabelKeys[slot] ?? "other"}`)}</option>)}
                     </select>
                 </label>
                 <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={clearFilters} />
