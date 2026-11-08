@@ -11,7 +11,7 @@ import { useContentTranslation } from "../../hooks/useContentTranslation.jsx"
 import HeroCatalogueFilters from "../HeroCatalogueFilters.jsx"
 import { attributeSprites, elementSprites, roleSprites } from "../../database/db_sprites.jsx"
 import { getSearchableValues, matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
-import { humanize } from "../../js/utils.js"
+import { humanizeName } from "../../js/utils.js"
 import { useTranslate } from "../../hooks/useTranslate.jsx"
 import BannerCatalogueList from "../BannerCatalogueList.jsx"
 import CatalogueViewSwitch from "../CatalogueViewSwitch.jsx"
@@ -27,10 +27,10 @@ function HeroCatalogueCard({ hero, expandedSections = {}, onSectionToggle }) {
     const attribute = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(hero.mainAttribute)) ?? "Unknown attribute"
     const element = getEnumNameById(ELEMENT_DEFINITIONS, Number(hero.element)) ?? "Unknown element"
     const role = getEnumNameById(ROLE_DEFINITIONS, Number(hero.role)) ?? "Unknown role"
-    const rarityLabel = tc("rarity", rarity, "name", humanize(rarity))
-    const attributeLabel = tc("attribute", attribute, "name", humanize(attribute))
-    const elementLabel = tc("element", element, "name", humanize(element))
-    const roleLabel = tc("role", role, "name", humanize(role))
+    const rarityLabel = tc("rarity", rarity, "name", humanizeName(rarity))
+    const attributeLabel = tc("attribute", attribute, "name", humanizeName(attribute))
+    const elementLabel = tc("element", element, "name", humanizeName(element))
+    const roleLabel = tc("role", role, "name", humanizeName(role))
 
     const skills = Array.isArray(hero.skills) ? hero.skills : []
     const talents = hero.talents && typeof hero.talents === "object"
