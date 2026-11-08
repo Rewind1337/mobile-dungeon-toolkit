@@ -11,7 +11,7 @@ import Button from './Button.jsx'
 import { useTranslate } from '../hooks/useTranslate.jsx'
 import { useContentTranslation } from '../hooks/useContentTranslation.jsx'
 import Modal from './Modal.jsx'
-import { createHeroShareToken, createItemsShareToken } from '../utils/heroShare.js'
+import { createHeroShareToken, createItemsShareToken } from '../js/heroShare.js'
 import EmptyItem from './EmptyItem.jsx'
 import Item from './Item.jsx'
 import SkillCatalogueCard from './SkillCatalogueCard.jsx'
@@ -19,7 +19,7 @@ import TalentCatalogueCard from './TalentCatalogueCard.jsx'
 
 import '../css/hero.scss'
 import HeroStat from './HeroStat.jsx'
-import { calculateHeroStats, MAIN_STAT_PERKS } from '../utils/calculatedStats.js'
+import { calculateHeroStats, MAIN_STAT_PERKS } from '../js/calculatedStats.js'
 import { formatNumber } from '../js/utils.js'
 
 
