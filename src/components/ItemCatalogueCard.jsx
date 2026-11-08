@@ -55,7 +55,7 @@ export default function ItemCatalogueCard({ item, set }) {
     const setName = set ? tc("set", set.id, "name", set.name) : ""
     const mainAttribute = Object.values(PRIMARY_STAT_DEFINITIONS).find(attribute => attribute.id === Number(item.mainAttribute))
     const mainAttributeSprite = mainAttribute ? perkSprites[`${mainAttribute.name}_FLAT`] : null
-    const mainAttributeLabel = mainAttribute ? tc("primaryStat", mainAttribute.name, "name", { ATTACK: "Attack", DEFENCE: "Defense", AGILITY: "Agility" }[mainAttribute.name] ?? mainAttribute.name) : ""
+    const mainAttributeLabel = mainAttribute ? tc("primaryStat", mainAttribute.name, "name", t(`app.shared.${mainAttribute.name.toLowerCase()}`)) : ""
     const slotKey = String(item.slotLabel ?? "").toUpperCase().replace(/S$/, "")
     const slotLabel = tc("equipmentSlot", slotKey, "name", humanizeName(item.slotLabel ?? "Unknown slot"))
     const attributeRequirement = getAttributeRequirementLabel(item.attributeRequirement)
