@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 
 import { getSearchableValues, matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
-import { humanize } from "../../js/utils.js"
+import { humanizeName } from "../../js/utils.js"
 import { useTranslate } from "../../hooks/useTranslate.jsx"
 import { useContentTranslation } from "../../hooks/useContentTranslation.jsx"
 import { SLOT_NAMES, RARITY_NAMES, getLocations, getSetLocations, getSourceName, getAttributeRequirementLabel, getPerkKey, getPerkLabel, getEffectStatuses, isUniqueItem } from "../../js/catalogueItemUtils.jsx"
@@ -90,7 +90,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
             item.setLabel,
             sourceName,
             ...getLocations(item),
-            humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity"),
+            humanizeName(RARITY_NAMES[item.rarity] ?? "Unknown rarity"),
             ...getEffectStatuses(item).flatMap(status => [status.name, tc("status", status.key, "name", status.name)]),
             ...(item.fixedPerks ?? []).flatMap(perk => [getPerkLabel(perk), tc("perk", getPerkKey(perk), "name", getPerkLabel(perk)), getPerkKey(perk)]),
             ...(item.setBonusLabels ?? [])
@@ -138,7 +138,7 @@ function CatalogueItem({ itemsRef, setsRef, initialView = "items", initialFilter
                 item.name,
                 tc("item", item.id, "name", item.name),
                 getAttributeRequirementLabel(item.attributeRequirement),
-                humanize(RARITY_NAMES[item.rarity] ?? "Unknown rarity"),
+                humanizeName(RARITY_NAMES[item.rarity] ?? "Unknown rarity"),
                 getSourceName(item.dropSource),
                 ...getLocations(item),
                 ...(item.fixedPerks ?? []).flatMap(perk => [getPerkLabel(perk), tc("perk", getPerkKey(perk), "name", getPerkLabel(perk)), getPerkKey(perk)]),
