@@ -8,6 +8,22 @@ const PERK_ID_TO_NAME = Object.fromEntries(
     Object.entries(PERK_DEFINITIONS).map(([name, definition]) => [definition.id, name])
 )
 
+function createShareError(code, message, values = {}) {
+    const error = new Error(message)
+    error.code = code
+    error.values = values
+    return error
+}
+
+/** Resolve known share errors through the active UI translator. */
+export function getShareErrorMessage(error, t) {
+    if (!error?.code || typeof t !== "function") return error?.message ?? ""
+    const values = error.values?.type
+        ? { type: t(`app.shared.shareTypes.${error.values.type}`) }
+        : undefined
+    return t(`app.shared.shareErrors.${error.code}`, values)
+}
+
 function toBase64Url(value) {
     const bytes = new TextEncoder().encode(value)
     let binary = ""
@@ -168,7 +184,7 @@ export function createHeroShareToken(hero, { includeItems = true } = {}) {
 
 export function createItemShareToken(item) {
     if (!item || item.slot === undefined || item.slot === null) {
-        throw new Error("Select a valid item before exporting it.")
+        throw createShareError("selectValidItemBeforeExport", "Select a valid item before exporting it.")
     }
     return toBase64Url(JSON.stringify({
         v: SHARE_FORMAT_VERSION,
@@ -179,7 +195,7 @@ export function createItemShareToken(item) {
 
 export function createItemsShareToken(items) {
     const equippedItems = (items ?? []).filter(Boolean)
-    if (equippedItems.length === 0) throw new Error("This hero has no equipped items to export.")
+    if (equippedItems.length === 0) throw createShareError("noEquippedItemsToExport", "This hero has no equipped items to export.")
     return toBase64Url(JSON.stringify({
         v: SHARE_FORMAT_VERSION,
         k: "items",
@@ -189,7 +205,7 @@ export function createItemsShareToken(items) {
 
 function decodeInput(input, queryKey) {
     const trimmed = String(input ?? "").trim()
-    if (!trimmed) throw new Error("Paste a share link or its encoded data.")
+    if (!trimmed) throw createShareError("pasteShareLinkOrEncodedData", "Paste a share link or its encoded data.")
 
     let token = trimmed
     if (
@@ -205,16 +221,16 @@ function decodeInput(input, queryKey) {
         try {
             url = new URL(trimmed, window.location.origin)
         } catch {
-            throw new Error("That does not look like a valid share link.")
+            throw createShareError("invalidShareLink", "That does not look like a valid share link.")
         }
         token = url.searchParams.get(queryKey) ?? ""
-        if (!token) throw new Error(`That link does not contain ${queryKey} share data.`)
+        if (!token) throw createShareError("missingShareData", `That link does not contain ${queryKey} share data.`, { type: queryKey })
     }
 
     try {
         return JSON.parse(fromBase64Url(token))
     } catch {
-        throw new Error("That does not look like a valid share link.")
+        throw createShareError("invalidShareLink", "That does not look like a valid share link.")
     }
 }
 
@@ -232,7 +248,7 @@ export function decodeHeroShareInput(input) {
         payload.t > 1023 ||
         (payload.e !== undefined && !Array.isArray(payload.e))
     ) {
-        throw new Error("This hero link is invalid or uses an unsupported format version.")
+        throw createShareError("invalidHeroShareLink", "This hero link is invalid or uses an unsupported format version.")
     }
     return payload
 }
@@ -246,7 +262,7 @@ export function decodeItemShareInput(input) {
         typeof payload.i !== "object" ||
         !Number.isInteger(payload.i.s)
     ) {
-        throw new Error("This item link is invalid or uses an unsupported format version.")
+        throw createShareError("invalidItemShareLink", "This item link is invalid or uses an unsupported format version.")
     }
     return payload
 }
@@ -259,7 +275,7 @@ export function decodeItemsShareInput(input) {
         !Array.isArray(payload.a) ||
         payload.a.some(item => !item || !Number.isInteger(item.s))
     ) {
-        throw new Error("This equipped-items link is invalid or uses an unsupported format version.")
+        throw createShareError("invalidItemsShareLink", "This equipped-items link is invalid or uses an unsupported format version.")
     }
     return payload
 }
@@ -283,7 +299,7 @@ export function restoreSharedItems(payload, baseItems) {
 export function restoreSharedHero(payload, baseHeroes, baseItems) {
     const baseHero = baseHeroes.find(hero => hero.id === payload.i)
     if (!baseHero) {
-        throw new Error("This hero is not present in the current toolkit database.")
+        throw createShareError("heroNotInCurrentDatabase", "This hero is not present in the current toolkit database.")
     }
 
     const talents = baseHero.talents ? { ...baseHero.talents } : baseHero.talents
@@ -350,7 +366,7 @@ export function decodeTeamShareInput(input) {
         payload.h.some(token => token !== null && typeof token !== "string") ||
         typeof payload.n !== "string"
     ) {
-        throw new Error("This team link is invalid or uses an unsupported format version.")
+        throw createShareError("invalidTeamShareLink", "This team link is invalid or uses an unsupported format version.")
     }
     return payload
 }
