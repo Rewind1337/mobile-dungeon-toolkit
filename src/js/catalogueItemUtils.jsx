@@ -64,12 +64,18 @@ export function getAttributeRequirementLabel(value) {
     return !name || name === "NONE" ? "None" : humanizeName(name)
 }
 
-export function getPerkKey(perk) {
+export function getPerkKey(perk, fallback = "") {
     if (typeof perk === "string") return perk.toUpperCase().replace(/\s/g, "_")
     if (perk && typeof perk === "object") {
-        return Object.keys(PERK_DEFINITIONS).find(key => PERK_DEFINITIONS[key].id === perk.id) ?? ""
+        return Object.keys(PERK_DEFINITIONS).find(key => PERK_DEFINITIONS[key].id === perk.id) ?? fallback
     }
-    return ""
+    return fallback
+}
+
+export function isFlatPerk(perk) {
+    const definition = typeof perk === "string" ? PERK_DEFINITIONS[perk] : perk
+    const id = Number(definition?.id)
+    return (id >= 4 && id <= 7) || id === 32
 }
 
 export function getPerkLabel(perk) {
