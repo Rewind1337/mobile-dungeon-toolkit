@@ -5,7 +5,7 @@ import {
     RARITY_DEFINITIONS,
     ROLE_DEFINITIONS
 } from "../database/enums.jsx"
-import { humanize } from "../js/utils.js"
+import { humanizeName } from "../js/utils.js"
 import { useTranslate } from "../hooks/useTranslate.jsx"
 import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 
@@ -39,7 +39,7 @@ function HeroCatalogueFilters({
     topOffset
 }) {
     const tc = useContentTranslation()
-    const translateEnum = (type, value) => tc(type, String(value ?? "").toUpperCase(), "name", humanize(value))
+    const translateEnum = (type, value) => tc(type, String(value ?? "").toUpperCase(), "name", humanizeName(value))
     const t = useTranslate()
     const searchLabel = t("app.pages.catalogues.searchCount", { resultCount, totalCount })
     const searchPlaceholder = t("app.pages.heroes.filters.searchPlaceholder")
