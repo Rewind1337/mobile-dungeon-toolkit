@@ -5,7 +5,7 @@ import CollapseSrc from "../sprites/collapse.webp"
 import ExpandSrc from "../sprites/expand.webp"
 import CatalogueEntryCard from "./CatalogueEntryCard.jsx"
 import { STATUS_DESCRIPTIONS, getCategory } from "../js/statusCatalogueUtils.jsx"
-import { humanize } from "../js/utils.js"
+import { humanizeName } from "../js/utils.js"
 import { useTranslate } from "../hooks/useTranslate.jsx"
 import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 import "../css/infos.scss"
@@ -16,16 +16,16 @@ export default function StatusCatalogueCard({ status }) {
     const tc = useContentTranslation()
     const category = getCategory(status)
     const sprite = statusSprites[status.name] ?? statusSprites[status.name.replace("critical_resistance", "critical_resist")]
-    const statusName = tc("status", status.name, "name", humanize(status.name))
+    const statusName = tc("status", status.name, "name", humanizeName(status.name))
     const description = tc("status", status.name, "description", STATUS_DESCRIPTIONS[status.name]
-        ?? `Special status effect (${humanize(status.effectType ?? "effect")}). Check its stored effect data for the exact behaviour.`)
+        ?? `Special status effect (${humanizeName(status.effectType ?? "effect")}). Check its stored effect data for the exact behaviour.`)
     const details = [
         status.value !== undefined && `${t("app.shared.value")}: ${status.value}`,
         status.per_stack !== undefined && `${t("app.shared.perStack")}: ${status.per_stack}`,
         status.max_stacks !== undefined && `${t("app.shared.maxStacks")}: ${status.max_stacks}`,
         status.duration !== undefined && `${t("app.shared.duration")}: ${status.duration} ${t(Number(status.duration) === 1 ? "app.shared.turn" : "app.shared.turns")}`,
-        status.interval !== undefined && `${t("app.shared.tick")}: ${humanize(status.interval)}`,
-        status.stat !== undefined && `${t("app.shared.stat")}: ${tc("primaryStat", String(status.stat).toUpperCase(), "name", humanize(status.stat))}`,
+        status.interval !== undefined && `${t("app.shared.tick")}: ${humanizeName(status.interval)}`,
+        status.stat !== undefined && `${t("app.shared.stat")}: ${tc("primaryStat", String(status.stat).toUpperCase(), "name", humanizeName(status.stat))}`,
     ].filter(Boolean)
     const categoryLabel = category === "Buff" ? t("app.shared.buff")
         : category === "Debuff" ? t("app.shared.debuff")
