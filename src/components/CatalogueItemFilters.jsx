@@ -4,7 +4,7 @@ import {
     PRIMARY_STAT_DEFINITIONS,
     RARITY_DEFINITIONS
 } from "../database/enums.jsx"
-import { humanize } from "../js/utils.js"
+import { humanizeName } from "../js/utils.js"
 import { useTranslate } from "../hooks/useTranslate.jsx"
 import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 import CatalogueFilterActions from "./CatalogueFilterActions.jsx"
@@ -46,7 +46,7 @@ function CatalogueItemFilters({
     onSortChange
 }) {
     const tc = useContentTranslation()
-    const translateEnum = (type, value) => tc(type, String(value ?? "").toUpperCase(), "name", humanize(value))
+    const translateEnum = (type, value) => tc(type, String(value ?? "").toUpperCase(), "name", humanizeName(value))
     const t = useTranslate()
     const searchLabel = t("app.pages.catalogues.searchCount", { resultCount, totalCount })
     const searchPlaceholder = t("app.pages.items.filters.searchPlaceholder")
@@ -125,7 +125,7 @@ function CatalogueItemFilters({
                         <span className="catalogue-control-label text">{sourceLabel}</span>
                         <select  value={sourceFilter} onChange={event => setSourceFilter?.(event.target.value)}>
                             <option value="all">{allSourcesLabel}</option>
-                            {allSources.map(source => <option key={source} value={source}>{tc("dropSource", String(source).toUpperCase().replace(/\s+/g, "_"), "name", humanize(source))}</option>)}
+                            {allSources.map(source => <option key={source} value={source}>{tc("dropSource", String(source).toUpperCase().replace(/\s+/g, "_"), "name", humanizeName(source))}</option>)}
                         </select>
                     </label>
                     <label className="catalogue-filter">
