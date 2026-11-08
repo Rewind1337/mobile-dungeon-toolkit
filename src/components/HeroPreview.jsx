@@ -375,7 +375,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
             await navigator.clipboard.writeText(equippedItemsShareUrl)
             setItemsShareLinkCopied(true)
         } catch {
-            window.alert("Copying was blocked by your browser. Select and copy the link manually.")
+            window.alert(t("app.shared.copyingBlocked"))
         }
     }
 
@@ -538,7 +538,7 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
                             }
                             return item
                                 ? <Item key={slot.id} itemObj={item} level={item.level ?? 1} loading="eager" onClick={() => onItemClick(slot.id)} />
-                                : <EmptyItem key={slot.id} label={slot.name.charAt(0) + slot.name.slice(1).toLowerCase()} onClick={() => onItemClick(slot.id)} />
+                                : <EmptyItem key={slot.id} label={tc("equipmentSlot", String(slot.name).toUpperCase(), "name", slot.name.charAt(0) + slot.name.slice(1).toLowerCase())} onClick={() => onItemClick(slot.id)} />
                         })}
                     </div>
                     <div className='header'>{t("app.pages.heroes.preview.mainStats")}</div>
