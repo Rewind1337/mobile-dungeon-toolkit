@@ -1,11 +1,9 @@
 /**
  * English (United States) source language.
- *
- * Keep keys grouped by app area and use dot-separated paths when calling
- * useTranslation(), e.g. "app.pages.heroes.filters.search".
- */
+*/
 const lang_enUS = {
     app: {
+
         navigation: {
             heroes: "Heroes",
             items: "Items",
@@ -15,7 +13,9 @@ const lang_enUS = {
             simulators: "Simulators",
             wiki: "Wiki",
         },
+
         shared: {
+
             // shared search
             search: "Search",
             searchHeroPlaceholder: "Name, skill, talent, effect...",
@@ -264,7 +264,9 @@ const lang_enUS = {
             scrollListToTopTooltip: "Scroll this list back to the top",
             clearAllFiltersTooltip: "Clear all filters",
         },
+
         pages: {
+
             // Reset timers
             resetTimers: {
                 daily: "Daily Reset",
@@ -277,7 +279,7 @@ const lang_enUS = {
                     second: { one: "second", other: "seconds" },
                 },
             },
-            
+
             // Hero management and preview
             heroes: {
 
