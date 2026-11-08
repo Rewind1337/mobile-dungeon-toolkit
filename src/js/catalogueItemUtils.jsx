@@ -14,6 +14,18 @@ export const PERK_NAMES = Object.fromEntries(
 export const SLOT_ICON_KEYS = { WEAPON: "weapons", HELMET: "helmets", ARMOR: "armors", NECKLACE: "necklaces", RING: "rings" }
 export const ATTRIBUTE_ICON_KEYS = { strength: 1, dexterity: 2, intelligence: 3 }
 
+const MAIN_STAT_PERK_KEYS = {
+    0: { MAIN_STAT_FLAT: "ATTACK_FLAT", MAIN_STAT_PERCENT: "ATTACK_PERCENT" },
+    1: { MAIN_STAT_FLAT: "DEFENCE_FLAT", MAIN_STAT_PERCENT: "DEFENCE_PERCENT" },
+    2: { MAIN_STAT_FLAT: "AGILITY_FLAT", MAIN_STAT_PERCENT: "AGILITY_PERCENT" },
+}
+
+/** Resolve a generic main-stat perk to the concrete perk for an item's main attribute. */
+export function getMainStatPerkKey(perkName, mainAttribute) {
+    if (mainAttribute === null || mainAttribute === undefined || mainAttribute === "") return perkName
+    return MAIN_STAT_PERK_KEYS[Number(mainAttribute)]?.[perkName] ?? perkName
+}
+
 export function getLocations(item) {
     const raw = item?.dropLocation
     if (Array.isArray(raw)) return raw.map(value => String(value)).filter(Boolean)
