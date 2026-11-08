@@ -107,14 +107,14 @@ function CatalogueResources({ initialView = "resources", onViewChange }) {
                                 <span className="catalogue-control-label text">{t("app.pages.catalogues.usedFor")}</span>
                                 <select  value={usedForFilter} onChange={event => setUsedForFilter(event.target.value)}>
                                     <option value="all">{t("app.pages.catalogues.allUses")}</option>
-                                    {Object.entries(RESOURCE_LOCATIONS).map(([key, label]) => <option key={key} value={label}>{label}</option>)}
+                                    {Object.entries(RESOURCE_LOCATIONS).map(([key, label]) => <option key={key} value={label}>{tc("resourceLocation", key, "name", label)}</option>)}
                                 </select>
                             </label>
                             <label className="catalogue-filter resource-location-filter">
                                 <span className="catalogue-control-label text">{t("app.pages.catalogues.obtainedFrom")}</span>
                                 <select  value={obtainedFromFilter} onChange={event => setObtainedFromFilter(event.target.value)}>
                                     <option value="all">{t("app.shared.allSources")}</option>
-                                    {Object.entries(RESOURCE_LOCATIONS).map(([key, label]) => <option key={key} value={label}>{label}</option>)}
+                                    {Object.entries(RESOURCE_LOCATIONS).map(([key, label]) => <option key={key} value={label}>{tc("resourceLocation", key, "name", label)}</option>)}
                                 </select>
                             </label>
                             <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={clearSearch} />
