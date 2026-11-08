@@ -1,6 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-import { CONSTANTS } from '../database/constants.jsx'
 import { DEFAULT_MASTERWORK_MUTATIONS, MASTERWORK_MUTATION_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, getEnumNameById, getItemPerkCount, getMaxMasterworkLevel } from '../database/enums.jsx'
 import { attributeSprites, iconSprites } from '../database/db_sprites.jsx'
 import { getActiveSetBonusCount } from '../js/calculatedStats.js'
@@ -13,8 +12,8 @@ import Button from './Button.jsx'
 import { useTranslate } from '../hooks/useTranslate.jsx'
 import ItemPerk from './ItemPerk.jsx'
 import { useContentTranslation } from '../hooks/useContentTranslation.jsx'
+import { usePreviewListHeight } from '../hooks/usePreviewListHeight.jsx'
 import { getEffectStatuses, getMainStatPerkKey, getPerkKey } from '../js/catalogueItemUtils.jsx'
-import { getPreviewListHeight } from '../js/previewUtils.js'
 
 import '../css/item.scss'
 
@@ -86,8 +85,8 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
     const t = useTranslate()
     const tc = useContentTranslation()
     const [itemObj, setItemObj] = useState(null)
-    const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
+    const listHeight = usePreviewListHeight(listRef)
     const [selectedRarity, setSelectedRarity] = useState(null)
     const [selectedLevel, setSelectedLevel] = useState(1)
     const [selectedMasterworkLevel, setSelectedMasterworkLevel] = useState(0)
@@ -97,17 +96,6 @@ function ItemPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, i
     const [fixedPerkValues, setFixedPerkValues] = useState([])
     const [selectedSetBonusValues, setSelectedSetBonusValues] = useState([])
     const [selectedMutations, setSelectedMutations] = useState({ ...DEFAULT_MASTERWORK_MUTATIONS })
-
-    function onResize() {
-        const isMobile = window.matchMedia("(max-width: 900px)").matches
-        setListHeight(getPreviewListHeight(listRef.current, window.innerHeight, isMobile, CONSTANTS))
-    }
-
-    useLayoutEffect(() => {
-        window.addEventListener('resize', onResize)
-        onResize()
-        return () => window.removeEventListener('resize', onResize)
-    }, [])
 
     useLayoutEffect(() => {
         if (listRef.current) listRef.current.scrollTop = 0
