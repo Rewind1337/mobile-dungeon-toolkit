@@ -1,6 +1,6 @@
 import { attributeSprites, iconSprites, perkSprites } from "../database/db_sprites.jsx"
 import { ATTRIBUTE_DEFINITIONS, PRIMARY_STAT_DEFINITIONS, RARITY_DEFINITIONS } from "../database/enums.jsx"
-import { humanize } from "../js/utils.js"
+import { humanizeName } from "../js/utils.js"
 import Item from "./Item.jsx"
 import CataloguePerkList from "./CataloguePerkList.jsx"
 import { useTranslate } from "../hooks/useTranslate.jsx"
@@ -57,7 +57,7 @@ export default function ItemCatalogueCard({ item, set }) {
     const mainAttributeSprite = mainAttribute ? perkSprites[`${mainAttribute.name}_FLAT`] : null
     const mainAttributeLabel = mainAttribute ? tc("primaryStat", mainAttribute.name, "name", { ATTACK: "Attack", DEFENCE: "Defense", AGILITY: "Agility" }[mainAttribute.name] ?? mainAttribute.name) : ""
     const slotKey = String(item.slotLabel ?? "").toUpperCase().replace(/S$/, "")
-    const slotLabel = tc("equipmentSlot", slotKey, "name", humanize(item.slotLabel ?? "Unknown slot"))
+    const slotLabel = tc("equipmentSlot", slotKey, "name", humanizeName(item.slotLabel ?? "Unknown slot"))
     const attributeRequirement = getAttributeRequirementLabel(item.attributeRequirement)
     const attributeRequirementLabel = attributeRequirement === "Not specified" ? t("app.shared.notSpecified") : attributeRequirement === "None" ? t("app.shared.none") : tc("attribute", attributeRequirement.toUpperCase(), "name", attributeRequirement)
     const hasAllAttributeRequirement = item.attributeRequirement !== null
