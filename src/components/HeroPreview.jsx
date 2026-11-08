@@ -1,7 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, ROLE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
-import { CONSTANTS } from '../database/constants.jsx'
 import { heroSprites, itemSprites, iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites, elementSprites } from '../database/db_sprites.jsx'
 import ExpandSrc from '../sprites/expand.webp'
 import CrossSrc from '../sprites/cross.png'
@@ -21,6 +20,7 @@ import '../css/hero.scss'
 import HeroStat from './HeroStat.jsx'
 import { calculateHeroStats, MAIN_STAT_PERKS } from '../js/calculatedStats.js'
 import { formatNumber } from '../js/utils.js'
+import { getPreviewListHeight } from '../js/previewUtils.js'
 
 
 function cloneTalentSelections(talents) {
@@ -50,18 +50,11 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
     const [talentSelections, setTalentSelections] = useState({})
 
     function onResize() {
-        let newHeight = window.innerHeight - CONSTANTS.listHeightDefault - 5;
-        if (window.matchMedia("(max-width: 900px)").matches === true) {
-            newHeight = window.innerHeight - CONSTANTS.listHeightDefault + 77;
-        }
-        if (listRef.current !== null) {
-            if (window.matchMedia("(max-width: 900px)").matches === true) {
-                newHeight = window.innerHeight - (CONSTANTS.listHeightMobile + listRef.current.offsetTop)
-            } else {
-                newHeight = window.innerHeight - (CONSTANTS.listHeightDefault + listRef.current.offsetTop)
-            }
-        }
-        setListHeight(newHeight)
+        const isMobile = window.matchMedia("(max-width: 900px)").matches
+        setListHeight(getPreviewListHeight(listRef.current, window.innerHeight, isMobile, {
+            listHeightDefault: 165,
+            listHeightMobile: 165,
+        }))
     }
 
     useLayoutEffect(() => {
