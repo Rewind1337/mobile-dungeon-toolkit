@@ -123,6 +123,7 @@ const lang_enUS = {
             perStack: "Per stack",
             maxStacks: "Max stacks",
             duration: "Duration",
+            statusDescriptionFallback: "Special status effect ({{effect}}). Check its stored effect data for the exact behaviour.",
             turn: "Turn",
             turns: "Turns",
             tick: "Tick",
