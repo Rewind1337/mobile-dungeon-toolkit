@@ -1,5 +1,3 @@
-export function deepCopy(obj) { return JSON.parse(JSON.stringify(obj)) }
-
 export function formatNumber(n, decimals) {
     if (n < 0 || !Number.isFinite(n) || !Number.isInteger(decimals) || decimals < 0) {
         return "Invalid input";
