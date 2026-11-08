@@ -1,22 +1,8 @@
 import { memo } from 'react'
 import Button from './Button.jsx'
 import { useTranslate } from '../hooks/useTranslate.jsx'
+import MobileFilterSelect from './MobileFilterSelect.jsx'
 import { EQUIPMENT_SLOT_DEFINITIONS, ATTRIBUTE_DEFINITIONS, RARITY_DEFINITIONS} from '../database/enums.jsx'
-
-function MobileFilterSelect({ label, value, onChange, options, multiple = false }) {
-    const t = useTranslate()
-    return (
-        <label className="mobile-filter-control">
-            <span className="catalogue-control-label text">{label}</span>
-            <select  multiple={multiple}
-                value={multiple ? (Array.isArray(value) ? value.map(String) : []) : value ?? ""}
-                onChange={onChange}>
-                {!multiple && <option value="">{t("app.shared.all")}</option>}
-                {options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
-        </label>
-    )
-}
 
 function ItemSetUniqueFilters({ toggleFilter, filters, filterSprites }) {
     const t = useTranslate()
