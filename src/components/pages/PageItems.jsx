@@ -10,6 +10,7 @@ import HelpButton from "../HelpButton.jsx"
 import { ItemManagementGuide } from "../Guides.jsx"
 import { createItemShareToken, decodeItemShareInput, decodeItemsShareInput, restoreSharedItem, restoreSharedItems, getShareErrorMessage } from "../../js/heroShare.js"
 import { clearSearchFromUrl } from "../../js/search.jsx"
+import { getMainStatPerkKey } from "../../js/catalogueItemUtils.jsx"
 import { useTranslation } from "../../hooks/useTranslation.jsx"
 import { useTranslate } from "../../hooks/useTranslate.jsx"
 
@@ -79,18 +80,6 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
         setPerkSelectionMainAttribute(itemObj?.mainAttribute ?? null)
         setPendingPerkSelection(() => applyPerk)
         setPerkSelectionVisible(true)
-    }
-
-    const getPerkSpriteName = name => {
-        const mainStat = perkSelectionMainAttribute == null
-            ? undefined
-            : ({ 0: "attack", 1: "defence", 2: "agility" })[Number(perkSelectionMainAttribute)]
-        const mainStatPerkKeys = {
-            attack: { MAIN_STAT_FLAT: "ATTACK_FLAT", MAIN_STAT_PERCENT: "ATTACK_PERCENT" },
-            defence: { MAIN_STAT_FLAT: "DEFENCE_FLAT", MAIN_STAT_PERCENT: "DEFENCE_PERCENT" },
-            agility: { MAIN_STAT_FLAT: "AGILITY_FLAT", MAIN_STAT_PERCENT: "AGILITY_PERCENT" }
-        }
-        return mainStatPerkKeys[mainStat]?.[name] ?? name
     }
 
     const saveItem = (itemObj) => {
@@ -290,7 +279,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
                             <ItemPerk
                                 key={perk}
                                 name={perk}
-                                spriteName={getPerkSpriteName(perk)}
+                                spriteName={getMainStatPerkKey(perk, perkSelectionMainAttribute)}
                                 noValue={true}
                                 onClick={() => handleSelectPerkClick(perk)}
                                 buttonText={"Choose"}
