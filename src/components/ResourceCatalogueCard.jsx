@@ -1,6 +1,6 @@
 import { elementSprites } from "../database/db_sprites.jsx"
 import { ELEMENT_DEFINITIONS, RARITY_DEFINITIONS, RESOURCE_LOCATIONS } from "../database/enums.jsx"
-import { humanize } from "../js/utils.js"
+import { humanizeName } from "../js/utils.js"
 import { useTranslate } from "../hooks/useTranslate.jsx"
 import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 import "../css/infos.scss"
@@ -20,19 +20,19 @@ function AdditionalInfoChip({ information, tc, t }) {
     }
     if (information.element != null) {
         const element = findDefinition(ELEMENT_DEFINITIONS, information.element)
-        if (!element) return <span className="catalogue-chip text">{humanize(information.element)}</span>
+        if (!element) return <span className="catalogue-chip text">{humanizeName(information.element)}</span>
         const name = element.name.toLowerCase()
         return (
             <span className={"catalogue-chip text catalogue-chip-element-outline catalogue-chip-element-" + name}>
                 {elementSprites[element.id] && <img className="catalogue-chip-icon" src={elementSprites[element.id]} alt="" />}
-                {tc("element", element.name, "name", humanize(element.name))}
+                {tc("element", element.name, "name", humanizeName(element.name))}
             </span>
         )
     }
     if (information.rarity != null) {
         const rarity = findDefinition(RARITY_DEFINITIONS, information.rarity)
-        if (!rarity) return <span className="catalogue-chip text">{humanize(information.rarity)}</span>
-        return <span className="catalogue-chip catalogue-chip-rarity text" data-rarity={rarity.id}>{tc("rarity", rarity.name, "name", humanize(rarity.name))}</span>
+        if (!rarity) return <span className="catalogue-chip text">{humanizeName(information.rarity)}</span>
+        return <span className="catalogue-chip catalogue-chip-rarity text" data-rarity={rarity.id}>{tc("rarity", rarity.name, "name", humanizeName(rarity.name))}</span>
     }
     if (information.text != null) return <span className="catalogue-chip text">{information.text === "Not Implemented" ? t("app.shared.notImplemented") : String(information.text)}</span>
     return null
@@ -71,7 +71,7 @@ export default function ResourceCatalogueCard({ resource }) {
                     <h2 className="resource-catalogue-name text-big">{resourceName}</h2>
                     {resource.isGem && (
                         <span className="catalogue-chip catalogue-chip-rarity resource-catalogue-rarity text" data-rarity={resource.rarity.id}>
-                            {tc("rarity", resource.rarity.name, "name", humanize(resource.rarity.name))}
+                            {tc("rarity", resource.rarity.name, "name", humanizeName(resource.rarity.name))}
                         </span>
                     )}
                 </div>
