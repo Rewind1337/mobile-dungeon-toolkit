@@ -1,7 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, ROLE_DEFINITIONS, STATUS_EFFECT_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
-import { CONSTANTS } from '../database/constants.jsx'
 import { heroSprites, itemSprites, iconSprites, perkSprites, statusSprites, attributeSprites, roleSprites, elementSprites } from '../database/db_sprites.jsx'
 import ExpandSrc from '../sprites/expand.webp'
 import CrossSrc from '../sprites/cross.png'
@@ -21,7 +20,7 @@ import '../css/hero.scss'
 import HeroStat from './HeroStat.jsx'
 import { calculateHeroStats, MAIN_STAT_PERKS } from '../js/calculatedStats.js'
 import { formatNumber } from '../js/utils.js'
-import { getPreviewListHeight } from '../js/previewUtils.js'
+import { usePreviewListHeight } from '../hooks/usePreviewListHeight.jsx'
 
 
 function cloneTalentSelections(talents) {
@@ -31,8 +30,8 @@ function cloneTalentSelections(talents) {
 function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, heroesRef, selectedHeroId, saveHero, deleteSavedHero, onItemClick, equippedItems = [], setsRef = [] }) {
     const t = useTranslate()
     const tc = useContentTranslation()
-    const [listHeight, setListHeight] = useState(500)
     const listRef = useRef(null)
+    const listHeight = usePreviewListHeight(listRef)
     const previousPreviewHeight = useRef(null)
     const [skillsTalentsModalVisible, setSkillsTalentsModalVisible] = useState(false)
     const [exportModalVisible, setExportModalVisible] = useState(false)
@@ -49,17 +48,6 @@ function HeroPreview({ isFullWidth = false, onToggleFullWidth, onClosePreview, h
         agility: 1234
     })
     const [talentSelections, setTalentSelections] = useState({})
-
-    function onResize() {
-        const isMobile = window.matchMedia("(max-width: 900px)").matches
-        setListHeight(getPreviewListHeight(listRef.current, window.innerHeight, isMobile, CONSTANTS))
-    }
-
-    useLayoutEffect(() => {
-        window.addEventListener('resize', onResize);
-        onResize();
-        return () => window.removeEventListener('resize', onResize);
-    }, []);
 
     useLayoutEffect(() => {
         if (listRef.current) listRef.current.scrollTop = 0
