@@ -143,7 +143,7 @@ function PageHeroes({ heroesRef, savedHeroesRef, itemsRef, savedItemsRef, manual
                 const hero = restoreSharedHero(payload, heroesRef.current, itemsRef.current.BASE_ITEMS)
                 importHero(hero)
             } catch (error) {
-                window.alert(error.message || "Could not import this hero link.")
+                window.alert(error.message || t("app.shared.couldNotImportHero"))
             } finally {
                 if (onImportStatusChange) onImportStatusChange("")
                 params.delete("hero")
