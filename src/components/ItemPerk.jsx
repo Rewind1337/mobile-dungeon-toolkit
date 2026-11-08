@@ -5,6 +5,7 @@ import { useContentTranslation } from '../hooks/useContentTranslation.jsx'
 
 import { perkSprites } from '../database/db_sprites.jsx'
 import { PERK_DEFINITIONS } from '../database/enums.jsx'
+import { isFlatPerk } from '../js/catalogueItemUtils.jsx'
 
 function ItemPerk({
     name,
@@ -24,7 +25,7 @@ function ItemPerk({
     const tc = useContentTranslation()
     const [_value, _setValue] = useState(value ?? 0)
     const _perk = PERK_DEFINITIONS[name]
-    const isFlatPerk = ((_perk.id >= 4 && _perk.id <= 7) || _perk.id === 32)
+    const flatPerk = isFlatPerk(_perk)
     const displayedValue = onValueChange ? (value ?? 0) : _value
     const numericValue = Number(displayedValue) || 0
     const effectiveValue = Math.round(numericValue * multiplier * 100) / 100
@@ -62,13 +63,13 @@ function ItemPerk({
                                 value={displayedValue}
                                 onChange={handleValueChange}
                             />
-                            <div className='text perk-flat-percent'>{isFlatPerk ? " Flat" : " %"}</div>
+                            <div className='text perk-flat-percent'>{flatPerk ? " Flat" : " %"}</div>
                         </div>
-                        <div className='text perk-effective'>{multiplier > 1 && <small>{t("app.shared.effective")}: {formatValue(effectiveValue)}{isFlatPerk ? " " + t("app.shared.flat") : " " + t("app.shared.percent")}</small>}</div>
+                        <div className='text perk-effective'>{multiplier > 1 && <small>{t("app.shared.effective")}: {formatValue(effectiveValue)}{flatPerk ? " " + t("app.shared.flat") : " " + t("app.shared.percent")}</small>}</div>
                     </div>
                     : <div className='text flex-col'>
-                        <div className='text perk-flat-percent'>{displayedValue}{isFlatPerk ? " Flat" : " %"}</div>
-                        <div className='text perk-effective'>{multiplier > 1 && <small>{t("app.shared.effective")}: {formatValue(effectiveValue)}{isFlatPerk ? " " + t("app.shared.flat") : " " + t("app.shared.percent")}</small>}</div>
+                        <div className='text perk-flat-percent'>{displayedValue}{flatPerk ? " Flat" : " %"}</div>
+                        <div className='text perk-effective'>{multiplier > 1 && <small>{t("app.shared.effective")}: {formatValue(effectiveValue)}{flatPerk ? " " + t("app.shared.flat") : " " + t("app.shared.percent")}</small>}</div>
                     </div>
                 }
             </>}
