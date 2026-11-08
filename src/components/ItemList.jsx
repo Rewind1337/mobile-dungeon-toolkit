@@ -10,15 +10,8 @@ import VirtualizedGrid from './VirtualizedGrid.jsx'
 import CatalogueItemFilters from './CatalogueItemFilters.jsx'
 import BackToTopButton from './BackToTopButton.jsx'
 import { ATTRIBUTE_DEFINITIONS, DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from '../database/enums.jsx'
-import { isSearchAssetField, matchesSearchQuery, useUrlSearch } from '../js/search.jsx'
+import { getSearchableValues, matchesSearchQuery, useUrlSearch } from '../js/search.jsx'
 
-function getSearchableValues(value, seen = new Set()) {
-    if (value === null || value === undefined) return []
-    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return [String(value)]
-    if (typeof value !== 'object' || seen.has(value)) return []
-    seen.add(value)
-    return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : [key, ...getSearchableValues(child, seen)])
-}
 function ItemList({extraHeight = 0, filtersOffset = 0, savedItems, headerText, itemsRef, setsRef = [], itemType = null, heroAttributeRequirement = null, localSearch = false, setSelectedItemId, onDoubleClick }) {
     const t = useTranslate()
     const tc = useContentTranslation()
@@ -72,7 +65,7 @@ function ItemList({extraHeight = 0, filtersOffset = 0, savedItems, headerText, i
             const matchesAttribute = filters.attributeRequirement === null || itemObj.attributeRequirement === filters.attributeRequirement;
             const matchesRarity = filters.rarity === null || Number(filters.rarity) === Number(itemObj.rarity);
             const set = (setsRef ?? []).find(setEntry => setEntry.id === itemObj.set)
-            const searchable = [...getSearchableValues(itemObj), itemObj.name, tc("item", itemObj.id, "name", itemObj.name),
+            const searchable = [...getSearchableValues(itemObj, new Set(), true), itemObj.name, tc("item", itemObj.id, "name", itemObj.name),
                 getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? '', tc("equipmentSlot", String(getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? "").toUpperCase(), "name", getEnumNameById(EQUIPMENT_SLOT_DEFINITIONS, Number(itemObj.slot)) ?? ''),
                 getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? '', tc("attribute", String(getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? "").toUpperCase(), "name", getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(itemObj.attributeRequirement)) ?? ''),
                 getEnumNameById(RARITY_DEFINITIONS, Number(itemObj.rarity)) ?? '', tc("rarity", String(getEnumNameById(RARITY_DEFINITIONS, Number(itemObj.rarity)) ?? "").toUpperCase(), "name", getEnumNameById(RARITY_DEFINITIONS, Number(itemObj.rarity)) ?? ''),
