@@ -23,7 +23,7 @@ export default function StatusCatalogueCard({ status }) {
         status.value !== undefined && `${t("app.shared.value")}: ${status.value}`,
         status.per_stack !== undefined && `${t("app.shared.perStack")}: ${status.per_stack}`,
         status.max_stacks !== undefined && `${t("app.shared.maxStacks")}: ${status.max_stacks}`,
-        status.duration !== undefined && `${t("app.shared.duration")}: ${status.duration} turn(s)`,
+        status.duration !== undefined && `${t("app.shared.duration")}: ${status.duration} ${t(Number(status.duration) === 1 ? "app.shared.turn" : "app.shared.turns")}`,
         status.interval !== undefined && `${t("app.shared.tick")}: ${humanize(status.interval)}`,
         status.stat !== undefined && `${t("app.shared.stat")}: ${tc("primaryStat", String(status.stat).toUpperCase(), "name", humanize(status.stat))}`,
     ].filter(Boolean)
