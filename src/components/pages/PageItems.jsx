@@ -8,7 +8,7 @@ import { createSavedItemRecord } from "../../js/ids.jsx"
 import Modal from "../Modal.jsx"
 import HelpButton from "../HelpButton.jsx"
 import { ItemManagementGuide } from "../Guides.jsx"
-import { createItemShareToken, decodeItemShareInput, decodeItemsShareInput, restoreSharedItem, restoreSharedItems } from "../../js/heroShare.js"
+import { createItemShareToken, decodeItemShareInput, decodeItemsShareInput, restoreSharedItem, restoreSharedItems, getShareErrorMessage } from "../../js/heroShare.js"
 import { clearSearchFromUrl } from "../../js/search.jsx"
 import { useTranslation } from "../../hooks/useTranslation.jsx"
 import { useTranslate } from "../../hooks/useTranslate.jsx"
@@ -145,7 +145,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
             setItemShareUrl(buildItemShareUrl(item))
             setItemShareLinkCopied(false)
         } catch (error) {
-            window.alert(error.message || t("app.shared.couldNotExportItem"))
+            window.alert(getShareErrorMessage(error, t) || t("app.shared.couldNotExportItem"))
         }
     }
 
@@ -200,7 +200,7 @@ function PageItems({ itemsRef, savedItemsRef, manualSaveFunction, onImportStatus
             setItemImportModalVisible(false)
             setItemShareInput("")
         } catch (error) {
-            window.alert(error.message || t("app.shared.couldNotImportItem"))
+            window.alert(getShareErrorMessage(error, t) || t("app.shared.couldNotImportItem"))
         } finally {
             if (onImportStatusChange) onImportStatusChange("")
         }
