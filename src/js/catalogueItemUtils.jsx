@@ -1,6 +1,6 @@
 import { ATTRIBUTE_DEFINITIONS, DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
 import { statusSprites } from "../database/db_sprites.jsx"
-import { humanize } from "./utils.js"
+import { humanizeName } from "./utils.js"
 
 export const SLOT_NAMES = Object.fromEntries(
     Object.values(EQUIPMENT_SLOT_DEFINITIONS).map(({ id, name }) => [id, name])
@@ -34,7 +34,7 @@ export function getSetLocations(set, pieces) {
 export function getSourceName(source) {
     if (source === null || source === undefined || source === "") return "Unspecified source"
     const name = getEnumNameById(DROP_SOURCE_DEFINITIONS, Number(source)) ?? String(source)
-    return name.toLowerCase() === "everywhere" ? "Any Dungeon" : humanize(name)
+    return name.toLowerCase() === "everywhere" ? "Any Dungeon" : humanizeName(name)
 }
 
 export function getDropSourceLabel(source, locations, labels = {}) {
@@ -49,7 +49,7 @@ export function getDropSourceLabel(source, locations, labels = {}) {
 export function getAttributeRequirementLabel(value) {
     if (value === null || value === undefined || value === "") return "Not specified"
     const name = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(value))
-    return !name || name === "NONE" ? "None" : humanize(name)
+    return !name || name === "NONE" ? "None" : humanizeName(name)
 }
 
 export function getPerkKey(perk) {
@@ -62,7 +62,7 @@ export function getPerkKey(perk) {
 
 export function getPerkLabel(perk) {
     const key = getPerkKey(perk)
-    return PERK_NAMES[key] ?? (typeof perk === "string" ? humanize(perk) : "")
+    return PERK_NAMES[key] ?? (typeof perk === "string" ? humanizeName(perk) : "")
 }
 
 const STATUS_ALIASES = [
@@ -89,7 +89,7 @@ export function getEffectStatuses(item) {
     if (!description) return []
     return STATUS_ALIASES
         .filter(status => status.terms.some(term => description.includes(term)) && statusSprites[status.key])
-        .map(status => ({ key: status.key, name: humanize(status.key), sprite: statusSprites[status.key] }))
+        .map(status => ({ key: status.key, name: humanizeName(status.key), sprite: statusSprites[status.key] }))
 }
 
 export function isUniqueItem(item) {
