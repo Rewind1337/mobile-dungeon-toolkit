@@ -1,5 +1,4 @@
 import { getStatusPolarity } from "./statusPolarity.jsx"
-import { humanizeName } from "./utils.js"
 
 export const STATUS_DESCRIPTIONS = {
     attack_up: "Increases Attack.",
@@ -134,16 +133,4 @@ export function getCategory(status) {
     if (status.id <= 38) return getStatusPolarity(status).replace(/^./, letter => letter.toUpperCase())
     const polarity = getStatusPolarity(status)
     return polarity === "special" ? "Special" : `Special ${polarity.replace(/^./, letter => letter.toUpperCase())}`
-}
-
-export function getDetails(status) {
-    const details = []
-    if (status.value !== undefined) details.push(`Value: ${status.value}`)
-    if (status.per_stack !== undefined) details.push(`Per stack: ${status.per_stack}`)
-    if (status.max_stacks !== undefined) details.push(`Max stacks: ${status.max_stacks}`)
-    if (status.duration !== undefined) details.push(`Duration: ${status.duration} turn(s)`)
-    if (status.interval !== undefined) details.push(`Tick: ${humanizeName(status.interval)}`)
-    if (status.stat !== undefined) details.push(`Stat: ${humanizeName(status.stat)}`)
-
-    return details
 }
