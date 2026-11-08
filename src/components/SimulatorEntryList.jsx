@@ -2,17 +2,13 @@ import { ELEMENT_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
 import { useTranslate } from "../hooks/useTranslate.jsx"
 import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 import { elementSprites } from "../database/db_sprites.jsx"
-
-const humanize = value => String(value ?? "")
-    .replaceAll("_", " ")
-    .toLowerCase()
-    .replace(/\b\w/g, letter => letter.toUpperCase())
+import { humanizeName } from "../js/utils.js"
 
 function formatMetadataValue(value) {
     if (value === null || value === undefined || value === "") return "—"
     if (Array.isArray(value)) return value.map(formatMetadataValue).join(", ")
     if (typeof value === "object") {
-        return Object.entries(value).map(([key, entry]) => humanize(key) + ": " + formatMetadataValue(entry)).join(" · ")
+        return Object.entries(value).map(([key, entry]) => humanizeName(key) + ": " + formatMetadataValue(entry)).join(" · ")
     }
     return String(value)
 }
@@ -24,7 +20,7 @@ export function SimulatorElementChips({ elementIds = [], size = "default" }) {
         <div className={"simulator-element-chips" + (size === "large" ? " is-large" : "")} >
             {elementIds.map(id => {
                 const name = getEnumNameById(ELEMENT_DEFINITIONS, Number(id)) ?? "UNKNOWN"
-                const label = tc("element", String(name).toUpperCase(), "name", humanize(name))
+                const label = tc("element", String(name).toUpperCase(), "name", humanizeName(name))
                 const key = String(name).toLowerCase()
                 return (
                     <span className={"catalogue-chip text catalogue-chip-element-" + key} key={id}>
@@ -72,7 +68,7 @@ export function SimulatorEntryDetails({
                 <dl className="simulator-entry-metadata">
                     {metadata.map(([key, value]) => (
                         <div className="simulator-entry-metadata-row" key={key}>
-                            <dt className="text">{humanize(key)}</dt>
+                            <dt className="text">{humanizeName(key)}</dt>
                             <dd className="text">{formatMetadataValue(value)}</dd>
                         </div>
                     ))}
