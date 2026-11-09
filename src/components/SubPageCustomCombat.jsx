@@ -57,7 +57,7 @@ function CombatTeamCard({ team, teams, selectedId, onTeamChange, savedHeroes, ti
                                                 })}
                                             </div>
                                         </div>
-                                        <TeamHeroStats hero={hero} slotIndex={slotIndex} />
+                                        <TeamHeroStats hero={hero} />
                                     </>
                                 ) : (
                                     <div className="custom-combat-empty-slot text">{t("app.shared.emptySlot")}</div>
