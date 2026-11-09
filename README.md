@@ -66,12 +66,10 @@ Completed milestones are marked with ~~strikethrough~~. The roadmap describes th
 - ~~Add the item database, including set items and unique items.~~
 - ~~Save and manage item stats and set bonuses.~~
 - ~~Support perks and rolls, including rarity, equipment slot, and item type.~~
-- ~~Calculate stats from base stats for a desired level.~~
 
 ### 0.2.x — Hero management
 - ~~Add functional management for legendary and epic heroes.~~
 - ~~Equip heroes with gear, inspect their skills, and save their stats.~~
-- ~~Calculate stats from base stats for a desired level.~~
 
 ### 0.3.x — Teams
 - ~~Create and save teams.~~
@@ -80,13 +78,14 @@ Completed milestones are marked with ~~strikethrough~~. The roadmap describes th
 
 ### 0.4.x — Wiki-style data hub
 - ~~Provide a browsable, searchable reference for manually collected game data.~~
-  - ~~Hero Catalogue, including the Tier List and Banner Catalogue.~~
+  - ~~Hero Catalogue and Banner Catalogue.~~
   - ~~Item and Set Catalogue.~~
   - ~~Perk Catalogue.~~
-  - ~~Skills and Talents Catalogue.~~
   - ~~Status Effect Catalogue.~~
-  - ~~Resource and Gem Catalogues.~~
-- ~~Add the localization framework and initial English/German translation support.~~
+  - Hero Tier-List for PvE, PvP and Other Content
+  - Skills and Talents Catalogue.
+  - Resource and Gem Catalogues.
+- Add the localization framework and initial English/German translation support.
 
 ### 0.5.x — Simulation preparation
 - Build the shared combat foundation used by the individual simulators.
