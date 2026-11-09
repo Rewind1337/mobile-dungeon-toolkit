@@ -2,7 +2,7 @@
 
 This document records third-party artwork, icons, fonts, and software used by Mobile Dungeon Toolkit. It is an attribution and license summary, not a grant of rights or a substitute for the original license texts.
 
-The versions below are taken from the current `package-lock.json`. Dependency versions and their declared license identifiers can change when dependencies are updated; review this document whenever the lockfile changes.
+The dependency versions and license identifiers below are taken from the current `package-lock.json`. Dependency versions and declared license metadata can change when dependencies are updated; review this document whenever the lockfile or application imports change.
 
 ## Mobile Dungeon artwork, branding, and game data
 
@@ -32,7 +32,7 @@ The repository's image and sprite assets are stored under `src/sprites/`, includ
 - `status/`
 - `weapons/` (including unique-item artwork)
 
-The directory also contains root-level files such as the Mobile Dungeon logo, Playa Games logo, favicon, and interface artwork. This directory listing identifies where assets are stored; it is not a claim that every file has the same creator, rights holder, or license. Where an individual asset has a different rights holder, that holder's rights remain in force.
+The directory also contains root-level files such as game and publisher logos, the favicon, and interface artwork. This directory listing identifies where assets are stored; it is not a claim that every file has the same creator, rights holder, or license. Where an individual asset has a different rights holder, that holder's rights remain in force.
 
 ### Game data
 
@@ -42,15 +42,15 @@ The `src/database/` directory contains manually collected game data, including n
 
 The application requests the following font families from Google Fonts in `index.html`. The font files are served externally and are not stored in this repository.
 
-| Font | Creator / attribution | License |
+| Font | Designer / attribution | License |
 | --- | --- | --- |
-| Bangers | Designed by Vernon Adams | [SIL Open Font License 1.1](https://openfontlicense.org/) |
-| Poetsen One | Designed by Pablo Impallari and Rodrigo Fuenzalida; Reserved Font Name: Poetsen | [SIL Open Font License 1.1](https://openfontlicense.org/) |
-| Roboto | The Roboto Project Authors | [SIL Open Font License 1.1](https://openfontlicense.org/) |
+| [Bangers](https://fonts.google.com/specimen/Bangers) | Vernon Adams | [SIL Open Font License 1.1](https://openfontlicense.org/) |
+| [Poetsen One](https://fonts.google.com/specimen/Poetsen+One) | Pablo Impallari and Rodrigo Fuenzalida; Reserved Font Name: Poetsen | [SIL Open Font License 1.1](https://openfontlicense.org/) |
+| [Roboto](https://fonts.google.com/specimen/Roboto) | The Roboto Project Authors; upstream metadata credits Christian Robertson, ParaType, and Font Bureau as designers | [SIL Open Font License 1.1](https://openfontlicense.org/) |
 
-The application also loads **Material Symbols Outlined** from Google Fonts (currently using the `swords` symbol). Material Symbols are provided under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0). See the [Google Material Symbols guide](https://developers.google.com/fonts/docs/material_symbols) for the upstream license information.
+The application also loads **Material Symbols Outlined** from Google Fonts (currently using the `swords` symbol). Material Symbols are provided under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0). See Google's [Material Symbols guide](https://developers.google.com/fonts/docs/material_symbols) for upstream licensing information.
 
-The Google Fonts name and wordmark appear in the application as a provider attribution. Google and Google Fonts names and marks remain the property of Google.
+The Google Fonts name and wordmark are used in the application as provider attribution. Google and Google Fonts names and marks remain the property of Google.
 
 ## Icons from React Icons
 
@@ -58,8 +58,8 @@ The application uses `react-icons` to render individual upstream icon designs as
 
 The current application imports:
 
-- **Font Awesome 5** — the `FaCircle` icon, distributed under the [Creative Commons Attribution 4.0 International license (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). Upstream project: [Font Awesome](https://fontawesome.com/).
-- **IcoMoon Free** — the `ImCross` icon, by Keyamoon and distributed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Upstream project: [Keyamoon/IcoMoon-Free](https://github.com/Keyamoon/IcoMoon-Free).
+- **Font Awesome 5** — the `FaCircle` icon, distributed under the [Creative Commons Attribution 4.0 International license (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). Upstream project: [Font Awesome](https://fontawesome.com/). The CC BY 4.0 terms require attribution and a link to the license.
+- **IcoMoon Free** — the `ImCross` icon, by Keyamoon. IcoMoon Free is dual-licensed; this project relies on the [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) option. Upstream project and license notices: [Keyamoon/IcoMoon-Free](https://github.com/Keyamoon/IcoMoon-Free).
 
 These icon designs are used through `react-icons`; the MIT license for the React wrapper does not replace the upstream icon licenses.
 
@@ -97,7 +97,7 @@ The following direct dependencies are declared by the project. Versions are the 
 
 ### Transitive npm dependencies
 
-The lockfile currently contains **292 package entries** across direct and transitive dependencies, including development tools, nested package versions, and optional platform-specific packages. Every entry currently includes a license value in its package metadata. The counts below describe lockfile package entries, not unique projects or copyright holders.
+The lockfile currently contains **292 dependency package entries** (excluding the root project entry), including development tools, nested package versions, and optional platform-specific packages. Every dependency entry currently declares a license value in its package metadata. The counts below describe lockfile package entries, not unique projects or copyright holders.
 
 | Lockfile license value | Package entries |
 | --- | ---: |
