@@ -154,7 +154,7 @@ function TeamHeroStatusIcons({ hero }) {
     )
 }
 
-export function TeamHeroStats({ hero, slotIndex, calculatedStats }) {
+export function TeamHeroStats({ hero, calculatedStats }) {
     const t = useTranslate()
     const tc = useContentTranslation()
     if (!hero) return null
@@ -480,7 +480,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                                                         ))}
                                                                     </div>
                                                             </div>
-                                                            <TeamHeroStats hero={hero} slotIndex={slotIndex} calculatedStats={calculatedTeamStats[slotIndex]?.stats} />
+                                                            <TeamHeroStats hero={hero} calculatedStats={calculatedTeamStats[slotIndex]?.stats} />
                                                             <TeamHeroStatusIcons hero={hero} />
                                                         </>
                                                         : <EmptyHero onClick={() => openSlotPicker(team, slotIndex)} />
