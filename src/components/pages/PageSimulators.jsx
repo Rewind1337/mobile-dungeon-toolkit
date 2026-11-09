@@ -3,6 +3,7 @@ import Button from '../Button.jsx'
 import HelpButton from '../HelpButton.jsx'
 import { SimulatorsGuide } from '../Guides.jsx'
 import SimulatorOverview from '../SimulatorOverview.jsx'
+import { useTranslate } from '../../hooks/useTranslate.jsx'
 
 const SubPageGuildBoss = lazy(() => import('../SubPageGuildBoss.jsx'))
 const SubPageTitans = lazy(() => import('../SubPageTitans.jsx'))
@@ -12,15 +13,16 @@ const SubPageCustomCombat = lazy(() => import('../SubPageCustomCombat.jsx'))
 const SubPageMagicToilet = lazy(() => import('../SubPageMagicToilet.jsx'))
 
 const SIMULATOR_TABS = [
-    ['adventure', 'Adventure Chapters', 'button-gradient-5-1', 'Adventure'],
-    ['towers', 'Towers', 'button-gradient-5-2'],
-    ['titans', 'Titans', 'button-gradient-5-3'],
-    ['guild-hunt', 'Guild Hunt', 'button-gradient-5-4'],
-    ['custom', 'Custom Combat', 'button-gradient-5-5', 'Custom'],
-    ['magic-toilet', 'Magic Toilet', 'magic-toilet'],
+    ['adventure', 'app.pages.adventureChapters.title', 'button-gradient-5-1', 'app.pages.simulators.adventure'],
+    ['towers', 'app.pages.towers.title', 'button-gradient-5-2'],
+    ['titans', 'app.pages.titans.title', 'button-gradient-5-3'],
+    ['guild-hunt', 'app.pages.guildHunt.title', 'button-gradient-5-4'],
+    ['custom', 'app.pages.customCombat.title', 'button-gradient-5-5', 'app.pages.simulators.customCompact'],
+    ['magic-toilet', 'app.pages.magicToilet.title', 'magic-toilet'],
 ]
 
 function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedHeroesRef, savedTeamsRef }) {
+    const t = useTranslate()
     return (
         <>
             <div className="sub-nav-bar flex-row">
@@ -29,8 +31,8 @@ function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedH
                         <Button
                             key={id}
                             text={compactLabel
-                                ? <><span className="catalogue-view-label-full">{label}</span><span className="catalogue-view-label-compact">{compactLabel}</span></>
-                                : label}
+                                ? <><span className="catalogue-view-label-full">{t(label)}</span><span className="catalogue-view-label-compact">{t(compactLabel)}</span></>
+                                : t(label)}
                             color={color}
                             active={activeTab === id}
                             disabled={id !== 'magic-toilet'}
@@ -39,7 +41,7 @@ function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedH
                     ))}
                 </div>
                 <div className="options flex-row card">
-                    <HelpButton title="Simulators">
+                    <HelpButton title={t("app.navigation.simulators")}>
                         <SimulatorsGuide />
                     </HelpButton>
                 </div>
@@ -47,7 +49,7 @@ function PageSimulators({ activeTab = 'overview', onTabChange, heroesRef, savedH
 
             {activeTab === 'overview' ? <SimulatorOverview /> : (
                 <div id="page-simulators" className="page flex-row w-100">
-                    <Suspense fallback={<div className="card">Loading...</div>}>
+                    <Suspense fallback={<div className="card">{t("app.shared.loading")}</div>}>
                         {activeTab === 'adventure' && <SubPageChapters />}
                         {activeTab === 'towers' && <SubPageTowers />}
                         {activeTab === 'titans' && <SubPageTitans />}

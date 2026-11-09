@@ -1,17 +1,29 @@
 import { useMemo, useState } from "react"
+import { useTranslate } from "../../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../../hooks/useContentTranslation.jsx"
 import { matchesSearchQuery, useUrlSearch } from "../../js/search.jsx"
 import { PERK_DEFINITIONS, POSSIBLE_PERKS } from "../../database/enums.jsx"
 import { iconSprites, perkSprites } from "../../database/db_sprites.jsx"
+import { humanizeName } from "../../js/utils.js"
 import CatalogueFilterActions from "../CatalogueFilterActions.jsx"
 import "../../css/infos.scss"
 import "../../css/infos_perks.scss"
 
-const perkLabel = key => PERK_DEFINITIONS[key]?.name ?? key.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())
+const perkLabel = key => PERK_DEFINITIONS[key]?.name ?? humanizeName(key)
 
 function CataloguePerk() {
+    const t = useTranslate()
+    const tc = useContentTranslation()
     const [search, setSearch, commitSearch] = useUrlSearch()
     const [slotFilter, setSlotFilter] = useState("all")
     const [filtersVisible, setFiltersVisible] = useState(true)
+    const perkSlotLabelKeys = {
+        WEAPONS: "weapon",
+        HELMETS: "helmet",
+        ARMORS: "armor",
+        RINGS: "ring",
+        NECKLACES: "necklace",
+    }
     const entries = useMemo(() => {
         const slotsByPerk = new Map()
         for (const [slot, perkKeys] of Object.entries(POSSIBLE_PERKS)) {
@@ -21,30 +33,30 @@ function CataloguePerk() {
             }
         }
         return [...slotsByPerk.entries()]
-            .map(([key, slots]) => ({ key, name: perkLabel(key), slots: [...slots] }))
+            .map(([key, slots]) => ({ key, name: tc("perk", key, "name", perkLabel(key)), description: tc("perk", key, "description", ""), slots: [...slots] }))
             .sort((a, b) => a.name.localeCompare(b.name))
-    }, [])
+    }, [tc])
     const filtered = entries.filter(entry => matchesSearchQuery([entry.name, entry.key, entry.slots.join(" ")], search)
         && (slotFilter === "all" || entry.slots.includes(slotFilter)))
     const clearFilters = () => { setSearch(""); commitSearch(""); setSlotFilter("all") }
     return <section className="perk-catalogue">
         <header className="catalogue-header">
             <div className="catalogue-heading-copy">
-                <div className="catalogue-title header-big">Perk Catalogue</div>
-                <p className="catalogue-description text">Each perk is listed once, alongside the equipment slots it can roll on.</p>
+                <div className="catalogue-title header-big">{t("app.pages.catalogues.perkTitle")}</div>
+                <p className="catalogue-description text">{t("app.pages.catalogues.perkDescription")}</p>
             </div>
         </header>
         {filtersVisible ? (
             <div className="perk-catalogue-filters card">
                 <label className="catalogue-search">
-                    <span className="catalogue-control-label text">Search ({filtered.length} of {entries.length})</span>
-                    <input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} placeholder="Search perks or equipment slots…" />
+                    <span className="catalogue-control-label text">{t("app.pages.catalogues.searchCount", { resultCount: filtered.length, totalCount: entries.length })}</span>
+                    <input className="selectable catalogue-input" value={search} onChange={event => setSearch(event.target.value)} onBlur={() => commitSearch(search)} placeholder={t("app.pages.catalogues.perkSearchPlaceholder")} />
                 </label>
                 <label className="catalogue-filter">
-                    <span className="catalogue-control-label text">Slot</span>
-                    <select aria-label="Filter perks by equipment slot" value={slotFilter} onChange={event => setSlotFilter(event.target.value)}>
-                        <option value="all">All slots</option>
-                        {Object.keys(POSSIBLE_PERKS).map(slot => <option key={slot} value={slot}>{{ WEAPONS: "Weapon", HELMETS: "Helmet", ARMORS: "Armor", RINGS: "Ring", NECKLACES: "Necklace" }[slot] ?? slot}</option>)}
+                    <span className="catalogue-control-label text">{t("app.shared.slotLabel")}</span>
+                    <select  value={slotFilter} onChange={event => setSlotFilter(event.target.value)}>
+                        <option value="all">{t("app.shared.allSlots")}</option>
+                        {Object.keys(POSSIBLE_PERKS).map(slot => <option key={slot} value={slot}>{t(`app.shared.${perkSlotLabelKeys[slot] ?? "other"}`)}</option>)}
                     </select>
                 </label>
                 <CatalogueFilterActions filtersVisible onHide={() => setFiltersVisible(false)} onClear={clearFilters} />
@@ -60,9 +72,10 @@ function CataloguePerk() {
                 <div className="perk-catalogue-content">
                     <div className="perk-catalogue-heading">
                         <span className="text-big catalogue-entry-name perk-catalogue-name">{entry.name}</span>
+                    {entry.description && <p className="text perk-catalogue-description">{entry.description}</p>}
                     </div>
                     <div className="perk-catalogue-slots">{entry.slots.map(slot => {
-                        const slotLabel = slot.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase())
+                        const slotLabel = tc("equipmentSlot", slot.replace(/S$/, ""), "name", slot.replaceAll("_", " ").toLowerCase().replace(/\b\w/g, letter => letter.toUpperCase()))
                         const iconKey = slot.toLowerCase()
                         return <span className="catalogue-chip text perk-catalogue-slot-chip" key={slot}>
                             {iconSprites[iconKey] && <img className="catalogue-chip-icon" src={iconSprites[iconKey]} alt="" />}
@@ -71,7 +84,7 @@ function CataloguePerk() {
                     })}</div>
                 </div>
             </article>)}
-            {filtered.length === 0 && <p className="catalogue-empty card">No perks match this search.</p>}
+            {filtered.length === 0 && <p className="catalogue-empty card">{t("app.pages.catalogues.noPerksMatch")}</p>}
         </div>
     </section>
 }

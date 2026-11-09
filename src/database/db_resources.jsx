@@ -1,6 +1,6 @@
 import { resourceSprites } from "./db_sprites.jsx"
 import { RARITY_DEFINITIONS, RESOURCE_LOCATIONS } from "./enums.jsx"
-import { humanize } from "../js/utils.js"
+import { humanizeName } from "../js/utils.js"
 
 let BASE_RESOURCES = []
 
@@ -31,7 +31,7 @@ function add_gem(name, rarity, sourceLocations = []) {
 
     BASE_RESOURCES.push({
         id,
-        name: `${humanize(rarity.name)} ${name}`,
+        name: `${humanizeName(rarity.name)} ${name}`,
         gemType: name,
         description: "Description here.",
         spriteSrc: resourceSprites[normalizedName] !== undefined ? resourceSprites[normalizedName] : resourceSprites["null"],

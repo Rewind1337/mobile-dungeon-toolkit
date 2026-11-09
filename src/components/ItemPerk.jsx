@@ -1,8 +1,11 @@
 import { memo, useEffect, useState } from 'react'
 import Button from './Button.jsx'
+import { useTranslate } from '../hooks/useTranslate.jsx'
+import { useContentTranslation } from '../hooks/useContentTranslation.jsx'
 
 import { perkSprites } from '../database/db_sprites.jsx'
 import { PERK_DEFINITIONS } from '../database/enums.jsx'
+import { isFlatPerk } from '../js/catalogueItemUtils.jsx'
 
 function ItemPerk({
     name,
@@ -18,9 +21,11 @@ function ItemPerk({
     spriteName = name,
     hideChangeButton = false
 }) {
+    const t = useTranslate()
+    const tc = useContentTranslation()
     const [_value, _setValue] = useState(value ?? 0)
     const _perk = PERK_DEFINITIONS[name]
-    const isFlatPerk = ((_perk.id >= 4 && _perk.id <= 7) || _perk.id === 32)
+    const flatPerk = isFlatPerk(_perk)
     const displayedValue = onValueChange ? (value ?? 0) : _value
     const numericValue = Number(displayedValue) || 0
     const effectiveValue = Math.round(numericValue * multiplier * 100) / 100
@@ -45,7 +50,7 @@ function ItemPerk({
         <div className={"item-perk card flex-row"}>
             <div className='flex-row'>
                 <img width={32} src={perkSprites[spriteName] ?? perkSprites[name]} />
-                <div className='text perk-name'>{_perk.name}</div>
+                <div className='text perk-name'>{tc("perk", name, "name", _perk.name)}</div>
             </div>
 
             {!noValue && <>
@@ -58,20 +63,20 @@ function ItemPerk({
                                 value={displayedValue}
                                 onChange={handleValueChange}
                             />
-                            <div className='text perk-flat-percent'>{isFlatPerk ? " Flat" : " %"}</div>
+                            <div className='text perk-flat-percent'>{flatPerk ? " Flat" : " %"}</div>
                         </div>
-                        <div className='text perk-effective'>{multiplier > 1 && <small>Effective: {formatValue(effectiveValue)}{isFlatPerk ? " Flat" : " %"}</small>}</div>
+                        <div className='text perk-effective'>{multiplier > 1 && <small>{t("app.shared.effective")}: {formatValue(effectiveValue)}{flatPerk ? " " + t("app.shared.flat") : " " + t("app.shared.percent")}</small>}</div>
                     </div>
                     : <div className='text flex-col'>
-                        <div className='text perk-flat-percent'>{displayedValue}{isFlatPerk ? " Flat" : " %"}</div>
-                        <div className='text perk-effective'>{multiplier > 1 && <small>Effective: {formatValue(effectiveValue)}{isFlatPerk ? " Flat" : " %"}</small>}</div>
+                        <div className='text perk-flat-percent'>{displayedValue}{flatPerk ? " Flat" : " %"}</div>
+                        <div className='text perk-effective'>{multiplier > 1 && <small>{t("app.shared.effective")}: {formatValue(effectiveValue)}{flatPerk ? " " + t("app.shared.flat") : " " + t("app.shared.percent")}</small>}</div>
                     </div>
                 }
             </>}
 
             {!hideChangeButton && (onClick
                 ? <Button slim text={buttonText} color={buttonColor} disabled={changeDisabled} onClick={() => onClick()} />
-                : <div className='text perk-not-changeable'>not changeable</div>
+                : <div className='text perk-not-changeable'>{t("app.shared.notChangeable")}</div>
             )}
         </div>
     )

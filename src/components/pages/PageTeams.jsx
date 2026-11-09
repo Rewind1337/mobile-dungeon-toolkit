@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react"
+import { useTranslate } from "../../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../../hooks/useContentTranslation.jsx"
 import HeroList from "../HeroList.jsx"
 import Hero from "../Hero.jsx"
 import EmptyHero from "../EmptyHero.jsx"
@@ -10,10 +12,10 @@ import { ATTRIBUTE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, STATUS_EFFECT_DEFINI
 import { attributeSprites, heroSprites, itemSprites, statusSprites } from "../../database/db_sprites.jsx"
 import { useDynamicList } from "../../hooks/useDynamicList.jsx"
 import { getStatusPolarity } from "../../js/statusPolarity.jsx"
-import { createTeamShareToken, decodeTeamShareInput, restoreSharedTeam } from "../../utils/heroShare.js"
-import { calculateTeamStats } from "../../utils/calculatedStats.js"
+import { createTeamShareToken, decodeTeamShareInput, restoreSharedTeam, getShareErrorMessage } from "../../js/heroShare.js"
+import { calculateTeamStats } from "../../js/calculatedStats.js"
 import { createSavedItemRecord } from "../../js/ids.jsx"
-import { formatNumber } from "../../js/utils.js"
+import { formatNumber, humanizeName } from "../../js/utils.js"
 import LockedSrc from "../../sprites/locked.webp"
 
 const createDefaultTeams = () => [
@@ -31,11 +33,6 @@ const normalizeTeams = teams => Array.isArray(teams)
         }),
     }))
     : createDefaultTeams()
-
-const humanize = value => String(value ?? "")
-    .replaceAll("_", " ")
-    .toLowerCase()
-    .replace(/\b\w/g, letter => letter.toUpperCase())
 
 const TEAM_EQUIPMENT_SLOTS = [
     EQUIPMENT_SLOT_DEFINITIONS.WEAPON,
@@ -56,6 +53,8 @@ function getHeroStatusEffects(hero) {
 }
 
 export function TeamOverview({ team, savedHeroes }) {
+    const t = useTranslate()
+    const tc = useContentTranslation()
     const teamHeroes = team.heroes.map(saveId => savedHeroes.find(hero => hero.saveId === saveId) ?? null)
     const attributes = teamHeroes.flatMap((hero, index) => {
         if (!hero) return []
@@ -63,7 +62,8 @@ export function TeamOverview({ team, savedHeroes }) {
         return [{
             hero,
             index,
-            name: humanize(name),
+            key: String(name).toLowerCase(),
+            name: tc("attribute", String(name).toUpperCase(), "name", humanizeName(name)),
             icon: attributeSprites[Number(hero.mainAttribute)],
         }]
     })
@@ -79,45 +79,45 @@ export function TeamOverview({ team, savedHeroes }) {
     const renderStatusChips = effects => effects.map(({ name, polarity }) => (
         <span className={`catalogue-chip text team-overview-chip team-status-chip team-status-chip--${polarity}`} key={name}>
             {statusSprites[name] && <img className="catalogue-chip-icon team-status-icon" src={statusSprites[name]} alt="" />}
-            {humanize(name)}
+            {tc("status", name, "name", humanizeName(name))}
         </span>
     ))
 
     return (
         <div className="team-info-column">
             <section className="team-info-section">
-                <h3 className="team-info-heading header">Attributes</h3>
+                <h3 className="team-info-heading header">{t("app.shared.attributes", { attribute: t("app.shared.attribute") })}</h3>
                 <div className="team-info-chips">
-                    {attributes.map(({ hero, index, name, icon }) => (
+                    {attributes.map(({ hero, index, name, key, icon }) => (
                         <span
-                            className={`catalogue-chip text team-overview-chip team-attribute-chip catalogue-chip-attribute-${name.toLowerCase()}`}
+                            className={`catalogue-chip text team-overview-chip team-attribute-chip catalogue-chip-attribute-${key}`}
                             key={`attribute-${hero.saveId ?? hero.id}-${index}`}
-                            title={`${hero.name} · Slot ${index + 1}`}
+                            title={t("app.pages.teams.heroSlotTooltip", { hero: tc("hero", hero.id, "name", hero.name), slot: t("app.shared.slot", { number: index + 1 }) })}
                         >
                             {typeof icon === "string"
                                 ? <img className="catalogue-chip-icon" src={icon} alt="" />
                                 : icon && <span className="catalogue-chip-icon team-attribute-icon" aria-hidden="true">{icon}</span>}
-                            Slot {index + 1} · {name}
+                            {t("app.shared.slot", { number: index + 1 })} · {name}
                         </span>
                     ))}
-                    {attributes.length === 0 && <span className="text team-overview-empty">No heroes assigned yet.</span>}
+                    {attributes.length === 0 && <span className="text team-overview-empty">{t("app.shared.noHeroesAssigned")}</span>}
                 </div>
             </section>
             <section className="team-info-section">
-                <h3 className="team-info-heading header">Status Effects</h3>
+                <h3 className="team-info-heading header">{t("app.shared.statusEffects")}</h3>
                 {statusEffects.length === 0
-                    ? <span className="text team-overview-empty">No status effects detected.</span>
+                    ? <span className="text team-overview-empty">{t("app.shared.noStatusEffectsDetected")}</span>
                     : <>
                         {groupedStatusEffects.buffs.length > 0 && <div className="team-status-group">
-                            <h4 className="team-status-group-heading text">Buffs</h4>
+                            <h4 className="team-status-group-heading text">{t("app.shared.buffs")}</h4>
                             <div className="team-info-chips">{renderStatusChips(groupedStatusEffects.buffs)}</div>
                         </div>}
                         {groupedStatusEffects.debuffs.length > 0 && <div className="team-status-group">
-                            <h4 className="team-status-group-heading text">Debuffs</h4>
+                            <h4 className="team-status-group-heading text">{t("app.shared.debuffs")}</h4>
                             <div className="team-info-chips">{renderStatusChips(groupedStatusEffects.debuffs)}</div>
                         </div>}
                         {groupedStatusEffects.special.length > 0 && <div className="team-status-group">
-                            <h4 className="team-status-group-heading text">Other / unclassified</h4>
+                            <h4 className="team-status-group-heading text">{t("app.shared.otherUnclassified")}</h4>
                             <div className="team-info-chips">{renderStatusChips(groupedStatusEffects.special)}</div>
                         </div>}
                     </>
@@ -128,13 +128,15 @@ export function TeamOverview({ team, savedHeroes }) {
 }
 
 const TEAM_BASE_STATS = [
-    ["health", "HP", "Health"],
-    ["attack", "ATK", "Attack"],
-    ["defence", "DEF", "Defence"],
-    ["agility", "AGI", "Agility"],
+    ["health", "HP", "health"],
+    ["attack", "ATK", "attack"],
+    ["defence", "DEF", "defence"],
+    ["agility", "AGI", "agility"],
 ]
 
 function TeamHeroStatusIcons({ hero }) {
+    const t = useTranslate()
+    const tc = useContentTranslation()
     if (!hero) return null
     const statuses = getHeroStatusEffects(hero).filter(name => {
         const polarity = getStatusPolarity(STATUS_EFFECT_DEFINITIONS[name])
@@ -142,30 +144,32 @@ function TeamHeroStatusIcons({ hero }) {
     })
     if (statuses.length === 0) return null
 
-    const label = statuses.map(humanize).join(", ")
+    const label = statuses.map(name => tc("status", name, "name", humanizeName(name))).join(", ")
     return (
-        <div className="catalogue-chip team-hero-status-icons" aria-label={hero.name + " buffs and debuffs: " + label} title={label}>
+        <div className="catalogue-chip team-hero-status-icons"  title={t("app.pages.teams.statusEffectsTooltip", { label })}>
             {statuses.map(name => (
-                <img className="team-status-icon" key={name} src={statusSprites[name]} alt={humanize(name)} title={humanize(name)} />
+                <img className="team-status-icon" key={name} src={statusSprites[name]} alt={tc("status", name, "name", humanizeName(name))} title={tc("status", name, "name", humanizeName(name))} />
             ))}
         </div>
     )
 }
 
-export function TeamHeroStats({ hero, slotIndex, calculatedStats }) {
+export function TeamHeroStats({ hero, calculatedStats }) {
+    const t = useTranslate()
+    const tc = useContentTranslation()
     if (!hero) return null
     return (
-        <div className="team-base-stat-summary" aria-label={hero.name + " calculated stats, slot " + (slotIndex + 1)}>
+        <div className="team-base-stat-summary" >
             {TEAM_BASE_STATS.map(([key, label, fullLabel]) => {
                 const value = calculatedStats?.main?.[key] ?? hero.stats?.[key]
                 const maxValue = calculatedStats?.mainMax?.[key]
                 const hasMax = Number.isFinite(Number(maxValue)) && Math.abs(Number(maxValue) - Number(value)) > 0.001
                 const format = stat => Number.isFinite(Number(stat)) ? formatNumber(Number(stat), 2) : "—"
                 return (
-                    <span className="team-base-stat" key={key} title={hero.name + " · " + fullLabel}>
+                    <span className="team-base-stat" key={key} title={t("app.pages.teams.baseStatTooltip", { hero: tc("hero", hero.id, "name", hero.name), stat: t("app.shared." + fullLabel) })}>
                         <strong>{label}</strong>
                         <span className="team-base-stat-value">{format(value)}</span>
-                        {hasMax && <small className="team-base-stat-max">MAX {format(maxValue)}</small>}
+                        {hasMax && <small className="team-base-stat-max">{t("app.shared.max")} {format(maxValue)}</small>}
                     </span>
                 )
             })}
@@ -174,6 +178,8 @@ export function TeamHeroStats({ hero, slotIndex, calculatedStats }) {
 }
 
 function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedItemsRef, manualSaveFunction }) {
+    const t = useTranslate()
+    const tc = useContentTranslation()
     const { listHeight, listRef, events } = useDynamicList(165, true)
     const savedHeroes = Array.isArray(savedHeroesRef.current) ? savedHeroesRef.current : []
     const [teams, setTeams] = useState(() => normalizeTeams(savedTeamsRef.current))
@@ -265,7 +271,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
             setTeamShareLinkCopied(false)
             setTeamShareUrl(buildTeamShareUrl(team, false))
         } catch (error) {
-            window.alert(error.message || "Could not export this team.")
+            window.alert(getShareErrorMessage(error, t) || t("app.pages.teams.couldNotExport"))
         }
     }
 
@@ -278,7 +284,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
             setTeamShareUrl(buildTeamShareUrl(exportTeam, includeItems))
         } catch (error) {
             setExportItemsOnHeroes(false)
-            window.alert(error.message || "Could not export this team's heroes.")
+            window.alert(getShareErrorMessage(error, t) || t("app.pages.teams.couldNotExportHeroes"))
         }
     }
 
@@ -288,7 +294,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
             await navigator.clipboard.writeText(teamShareUrl)
             setTeamShareLinkCopied(true)
         } catch {
-            window.alert("Copying was blocked by your browser. Select and copy the link manually.")
+            window.alert(t("app.shared.copyingBlocked"))
         }
     }
 
@@ -338,7 +344,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
             setImportTeamModalVisible(false)
             setTeamImportInput("")
         } catch (error) {
-            window.alert(error.message || "Could not import this team.")
+            window.alert(getShareErrorMessage(error, t) || t("app.pages.teams.couldNotImport"))
         }
     }
 
@@ -361,12 +367,12 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
         <>
             <div className="sub-nav-bar flex-row">
                 <div className="pagination flex-row card w-100">
-                    <Button text="Saved Teams" color={2} />
-                    <Button text="Recommended Teams" color={2} disabled />
-                    <Button text="Import Team" color={2} onClick={() => setImportTeamModalVisible(true)} />
+                    <Button text={t("app.pages.teams.savedTeams")} color={2} />
+                    <Button text={t("app.pages.teams.recommendedTeams")} color={2} disabled />
+                    <Button text={t("app.pages.teams.importTeam")} color={2} onClick={() => setImportTeamModalVisible(true)} />
                 </div>
                 <div className="options flex-row card">
-                    <HelpButton title="Team Management">
+                    <HelpButton title={t("app.shared.teamManagement")}>
                         <TeamManagementGuide />
                     </HelpButton>
                 </div>
@@ -374,8 +380,8 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
 
             <main id="page-teams" className="page flex-col w-100">
                 <section ref={listRef} {...events} className="teams-list card flex-col" style={{ maxHeight: listHeight }}>
-                    <header className="header-big">Saved Teams</header>
-                    {teams.length === 0 && <p className="text">No teams yet. Create one to get started.</p>}
+                    <header className="header-big">{t("app.pages.teams.savedTeams")}</header>
+                    {teams.length === 0 && <p className="text">{t("app.pages.teams.noTeams")}</p>}
                     {teams.map(team => {
                         const calculatedTeamStats = calculateTeamStats(team, savedHeroes, itemsRef.current?.ITEM_SETS ?? [])
                         return (
@@ -383,8 +389,8 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                             <header className={"team-header" + (collapsedTeamIds.has(team.id) ? " is-collapsed" : "")}>
                                 <Button
                                     className="team-collapse-button"
-                                    text={collapsedTeamIds.has(team.id) ? "Expand" : "Collapse"}
-                                    title={collapsedTeamIds.has(team.id) ? "Expand team details" : "Collapse team details"}
+                                    text={collapsedTeamIds.has(team.id) ? t("app.shared.expand") : t("app.pages.teams.collapse")}
+                                    title={collapsedTeamIds.has(team.id) ? t("app.pages.teams.expandTeamDetailsTooltip") : t("app.pages.teams.collapseTeamDetailsTooltip")}
                                     color={5}
                                     onClick={() => toggleTeamCollapsed(team.id)}
                                 />
@@ -395,7 +401,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                         <input
                                             className="team-name-input"
                                             type="text"
-                                            aria-label={`Team name for ${team.name}`}
+                                            
                                             value={team.name}
                                             onChange={event => renameTeam(team.id, event.target.value)}
                                             onBlur={() => {
@@ -408,18 +414,18 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                     )}
                                 </h2>
                                 {collapsedTeamIds.has(team.id) && (
-                                    <div className="team-collapsed-heroes" aria-label={team.name + " heroes"}>
+                                    <div className="team-collapsed-heroes" >
                                         {team.heroes.map((saveId, slotIndex) => {
                                             const hero = savedHeroes.find(savedHero => savedHero.saveId === saveId)
                                             if (!hero) return null
                                             return (
                                                 <span className="catalogue-chip text team-collapsed-hero-chip"
                                                     key={team.id + "-collapsed-hero-" + slotIndex}
-                                                    title={hero.name + " · Slot " + (slotIndex + 1)}>
+                                                    title={t("app.pages.teams.heroSlotTooltip", { hero: tc("hero", hero.id, "name", hero.name), slot: t("app.shared.slot", { number: slotIndex + 1 }) })}>
                                                     <img className="catalogue-chip-icon"
                                                         src={hero.heroSrc ?? heroSprites[hero.id] ?? heroSprites["null"]}
                                                         alt="" loading="lazy" decoding="async" draggable={false} />
-                                                    <span>{hero.name}</span>
+                                                    <span>{tc("hero", hero.id, "name", hero.name)}</span>
                                                 </span>
                                             )
                                         })}
@@ -427,17 +433,17 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                 )}
                                 {!collapsedTeamIds.has(team.id) && (
                                     <div className="team-actions">
-                                        <Button text="Clear Team" color={4} onClick={() => clearTeam(team.id)} />
-                                        <Button text="Duplicate" color={5} onClick={() => duplicateTeam(team.id)} />
-                                        <Button text="Export Team" color={0} onClick={() => openExportTeam(team)} />
-                                        <Button text="Delete Team" color="cancel" onClick={() => deleteTeam(team.id)} />
+                                        <Button text={t("app.pages.teams.clearTeam")} color={4} onClick={() => clearTeam(team.id)} />
+                                        <Button text={t("app.pages.teams.duplicate")} color={5} onClick={() => duplicateTeam(team.id)} />
+                                        <Button text={t("app.pages.teams.exportTeam")} color={0} onClick={() => openExportTeam(team)} />
+                                        <Button text={t("app.pages.teams.deleteTeam")} color="cancel" onClick={() => deleteTeam(team.id)} />
                                     </div>
                                 )}
                             </header>
                             {!collapsedTeamIds.has(team.id) && (
                             <div className="team-content">
                                 <div className="team-heroes-column">
-                                    <div className="team-hero-slots" aria-label={`${team.name} hero slots`}>
+                                    <div className="team-hero-slots" >
                                         {team.heroes.map((saveId, slotIndex) => {
                                             const hero = savedHeroes.find(savedHero => savedHero.saveId === saveId)
                                             const equippedItems = TEAM_EQUIPMENT_SLOTS.map(slot => ({
@@ -446,21 +452,21 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                             }))
                                             return (
                                                 <div className="team-hero-slot card card-static" key={`${team.id}-slot-${slotIndex}`}>
-                                                    <span className="team-slot-label text">Slot {slotIndex + 1}</span>
+                                                    <span className="team-slot-label text">{t("app.shared.slot", { number: slotIndex + 1 })}</span>
                                                     {hero
                                                         ? <>
                                                             <Hero heroObj={hero} selected={false} level={hero.level ?? null} onClick={() => openSlotPicker(team, slotIndex)} />
                                                             <div
                                                                     className="catalogue-chip team-equipped-items"
-                                                                    aria-label={hero.name + "'s equipped items"}
-                                                                    title={hero.name + "'s equipped items"}
+                                                                    
+                                                                    title={t("app.pages.teams.equippedItemsTooltip", { name: tc("hero", hero.id, "name", hero.name) })}
                                                                 >
                                                                     <div className="team-equipped-item-grid">
                                                                         {equippedItems.map(({ slot, item }) => (
                                                                             <span
                                                                                 className={"team-equipped-item" + (slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? " is-locked" : item ? "" : " is-empty")}
                                                                                 key={slot.id}
-                                                                                title={slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? "Other slot (not implemented yet)" : item?.name ?? humanize(slot.name)}
+                                                                                title={slot.id === EQUIPMENT_SLOT_DEFINITIONS.OTHER.id ? t("app.pages.teams.noOtherSlotTooltip") : item ? tc("item", item.id, "name", item.name) : tc("equipmentSlot", String(slot.name).toUpperCase(), "name", humanizeName(slot.name))}
                                                                             >
                                                                                 <img
                                                                                     className="team-equipped-item-icon"
@@ -474,7 +480,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                                                                         ))}
                                                                     </div>
                                                             </div>
-                                                            <TeamHeroStats hero={hero} slotIndex={slotIndex} calculatedStats={calculatedTeamStats[slotIndex]?.stats} />
+                                                            <TeamHeroStats hero={hero} calculatedStats={calculatedTeamStats[slotIndex]?.stats} />
                                                             <TeamHeroStatusIcons hero={hero} />
                                                         </>
                                                         : <EmptyHero onClick={() => openSlotPicker(team, slotIndex)} />
@@ -491,7 +497,7 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                         )
                     })}
                     <div className="team team-new card flex-row sticky-bottom">
-                        <Button text="Create New Team" color="confirm" onClick={createTeam} />
+                        <Button text={t("app.pages.teams.createNewTeam")} color="confirm" onClick={createTeam} />
                     </div>
                 </section>
             </main>
@@ -502,16 +508,16 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                 onClose={() => { setExportTeam(null); setTeamShareUrl(""); setTeamShareLinkCopied(false) }}
             >
                 <div className="flex-col card w-100">
-                    <div className="header-big margin-auto">Export Team</div>
+                    <div className="header-big margin-auto">{t("app.pages.teams.exportTeam")}</div>
                     <label className="flex-row text margin-auto export-items-checkbox-label">
                         <input type="checkbox" checked={exportItemsOnHeroes} onChange={handleExportItemsToggle} />
-                        <span className="header">Include equipped items on heroes</span>
+                        <span className="header">{t("app.pages.teams.includeEquippedItems")}</span>
                     </label>
-                    <p className="text margin-auto">Share this link to import the team and its saved heroes.</p>
-                    <textarea rows={3} value={teamShareUrl} readOnly onFocus={event => event.target.select()} aria-label="Team share link" />
+                    <p className="text margin-auto">{t("app.pages.teams.shareTeamDescription")}</p>
+                    <textarea rows={3} value={teamShareUrl} readOnly onFocus={event => event.target.select()}  />
                     <div className="flex-row">
-                        <Button className="w-25" text={teamShareLinkCopied ? "Team Link Copied!" : "Copy Team Link"} color="confirm" onClick={handleCopyTeamLink} />
-                        <Button className="w-25" text="Close" color="cancel" onClick={() => { setExportTeam(null); setTeamShareUrl(""); setTeamShareLinkCopied(false) }} />
+                        <Button className="w-25" text={teamShareLinkCopied ? t("app.pages.teams.teamLinkCopied") : t("app.pages.teams.copyTeamLink")} color="confirm" onClick={handleCopyTeamLink} />
+                        <Button className="w-25" text={t("app.shared.close")} color="cancel" onClick={() => { setExportTeam(null); setTeamShareUrl(""); setTeamShareLinkCopied(false) }} />
                     </div>
                 </div>
             </Modal>
@@ -521,13 +527,13 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
                 onClose={() => { setImportTeamModalVisible(false); setTeamImportInput("") }}
             >
                 <div className="flex-col card w-100">
-                    <div className="header-big margin-auto">Import Team</div>
-                    <p className="text margin-auto">Paste a team share link or its encoded data.</p>
+                    <div className="header-big margin-auto">{t("app.pages.teams.importTeam")}</div>
+                    <p className="text margin-auto">{t("app.pages.teams.pasteShareLink")}</p>
                     <textarea rows={3} value={teamImportInput} onChange={event => setTeamImportInput(event.target.value)}
-                        placeholder="https://…/teams/?team=…" aria-label="Team share link" />
+                        placeholder="https://…/teams/?team=…"  />
                     <div className="flex-row">
-                        <Button className="w-25" text="Import Team" color="confirm" onClick={() => handleImportTeam()} />
-                        <Button className="w-25" text="Cancel" color="cancel" onClick={() => { setImportTeamModalVisible(false); setTeamImportInput("") }} />
+                        <Button className="w-25" text={t("app.pages.teams.importTeam")} color="confirm" onClick={() => handleImportTeam()} />
+                        <Button className="w-25" text={t("app.shared.cancel")} color="cancel" onClick={() => { setImportTeamModalVisible(false); setTeamImportInput("") }} />
                     </div>
                 </div>
             </Modal>
@@ -538,28 +544,28 @@ function PageTeams({ heroesRef, itemsRef, savedHeroesRef, savedTeamsRef, savedIt
             >
                 <section className="team-hero-picker">
                     <header className="team-hero-picker-header">
-                        <h2 className="header-big">Choose a Hero</h2>
+                        <h2 className="header-big">{t("app.pages.teams.chooseHero")}</h2>
                         <p className="text">
                             {selectedTeam
                                 ? `${selectedTeam.name} · Slot ${(slotPicker?.slotIndex ?? 0) + 1}`
-                                : "Choose a saved hero for this slot."}
+                                : t("app.pages.teams.chooseSavedHeroPrompt")}
                         </p>
                     </header>
                     {modalHeroes.length > 0 ? (
                         <HeroList
                             savedHeroes
-                            headerText="Saved Heroes"
+                            headerText={t("app.shared.savedHeroes")}
                             heroesRef={modalHeroes}
                             selectedHeroId={selectedSaveId}
                             setSelectedHeroId={setSelectedSaveId}
                             onDoubleClick={hero => assignHeroToSlot(hero.saveId)}
                         />
                     ) : (
-                        <p className="text">You have no saved heroes yet. Save a hero first, then return here.</p>
+                        <p className="text">{t("app.pages.teams.noSavedHeroes")}</p>
                     )}
                     <footer className="team-hero-picker-footer">
-                        <Button text="Cancel" color="cancel" onClick={() => { setSlotPicker(null); setSelectedSaveId(null) }} />
-                        <Button text="Confirm" color="confirm" disabled={selectedSaveId === null} onClick={confirmSlotSelection} />
+                        <Button text={t("app.shared.cancel")} color="cancel" onClick={() => { setSlotPicker(null); setSelectedSaveId(null) }} />
+                        <Button text={t("app.shared.confirm")} color="confirm" disabled={selectedSaveId === null} onClick={confirmSlotSelection} />
                     </footer>
                 </section>
             </Modal>

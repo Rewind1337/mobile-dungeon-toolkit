@@ -1119,13 +1119,11 @@ export const perkSprites = {
     SHADOW_DAMAGE_REDUCTION: ShadowElementSrc
 }
 
-import { ImCross } from "react-icons/im";
 import StrengthSrc from '../sprites/attributes/strength.webp'
 import DexteritySrc from '../sprites/attributes/dexterity.webp'
 import IntelligenceSrc from '../sprites/attributes/intelligence.webp'
 
 export const attributeSprites = {
-    0: <ImCross />,
     1: StrengthSrc,
     2: DexteritySrc,
     3: IntelligenceSrc,
@@ -1143,7 +1141,6 @@ export const roleSprites = {
     3: SupportSrc,
 }
 
-import { FaCircle } from "react-icons/fa";
 
 import ElementorSrc from '../sprites/simulation/elementor.webp'
 import EquinoxSrc from '../sprites/simulation/equinox.webp'
@@ -1161,14 +1158,11 @@ export const guildBossSprites = {
     star_herald: StarHeraldSrc,
 }
 
-import { FaSortNumericDown } from "react-icons/fa";
-import { FaSortNumericDownAlt } from "react-icons/fa";
 
 import ExpandSrc from '../sprites/expand.webp'
 import CollapseSrc from '../sprites/collapse.webp'
 
 export const filterSprites = {
-    0: <ImCross />,
     1: FireElementSrc,
     2: WaterElementSrc,
     3: NatureElementSrc,
@@ -1181,15 +1175,15 @@ export const filterSprites = {
     20: StrengthSrc,
     21: DexteritySrc,
     22: IntelligenceSrc,
-    30: <FaCircle />,
-    31: <FaCircle />,
-    32: <FaCircle />,
-    33: <FaCircle />,
-    34: <FaCircle />,
-    35: <FaCircle />,
-    36: <FaCircle />,
-    37: <FaCircle />,
-    38: <FaCircle />,
+    30: <span className="rarity-filter-dot" aria-hidden="true" />,
+    31: <span className="rarity-filter-dot" aria-hidden="true" />,
+    32: <span className="rarity-filter-dot" aria-hidden="true" />,
+    33: <span className="rarity-filter-dot" aria-hidden="true" />,
+    34: <span className="rarity-filter-dot" aria-hidden="true" />,
+    35: <span className="rarity-filter-dot" aria-hidden="true" />,
+    36: <span className="rarity-filter-dot" aria-hidden="true" />,
+    37: <span className="rarity-filter-dot" aria-hidden="true" />,
+    38: <span className="rarity-filter-dot" aria-hidden="true" />,
     40: TwoSetSrc,
     41: FourSetSrc,
     42: UniqueSrc,
@@ -1199,8 +1193,6 @@ export const filterSprites = {
     46: RingsSrc,
     47: NecklacesSrc,
     50: RareHeroSrc,
-    51: <FaSortNumericDown />,
-    52: <FaSortNumericDownAlt />,
     53: ExpandSrc,
     54: CollapseSrc,
 }

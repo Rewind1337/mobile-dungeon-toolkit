@@ -1,5 +1,6 @@
 import { memo, useMemo, useState } from 'react'
-import { useDynamicList } from '../hooks/useDynamicList.jsx';
+import { useDynamicList } from '../hooks/useDynamicList.jsx'
+import { useTranslate } from '../hooks/useTranslate.jsx';
 
 import '../css/hero.scss'
 
@@ -8,16 +9,10 @@ import VirtualizedGrid from './VirtualizedGrid.jsx'
 import HeroCatalogueFilters from './HeroCatalogueFilters.jsx'
 import BackToTopButton from './BackToTopButton.jsx';
 import { ATTRIBUTE_DEFINITIONS, ELEMENT_DEFINITIONS, RARITY_DEFINITIONS, ROLE_DEFINITIONS, getEnumNameById } from '../database/enums.jsx';
-import { isSearchAssetField, matchesSearchQuery, useUrlSearch } from '../js/search.jsx';
+import { getSearchableValues, matchesSearchQuery, useUrlSearch } from '../js/search.jsx';
 
-function getSearchableValues(value, seen = new Set()) {
-    if (value === null || value === undefined) return []
-    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return [String(value)]
-    if (typeof value !== 'object' || seen.has(value)) return []
-    seen.add(value)
-    return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : [key, ...getSearchableValues(child, seen)])
-}
-function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId, onSelectHero, onDoubleClick }) {
+function HeroList({extraHeight = 0, savedHeroes = false, headerText, heroesRef, selectedHeroId, setSelectedHeroId, onSelectHero, onDoubleClick }) {
+    const t = useTranslate()
     const { listHeight, listRef, events } = useDynamicList(extraHeight);
     const [search, setSearch, commitSearch] = useUrlSearch();
     const [filters, setFilters] = useState({
@@ -51,7 +46,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
             (filters.rarity === null || filters.rarity === heroObj.rarity) &&
             (filters.isStarred === null || heroObj.isStarred === filters.isStarred) &&
             matchesSearchQuery([
-                ...getSearchableValues(heroObj),
+                ...getSearchableValues(heroObj, new Set(), true),
                 getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(heroObj.mainAttribute)) ?? '',
                 getEnumNameById(ELEMENT_DEFINITIONS, Number(heroObj.element)) ?? '',
                 getEnumNameById(RARITY_DEFINITIONS, Number(heroObj.rarity)) ?? '',
@@ -98,7 +93,7 @@ function HeroList({ extraHeight = 0, savedHeroes = false, headerText, heroesRef,
         />
         <div className='list hero-list flex-row virtualized-list-scroll' ref={listRef} {...events} style={{ maxHeight: listHeight }}>
             {filteredHeroes.length === 0 ? (
-                <div className="text-big margin-auto">No heroes match the selected filters</div>
+                <div className="text-big margin-auto">{t("app.shared.noHeroesMatchFilters")}</div>
             ) : (
                 <VirtualizedGrid
                     items={filteredHeroes}

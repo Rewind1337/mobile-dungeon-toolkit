@@ -1,6 +1,6 @@
 import { ATTRIBUTE_DEFINITIONS, DROP_SOURCE_DEFINITIONS, EQUIPMENT_SLOT_DEFINITIONS, PERK_DEFINITIONS, RARITY_DEFINITIONS, getEnumNameById } from "../database/enums.jsx"
 import { statusSprites } from "../database/db_sprites.jsx"
-import { humanize } from "./utils.js"
+import { humanizeName } from "./utils.js"
 
 export const SLOT_NAMES = Object.fromEntries(
     Object.values(EQUIPMENT_SLOT_DEFINITIONS).map(({ id, name }) => [id, name])
@@ -13,6 +13,18 @@ export const PERK_NAMES = Object.fromEntries(
 )
 export const SLOT_ICON_KEYS = { WEAPON: "weapons", HELMET: "helmets", ARMOR: "armors", NECKLACE: "necklaces", RING: "rings" }
 export const ATTRIBUTE_ICON_KEYS = { strength: 1, dexterity: 2, intelligence: 3 }
+
+const MAIN_STAT_PERK_KEYS = {
+    0: { MAIN_STAT_FLAT: "ATTACK_FLAT", MAIN_STAT_PERCENT: "ATTACK_PERCENT" },
+    1: { MAIN_STAT_FLAT: "DEFENCE_FLAT", MAIN_STAT_PERCENT: "DEFENCE_PERCENT" },
+    2: { MAIN_STAT_FLAT: "AGILITY_FLAT", MAIN_STAT_PERCENT: "AGILITY_PERCENT" },
+}
+
+/** Resolve a generic main-stat perk to the concrete perk for an item's main attribute. */
+export function getMainStatPerkKey(perkName, mainAttribute) {
+    if (mainAttribute === null || mainAttribute === undefined || mainAttribute === "") return perkName
+    return MAIN_STAT_PERK_KEYS[Number(mainAttribute)]?.[perkName] ?? perkName
+}
 
 export function getLocations(item) {
     const raw = item?.dropLocation
@@ -34,35 +46,41 @@ export function getSetLocations(set, pieces) {
 export function getSourceName(source) {
     if (source === null || source === undefined || source === "") return "Unspecified source"
     const name = getEnumNameById(DROP_SOURCE_DEFINITIONS, Number(source)) ?? String(source)
-    return name.toLowerCase() === "everywhere" ? "Any Dungeon" : humanize(name)
+    return name.toLowerCase() === "everywhere" ? "Any Dungeon" : humanizeName(name)
 }
 
-export function getDropSourceLabel(source, locations) {
+export function getDropSourceLabel(source, locations, labels = {}) {
     const locationNames = (locations ?? []).filter(location => location && location !== "Unspecified location")
-    const locationLabel = locationNames.length > 0 ? locationNames.join(", ") : "Unspecified"
+    const locationLabel = locationNames.length > 0 ? locationNames.join(", ") : (labels.unspecified ?? "Unspecified")
+    const prefix = labels.label ?? "Drop Source"
     const sourceName = getSourceName(source)
-    if (sourceName.toLowerCase().includes("guild hunt")) return `Drop Source: ${locationLabel} (GH)`
-    if (locationNames.length > 0) return `Drop Source: ${locationLabel}`
-    return "Drop Source: Unspecified"
+    if (sourceName.toLowerCase().includes("guild hunt")) return `${prefix}: ${locationLabel} (${labels.guildHuntShort ?? "GH"})`
+    return `${prefix}: ${locationLabel}`
 }
 
 export function getAttributeRequirementLabel(value) {
     if (value === null || value === undefined || value === "") return "Not specified"
     const name = getEnumNameById(ATTRIBUTE_DEFINITIONS, Number(value))
-    return !name || name === "NONE" ? "None" : humanize(name)
+    return !name || name === "NONE" ? "None" : humanizeName(name)
 }
 
-export function getPerkKey(perk) {
+export function getPerkKey(perk, fallback = "") {
     if (typeof perk === "string") return perk.toUpperCase().replace(/\s/g, "_")
     if (perk && typeof perk === "object") {
-        return Object.keys(PERK_DEFINITIONS).find(key => PERK_DEFINITIONS[key].id === perk.id) ?? ""
+        return Object.keys(PERK_DEFINITIONS).find(key => PERK_DEFINITIONS[key].id === perk.id) ?? fallback
     }
-    return ""
+    return fallback
+}
+
+export function isFlatPerk(perk) {
+    const definition = typeof perk === "string" ? PERK_DEFINITIONS[perk] : perk
+    const id = Number(definition?.id)
+    return (id >= 4 && id <= 7) || id === 32
 }
 
 export function getPerkLabel(perk) {
     const key = getPerkKey(perk)
-    return PERK_NAMES[key] ?? (typeof perk === "string" ? humanize(perk) : "")
+    return PERK_NAMES[key] ?? (typeof perk === "string" ? humanizeName(perk) : "")
 }
 
 const STATUS_ALIASES = [
@@ -89,7 +107,7 @@ export function getEffectStatuses(item) {
     if (!description) return []
     return STATUS_ALIASES
         .filter(status => status.terms.some(term => description.includes(term)) && statusSprites[status.key])
-        .map(status => ({ key: status.key, name: humanize(status.key), sprite: statusSprites[status.key] }))
+        .map(status => ({ key: status.key, name: humanizeName(status.key), sprite: statusSprites[status.key] }))
 }
 
 export function isUniqueItem(item) {

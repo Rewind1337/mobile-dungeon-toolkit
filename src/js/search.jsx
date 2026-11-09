@@ -40,12 +40,15 @@ export function isSearchAssetField(key) {
 }
 
 /** Recursively flatten searchable primitive values while skipping asset-path fields. */
-export function getSearchableValues(value, seen = new Set()) {
+export function getSearchableValues(value, seen = new Set(), includeKeys = false) {
     if (value === null || value === undefined) return []
     if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return [String(value)]
     if (typeof value !== "object" || seen.has(value)) return []
     seen.add(value)
-    return Object.entries(value).flatMap(([key, child]) => isSearchAssetField(key) ? [] : getSearchableValues(child, seen))
+    return Object.entries(value).flatMap(([key, child]) => {
+        if (isSearchAssetField(key)) return []
+        return [...(includeKeys ? [key] : []), ...getSearchableValues(child, seen, includeKeys)]
+    })
 }
 
 /**

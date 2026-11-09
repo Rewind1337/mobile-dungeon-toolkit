@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react"
+import { useTranslate } from "../hooks/useTranslate.jsx"
+import { useContentTranslation } from "../hooks/useContentTranslation.jsx"
 import { EQUIPMENT_SLOT_DEFINITIONS } from "../database/enums.jsx"
 import { itemSprites } from "../database/db_sprites.jsx"
 import Hero from "./Hero.jsx"
@@ -16,6 +18,8 @@ const EQUIPMENT_SLOTS = [
 ]
 
 function CombatTeamCard({ team, teams, selectedId, onTeamChange, savedHeroes, title }) {
+    const t = useTranslate()
+    const tc = useContentTranslation()
     const teamHeroes = team.heroes.map(saveId => savedHeroes.find(hero => hero.saveId === saveId) ?? null)
 
     return (
@@ -23,28 +27,28 @@ function CombatTeamCard({ team, teams, selectedId, onTeamChange, savedHeroes, ti
             <header className="team-header custom-combat-team-header">
                 <h2 className="header-big">{title}</h2>
                 <label className="custom-combat-team-picker">
-                    <span className="text">Saved Team</span>
-                    <select aria-label={title + " selection"} value={selectedId} onChange={event => onTeamChange(event.target.value)}>
+                    <span className="text">{t("app.shared.savedTeam")}</span>
+                    <select  value={selectedId} onChange={event => onTeamChange(event.target.value)}>
                         {teams.map(entry => <option key={entry.id} value={String(entry.id)}>{entry.name}</option>)}
                     </select>
                 </label>
             </header>
             <div className="team-content">
                 <div className="team-heroes-column">
-                    <div className="team-hero-slots" aria-label={`${team.name} hero slots`}>
+                    <div className="team-hero-slots" >
                         {teamHeroes.map((hero, slotIndex) => (
                             <div className="team-hero-slot card card-static" key={`${team.id}-combat-slot-${slotIndex}`}>
                                 <span className="team-slot-label text">Slot {slotIndex + 1}</span>
                                 {hero ? (
                                     <>
                                         <Hero heroObj={hero} selected={false} level={hero.level ?? null} onClick={() => {}} />
-                                        <div className="catalogue-chip team-equipped-items" aria-label={`${hero.name}'s equipped items`}>
+                                        <div className="catalogue-chip team-equipped-items" >
                                             <div className="team-equipped-item-grid">
                                                 {EQUIPMENT_SLOTS.map(slot => {
                                                     const item = Array.isArray(hero.items) ? hero.items[slot.id] ?? null : null
                                                     return (
                                                         <span className={"team-equipped-item" + (item ? "" : " is-empty")}
-                                                            key={slot.id} title={item?.name ?? slot.name}>
+                                                            key={slot.id} title={item ? tc("item", item.id, "name", item.name) : tc("equipmentSlot", slot.name, "name", slot.name)}>
                                                             <img className="team-equipped-item-icon"
                                                                 src={item?.itemSrc || item?.iconSrc || itemSprites["null"]}
                                                                 alt="" loading="lazy" decoding="async" draggable={false} />
@@ -53,10 +57,10 @@ function CombatTeamCard({ team, teams, selectedId, onTeamChange, savedHeroes, ti
                                                 })}
                                             </div>
                                         </div>
-                                        <TeamHeroStats hero={hero} slotIndex={slotIndex} />
+                                        <TeamHeroStats hero={hero} />
                                     </>
                                 ) : (
-                                    <div className="custom-combat-empty-slot text">Empty Slot</div>
+                                    <div className="custom-combat-empty-slot text">{t("app.shared.emptySlot")}</div>
                                 )}
                             </div>
                         ))}
@@ -69,6 +73,7 @@ function CombatTeamCard({ team, teams, selectedId, onTeamChange, savedHeroes, ti
 }
 
 function SubPageCustomCombat({ savedHeroesRef, savedTeamsRef }) {
+    const t = useTranslate()
     const savedHeroes = Array.isArray(savedHeroesRef.current) ? savedHeroesRef.current : []
     const teams = Array.isArray(savedTeamsRef.current) ? savedTeamsRef.current : EMPTY_TEAMS
     const firstTeamId = teams.length > 0 ? String(teams[0].id) : ""
@@ -86,19 +91,19 @@ function SubPageCustomCombat({ savedHeroesRef, savedTeamsRef }) {
     return (
         <main className="page flex-col w-100 card custom-combat-page">
             <header className="card custom-combat-heading">
-                <h1 className="header-big">Custom Combat</h1>
-                <p className="text">Choose the two saved teams that should face each other. The same team can be selected for both sides.</p>
+                <h1 className="header-big">{t("app.pages.customCombat.title")}</h1>
+                <p className="text">{t("app.pages.customCombat.description")}</p>
             </header>
             {teamOne && teamTwo ? (
                 <div className="custom-combat-matchup">
                     <CombatTeamCard team={teamOne} teams={teams} selectedId={teamOneId} onTeamChange={setTeamOneId}
-                        savedHeroes={savedHeroes} title="Combat Team 1" />
+                        savedHeroes={savedHeroes} title={t("app.pages.customCombat.teamOne")} />
                     <div className="custom-combat-vs" aria-hidden="true">VS</div>
                     <CombatTeamCard team={teamTwo} teams={teams} selectedId={teamTwoId} onTeamChange={setTeamTwoId}
-                        savedHeroes={savedHeroes} title="Combat Team 2" />
+                        savedHeroes={savedHeroes} title={t("app.pages.customCombat.teamTwo")} />
                 </div>
             ) : (
-                <div className="card text">Create a saved team on the Teams page to use it in Custom Combat.</div>
+                <div className="card text">{t("app.pages.customCombat.createTeamPrompt")}</div>
             )}
         </main>
     )

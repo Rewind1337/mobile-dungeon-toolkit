@@ -1,6 +1,9 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from "react"
 import { useDynamicList } from "../../hooks/useDynamicList.jsx"
 import Button from "../Button.jsx"
+import { useTranslate } from "../../hooks/useTranslate.jsx"
+import { humanizeName } from "../../js/utils.js"
+import { useContentTranslation } from "../../hooks/useContentTranslation.jsx"
 
 import BackToTopButton from "../BackToTopButton.jsx"
 import "../../css/infos.scss"
@@ -24,15 +27,13 @@ const RESOURCE_DATA = init_resource_db()
 const RESOURCE_COUNT = RESOURCE_DATA.filter(resource => !resource.isGem).length
 const GEM_TYPE_COUNT = new Set(RESOURCE_DATA.filter(resource => resource.isGem).map(resource => resource.gemType)).size
 const TABS = [
-    ["hero-catalogue", "Heroes & Banners"],
-    ["item-catalogue", "Items & Sets"],
-    ["perk-catalogue", "Perk Catalogue", "Perks"],
-    ["skills-talents-catalogue", "Skills & Talents"],
-    ["status-catalogue", "Status Catalogue", "Statuses"],
-    ["resources-catalogue", "Resources & Gems"],
+    ["hero-catalogue", "app.pages.wiki.heroesAndBanners"],
+    ["item-catalogue", "app.pages.wiki.itemsAndSets"],
+    ["perk-catalogue", "app.pages.catalogues.perkTitle", "app.shared.perks"],
+    ["skills-talents-catalogue", "app.shared.skillsAndTalents"],
+    ["status-catalogue", "app.pages.wiki.statusCatalogue", "app.pages.wiki.statuses"],
+    ["resources-catalogue", "app.pages.wiki.resourcesAndGems"],
 ]
-
-const humanize = value => String(value ?? "").replaceAll("_", " ").replace(/\b\w/g, letter => letter.toUpperCase())
 
 function Stat({ label, value }) {
     return (
@@ -44,21 +45,30 @@ function Stat({ label, value }) {
 }
 
 function InfoOverview({ items, sets, heroes, onNavigate }) {
+    const t = useTranslate()
+    const tc = useContentTranslation()
     const itemCount = Array.isArray(items) ? items.length : Object.values(items).reduce((total, list) => total + (Array.isArray(list) ? list.length : 0), 0)
-    const heroCountBy = (key, definitions, preferredOrder = []) => {
+    const translateDefinitionName = (collection, definition) => {
+        const name = String(definition?.name ?? "unknown")
+        return definition
+            ? tc(collection, name.toUpperCase(), "name", humanizeName(name))
+            : humanizeName(name)
+    }
+    const heroCountBy = (key, definitions, collection, preferredOrder = []) => {
         const counts = new Map()
         for (const hero of heroes) {
             const id = Number(hero[key])
             const definition = Object.values(definitions).find(entry => entry.id === id)
-            const label = humanize(definition?.name ?? "unknown")
-            const count = counts.get(label) ?? { label, id, count: 0 }
+            const enumName = String(definition?.name ?? "unknown")
+            const label = translateDefinitionName(collection, definition)
+            const count = counts.get(enumName) ?? { label, id, count: 0, orderKey: enumName.toLowerCase() }
             count.count += 1
-            counts.set(label, count)
+            counts.set(enumName, count)
         }
-        const order = new Map(preferredOrder.map((label, index) => [label.toLowerCase(), index]))
+        const order = new Map(preferredOrder.map((name, index) => [name.toLowerCase(), index]))
         return [...counts.values()].sort((a, b) => {
-            const aOrder = order.get(a.label.toLowerCase())
-            const bOrder = order.get(b.label.toLowerCase())
+            const aOrder = order.get(a.orderKey)
+            const bOrder = order.get(b.orderKey)
             if (aOrder !== undefined || bOrder !== undefined) {
                 if (aOrder === undefined) return 1
                 if (bOrder === undefined) return -1
@@ -67,15 +77,16 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
             return a.label.localeCompare(b.label)
         })
     }
-    const itemCountBy = (key, definitions) => {
+    const itemCountBy = (key, definitions, collection) => {
         const counts = new Map()
         for (const item of items) {
             const id = Number(item[key])
             const definition = Object.values(definitions).find(entry => entry.id === id)
-            const label = humanize(definition?.name ?? "unknown")
-            const current = counts.get(label) ?? { label, id, count: 0 }
+            const enumName = String(definition?.name ?? "unknown")
+            const label = translateDefinitionName(collection, definition)
+            const current = counts.get(enumName) ?? { label, id, count: 0 }
             current.count += 1
-            counts.set(label, current)
+            counts.set(enumName, current)
         }
         return [...counts.values()].sort((a, b) => a.label.localeCompare(b.label))
     }
@@ -110,8 +121,8 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
                 key={label}
                 role={isClickable ? "button" : undefined}
                 tabIndex={isClickable ? 0 : undefined}
-                aria-label={isClickable ? `${label}: ${count}. Open the matching catalogue entries.` : undefined}
-                title={isClickable ? `Show ${label} entries in the catalogue` : undefined}
+                
+                title={isClickable ? t("app.pages.wiki.showEntriesTooltip", { label }) : undefined}
                 onClick={isClickable ? () => onSelect(id) : undefined}
                 onKeyDown={isClickable ? activateWithKeyboard : undefined}
             >
@@ -132,93 +143,92 @@ function InfoOverview({ items, sets, heroes, onNavigate }) {
         <section className="info-overview">
             <header className="catalogue-header info-overview-heading">
                 <div className="catalogue-heading-copy">
-                    <div className="catalogue-title header-big">Wiki</div>
+                    <div className="catalogue-title header-big">{t("app.navigation.wiki")}</div>
                     <p className="catalogue-description text">
-                        Explore the heroes, banners, equipment, gems, resources, perks, skills, talents, and status effects tracked by the toolkit.
-                        Use the catalogue navigation above to browse each collection.
+                        {t("app.pages.wiki.description")}
                     </p>
                 </div>
             </header>
 
             <section className="info-overview-section card card-static">
                 <div className="info-overview-section-heading">
-                    <h2 className="header">Data Overview</h2>
-                    <p className="text">Distribution of the currently loaded data.</p>
+                    <h2 className="header">{t("app.pages.wiki.dataOverview")}</h2>
+                    <p className="text">{t("app.pages.wiki.dataDistribution")}</p>
                 </div>
                 <section className="info-overview-breakdown-card info-overview-data-card card card-static">
                     <div className="catalogue-overview-stats">
-                        <Stat label="Items" value={itemCount} />
-                        <Stat label="Item sets" value={sets.length} />
-                        <Stat label="Heroes" value={heroes.length} />
-                        <Stat label="Banners" value={BANNER_DATA.length} />
-                        <Stat label="Skills" value={skillCount} />
-                        <Stat label="Talent entries" value={talentCount} />
-                        <Stat label="Perks" value={Object.keys(PERK_DEFINITIONS).length} />
-                        <Stat label="Status Effects" value={Object.keys(STATUS_EFFECT_DEFINITIONS).length} />
-                        <Stat label="Resources" value={RESOURCE_COUNT} />
-                        <Stat label="Gem types" value={GEM_TYPE_COUNT} />
+                        <Stat label={t("app.shared.items")} value={itemCount} />
+                        <Stat label={t("app.shared.sets")} value={sets.length} />
+                        <Stat label={t("app.shared.heroes")} value={heroes.length} />
+                        <Stat label={t("app.shared.banners")} value={BANNER_DATA.length} />
+                        <Stat label={t("app.shared.skills")} value={skillCount} />
+                        <Stat label={t("app.shared.talentEntries")} value={talentCount} />
+                        <Stat label={t("app.shared.perks")} value={Object.keys(PERK_DEFINITIONS).length} />
+                        <Stat label={t("app.shared.statusEffects")} value={Object.keys(STATUS_EFFECT_DEFINITIONS).length} />
+                        <Stat label={t("app.shared.resources")} value={RESOURCE_COUNT} />
+                        <Stat label={t("app.shared.gemTypes")} value={GEM_TYPE_COUNT} />
                     </div>
                 </section>
             </section>
 
             <section className="info-overview-section card card-static">
                 <div className="info-overview-section-heading">
-                    <h2 className="header">Hero Overview</h2>
-                    <p className="text">Distribution of the currently loaded hero data.</p>
+                    <h2 className="header">{t("app.pages.wiki.heroOverview")}</h2>
+                    <p className="text">{t("app.pages.wiki.heroDistribution")}</p>
                 </div>
                 <div className="info-overview-breakdown info-overview-hero-breakdown">
                     <section className="info-overview-breakdown-card card card-static">
-                        <h3 className="header">By element</h3>
-                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("element", ELEMENT_DEFINITIONS, ["Fire", "Water", "Nature", "Light", "Shadow"]), "element", id => onNavigate?.("hero-catalogue", { element: id }))}</div>
+                        <h3 className="header">{t("app.pages.wiki.byElement")}</h3>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("element", ELEMENT_DEFINITIONS, "element", ["FIRE", "WATER", "NATURE", "LIGHT", "SHADOW"]), "element", id => onNavigate?.("hero-catalogue", { element: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
-                        <h3 className="header">By rarity</h3>
-                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("rarity", RARITY_DEFINITIONS, ["Uncommon", "Rare", "Epic", "Legendary"]), "rarity", id => onNavigate?.("hero-catalogue", { rarity: id }))}</div>
+                        <h3 className="header">{t("app.pages.wiki.byRarity")}</h3>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("rarity", RARITY_DEFINITIONS, "rarity", ["UNCOMMON", "RARE", "EPIC", "LEGENDARY"]), "rarity", id => onNavigate?.("hero-catalogue", { rarity: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
-                        <h3 className="header">By role</h3>
-                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("role", ROLE_DEFINITIONS), "role", id => onNavigate?.("hero-catalogue", { role: id }))}</div>
+                        <h3 className="header">{t("app.pages.wiki.byRole")}</h3>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("role", ROLE_DEFINITIONS, "role"), "role", id => onNavigate?.("hero-catalogue", { role: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
-                        <h3 className="header">By main attribute</h3>
-                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("mainAttribute", ATTRIBUTE_DEFINITIONS), "attribute", id => onNavigate?.("hero-catalogue", { attribute: id }))}</div>
+                        <h3 className="header">{t("app.pages.wiki.byMainAttribute")}</h3>
+                        <div className="catalogue-overview-slot-list">{rows(heroCountBy("mainAttribute", ATTRIBUTE_DEFINITIONS, "attribute"), "attribute", id => onNavigate?.("hero-catalogue", { attribute: id }))}</div>
                     </section>
                 </div>
             </section>
 
             <section className="info-overview-section card card-static">
                 <div className="info-overview-section-heading">
-                    <h2 className="header">Item Overview</h2>
-                    <p className="text">Distribution of the currently loaded item database.</p>
+                    <h2 className="header">{t("app.pages.wiki.itemOverview")}</h2>
+                    <p className="text">{t("app.pages.wiki.itemDistribution")}</p>
                 </div>
                 <div className="info-overview-breakdown info-overview-item-breakdown">
                     <section className="info-overview-breakdown-card card card-static">
-                        <h3 className="header">By slot</h3>
-                        <div className="catalogue-overview-slot-list">{rows(itemCountBy("slot", EQUIPMENT_SLOT_DEFINITIONS), "slot", id => onNavigate?.("item-catalogue", { slot: id }))}</div>
+                        <h3 className="header">{t("app.pages.wiki.bySlot")}</h3>
+                        <div className="catalogue-overview-slot-list">{rows(itemCountBy("slot", EQUIPMENT_SLOT_DEFINITIONS, "equipmentSlot"), "slot", id => onNavigate?.("item-catalogue", { slot: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
-                        <h3 className="header">By main attribute</h3>
-                        <div className="catalogue-overview-slot-list">{rows(itemCountBy("mainAttribute", PRIMARY_STAT_DEFINITIONS), "primary-stat", id => onNavigate?.("item-catalogue", { attribute: id }))}</div>
+                        <h3 className="header">{t("app.pages.wiki.byMainAttribute")}</h3>
+                        <div className="catalogue-overview-slot-list">{rows(itemCountBy("mainAttribute", PRIMARY_STAT_DEFINITIONS, "primaryStat"), "primary-stat", id => onNavigate?.("item-catalogue", { attribute: id }))}</div>
                     </section>
                     <section className="info-overview-breakdown-card card card-static">
-                        <h3 className="header">By drop source</h3>
+                        <h3 className="header">{t("app.pages.wiki.byDropSource")}</h3>
                         <div className="catalogue-overview-slot-list">
-                            <div className="catalogue-overview-slot card"><span className="text">Dungeon drops</span><span className="header">{dungeonDropCount}</span></div>
-                            <div className="catalogue-overview-slot card"><span className="text">Guild Hunt drops</span><span className="header">{guildHuntCount}</span></div>
+                            <div className="catalogue-overview-slot card"><span className="text">{t("app.pages.wiki.dungeonDrops")}</span><span className="header">{dungeonDropCount}</span></div>
+                            <div className="catalogue-overview-slot card"><span className="text">{t("app.pages.wiki.guildHuntDrops")}</span><span className="header">{guildHuntCount}</span></div>
                         </div>
-                        <p className="catalogue-muted text">Dungeon drops include Any Dungeon and unspecified drops, including the General set.</p>
                     </section>
                 </div>
 
             </section>
 
-            <p className="catalogue-muted text">Counts reflect the data currently loaded in the project. Skills and talent entries are counted per hero, so repeated names are included.</p>
+            <p className="catalogue-muted text">{t("app.pages.wiki.dataCountNote")}</p>
 
         </section>
     )
 }
 
 function PageWiki({ itemsRef, heroesRef, activeTab = "overview", onTabChange }) {
+    const t = useTranslate()
     const [overviewFilter, setOverviewFilter] = useState(null)
     const setActiveTab = tab => {
         setOverviewFilter(null)
@@ -240,14 +250,14 @@ function PageWiki({ itemsRef, heroesRef, activeTab = "overview", onTabChange }) 
     return <div id="page-info-layout">
         <div className="sub-nav-bar flex-row" style={{ flex: "0 0 auto" }}>
             <div className="pagination flex-row card w-100">
-                {TABS.map(([id, label, compactLabel]) => <Button key={id} text={compactLabel
-                    ? <><span className="catalogue-view-label-full">{label}</span><span className="catalogue-view-label-compact">{compactLabel}</span></>
-                    : label} color={5} active={id === "item-catalogue" ? activeTab === "item-catalogue" || activeTab === "set-catalogue" : id === "hero-catalogue" ? activeTab === "hero-catalogue" || activeTab === "hero-tier-list-catalogue" || activeTab === "hero-banners-catalogue" : id === "resources-catalogue" ? activeTab === "resources-catalogue" || activeTab === "gems-catalogue" : id === "skills-talents-catalogue" ? activeTab === "skills-talents-catalogue" || activeTab === "skills-catalogue" || activeTab === "talents-catalogue" : activeTab === id} onClick={() => setActiveTab(id)} />)}
+                {TABS.map(([id, labelKey, compactKey]) => <Button key={id} text={compactKey
+                    ? <><span className="catalogue-view-label-full">{t(labelKey)}</span><span className="catalogue-view-label-compact">{t(compactKey)}</span></>
+                    : t(labelKey)} color={5} active={id === "item-catalogue" ? activeTab === "item-catalogue" || activeTab === "set-catalogue" : id === "hero-catalogue" ? activeTab === "hero-catalogue" || activeTab === "hero-tier-list-catalogue" || activeTab === "hero-banners-catalogue" : id === "resources-catalogue" ? activeTab === "resources-catalogue" || activeTab === "gems-catalogue" : id === "skills-talents-catalogue" ? activeTab === "skills-talents-catalogue" || activeTab === "skills-catalogue" || activeTab === "talents-catalogue" : activeTab === id} onClick={() => setActiveTab(id)} />)}
             </div>
         </div>
         <div id="page-info" className="page card w-100" ref={listRef} {...events} style={{ display:"flex", flexDirection:"column", alignItems:"stretch", flex:"1 1 0", minHeight:0, minWidth:0, overflowY:"auto", overflowX:"hidden", alignContent:"start" }}>
             {activeTab === "overview" && <InfoOverview items={items} sets={sets} heroes={heroes} onNavigate={navigateFromOverview} />}
-            <Suspense fallback={<div className="card">Loading catalogue...</div>}>
+            <Suspense fallback={<div className="card">{t("app.pages.wiki.loadingCatalogue")}</div>}>
                 {activeTab === "item-catalogue" && <CatalogueItem itemsRef={itemData} setsRef={sets} scrollElementRef={listRef} initialFilter={overviewFilter?.tab === "item-catalogue" ? overviewFilter : null} onViewChange={view => setActiveTab(view === "sets" ? "set-catalogue" : "item-catalogue")} />}
                 {activeTab === "set-catalogue" && <CatalogueItem itemsRef={itemData} setsRef={sets} scrollElementRef={listRef} initialView="sets" onViewChange={view => setActiveTab(view === "sets" ? "set-catalogue" : "item-catalogue")} />}
                 {activeTab === "perk-catalogue" && <CataloguePerk items={items} sets={sets} />}
