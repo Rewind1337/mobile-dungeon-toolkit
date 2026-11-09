@@ -97,9 +97,9 @@ The following direct dependencies are declared by the project. Versions are the 
 
 ### Transitive npm dependencies
 
-The lockfile currently contains **292 package entries** across direct and transitive dependencies, including development tools, nested package versions, and optional platform-specific packages. Every entry currently includes a declared license identifier. The counts below describe lockfile package entries, not unique projects or copyright holders.
+The lockfile currently contains **292 package entries** across direct and transitive dependencies, including development tools, nested package versions, and optional platform-specific packages. Every entry currently includes a license value in its package metadata. The counts below describe lockfile package entries, not unique projects or copyright holders.
 
-| Declared license identifier | Package entries |
+| Lockfile license value | Package entries |
 | --- | ---: |
 | MIT | 248 |
 | Apache-2.0 | 15 |
